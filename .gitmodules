@@ -1,4 +1,0 @@
-[submodule "include/Plutonium"]
-	path = include/Plutonium
-	url = https://github.com/R-YaTian/Plutonium.git
-	branch = main

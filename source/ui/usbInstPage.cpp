@@ -19,12 +19,17 @@ namespace inst::ui {
 
     usbInstPage::usbInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -40,10 +45,10 @@ namespace inst::ui {
         this->butText = TextBlock::New(10, 678, "");
         this->butText->SetFont("DefaultFont@22");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
-        this->menu->SetOnFocusColor(COLOR("#00000033"));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
-        this->infoImage = Image::New(460, 332, "romfs:/images/icons/usb-connection-waiting.png");
+        pu::sdl2::TextureHandle::Ref infoImg = inst::util::LoadTexture("romfs:/images/icons/usb-connection-waiting.png");
+        this->infoImage = Image::New(460, 332, infoImg);
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -56,7 +61,7 @@ namespace inst::ui {
         this->Add(this->menu);
         this->Add(this->infoImage);
         this->updateStatsThread();
-        this->AddThread(std::bind(&usbInstPage::updateStatsThread, this));
+        this->AddRenderCallback(std::bind(&usbInstPage::updateStatsThread, this));
     }
 
     void usbInstPage::drawMenuItems(bool clearItems) {
@@ -67,10 +72,12 @@ namespace inst::ui {
             std::string itm = inst::util::shortenString(inst::util::formatUrlString(url), 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
-            ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png"));
+            ourEntry->SetName("checkbox-blank");
             for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
                 if (this->selectedTitles[i] == url) {
-                    ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+                    ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png"));
+                    ourEntry->SetName("checkbox-tick");
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -79,7 +86,7 @@ namespace inst::ui {
     }
 
     void usbInstPage::selectTitle(int selectedIndex, bool redraw) {
-        if (this->menu->GetItems()[selectedIndex]->GetIcon() == "romfs:/images/icons/check-box-outline.png") {
+        if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-tick") {
             for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
                 if (this->selectedTitles[i] == this->ourTitles[selectedIndex])
                 {
@@ -125,12 +132,12 @@ namespace inst::ui {
         return;
     }
 
-    void usbInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void usbInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if (Down & HidNpadButton_B) {
             tin::util::USBCmdManager::SendExitCmd();
             mainApp->LoadLayout(mainApp->mainPage);
         }
-        if ((Down & HidNpadButton_A) || (pu::ui::Application::GetTouchState().count == 0 && prev_touchcount == 1)) {
+        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
             prev_touchcount = 0;
             this->selectTitle(this->menu->GetSelectedIndex());
             if (this->menu->GetItems().size() == 1 && this->selectedTitles.size() == 1) {
@@ -141,7 +148,7 @@ namespace inst::ui {
             if (this->selectedTitles.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
             else {
                 for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-                    if (this->menu->GetItems()[i]->GetIcon() == "romfs:/images/icons/check-box-outline.png") continue;
+                    if (this->menu->GetItems()[i]->GetName() == "checkbox-tick") continue;
                     else this->selectTitle(i, false);
                 }
                 this->drawMenuItems(false);
@@ -155,7 +162,7 @@ namespace inst::ui {
             }
             this->startInstall();
         }
-        if (pu::ui::Application::GetTouchState().count == 1)
+        if (mainApp->GetTouchState().count == 1)
             prev_touchcount = 1;
     }
 

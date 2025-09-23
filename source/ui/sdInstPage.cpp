@@ -24,12 +24,17 @@ namespace inst::ui {
 
     sdInstPage::sdInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -45,8 +50,7 @@ namespace inst::ui {
         this->butText = TextBlock::New(10, 678, "inst.sd.buttons"_lang);
         this->butText->SetFont("DefaultFont@22");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
-        this->menu->SetOnFocusColor(COLOR("#00000033"));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
@@ -60,7 +64,7 @@ namespace inst::ui {
         this->Add(this->menu);
         this->updateStatsThread();
         installedTitles = inst::util::listInstalledTitles();
-        this->AddThread(std::bind(&sdInstPage::updateStatsThread, this));
+        this->AddRenderCallback(std::bind(&sdInstPage::updateStatsThread, this));
     }
 
     void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
@@ -82,7 +86,7 @@ namespace inst::ui {
             std::string itm = "..";
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextDir));
-            ourEntry->SetIcon("romfs:/images/icons/folder-upload.png");
+            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/folder-upload.png"));
             this->menu->AddItem(ourEntry);
         }
         for (auto& file: this->ourDirectories) {
@@ -90,7 +94,7 @@ namespace inst::ui {
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextDir));
-            ourEntry->SetIcon("romfs:/images/icons/folder.png");
+            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/folder.png"));
             this->menu->AddItem(ourEntry);
         }
         for (long unsigned int i = 0; i < this->ourFiles.size(); i++) {
@@ -103,10 +107,12 @@ namespace inst::ui {
 
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
-            ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png"));
+            ourEntry->SetName("checkbox-blank");
             for (long unsigned int j = 0; j < this->selectedTitles.size(); j++) {
                 if (this->selectedTitles[j] == file) {
-                    ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+                    ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png"));
+                    ourEntry->SetName("checkbox-tick");
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -151,7 +157,7 @@ namespace inst::ui {
         long unsigned int nspIndex = 0;
         if (this->menuIndices.size() > 0) nspIndex = this->menuIndices[selectedIndex - dirListSize];
 
-        if (this->menu->GetItems()[selectedIndex]->GetIcon() == "romfs:/images/icons/check-box-outline.png") {
+        if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-tick") {
             for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
                 if (this->selectedTitles[i] == this->ourFiles[nspIndex])
                 {
@@ -159,7 +165,7 @@ namespace inst::ui {
                     break;
                 }
             }
-        } else if (this->menu->GetItems()[selectedIndex]->GetIcon() == "romfs:/images/icons/checkbox-blank-outline.png") this->selectedTitles.push_back(this->ourFiles[nspIndex]);
+        } else if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-blank") this->selectedTitles.push_back(this->ourFiles[nspIndex]);
         else {
             this->followDirectory();
             return;
@@ -180,7 +186,7 @@ namespace inst::ui {
         lastIndex.clear();
     }
 
-    void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if (Down & HidNpadButton_B) {
             if (subPathCounter > 0) {
                 this->menu->SetSelectedIndex(0);
@@ -189,7 +195,7 @@ namespace inst::ui {
                 mainApp->LoadLayout(mainApp->mainPage);
             }
         }
-        if ((Down & HidNpadButton_A) || (pu::ui::Application::GetTouchState().count == 0 && prev_touchcount == 1)) {
+        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
             prev_touchcount = 0;
             this->selectNsp(this->menu->GetSelectedIndex());
             if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1) {
@@ -202,7 +208,7 @@ namespace inst::ui {
                 int topDir = 0;
                 if (this->currentDir != "sdmc:/") topDir++;
                 for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-                    if (this->menu->GetItems()[i]->GetIcon() == "romfs:/images/icons/check-box-outline.png") continue;
+                    if (this->menu->GetItems()[i]->GetName() == "checkbox-tick") continue;
                     else this->selectNsp(i, false);
                 }
                 this->drawMenuItems(false, currentDir);
@@ -225,12 +231,12 @@ namespace inst::ui {
             this->menu->SetSelectedIndex(0);
         }
         if (Down & HidNpadButton_Plus) {
-            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIcon() == "romfs:/images/icons/checkbox-blank-outline.png") {
+            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == "checkbox-blank") {
                 this->selectNsp(this->menu->GetSelectedIndex());
             }
             if (this->selectedTitles.size() > 0) this->startInstall();
         }
-        if (pu::ui::Application::GetTouchState().count == 1)
+        if (mainApp->GetTouchState().count == 1)
             prev_touchcount = 1;
     }
 

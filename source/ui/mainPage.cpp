@@ -21,7 +21,7 @@ namespace inst::ui {
     static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
 
-    void mainMenuThread() {
+    void MainPage::mainMenuThread() {
         bool menuLoaded = mainApp->IsShown();
         if (!updateFinished && (!inst::config::autoUpdate || inst::util::getIPAddress() == "1.0.0.127")) updateFinished = true;
         if (!updateFinished && menuLoaded && inst::config::updateInfo.size()) {
@@ -33,20 +33,26 @@ namespace inst::ui {
             if (menuLoaded) {
                 inst::ui::appletFinished = true;
                 mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
-            } 
+            }
         } else if (!appletFinished) {
             inst::ui::appletFinished = true;
             tin::data::NUM_BUFFER_SEGMENTS = 128;
         }
+        this->updateStatsThread();
     }
 
     MainPage::MainPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -59,27 +65,26 @@ namespace inst::ui {
         this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
         this->butText->SetFont("DefaultFont@22");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#67000000"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
-        this->optionMenu->SetOnFocusColor(COLOR("#00000033"));
+        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#67000000"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->installMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->installMenuItem->SetIcon("romfs:/images/icons/micro-sd.png");
+        this->installMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->netInstallMenuItem->SetIcon("romfs:/images/icons/cloud-download.png");
+        this->netInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->usbInstallMenuItem->SetIcon("romfs:/images/icons/usb-port.png");
+        this->usbInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->usbHDDInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->usbHDDInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->usbHDDInstallMenuItem->SetIcon("romfs:/images/icons/usb-port.png");
+        this->usbHDDInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->settingsMenuItem->SetIcon("romfs:/images/icons/settings.png");
+        this->settingsMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/settings.png"));
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
+        this->exitMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->topRect);
         this->Add(this->botRect);
         this->Add(this->titleImage);
@@ -95,8 +100,7 @@ namespace inst::ui {
         this->optionMenu->AddItem(this->exitMenuItem);
         this->Add(this->optionMenu);
         this->updateStatsThread();
-        this->AddThread(std::bind(&MainPage::updateStatsThread, this));
-        this->AddThread(mainMenuThread);
+        this->AddRenderCallback(std::bind(&MainPage::mainMenuThread, this));
     }
 
     void MainPage::installMenuItem_Click() {
@@ -143,12 +147,13 @@ namespace inst::ui {
         mainApp->LoadLayout(mainApp->optionspage);
     }
 
-    void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if ((Down & HidNpadButton_Plus) && mainApp->IsShown()) {
             mainApp->FadeOut();
             mainApp->Close();
         }
-        if ((Down & HidNpadButton_A) || (pu::ui::Application::GetTouchState().count == 0 && prev_touchcount == 1)) {
+
+        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
             prev_touchcount = 0;
             switch (this->optionMenu->GetSelectedIndex()) {
                 case 0:
@@ -173,7 +178,7 @@ namespace inst::ui {
                     break;
             }
         }
-        if (pu::ui::Application::GetTouchState().count == 1)
+        if (mainApp->GetTouchState().count == 1)
             prev_touchcount = 1;
     }
 

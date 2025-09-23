@@ -26,12 +26,17 @@ namespace inst::ui {
 
     netInstPage::netInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -47,10 +52,10 @@ namespace inst::ui {
         this->butText = TextBlock::New(10, 678, "");
         this->butText->SetFont("DefaultFont@22");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
-        this->menu->SetOnFocusColor(COLOR("#00000033"));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
-        this->infoImage = Image::New(453, 292, "romfs:/images/icons/lan-connection-waiting.png");
+        pu::sdl2::TextureHandle::Ref infoImg = inst::util::LoadTexture("romfs:/images/icons/lan-connection-waiting.png");
+        this->infoImage = Image::New(453, 292, infoImg);
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -63,7 +68,7 @@ namespace inst::ui {
         this->Add(this->menu);
         this->Add(this->infoImage);
         this->updateStatsThread();
-        this->AddThread(std::bind(&netInstPage::updateStatsThread, this));
+        this->AddRenderCallback(std::bind(&netInstPage::updateStatsThread, this));
     }
 
     void netInstPage::drawMenuItems(bool clearItems) {
@@ -84,10 +89,12 @@ namespace inst::ui {
             std::string itm = inst::util::shortenString(formattedURL, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
-            ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+            ourEntry->SetIcon( inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png"));
+            ourEntry->SetName("checkbox-blank");
             for (long unsigned int j = 0; j < this->selectedUrls.size(); j++) {
                 if (this->selectedUrls[j] == url) {
-                    ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+                    ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png"));
+                    ourEntry->SetName("checkbox-tick");
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -100,7 +107,7 @@ namespace inst::ui {
         long unsigned int urlIndex = 0;
         if (this->menuIndices.size() > 0) urlIndex = this->menuIndices[selectedIndex];
 
-        if (this->menu->GetItems()[selectedIndex]->GetIcon() == "romfs:/images/icons/check-box-outline.png") {
+        if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-tick") {
             for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
                 if (this->selectedUrls[i] == this->ourUrls[urlIndex])
                 {
@@ -190,7 +197,7 @@ namespace inst::ui {
         return;
     }
 
-    void netInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void netInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if (Down & HidNpadButton_B) {
             if (this->menu->GetItems().size() > 0){
                 if (this->selectedUrls.size() == 0) {
@@ -202,7 +209,7 @@ namespace inst::ui {
             mainApp->LoadLayout(mainApp->mainPage);
         }
         if (netConnected) {
-            if ((Down & HidNpadButton_A) || (pu::ui::Application::GetTouchState().count == 0 && prev_touchcount == 1)) {
+            if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
                 prev_touchcount = 0;
                 this->selectTitle(this->menu->GetSelectedIndex());
                 if (this->menu->GetItems().size() == 1 && this->selectedUrls.size() == 1) {
@@ -213,7 +220,7 @@ namespace inst::ui {
                 if (this->selectedUrls.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
                 else {
                     for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-                        if (this->menu->GetItems()[i]->GetIcon() == "romfs:/images/icons/check-box-outline.png") continue;
+                        if (this->menu->GetItems()[i]->GetName() == "checkbox-tick") continue;
                         else this->selectTitle(i, false);
                     }
                     this->drawMenuItems(false);
@@ -238,7 +245,7 @@ namespace inst::ui {
                 this->startInstall(false);
             }
         }
-        if (pu::ui::Application::GetTouchState().count == 1)
+        if (mainApp->GetTouchState().count == 1)
             prev_touchcount = 1;
     }
 

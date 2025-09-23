@@ -17,11 +17,16 @@ namespace inst::ui {
 
     instPage::instPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -38,7 +43,7 @@ namespace inst::ui {
         this->installInfoText->SetFont("DefaultFont@22");
         this->installInfoText->SetColor(COLOR(inst::config::themeColorTextInstall));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600, 850, 40, 100.0f);
-        this->installBar->SetColor(COLOR("#222222FF"));
+        this->installBar->SetProgressColor(COLOR("#222222FF"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->titleImage);
@@ -49,7 +54,7 @@ namespace inst::ui {
         this->Add(this->installInfoText);
         this->Add(this->installBar);
         this->updateStatsThread();
-        this->AddThread(std::bind(&instPage::updateStatsThread, this));
+        this->AddRenderCallback(std::bind(&instPage::updateStatsThread, this));
     }
 
     void instPage::setTopInstInfoText(std::string ourText){
@@ -81,7 +86,7 @@ namespace inst::ui {
         mainApp->CallForRender();
     }
 
-    void instPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void instPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
     }
 
     void instPage::updateStatsThread() {

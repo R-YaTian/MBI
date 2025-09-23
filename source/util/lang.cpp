@@ -61,9 +61,6 @@ namespace Language {
             default:
                 languagePath = "romfs:/lang/en.json";
         }
-        pu::ui::render::AddDefaultFontFromShared(22);
-        pu::ui::render::AddDefaultFontFromShared(32);
-        pu::ui::render::AddDefaultFontFromShared(42);
         if (std::filesystem::exists(languagePath)) ifs = std::ifstream(languagePath);
         else ifs = std::ifstream("romfs:/lang/en.json");
         if (!ifs.good()) {

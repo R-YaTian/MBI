@@ -14,8 +14,9 @@ namespace inst::ui {
             void settingsMenuItem_Click();
             void usbHDDInstallMenuItem_Click();
             void exitMenuItem_Click();
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void updateStatsThread();
+            void mainMenuThread();
             Image::Ref titleImage;
             TextBlock::Ref appVersionText;
             TextBlock::Ref freeSpaceText;

@@ -1,5 +1,6 @@
 #pragma once
 #include <filesystem>
+#include <pu/Plutonium>
 
 namespace inst::util {
     void initApp ();
@@ -28,4 +29,8 @@ namespace inst::util {
     std::vector<std::pair<u64, u32>> listInstalledTitles();
     bool isTitleInstalled(std::string filename, const std::vector<std::pair<u64, u32>> &installedTitles);
     std::vector<std::string> checkForAppUpdate();
+
+    inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path) {
+        return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
+    }
 }

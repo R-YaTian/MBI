@@ -10,7 +10,7 @@ namespace inst::ui {
             PU_SMART_CTOR(netInstPage)
             void startInstall(bool urlMode);
             void startNetwork();
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void updateStatsThread();
             TextBlock::Ref pageInfoText;
             Image::Ref titleImage;

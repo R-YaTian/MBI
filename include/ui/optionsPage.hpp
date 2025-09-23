@@ -8,7 +8,7 @@ namespace inst::ui {
         public:
             optionsPage();
             PU_SMART_CTOR(optionsPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void updateStatsThread();
             static void askToUpdate(std::vector<std::string> updateInfo);
             Image::Ref titleImage;
@@ -23,7 +23,7 @@ namespace inst::ui {
             TextBlock::Ref pageInfoText;
             pu::ui::elm::Menu::Ref menu;
             void setMenuText();
-            std::string getMenuOptionIcon(bool ourBool);
+            pu::sdl2::TextureHandle::Ref getMenuOptionIcon(bool ourBool);
             std::string getMenuLanguage(int ourLangCode);
     };
 }

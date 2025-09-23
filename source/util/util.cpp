@@ -39,6 +39,7 @@ namespace inst::util {
 
     void deinitApp () {
         ncmExit();
+        Mix_Quit();
 
 		nx::hdd::exit();
         socketExit();

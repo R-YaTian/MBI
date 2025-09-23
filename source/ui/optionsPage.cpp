@@ -25,12 +25,17 @@ namespace inst::ui {
 
     optionsPage::optionsPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        if (std::filesystem::exists(inst::config::appDir + "/background.png")) this->SetBackgroundImage(inst::config::appDir + "/background.png");
-        else this->SetBackgroundImage("romfs:/images/background.jpg");
+        pu::sdl2::TextureHandle::Ref bg;
+        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
+            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
+        else
+            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+        this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        this->titleImage = Image::New(0, 0, "romfs:/images/logo.png");
+        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -46,8 +51,7 @@ namespace inst::ui {
         this->butText = TextBlock::New(10, 678, "options.buttons"_lang);
         this->butText->SetFont("DefaultFont@22");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
-        this->menu->SetOnFocusColor(COLOR("#00000033"));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
@@ -61,7 +65,7 @@ namespace inst::ui {
         this->setMenuText();
         this->Add(this->menu);
         this->updateStatsThread();
-        this->AddThread(std::bind(&optionsPage::updateStatsThread, this));
+        this->AddRenderCallback(std::bind(&optionsPage::updateStatsThread, this));
     }
 
     void optionsPage::askToUpdate(std::vector<std::string> updateInfo) {
@@ -87,9 +91,11 @@ namespace inst::ui {
         return;
     }
 
-    std::string optionsPage::getMenuOptionIcon(bool ourBool) {
-        if(ourBool) return "romfs:/images/icons/check-box-outline.png";
-        else return "romfs:/images/icons/checkbox-blank-outline.png";
+    pu::sdl2::TextureHandle::Ref optionsPage::getMenuOptionIcon(bool ourBool) {
+        if(ourBool)
+            return inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png");
+        else
+            return inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
     }
 
     std::string optionsPage::getMenuLanguage(int ourLangCode) {
@@ -165,11 +171,11 @@ namespace inst::ui {
         this->menu->AddItem(creditsOption);
     }
 
-    void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos) {
+    void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if (Down & HidNpadButton_B) {
             mainApp->LoadLayout(mainApp->mainPage);
         }
-        if ((Down & HidNpadButton_A) || (pu::ui::Application::GetTouchState().count == 0 && prev_touchcount == 1)) {
+        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
             prev_touchcount = 0;
             std::string keyboardResult;
             int rc;
@@ -288,7 +294,7 @@ namespace inst::ui {
                     break;
             }
         }
-        if (pu::ui::Application::GetTouchState().count == 1)
+        if (mainApp->GetTouchState().count == 1)
             prev_touchcount = 1;
     }
 
