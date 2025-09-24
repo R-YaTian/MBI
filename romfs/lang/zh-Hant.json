@@ -39,21 +39,11 @@
                 "title": "說明",
                 "desc": "在Tinfoil模式下，檔案可透過NS-USBloader這類工具來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，Mohsaua-Buoh-Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
             },
-            "src": {
-                "title": "要從什麼路徑來源進行安裝？",
-                "opt0": "URL網路位址",
-                "opt1": "Google網路硬碟"
-            },
             "url": {
                 "warn": "注意！",
                 "hint": "請輸入檔案的URL網路位址",
                 "invalid": "URL網路位址無效！",
                 "source_string": "來源為URL"
-            },
-            "gdrive": {
-                "hint": "請輸入Google網路硬碟的共享檔案ID",
-                "alt_name": "Google網路硬碟檔案",
-                "source_string": "來源為Google網路硬碟"
             },
             "top_info": "選定要從伺服器安裝的檔案後，請按+鈕",
             "top_info1": "正在等待連線中... 你的Switch主機IP是: ",

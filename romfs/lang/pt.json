@@ -39,21 +39,11 @@
                 "title": "Ajuda",
                 "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Tinfoil. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO Mohsaua-Buoh-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
             },
-            "src": {
-                "title": "Deseja instalar através de onde?",
-                "opt0": "URL",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "Aviso!",
                 "hint": "Insira o endereço da Internet para o ficheiro",
                 "invalid": "O URL inserido é inválido!",
                 "source_string": " através do URL"
-            },
-            "gdrive": {
-                "hint": "Insira o ID público do ficheiro do Google Drive",
-                "alt_name": "Google Drive",
-                "source_string": " através do Google Drive"
             },
             "top_info": "Selecione os ficheiros que deseja instalar através do servidor, depois pressione o botão Mais!",
             "top_info1": "A aguardar ligação... O endereço de IP da Switch é: ",

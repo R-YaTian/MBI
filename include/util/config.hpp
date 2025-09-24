@@ -8,7 +8,6 @@ namespace inst::config {
     static const std::string themecolorPath = appDir + "/themecolor.json";
     static const std::string appVersion = APPVER;
 
-    extern std::string gAuthKey;
     extern std::string lastNetUrl;
     extern std::string httpIndexUrl;
     extern std::string themeColorTextTopInfo;

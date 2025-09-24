@@ -39,21 +39,11 @@
                 "title": "Aiuto",
                 "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Tinfoil\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nMohsaua-Buoh-Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!"
             },
-            "src": {
-                "title": "Da dove vuoi installare?",
-                "opt0": "URL",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "Attenzione!",
                 "hint": "Inserisci l'URL del file",
                 "invalid": "L'URL specificato non è valido!",
                 "source_string": " da URL"
-            },
-            "gdrive": {
-                "hint": "Inserisci l'ID di un file pubblico di Google Drive",
-                "alt_name": "File Google Drive",
-                "source_string": " da Google Drive"
             },
             "top_info": "Seleziona quali file vuoi installare dal server, poi premi il tasto Più!",
             "top_info1": "Aspettando una connessione... L'indirizzo IP è: ",

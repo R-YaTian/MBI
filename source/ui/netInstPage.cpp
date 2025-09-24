@@ -123,36 +123,19 @@ namespace inst::ui {
             mainApp->LoadLayout(mainApp->mainPage);
             return;
         } else if (this->ourUrls[0] == "supplyUrl") {
-            std::string keyboardResult;
-            switch (mainApp->CreateShowDialog("inst.net.src.title"_lang, "common.cancel_desc"_lang, {"inst.net.src.opt0"_lang, "inst.net.src.opt1"_lang}, false)) {
-                case 0:
-                    keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::lastNetUrl, 500);
-                    if (keyboardResult.size() > 0) {
-                        if (inst::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
-                            mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
-                            break;
-                        }
-                        inst::config::lastNetUrl = keyboardResult;
-                        inst::config::setConfig();
-                        sourceString = "inst.net.url.source_string"_lang;
-                        this->selectedUrls = {keyboardResult};
-                        this->startInstall(true);
-                        return;
-                    }
-                    break;
-                case 1:
-                    keyboardResult = inst::util::softwareKeyboard("inst.net.gdrive.hint"_lang, lastFileID, 50);
-                    if (keyboardResult.size() > 0) {
-                        lastFileID = keyboardResult;
-                        std::string fileName = inst::util::getDriveFileName(keyboardResult);
-                        if (fileName.size() > 0) this->alternativeNames = {fileName};
-                        else this->alternativeNames = {"inst.net.gdrive.alt_name"_lang};
-                        sourceString = "inst.net.gdrive.source_string"_lang;
-                        this->selectedUrls = {"https://www.googleapis.com/drive/v3/files/" + keyboardResult + "?key=" + inst::config::gAuthKey + "&alt=media"};
-                        this->startInstall(true);
-                        return;
-                    }
-                    break;
+            std::string keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::lastNetUrl, 500);
+            if (keyboardResult.size() > 0) {
+                if (inst::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
+                    mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
+                    this->startNetwork();
+                    return;
+                }
+                inst::config::lastNetUrl = keyboardResult;
+                inst::config::setConfig();
+                sourceString = "inst.net.url.source_string"_lang;
+                this->selectedUrls = {keyboardResult};
+                this->startInstall(true);
+                return;
             }
             this->startNetwork();
             return;

@@ -39,21 +39,11 @@
                 "title": "Help",
                 "desc": "Files can be installed remotely from your other devices using tools such\nas NS-USBloader in Tinfoil mode. To send files to your Switch, open one\nof these pieces of software on your PC or mobile device, input your\nSwitch's IP address (listed on-screen), select your files, then upload\nto your console! If the software you're using won't let you select\nspecific file types, try renaming the extension to something it accepts.\nMohsaua-Buoh-Installer doesn't care about file extensions during net installations!\n\nIf you can't figure it out, just copy your files to your SD card and try\nthe \"Install from SD Card\" option on the main menu!"
             },
-            "src": {
-                "title": "Where do you want to install from?",
-                "opt0": "URL",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "Warning!",
                 "hint": "Enter the Internet address of a file",
                 "invalid": "The URL specified is invalid!",
                 "source_string": " from URL"
-            },
-            "gdrive": {
-                "hint": "Enter the file ID of a public Google Drive file",
-                "alt_name": "Google Drive File",
-                "source_string": " from Google Drive"
             },
             "top_info": "Select what files you want to install from the server, then press the Plus button!",
             "top_info1": "Waiting for a connection... Your Switch's IP Address is: ",

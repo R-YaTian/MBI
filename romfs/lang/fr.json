@@ -39,21 +39,11 @@
                 "title": "Aide",
                 "desc": "Les fichiers peuvent être installés à distance depuis vos autres périphériques à l'aide d'outils\ntels que NS-USBloader en mode Tinfoil.\n\n Pour envoyer des fichiers à votre Switch, ouvrez l'un de ces logiciels\n sur votre PC ou votre appareil mobile, entrez\nl'adresse IP de votre Switch (indiquée à l'écran), sélectionnez vos fichiers, puis téléchargez-les\nsur votre console ! Si le logiciel que vous utilisez ne vous permet pas de sélectionner des types de fichiers\nspécifiques, essayez de modifier l'extension en quelque chose qu'il accepte.\nMohsaua-Buoh-Installer ne se soucie pas des extensions de fichiers lors des installations via le net !\n\nSi vous ne comprenez pas, copiez simplement vos fichiers sur votre carte SD et essayez\nl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
             },
-            "src": {
-                "title": "D'où voulez-vous installer ?",
-                "opt0": "URL",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "Avertissement!",
                 "hint": "Entrez l'URL d'un fichier",
                 "invalid": "L'URL spécifiée n'est pas valide !",
                 "source_string": " à partir d'un URL"
-            },
-            "gdrive": {
-                "hint": "Saisissez l'ID d'un fichier Google Drive public",
-                "alt_name": "Fichier Google Drive",
-                "source_string": " à partir de Google Drive"
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton Plus !",
             "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",

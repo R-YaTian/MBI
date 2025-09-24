@@ -39,21 +39,11 @@
                 "title": "Ayuda",
                 "desc": "Se pueden instalar archivos de forma remota desde otros dispositivos utilizando herrmaientas\ncomo NS-USBloader en modo Tinfoil. Para enviar archivos a tu Switch, abre uno\nde estos programas en tu ordenador o teléfono móvil, introduce la\ndirección IP de tu Switch (se muestra en pantalla), selecciona tus archivos, ¡y súbelos a tu consola! Si el programa que estés usando no te deja seleccionar\ntipos de archivo específicos, prueba a cambiar el nombre de la extensión del archivo por otra que sí acepte.\n¡Mohsaua-Buoh-Installer no se fija en las extensiones de los archivos en las instalaciones de red!\n\nSi no puedes hacer que funcione, simplemente copia los archivos a tu tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
             },
-            "src": {
-                "title": "¿Desde dónde quieres instalar el juego?",
-                "opt0": "URL",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "¡Advertencia!",
                 "hint": "Introduce la dirección de Internet de un archivo",
                 "invalid": "¡La URL especificada no es válida!",
                 "source_string": " desde una URL"
-            },
-            "gdrive": {
-                "hint": "Introduce la ID de un archivo público de Google Drive",
-                "alt_name": "Archivo de Google Drive",
-                "source_string": " desde Google Drive"
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde el servidor, luego pulsa el botón +!",
             "top_info1": "Esperando una conexión... La dirección IP de tu Switch es: ",

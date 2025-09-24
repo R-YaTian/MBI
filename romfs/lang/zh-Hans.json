@@ -39,21 +39,11 @@
                 "title": "帮助",
                 "desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或者移动设备上的任一工具软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请尝试更改文件扩展名。\nMohsaua-Buoh-Installer 在网络安装模式下不会检查文件类型！\n\n如果无法正常安装，请复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！"
             },
-            "src": {
-                "title": "要从哪里安装文件？",
-                "opt0": "链接",
-                "opt1": "Google Drive"
-            },
             "url": {
                 "warn": "警告！",
                 "hint": "输入文件链接 (URL)",
                 "invalid": "链接 (URL) 无效！",
                 "source_string": "从链接 (URL) 安装文件"
-            },
-            "gdrive": {
-                "hint": "输入 Google Drive 公共文件 ID",
-                "alt_name": "Google Drive 文件",
-                "source_string": "从 Google Drive 安装文件"
             },
             "top_info": "在服务器中选择将要安装的文件，然后按 \ue0ef 以安装！",
             "top_info1": "正在等待连接… Switch 的 IP 地址是：",
