@@ -6,7 +6,6 @@
 #include "ui/optionsPage.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
-#include "util/curl.hpp"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 #include "nx/fs.hpp"

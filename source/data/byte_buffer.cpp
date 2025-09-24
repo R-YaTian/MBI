@@ -23,7 +23,6 @@ SOFTWARE.
 #include "data/byte_buffer.hpp"
 
 #include "util/error.hpp"
-#include "util/debug.h"
 
 namespace tin::data
 {
@@ -45,11 +44,5 @@ namespace tin::data
     void ByteBuffer::Resize(size_t size)
     {
         m_buffer.resize(size, 0);
-    }
-
-    void ByteBuffer::DebugPrintContents()
-    {
-        LOG_DEBUG("Buffer Size: 0x%lx\n", this->GetSize());
-        printBytes(this->GetData(), this->GetSize(), true);
     }
 }

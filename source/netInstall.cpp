@@ -38,7 +38,6 @@ SOFTWARE.
 #include "util/network_util.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"
-#include "util/curl.hpp"
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/instPage.hpp"
@@ -158,7 +157,7 @@ namespace netInstStuff{
                 }
                 std::unique_ptr<tin::install::Install> installTask;
 
-                if (inst::curl::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
+                if (tin::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
                     auto httpXCI = std::make_shared<tin::install::xci::HTTPXCI>(ourUrlList[urlItr]);
                     installTask = std::make_unique<tin::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, httpXCI);
                 } else {
@@ -302,7 +301,7 @@ namespace netInstStuff{
                         inst::config::setConfig();
                         if (url[url.size() - 1] != '/')
                             url += '/';
-                        response = inst::curl::downloadToBuffer(url);
+                        response = tin::network::downloadToBuffer(url);
                     }
 
                     if (!response.empty()) {

@@ -83,7 +83,5 @@ namespace tin::data
             size_t GetTotalDataSize();
             size_t GetSizeBuffered();
             size_t GetSizeWrittenToPlaceholder();
-
-            void DebugPrintBuffers();
     };
 }

@@ -11,7 +11,6 @@
 #include "util/util.hpp"
 #include "nx/ipc/tin_ipc.h"
 #include "util/config.hpp"
-#include "util/curl.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/json.hpp"
@@ -198,20 +197,6 @@ namespace inst::util {
             rc = swkbdShow(&kbd, tmpoutstr, sizeof(tmpoutstr));
             swkbdClose(&kbd);
             if (R_SUCCEEDED(rc) && tmpoutstr[0] != 0) return(((std::string)(tmpoutstr)));
-        }
-        return "";
-    }
-
-    std::string getDriveFileName(std::string fileId) {
-        std::string htmlData = inst::curl::downloadToBuffer("https://drive.google.com/file/d/" + fileId  + "/view");
-        if (htmlData.size() > 0) {
-            std::smatch ourMatches;
-            std::regex ourRegex("<title>\\s*(.+?)\\s*</title>");
-            std::regex_search(htmlData, ourMatches, ourRegex);
-            if (ourMatches.size() > 1) {
-                if (ourMatches[1].str() == "Google Drive -- Page Not Found") return "";
-                return ourMatches[1].str().substr(0, ourMatches[1].str().size() - 15);
-             }
         }
         return "";
     }

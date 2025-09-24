@@ -24,7 +24,6 @@ SOFTWARE.
 #include "util/usb_comms_awoo.h"
 
 #include "data/byte_buffer.hpp"
-#include "debug.h"
 #include "error.hpp"
 
 namespace tin::util

@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include <string.h>
 #include "util/title_util.hpp"
-#include "util/debug.h"
 #include "util/error.hpp"
 
 namespace nx::ncm

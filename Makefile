@@ -47,6 +47,10 @@ APP_AUTHOR	:=	R-YaTian
 APP_VERSION	:=	1.0.0
 ROMFS		:=	romfs
 
+ifneq ($(WITH_DEBUG),)
+	WITH_DEBUG := -D__DEBUG__ -DNXLINK_DEBUG
+endif
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -57,7 +61,7 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 CFLAGS	+=	 `curl-config --cflags`
 CFLAGS	+=	 `sdl2-config --cflags`
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror #-D__DEBUG__ -DNXLINK_DEBUG
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror $(WITH_DEBUG)
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23 -DAPPVER=\"$(APP_VERSION)\"
 

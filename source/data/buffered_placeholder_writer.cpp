@@ -27,7 +27,6 @@ SOFTWARE.
 #include <algorithm>
 #include <exception>
 #include "util/error.hpp"
-#include "util/debug.h"
 
 namespace tin::data
 {
@@ -139,7 +138,7 @@ namespace tin::data
         size_t bufferSegmentSizeRemaining = BUFFER_SEGMENT_DATA_SIZE - m_currentFreeSegmentPtr->writeOffset;
 
         if (size <= bufferSegmentSizeRemaining) return 1;
-        else 
+        else
         {
             double numSegmentsReq = 1 + (double)(size - bufferSegmentSizeRemaining) / (double)BUFFER_SEGMENT_DATA_SIZE;
             return ceil(numSegmentsReq);
@@ -197,16 +196,5 @@ namespace tin::data
     size_t BufferedPlaceholderWriter::GetSizeWrittenToPlaceholder()
     {
         return m_sizeWrittenToPlaceholder;
-    }
-
-    void BufferedPlaceholderWriter::DebugPrintBuffers()
-    {
-        LOG_DEBUG("BufferedPlaceholderWriter Buffers: \n");
-
-        for (int i = 0; i < NUM_BUFFER_SEGMENTS; i++)
-        {
-            LOG_DEBUG("Buffer %u:\n", i);
-            printBytes(m_bufferSegments[i].data, BUFFER_SEGMENT_DATA_SIZE, true);
-        }
     }
 }

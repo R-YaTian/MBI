@@ -235,7 +235,7 @@ namespace tin::network
         int ret = 0;
         size_t read = 0;
 
-        while ((((ret = recv(sockfd, (u8*)buf + read, len - read, 0)) > 0 && (read += ret) < len) || errno == EAGAIN)) 
+        while ((((ret = recv(sockfd, (u8*)buf + read, len - read, 0)) > 0 && (read += ret) < len) || errno == EAGAIN))
         {
             errno = 0;
         }
@@ -247,13 +247,13 @@ namespace tin::network
     {
         int ret = 0;
         size_t written = 0;
-        
+
         padConfigureInput(8, HidNpadStyleSet_NpadStandard);
         PadState pad;
         padInitializeAny(&pad);
 
         while (written < len)
-        {            
+        {
             padUpdate(&pad);
             u64 kDown = padGetButtonsDown(&pad);
             if (kDown & HidNpadButton_B)  // Break if user clicks 'B'
@@ -261,7 +261,7 @@ namespace tin::network
 
             errno = 0;
             ret = send(sockfd, (u8*)buf + written, len - written, 0);
-            
+
             if (ret < 0){ // If error
                 if (errno == EWOULDBLOCK || errno == EAGAIN){ // Is it because other side is busy?
                     sleep(5);
@@ -269,10 +269,10 @@ namespace tin::network
                 }
                 break; // No? Die.
             }
-            
+
             written += ret;
         }
-    
+
         return written;
     }
 
@@ -289,10 +289,55 @@ namespace tin::network
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DROP");
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 50); 
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 50);
 
         curl_easy_perform(curl); // ignore returning value
 
         curl_easy_cleanup(curl);
+    }
+
+    static size_t writeDataBuffer(char *ptr, size_t size, size_t nmemb, void *userdata) {
+        std::ostringstream *stream = (std::ostringstream*)userdata;
+        size_t count = size * nmemb;
+        stream->write(ptr, count);
+        return count;
+    }
+
+    std::string downloadToBuffer(const std::string ourUrl, int firstRange, int secondRange, long timeout)
+    {
+        CURL *curl_handle;
+        CURLcode result;
+        std::ostringstream stream;
+
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl_handle = curl_easy_init();
+
+        curl_easy_setopt(curl_handle, CURLOPT_URL, ourUrl.c_str());
+        curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0L);
+        curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
+        curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYHOST, 0L);
+        curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
+        curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT_MS, timeout);
+        curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout);
+        curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeDataBuffer);
+        if (firstRange && secondRange) {
+            const char * ourRange = (std::to_string(firstRange) + "-" + std::to_string(secondRange)).c_str();
+            curl_easy_setopt(curl_handle, CURLOPT_RANGE, ourRange);
+        }
+
+        curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, &stream);
+        result = curl_easy_perform(curl_handle);
+
+        curl_easy_cleanup(curl_handle);
+        curl_global_cleanup();
+
+        if (result == CURLE_OK)
+            return stream.str();
+        else
+        {
+            LOG_DEBUG(curl_easy_strerror(result));
+            return "";
+        }
     }
 }

@@ -5,7 +5,6 @@
 #include "ui/netInstPage.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
-#include "util/curl.hpp"
 #include "util/lang.hpp"
 #include "netInstall.hpp"
 #include "nx/fs.hpp"

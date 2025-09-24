@@ -32,7 +32,6 @@ SOFTWARE.
 #include "util/crypto.hpp"
 #include "util/file_util.hpp"
 #include "util/title_util.hpp"
-#include "util/debug.h"
 #include "util/error.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"

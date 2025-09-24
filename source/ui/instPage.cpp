@@ -30,14 +30,14 @@ namespace inst::ui {
         this->freeSpaceText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
-        this->pageInfoText = TextBlock::New(10, 109, "");
+        this->pageInfoText = TextBlock::New(10, 121, "");
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
         this->installInfoText = TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");
         this->installInfoText->SetFont("DefaultFont@30");
         this->installInfoText->SetColor(COLOR(inst::config::themeColorTextInstall));
-        this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40, 100.0f);
-        this->installBar->SetProgressColor(COLOR("#222222FF"));
+        this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
+        this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->titleImage);

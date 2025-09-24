@@ -40,8 +40,6 @@ namespace tin::data
             u8* GetData(); // TODO: Remove this, it shouldn't be needed
             void Resize(size_t size);
 
-            void DebugPrintContents();
-
             template <typename T>
             T Read(u64 offset)
             {
@@ -52,7 +50,7 @@ namespace tin::data
                 memset(&def, 0, sizeof(T));
                 return def;
             }
-            
+
             template <typename T>
             void Write(T data, u64 offset)
             {
@@ -60,7 +58,7 @@ namespace tin::data
 
                 if (requiredSize > m_buffer.size())
                     m_buffer.resize(requiredSize, 0);
-                
+
                 memcpy(m_buffer.data() + offset, &data, sizeof(T));
             }
             template <typename T>

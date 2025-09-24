@@ -82,4 +82,6 @@ namespace tin::network
 
     size_t WaitReceiveNetworkData(int sockfd, void* buf, size_t len);
     size_t WaitSendNetworkData(int sockfd, void* buf, size_t len);
+
+    std::string downloadToBuffer(const std::string ourUrl, int firstRange = -1, int secondRange = -1, long timeout = 5000);
 }
