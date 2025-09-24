@@ -21,5 +21,7 @@ namespace inst::ui {
             usbHDDInstPage::Ref usbhddinstPage;
             instPage::Ref instpage;
             optionsPage::Ref optionspage;
+            pu::sdl2::TextureHandle::Ref checkboxBlank;
+            pu::sdl2::TextureHandle::Ref checkboxTick;
     };
 }

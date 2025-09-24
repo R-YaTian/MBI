@@ -67,13 +67,7 @@ namespace inst::util {
         splExit();
     }
 
-    //struct caseInsensitiveLess : public std::binary_function< char,char,bool > {
-        //bool operator () (char x, char y) const {
-            //return toupper(static_cast< unsigned char >(x)) < toupper(static_cast< unsigned char >(y));
-        //}
-    //};
-
-    auto caseInsensitiveLess = [](auto& x, auto& y)->bool { 
+    auto caseInsensitiveLess = [](auto& x, auto& y)->bool {
         return toupper(static_cast<unsigned char>(x)) < toupper(static_cast<unsigned char>(y));
     };
 
@@ -139,7 +133,7 @@ namespace inst::util {
        std::ofstream f2(outFile);
 
        if(!f1 || !f2) return false;
-       
+
        while(f1 && f1.get(ch)) f2.put(ch);
        return true;
     }
@@ -275,7 +269,7 @@ namespace inst::util {
             pcvGetClockRate(pcvModule, &previousHz);
             pcvSetClockRate(pcvModule, clockSpeed);
             pcvGetClockRate(pcvModule, &hz);
-            
+
             pcvExit();
 
             return {previousHz, hz};
@@ -286,7 +280,7 @@ namespace inst::util {
         struct in_addr addr = {(in_addr_t) gethostid()};
         return inet_ntoa(addr);
     }
-    
+
     bool usbIsConnected() {
         UsbState state = UsbState_Detached;
         usbDsGetState(&state);
@@ -323,7 +317,7 @@ namespace inst::util {
 
         return;
     }
-    
+
     void lightningStart() {
         padConfigureInput(8, HidNpadStyleSet_NpadStandard);
         PadState pad;
@@ -369,7 +363,7 @@ namespace inst::util {
             }
         }
     }
-    
+
     void lightningStop() {
         padConfigureInput(8, HidNpadStyleSet_NpadStandard);
         PadState pad;
@@ -385,7 +379,7 @@ namespace inst::util {
         rc = hidsysInitialize();
         if (R_SUCCEEDED(rc)) {
             memset(&pattern, 0, sizeof(pattern));
-            
+
             total_entries = 0;
             memset(unique_pad_ids, 0, sizeof(unique_pad_ids));
             rc = hidsysGetUniquePadsFromNpad(padIsHandheld(&pad) ? HidNpadIdType_Handheld : HidNpadIdType_No1, unique_pad_ids, 2, &total_entries);
@@ -449,7 +443,7 @@ namespace inst::util {
         }
         return installedTitles;
     }
-    
+
     bool isTitleInstalled(std::string filename, const std::vector<std::pair<u64, u32>> &installedTitles) {
         static const std::regex idRegex(".*\\[([0-9a-fA-F]+)]\\[v(\\d+)].*");
         std::smatch match;
@@ -461,19 +455,5 @@ namespace inst::util {
                     return true;
         }
         return false;
-    }
-
-   std::vector<std::string> checkForAppUpdate () {
-        try {
-            std::string jsonData = inst::curl::downloadToBuffer("https://api.github.com/repos/R-YaTian/AtmoXL-Titel-Installer/releases/latest", 0, 0, 1000L);
-            if (jsonData.size() == 0) return {};
-            nlohmann::json ourJson = nlohmann::json::parse(jsonData);
-            if (ourJson["tag_name"].get<std::string>() != inst::config::appVersion) {
-                std::vector<std::string> ourUpdateInfo = {ourJson["tag_name"].get<std::string>(), ourJson["assets"][0]["browser_download_url"].get<std::string>()};
-                inst::config::updateInfo = ourUpdateInfo;
-                return ourUpdateInfo;
-            }
-        } catch (...) {}
-        return {};
     }
 }

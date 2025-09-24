@@ -75,8 +75,8 @@
             "delete_info": " 安装完成！是否要从 SD 卡中删除安装文件？",
             "delete_info_multi": " 批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
-            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 隐藏已安装    \ue0e1 取消",
-            "buttons_show": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 显示已安装    \ue0e1 取消"
+            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 隐藏已安装    \ue0f0 帮助    \ue0e1 取消",
+            "buttons_show": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 显示已安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "usb": {
             "help": {

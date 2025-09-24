@@ -47,26 +47,28 @@ namespace inst::ui {
         if (std::filesystem::exists(inst::config::appDir + "/background.png"))
             bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
         else
-            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+            bg = inst::util::LoadTexture("romfs:/images/background.png");
         this->SetBackgroundImage(bg);
-        this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
-        this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#17090980"));
+        this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->botRect = Rectangle::New(0, 659 * pu::ui::render::ScreenFactor, 1920, 92, COLOR("#17090980"));
         pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
         this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = TextBlock::New(700, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
+        this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
         this->batteryValueText->SetFont("DefaultFont@32");
         this->batteryValueText->SetColor(COLOR(getBatteryChargeText[1]));
-        this->freeSpaceText = TextBlock::New(700, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
+        this->freeSpaceText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
-        this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
-        this->butText->SetFont("DefaultFont@22");
+        this->butText = TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
+        this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#67000000"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
+        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), inst::config::mainMenuItemSize, (894 / inst::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
+        this->optionMenu->SetItemAlphaIncrementSteps(1);
+        this->optionMenu->SetShadowBaseAlpha(0);
         this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->installMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
         this->installMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
@@ -78,7 +80,7 @@ namespace inst::ui {
         this->usbInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->usbHDDInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->usbHDDInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->usbHDDInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbHDDInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/disk.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
         this->settingsMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/settings.png"));

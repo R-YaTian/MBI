@@ -75,8 +75,8 @@
             "delete_info": " 安裝完成！是否將檔案從SD記憶卡刪除？",
             "delete_info_multi": " 所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
             "delete_desc": "安裝完成後，不會再使用到原始檔案",
-            "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 隱藏已安裝    \ue0e1 取消",
-            "buttons_show": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 顯示已安裝    \ue0e1 取消"
+            "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 隱藏已安裝    \ue0f0 說明    \ue0e1 取消",
+            "buttons_show": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 顯示已安裝    \ue0f0 說明    \ue0e1 取消"
         },
         "usb": {
             "help": {

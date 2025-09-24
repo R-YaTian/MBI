@@ -9,6 +9,8 @@ namespace inst::ui {
 
         Language::Load();
 
+        this->checkboxBlank = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile("romfs:/images/icons/checkbox-blank-outline.png"));
+        this->checkboxTick =  pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile("romfs:/images/icons/check-box-outline.png"));
         this->mainPage = MainPage::New();
         this->netinstPage = netInstPage::New();
         this->sdinstPage = sdInstPage::New();

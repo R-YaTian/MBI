@@ -3,8 +3,8 @@
 #include <pu/Plutonium>
 
 namespace inst::util {
-    void initApp ();
-    void deinitApp ();
+    void initApp();
+    void deinitApp();
     void reinitUsbComms();
     void initInstallServices();
     void deinitInstallServices();
@@ -28,7 +28,6 @@ namespace inst::util {
     std::string* getBatteryCharge();
     std::vector<std::pair<u64, u32>> listInstalledTitles();
     bool isTitleInstalled(std::string filename, const std::vector<std::pair<u64, u32>> &installedTitles);
-    std::vector<std::string> checkForAppUpdate();
 
     inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path) {
         return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));

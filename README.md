@@ -26,10 +26,6 @@ https://github.com/R-YaTian/AtmoXL-Titel-Installer/blob/40226852ffc6e6b77a49f17c
 
 Use your wanted HEX colors -> https://www.w3schools.com/colors/colors_picker.asp
 
-![AtmoXL-Titel-Installer Main small](https://raw.githubusercontent.com/R-YaTian/AtmoXL-Titel-Installer/master/AtmoXL-Titel-Installer-Main-small.jpg)
-Choose your font size, use the themeMenuFontSize from the "themecolor.json"
-Default font size is 84.
-
 
 ## Thanks to
 - Huntereb for [Awoo-Installer](https://github.com/Huntereb/Awoo-Installer)

@@ -21,7 +21,7 @@ namespace inst::ui {
         if (std::filesystem::exists(inst::config::appDir + "/background.png"))
             bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
         else
-            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+            bg = inst::util::LoadTexture("romfs:/images/background.png");
         this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
@@ -40,7 +40,7 @@ namespace inst::ui {
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
         this->installInfoText = TextBlock::New(15, 568, "");
-        this->installInfoText->SetFont("DefaultFont@22");
+        this->installInfoText->SetFont("DefaultFont@30");
         this->installInfoText->SetColor(COLOR(inst::config::themeColorTextInstall));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600, 850, 40, 100.0f);
         this->installBar->SetProgressColor(COLOR("#222222FF"));

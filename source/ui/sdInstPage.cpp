@@ -28,30 +28,32 @@ namespace inst::ui {
         if (std::filesystem::exists(inst::config::appDir + "/background.png"))
             bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
         else
-            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+            bg = inst::util::LoadTexture("romfs:/images/background.png");
         this->SetBackgroundImage(bg);
-        this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
-        this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
-        this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
+        this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#17090980"));
+        this->botRect = Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
         this->titleImage = Image::New(0, 0, logo);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = TextBlock::New(700, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
+        this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
         this->batteryValueText->SetFont("DefaultFont@32");
         this->batteryValueText->SetColor(COLOR(getBatteryChargeText[1]));
-        this->freeSpaceText = TextBlock::New(700, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
+        this->freeSpaceText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 109, "inst.sd.top_info"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
-        this->butText = TextBlock::New(10, 678, "inst.sd.buttons"_lang);
-        this->butText->SetFont("DefaultFont@22");
+        this->butText = TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "inst.sd.buttons"_lang);
+        this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
+        this->menu->SetItemAlphaIncrementSteps(1);
+        this->menu->SetShadowBaseAlpha(0);
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -107,12 +109,10 @@ namespace inst::ui {
 
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
-            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png"));
-            ourEntry->SetName("checkbox-blank");
+            ourEntry->SetIcon(mainApp->checkboxBlank);
             for (long unsigned int j = 0; j < this->selectedTitles.size(); j++) {
                 if (this->selectedTitles[j] == file) {
-                    ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png"));
-                    ourEntry->SetName("checkbox-tick");
+                    ourEntry->SetIcon(mainApp->checkboxTick);
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -157,7 +157,7 @@ namespace inst::ui {
         long unsigned int nspIndex = 0;
         if (this->menuIndices.size() > 0) nspIndex = this->menuIndices[selectedIndex - dirListSize];
 
-        if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-tick") {
+        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxTick) {
             for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
                 if (this->selectedTitles[i] == this->ourFiles[nspIndex])
                 {
@@ -165,7 +165,7 @@ namespace inst::ui {
                     break;
                 }
             }
-        } else if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-blank") this->selectedTitles.push_back(this->ourFiles[nspIndex]);
+        } else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxBlank) this->selectedTitles.push_back(this->ourFiles[nspIndex]);
         else {
             this->followDirectory();
             return;
@@ -208,16 +208,16 @@ namespace inst::ui {
                 int topDir = 0;
                 if (this->currentDir != "sdmc:/") topDir++;
                 for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-                    if (this->menu->GetItems()[i]->GetName() == "checkbox-tick") continue;
+                    if (this->menu->GetItems()[i]->GetIconTexture() == mainApp->checkboxTick) continue;
                     else this->selectNsp(i, false);
                 }
                 this->drawMenuItems(false, currentDir);
             }
         }
-        /* Remove help...need space
-        if ((Down & HidNpadButton_X)) {
+
+        if ((Down & HidNpadButton_Minus)) {
             inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, {"common.ok"_lang}, true);
-        }*/
+        }
 
         if (Down & HidNpadButton_ZL)
             this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
@@ -231,7 +231,7 @@ namespace inst::ui {
             this->menu->SetSelectedIndex(0);
         }
         if (Down & HidNpadButton_Plus) {
-            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == "checkbox-blank") {
+            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == mainApp->checkboxBlank) {
                 this->selectNsp(this->menu->GetSelectedIndex());
             }
             if (this->selectedTitles.size() > 0) this->startInstall();

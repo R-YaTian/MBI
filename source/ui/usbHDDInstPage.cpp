@@ -28,7 +28,7 @@ namespace inst::ui {
         if (std::filesystem::exists(inst::config::appDir + "/background.png"))
             bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
         else
-            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+            bg = inst::util::LoadTexture("romfs:/images/background.png");
         this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
@@ -48,10 +48,12 @@ namespace inst::ui {
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
         this->butText = TextBlock::New(10, 678, "inst.hdd.buttons"_lang);
-        this->butText->SetFont("DefaultFont@22");
+        this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
+        this->menu->SetItemAlphaIncrementSteps(1);
+        this->menu->SetShadowBaseAlpha(0);
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -117,12 +119,10 @@ namespace inst::ui {
 
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
-            ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png"));
-            ourEntry->SetName("checkbox-blank");
+            ourEntry->SetIcon(mainApp->checkboxBlank);
             for (long unsigned int j = 0; j < this->selectedTitles.size(); j++) {
                 if (this->selectedTitles[j] == file) {
-                    ourEntry->SetIcon(inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png"));
-                    ourEntry->SetName("checkbox-tick");
+                    ourEntry->SetIcon(mainApp->checkboxTick);
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -163,7 +163,7 @@ namespace inst::ui {
         long unsigned int nspIndex = 0;
         if (this->menuIndices.size() > 0) nspIndex = this->menuIndices[selectedIndex - dirListSize];
 
-        if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-tick") {
+        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxTick) {
             for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
                 if (this->selectedTitles[i] == this->ourFiles[nspIndex])
                 {
@@ -171,7 +171,7 @@ namespace inst::ui {
                     break;
                 }
             }
-        } else if (this->menu->GetItems()[selectedIndex]->GetName() == "checkbox-blank") this->selectedTitles.push_back(this->ourFiles[nspIndex]);
+        } else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxBlank) this->selectedTitles.push_back(this->ourFiles[nspIndex]);
         else {
             this->followDirectory();
             return;
@@ -214,7 +214,7 @@ namespace inst::ui {
                 int topDir = 0;
                 topDir++;
                 for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-                    if (this->menu->GetItems()[i]->GetName() == "checkbox-tick") continue;
+                    if (this->menu->GetItems()[i]->GetIconTexture() == mainApp->checkboxTick) continue;
                     else this->selectNsp(i, false);
                 }
                 this->drawMenuItems(false, currentDir);
@@ -237,7 +237,7 @@ namespace inst::ui {
             this->menu->SetSelectedIndex(0);
         }
         if (Down & HidNpadButton_Plus) {
-            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == "checkbox-blank") {
+            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == mainApp->checkboxBlank) {
                 this->selectNsp(this->menu->GetSelectedIndex());
             }
             if (this->selectedTitles.size() > 0) this->startInstall();

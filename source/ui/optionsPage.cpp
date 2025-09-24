@@ -29,7 +29,7 @@ namespace inst::ui {
         if (std::filesystem::exists(inst::config::appDir + "/background.png"))
             bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
         else
-            bg = inst::util::LoadTexture("romfs:/images/background.jpg");
+            bg = inst::util::LoadTexture("romfs:/images/background.png");
         this->SetBackgroundImage(bg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
@@ -49,10 +49,12 @@ namespace inst::ui {
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
         this->butText = TextBlock::New(10, 678, "options.buttons"_lang);
-        this->butText->SetFont("DefaultFont@22");
+        this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::themeMenuFontSize, (506 / inst::config::themeMenuFontSize));
+        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
+        this->menu->SetItemAlphaIncrementSteps(1);
+        this->menu->SetShadowBaseAlpha(0);
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -280,7 +282,6 @@ namespace inst::ui {
                         inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
                         break;
                     }
-                    downloadUrl = inst::util::checkForAppUpdate();
                     if (!downloadUrl.size()) {
                         mainApp->CreateShowDialog("options.update.title_check_fail"_lang, "options.update.desc_check_fail"_lang, {"common.ok"_lang}, false);
                         break;

@@ -19,7 +19,8 @@ namespace inst::config {
     extern std::string themeColorTextInstall;
     extern std::vector<std::string> updateInfo;
     extern int languageSetting;
-    extern int themeMenuFontSize;
+    extern int mainMenuItemSize;
+    extern int subMenuItemSize;
     extern bool ignoreReqVers;
     extern bool validateNCAs;
     extern bool overClock;

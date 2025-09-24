@@ -73,10 +73,10 @@
             "top_info": "¡Selecciona los archivos que quieres instalar desde la tarjeta SD, y pulsa el botón +!",
             "source_string": " desde la tarjeta SD",
             "delete_info": " instalado. ¿Borrarlo de la tarjeta SD?",
-	    "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la tarjeta SD?",
+	        "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la tarjeta SD?",
             "delete_desc": "Los archivos originales no hacen falta después de ser instalados",
-            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Ocultar instalado    \ue0e1 Cancelar",
-            "buttons_show": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Mostrar instalado    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Ocultar instalado    \ue0f0 Ayuda    \ue0e1 Cancelar",
+            "buttons_show": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Mostrar instalado    \ue0f0 Ayuda    \ue0e1 Cancelar"
         },
         "usb": {
             "help": {
