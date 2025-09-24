@@ -7,7 +7,6 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/curl.hpp"
-#include "util/unzip.hpp"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 #include "nx/fs.hpp"
@@ -25,17 +24,11 @@ namespace inst::ui {
 
     optionsPage::optionsPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        pu::sdl2::TextureHandle::Ref bg;
-        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
-            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
-        else
-            bg = inst::util::LoadTexture("romfs:/images/background.png");
-        this->SetBackgroundImage(bg);
+        this->SetBackgroundImage(mainApp->bgImg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
-        this->titleImage = Image::New(0, 0, logo);
+        this->titleImage = Image::New(0, 0, mainApp->logoImg);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -81,7 +74,6 @@ namespace inst::ui {
                     inst::curl::downloadFile(updateInfo[1], downloadName.c_str(), 0, true);
                     romfsExit();
                     inst::ui::instPage::setInstInfoText("options.update.bot_info2"_lang + updateInfo[0]);
-                    inst::zip::extractFile(downloadName, "sdmc:/");
                     std::filesystem::remove(downloadName);
                     mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, {"common.ok"_lang}, false);
                 } catch (...) {
@@ -95,9 +87,9 @@ namespace inst::ui {
 
     pu::sdl2::TextureHandle::Ref optionsPage::getMenuOptionIcon(bool ourBool) {
         if(ourBool)
-            return inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png");
+            return mainApp->checkboxTick;
         else
-            return inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
+            return mainApp->checkboxBlank;
     }
 
     std::string optionsPage::getMenuLanguage(int ourLangCode) {

@@ -1,5 +1,7 @@
 #include "ui/MainApplication.hpp"
 #include "util/lang.hpp"
+#include "util/config.hpp"
+#include "util/util.hpp"
 
 namespace inst::ui {
     MainApplication *mainApp;
@@ -9,8 +11,13 @@ namespace inst::ui {
 
         Language::Load();
 
-        this->checkboxBlank = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile("romfs:/images/icons/checkbox-blank-outline.png"));
-        this->checkboxTick =  pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile("romfs:/images/icons/check-box-outline.png"));
+        this->checkboxBlank = inst::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
+        this->checkboxTick = inst::util::LoadTexture("romfs:/images/icons/check-box-outline.png");
+        this->bgImg = inst::util::LoadBackground(inst::config::appDir);
+        this->logoImg = inst::util::LoadTexture("romfs:/images/logo.png");
+        this->dirbackImg = inst::util::LoadTexture("romfs:/images/icons/folder-upload.png");
+        this->dirImg = inst::util::LoadTexture("romfs:/images/icons/folder.png");
+
         this->mainPage = MainPage::New();
         this->netinstPage = netInstPage::New();
         this->sdinstPage = sdInstPage::New();

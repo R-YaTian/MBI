@@ -19,17 +19,11 @@ namespace inst::ui {
 
     usbInstPage::usbInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        pu::sdl2::TextureHandle::Ref bg;
-        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
-            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
-        else
-            bg = inst::util::LoadTexture("romfs:/images/background.png");
-        this->SetBackgroundImage(bg);
+        this->SetBackgroundImage(mainApp->bgImg);
         this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
-        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
-        this->titleImage = Image::New(0, 0, logo);
+        this->titleImage = Image::New(0, 0, mainApp->logoImg);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -49,8 +43,7 @@ namespace inst::ui {
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
-        pu::sdl2::TextureHandle::Ref infoImg = inst::util::LoadTexture("romfs:/images/icons/usb-connection-waiting.png");
-        this->infoImage = Image::New(460, 332, infoImg);
+        this->infoImage = Image::New(460, 332, inst::util::LoadTexture("romfs:/images/icons/usb-connection-waiting.png"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);

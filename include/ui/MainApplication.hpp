@@ -23,5 +23,9 @@ namespace inst::ui {
             optionsPage::Ref optionspage;
             pu::sdl2::TextureHandle::Ref checkboxBlank;
             pu::sdl2::TextureHandle::Ref checkboxTick;
+            pu::sdl2::TextureHandle::Ref bgImg;
+            pu::sdl2::TextureHandle::Ref logoImg;
+            pu::sdl2::TextureHandle::Ref dirImg;
+            pu::sdl2::TextureHandle::Ref dirbackImg;
     };
 }

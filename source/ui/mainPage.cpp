@@ -43,16 +43,10 @@ namespace inst::ui {
 
     MainPage::MainPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
-        pu::sdl2::TextureHandle::Ref bg;
-        if (std::filesystem::exists(inst::config::appDir + "/background.png"))
-            bg = inst::util::LoadTexture(inst::config::appDir + "/background.png");
-        else
-            bg = inst::util::LoadTexture("romfs:/images/background.png");
-        this->SetBackgroundImage(bg);
+        this->SetBackgroundImage(mainApp->bgImg);
         this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
         this->botRect = Rectangle::New(0, 659 * pu::ui::render::ScreenFactor, 1920, 92, COLOR("#17090980"));
-        pu::sdl2::TextureHandle::Ref logo = inst::util::LoadTexture("romfs:/images/logo.png");
-        this->titleImage = Image::New(0, 0, logo);
+        this->titleImage = Image::New(0, 0, mainApp->logoImg);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
