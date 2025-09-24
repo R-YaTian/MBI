@@ -45,6 +45,7 @@
                 "opt1": "Googleドライブ"
             },
             "url": {
+                "warn": "警告!",
                 "hint": "ファイルのインターネットアドレスを入力してください",
                 "invalid": "指定されたURLは無効です！",
                 "source_string": " URLから"
@@ -61,7 +62,7 @@
             "index_error_info": "URLが有効なWebディレクトリインデックスまたはTinfoilスタイルのJSONを指していることを確認してください.",
             "transfer_interput": "データ転送中にエラーが発生しました。ネットワーク接続を確認してください。",
             "source_string": " ローカルネットワーク経由",
-            "buttons": "\ue0e3 インターネット経由でインストールする    \ue0f0 HTTPディレクトリからインストール    \ue0e2 ヘルプ    \ue0e1 キャンセル",
+            "buttons": "\ue0e3 インターネット経由でインストールする    \ue0e2 HTTPディレクトリからインストール    \ue0f0 ヘルプ    \ue0e1 キャンセル",
             "buttons1": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを非表示    \ue0e1 キャンセル",
             "buttons1_show": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを表示    \ue0e1 キャンセル"
         },
@@ -100,8 +101,8 @@
             "delete_info": " インストール完了！ USBHDDから削除しますか？",
             "delete_info_multi": " ファイルが正常にインストールされました！ USBHDDから削除しますか？",
             "delete_desc": "元のファイルはインストール後に不要になりました",
-            "buttons": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを非表示    \ue0e1 キャンセル",
-            "buttons_show": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを表示    \ue0e1 キャンセル"
+            "buttons": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを非表示    \ue0f0 ヘルプ    \ue0e1 キャンセル",
+            "buttons_show": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e2 インストール済みを表示    \ue0f0 ヘルプ    \ue0e1 キャンセル"
         },
         "target": {
             "desc0": "どこに ",
@@ -133,10 +134,7 @@
             "バックアップをお楽しみください！",
             "そのゲームは自分で購入したものですか？",
             "任天堂ありがとう!",
-            "DRMのバイパスは素晴らしいでしょ?",
-            "ダウンロード版を購入することで自然環境保護に協力しましょう！",
-            "任天堂の諜報員があなたの現在の場所に派遣されました。",
-            "ここに到達するために政治的なイデオロギーを喉に押し込む必要さえありませんでした!"
+            "任天堂の諜報員があなたの現在の場所に派遣されました。"
         ]
     },
     "options": {
@@ -147,9 +145,8 @@
             "ask_delete": "インストール後に元のファイルを削除するか尋ねる",
             "enableSound": "最後に情報オーディオ",
             "enableLightning": "最後に情報ライトが点滅します",
-            "auto_update": "Mohsaua-Buoh-Installerのアップデートを自動的に確認する",
+            "fix_ticket": "一時的なチケットを永続的なチケットに変換する",
             "language": "言語: ",
-            "check_update": "Mohsaua-Buoh-Installerのアップデートを確認",
             "credits": "クレジット"
         },
         "nca_warn": {
@@ -173,7 +170,7 @@
         },
         "credits": {
             "title": "以下の方々に感謝します!",
-            "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- namako8982 for the Momiji art\n- TheXzoron for being a baka"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Mohsaua-Buoh-Installerの言語を選択",

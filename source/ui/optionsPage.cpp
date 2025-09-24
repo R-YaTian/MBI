@@ -25,26 +25,26 @@ namespace inst::ui {
     optionsPage::optionsPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
         this->SetBackgroundImage(mainApp->bgImg);
-        this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
-        this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
-        this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
+        this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->infoRect = Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
+        this->botRect = Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = TextBlock::New(700, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
+        this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
         this->batteryValueText->SetFont("DefaultFont@32");
         this->batteryValueText->SetColor(COLOR(getBatteryChargeText[1]));
-        this->freeSpaceText = TextBlock::New(700, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
+        this->freeSpaceText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
-        this->butText = TextBlock::New(10, 678, "options.buttons"_lang);
+        this->butText = TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "options.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
@@ -61,28 +61,6 @@ namespace inst::ui {
         this->Add(this->menu);
         this->updateStatsThread();
         this->AddRenderCallback(std::bind(&optionsPage::updateStatsThread, this));
-    }
-
-    void optionsPage::askToUpdate(std::vector<std::string> updateInfo) {
-            if (!mainApp->CreateShowDialog("options.update.title"_lang, "options.update.desc0"_lang + updateInfo[0] + "options.update.desc1"_lang, {"options.update.opt0"_lang, "common.cancel"_lang}, false)) {
-                inst::ui::instPage::loadInstallScreen();
-                inst::ui::instPage::setTopInstInfoText("options.update.top_info"_lang + updateInfo[0]);
-                inst::ui::instPage::setInstBarPerc(0);
-                inst::ui::instPage::setInstInfoText("options.update.bot_info"_lang + updateInfo[0]);
-                try {
-                    std::string downloadName = inst::config::appDir + "/temp_download.zip";
-                    inst::curl::downloadFile(updateInfo[1], downloadName.c_str(), 0, true);
-                    romfsExit();
-                    inst::ui::instPage::setInstInfoText("options.update.bot_info2"_lang + updateInfo[0]);
-                    std::filesystem::remove(downloadName);
-                    mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, {"common.ok"_lang}, false);
-                } catch (...) {
-                    mainApp->CreateShowDialog("options.update.failed"_lang, "options.update.end_desc"_lang, {"common.ok"_lang}, false);
-                }
-                mainApp->FadeOut();
-                mainApp->Close();
-            }
-        return;
     }
 
     pu::sdl2::TextureHandle::Ref optionsPage::getMenuOptionIcon(bool ourBool) {
@@ -150,16 +128,13 @@ namespace inst::ui {
         enableLightningOption->SetColor(COLOR(inst::config::themeColorTextMenu));
         enableLightningOption->SetIcon(this->getMenuOptionIcon(inst::config::enableLightning));
         this->menu->AddItem(enableLightningOption);
-        auto autoUpdateOption = pu::ui::elm::MenuItem::New("options.menu_items.auto_update"_lang);
-        autoUpdateOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        autoUpdateOption->SetIcon(this->getMenuOptionIcon(inst::config::autoUpdate));
-        this->menu->AddItem(autoUpdateOption);
+        auto fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
+        fixTicketOption->SetColor(COLOR(inst::config::themeColorTextMenu));
+        fixTicketOption->SetIcon(this->getMenuOptionIcon(inst::config::fixTicket));
+        this->menu->AddItem(fixTicketOption);
         auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(inst::config::languageSetting));
         languageOption->SetColor(COLOR(inst::config::themeColorTextMenu));
         this->menu->AddItem(languageOption);
-        auto updateOption = pu::ui::elm::MenuItem::New("options.menu_items.check_update"_lang);
-        updateOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->menu->AddItem(updateOption);
         auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
         creditsOption->SetColor(COLOR(inst::config::themeColorTextMenu));
         this->menu->AddItem(creditsOption);
@@ -173,7 +148,6 @@ namespace inst::ui {
             prev_touchcount = 0;
             std::string keyboardResult;
             int rc;
-            std::vector<std::string> downloadUrl;
             std::vector<std::string> languageList;
             switch (this->menu->GetSelectedIndex()) {
                 case 0:
@@ -215,7 +189,7 @@ namespace inst::ui {
                     this->menu->SetSelectedIndex(5);
                     break;
                 case 6:
-                    inst::config::autoUpdate = !inst::config::autoUpdate;
+                    inst::config::fixTicket = !inst::config::fixTicket;
                     inst::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(6);
@@ -270,17 +244,6 @@ namespace inst::ui {
                     mainApp->Close();
                     break;
                 case 8:
-                    if (inst::util::getIPAddress() == "1.0.0.127") {
-                        inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
-                        break;
-                    }
-                    if (!downloadUrl.size()) {
-                        mainApp->CreateShowDialog("options.update.title_check_fail"_lang, "options.update.desc_check_fail"_lang, {"common.ok"_lang}, false);
-                        break;
-                    }
-                    this->askToUpdate(downloadUrl);
-                    break;
-                case 9:
                     inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
                     break;
                 default:

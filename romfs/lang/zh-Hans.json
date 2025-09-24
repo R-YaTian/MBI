@@ -45,6 +45,7 @@
                 "opt1": "Google Drive"
             },
             "url": {
+                "warn": "警告！",
                 "hint": "输入文件链接 (URL)",
                 "invalid": "链接 (URL) 无效！",
                 "source_string": "从链接 (URL) 安装文件"
@@ -61,7 +62,7 @@
             "index_error_info": "确保 URL 指向有效的网络目录索引或 Tinfoil 样式的 JSON",
             "transfer_interput": "数据传输发生错误，请检查网络连接状态。",
             "source_string": " 通过网络安装",
-            "buttons": "\ue0e3 网络安装    \ue0f0 从 HTTP 目录安装    \ue0e2 帮助    \ue0e1 取消",
+            "buttons": "\ue0e3 网络安装    \ue0e2 从 HTTP 目录安装    \ue0f0 帮助    \ue0e1 取消",
             "buttons1": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 隐藏已安装    \ue0e1 取消",
             "buttons1_show": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 显示已安装    \ue0e1 取消"
         },
@@ -100,8 +101,8 @@
             "delete_info": " 安装完成！是否要从 USB 移动硬盘中删除安装文件？",
             "delete_info_multi": " 批量安装完成！是否要从 USB 移动硬盘中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
-            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 隐藏已安装    \ue0e1 取消",
-            "buttons_show": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 显示已安装    \ue0e1 取消"
+            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 隐藏已安装    \ue0f0 帮助    \ue0e1 取消",
+            "buttons_show": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e2 显示已安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "target": {
             "desc0": "请选择 ",
@@ -127,16 +128,13 @@
             "desc": "请确保签名无效的安装文件来源可靠。\n当安装文件整合了更新包和 DLC 时，总会显示此警告。\n您可以在 Mohsaua-Buoh-Installer 设置中禁用此验证。\n\n是否继续安装？",
             "opt1": "是的，我理解其中的风险",
             "error": "请求的 NCA 签名不正确：",
-            "ticket_missing": "未发现 ticket。\n\n如果游戏启动失败, 请使用有效的 ticket 重新 Dump 游戏。"
+            "ticket_missing": "未发现票据。\n\n如果游戏启动失败, 请使用有效的票据重新 Dump 游戏。"
         },
         "finished": [
             "尽情享受您“合法备份”的游戏吧！",
             "我相信您在试玩游戏后，将更有兴趣购买它！",
             "您会喜加一的，对吧？任天堂感谢您！",
-            "能绕过 DRM 验证很棒，不是吗？",
-            "出来混，早晚要还的！",
-            "任天堂法务部已经锁定您的所在位置。",
-            "您甚至不需要呼吸民主自由的空气就能获得收获了..."
+            "任天堂法务部已经锁定您的所在位置。"
         ]
     },
     "options": {
@@ -147,9 +145,8 @@
             "ask_delete": "安装完成后询问是否删除原始文件",
             "enableSound": "安装完成后播放提示音",
             "enableLightning": "安装完成后 Home 键指示灯闪烁提示",
-            "auto_update": "自动检查 Mohsaua-Buoh-Installer 是否有更新",
+            "fix_ticket": "转换临时票据为永久",
             "language": "显示语言：",
-            "check_update": "检查 Mohsaua-Buoh-Installer 更新",
             "credits": "致谢"
         },
         "nca_warn": {
@@ -173,7 +170,7 @@
         },
         "credits": {
             "title": "感谢以下人员！",
-            "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- TheXzoron for being a baka"
+            "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供 Tinfoil\n- XorTroll 提供 Plutonium 以及 Goldleaf\n- nicoboss 提供 NSZ 支持\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs"
         },
         "language": {
             "title": "选择 Mohsaua-Buoh-Installer 的显示语言",

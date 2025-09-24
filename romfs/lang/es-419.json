@@ -45,6 +45,7 @@
                 "opt1": "Google Drive"
             },
             "url": {
+                "warn": "¡Advertencia!",
                 "hint": "Introduce la dirección de Internet de un archivo",
                 "invalid": "¡La URL especificada no es válida!",
                 "source_string": " desde una URL"
@@ -61,7 +62,7 @@
             "index_error_info": "Asegúrese de que la URL apunte a un índice de directorio web válido o JSON de estilo Tinfoil.",
             "transfer_interput": "Ha ocurrido un error al transmitir los datos. Comprueba tu conexión de red.",
             "source_string": " a través de red local",
-            "buttons": "\ue0e3 Instalar Usando la Internet    \ue0f0 Instalar desde el directorio HTTP    \ue0e2 Ayuda    \ue0e1 Cancelar",
+            "buttons": "\ue0e3 Instalar Usando la Internet    \ue0e2 Instalar desde el directorio HTTP    \ue0f0 Ayuda    \ue0e1 Cancelar",
             "buttons1": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todos    \ue0ef Instalar Archivo(s)    \ue0e2 Ocultar instalado    \ue0e1 Cancelar",
             "buttons1_show": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todos    \ue0ef Instalar Archivo(s)    \ue0e2 Mostrar instalado    \ue0e1 Cancelar"
         },
@@ -100,8 +101,8 @@
             "delete_info": " instalado. ¿Borrarlo de la USB HDD?",
 	    "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la USB HDD?",
             "delete_desc": "Los archivos originales no hacen falta después de ser instalados",
-            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Ocultar instalado    \ue0e1 Cancelar",
-            "buttons_show": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Mostrar instalado    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Ocultar instalado    \ue0f0 Ayuda    \ue0e1 Cancelar",
+            "buttons_show": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e2 Mostrar instalado    \ue0f0 Ayuda    \ue0e1 Cancelar"
         },
         "target": {
             "desc0": "¿Dónde debería instalarse ",
@@ -133,10 +134,7 @@
             "¡Disfruta de tus «copias legales»!",
             "¡Estoy completemente seguro de que después de probar el juego te lo pasarás muy bien comprándolo de verdad!",
             "¿Tu compras juego verdad? ¡Nintendo-san agradece tu compra!",
-            "Saltarse el DRM es genial, ¿no?",
-            "¡Probablemente hayas salvado como seis árboles por no comprar el juego! ¡Todo ese plástico va a alguna parte!",
-            "Los ninjas de Nintendo han sido enviados a tu ubicación actual.",
-            "¡Y ni siquiera hemos tenido que meterte una ideología política en la cabeza para llegar aquí!"
+            "Los ninjas de Nintendo han sido enviados a tu ubicación actual."
         ]
     },
     "options": {
@@ -147,9 +145,8 @@
             "ask_delete": "Preguntar si borrar los archivos originales, luego de una instalación satisfactoria",
             "enableSound": "Audio de información al final",
             "enableLightning": "Las luces de información parpadean al final",
-            "auto_update": "Buscar actualizaciones de Mohsaua-Buoh-Installer automaticamente",
+            "fix_ticket": "Convertir tiquetes temporales en permanentes",
             "language": "Idioma: ",
-            "check_update": "Buscar actualizaciones de Mohsaua-Buoh-Installer",
             "credits": "Créditos"
         },
         "nca_warn": {
@@ -173,7 +170,7 @@
         },
         "credits": {
             "title": "Gracias a las siguientes personas:",
-            "desc": "- Huntereb por Awoo Installer\n- HookedBehemoth por UN MONTÓN de contribuciones\n- Adubbz y otros contributores por Tinfoil\n- XorTroll por Plutonium y Goldleaf\n- blawar (el estrangulador de esposas) y nicoboss por el soporte de NSZ\n- Los amables amigos del Discord AtlasNX (o por lo menos algunos de ellos)\n- Los también amables amigos del Discord RetroNX (sin participación directa)\n- namako8982 por la obra de Momiji\n- TheXzoron por ser un baka"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Selecciona el idioma de Mohsaua-Buoh-Installer",

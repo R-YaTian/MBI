@@ -15,7 +15,6 @@ namespace inst::ui {
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
     bool appletFinished = false;
-    bool updateFinished = false;
     static std::string getFreeSpaceText = nx::fs::GetFreeStorageSpace();
     static std::string getFreeSpaceOldText = getFreeSpaceText;
     static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
@@ -23,11 +22,6 @@ namespace inst::ui {
 
     void MainPage::mainMenuThread() {
         bool menuLoaded = mainApp->IsShown();
-        if (!updateFinished && (!inst::config::autoUpdate || inst::util::getIPAddress() == "1.0.0.127")) updateFinished = true;
-        if (!updateFinished && menuLoaded && inst::config::updateInfo.size()) {
-            updateFinished = true;
-            optionsPage::askToUpdate(inst::config::updateInfo);
-        }
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
             tin::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded) {
@@ -159,16 +153,16 @@ namespace inst::ui {
                     this->netInstallMenuItem_Click();
                     break;
                 case 2:
-                    MainPage::usbInstallMenuItem_Click();
+                    this->usbInstallMenuItem_Click();
                     break;
                 case 3:
-                    MainPage::usbHDDInstallMenuItem_Click();
+                    this->usbHDDInstallMenuItem_Click();
                     break;
                 case 4:
-                    MainPage::settingsMenuItem_Click();
+                    this->settingsMenuItem_Click();
                     break;
                 case 5:
-                    MainPage::exitMenuItem_Click();
+                    this->exitMenuItem_Click();
                     break;
                 default:
                     break;

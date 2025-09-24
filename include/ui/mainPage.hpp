@@ -23,7 +23,6 @@ namespace inst::ui {
             TextBlock::Ref batteryValueText;
         private:
             bool appletFinished;
-            bool updateFinished;
             TextBlock::Ref butText;
             Rectangle::Ref topRect;
             Rectangle::Ref botRect;

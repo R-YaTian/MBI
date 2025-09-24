@@ -16,14 +16,11 @@ MBI or Mohsaua-Buoh-Installer is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer 
 - Works on Atmosphere and SX OS
 
 ## Coloring support
-To use this, you must place the "themecolor.json" at MBI dir.
-
-[Download example](doc/themecolor.json)
-
+To use this, you must place the "themecolor.json" at MBI dir. See [example](doc/themecolor.json) for more details.  
 Use your wanted HEX colors -> https://www.w3schools.com/colors/colors_picker.asp
 
 ## Thanks to
-- dezem for original [AtmoXL-Titel-Installer](https://github.com/dezem/AtmoXL-Titel-Installer)
+- dezem and other contributors for original [AtmoXL-Titel-Installer](https://github.com/dezem/AtmoXL-Titel-Installer)
 - Huntereb for [Awoo-Installer](https://github.com/Huntereb/Awoo-Installer)
 - Adubbz and other contributors for [Tinfoil](https://github.com/matt-teix/Tinfoil)
 - XorTroll for [Plutonium](https://github.com/XorTroll/Plutonium) and [Goldleaf](https://github.com/XorTroll/Goldleaf)

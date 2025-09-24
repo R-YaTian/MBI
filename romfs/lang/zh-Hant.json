@@ -45,6 +45,7 @@
                 "opt1": "Google網路硬碟"
             },
             "url": {
+                "warn": "注意！",
                 "hint": "請輸入檔案的URL網路位址",
                 "invalid": "URL網路位址無效！",
                 "source_string": "來源為URL"
@@ -61,7 +62,7 @@
             "index_error_info": "請確認URL指向有效的伺服器資料夾索引或Tinfoil來源的JSON",
             "transfer_interput": "檔案傳輸時發生錯誤，請檢查網路連線狀態是否正常",
             "source_string": " 透過區網進行安裝",
-            "buttons": "\ue0e3 透過網路安裝    \ue0f0 透過HTTP資料夾安裝    \ue0e2 說明    \ue0e1 取消",
+            "buttons": "\ue0e3 透過網路安裝    \ue0e2 透過HTTP資料夾安裝    \ue0f0 說明    \ue0e1 取消",
             "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 隱藏已安裝    \ue0e1 取消",
             "buttons1_show": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 顯示已安裝    \ue0e1 取消"
         },
@@ -100,8 +101,8 @@
             "delete_info": " 安裝完成！\n是否將檔案從行動硬碟刪除？",
             "delete_info_multi": " 所選的檔案均安裝完成！\n是否將所選的檔案從行動硬碟刪除？",
             "delete_desc": "安裝完成後，不會再使用到原始檔案",
-            "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 隱藏已安裝    \ue0e1 取消",
-            "buttons_show": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 顯示已安裝    \ue0e1 取消"
+            "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 隱藏已安裝    \ue0f0 說明    \ue0e1 取消",
+            "buttons_show": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 顯示已安裝    \ue0f0 說明    \ue0e1 取消"
 	    },
         "target": {
             "desc0": "要將遊戲",
@@ -131,12 +132,9 @@
         },
         "finished": [
             "請盡情享受\"合法備份的遊戲\"！",
-            "我敢保證就算是試玩的遊戲，也能跟購買的遊戲帶來相同樂趣！",
-            "買遊戲嗎？任天堂感謝玩家購買支持！",
-            "能繞過DRM驗證，對吧？",
-            "沒有購買實體遊戲，可拯救六棵樹免於被砍伐。所有生產的塑膠製品最後都被集中處理了。",
-            "驗證遊戲的任天堂忍者，已經火速前往你所在的位置。",
-            "我們甚至還沒有表達立場傾向就已經完成這整個過程了。"
+            "我敢保證您試玩後，更有興趣購買遊戲了！",
+            "買遊戲嗎？任天堂感謝您購買支持！",
+            "任天堂忍者已經火速前往你所在的位置。"
         ]
     },
     "options": {
@@ -147,9 +145,8 @@
             "ask_delete": "在安裝完成後，詢問是否刪除原始檔案",
             "enableSound": "安裝完成時播放通知音效",
             "enableLightning": "安裝完成時閃爍Home鍵LED",
-            "auto_update": "自動檢查Mohsaua-Buoh-Installer的更新版本",
+            "fix_ticket": "將臨時門票轉換為永久門票",
             "language": "介面語系： ",
-            "check_update": "檢查Mohsaua-Buoh-Installer的更新版本",
             "credits": "感謝名單"
         },
         "nca_warn": {
@@ -173,7 +170,7 @@
         },
         "credits": {
             "title": "感謝所有幫助過我們的人",
-            "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- namako8982 for the Momiji art\n- TheXzoron for being a baka"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "設定Mohsaua-Buoh-Installer的介面語系",

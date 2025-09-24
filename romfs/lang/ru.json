@@ -45,6 +45,7 @@
                 "opt1": "Google Drive"
             },
             "url": {
+                "warn": "Внимание!",
                 "hint": "Укажите ссылку на файл",
                 "invalid": "Указан неверный URL!",
                 "source_string": " из URL"
@@ -61,7 +62,7 @@
             "index_error_info": "Убедитесь, что URL-адрес указывает на действительный индекс веб-каталога или JSON в стиле Tinfoil.",
             "transfer_interput": "Во время передачи возникла ошибка. Проверьте ваши настройки сети.",
             "source_string": " по локальной сети",
-            "buttons": "\ue0e3 Установка через интернет    \ue0f0 Установить из каталога HTTP    \ue0e2 Помощь    \ue0e1 Отмена",
+            "buttons": "\ue0e3 Установка через интернет    \ue0e2 Установить из каталога HTTP    \ue0f0 Помощь    \ue0e1 Отмена",
             "buttons1": "\ue0e0 Выбрать файл    \ue0e3 Выбрать всё    \ue0ef Установить файл(ы)    \ue0e2 скрыть Установлено    \ue0e1 Отмена",
             "buttons1_show": "\ue0e0 Выбрать файл    \ue0e3 Выбрать всё    \ue0ef Установить файл(ы)    \ue0e2 Показать установленные    \ue0e1 Отмена"
         },
@@ -100,8 +101,8 @@
             "delete_info": " установлен! Удалить файл с USB HDD?",
             "delete_info_multi": " файлов успешно установлено! Удалить их из USB HDD?",
             "delete_desc": "После того, как файлы установлены, они больше не требуются.",
-            "buttons": "\ue0e0 Выбрать файл   \ue0e3 Выбрать всё   \ue0ef Установить файл(ы)   \ue0e2 скрыть Установлено    \ue0e1 Отмена ",
-            "buttons_show": "\ue0e0 Выбрать файл   \ue0e3 Выбрать всё   \ue0ef Установить файл(ы)   \ue0e2 Показать установленные    \ue0e1 Отмена "
+            "buttons": "\ue0e0 Выбрать файл   \ue0e3 Выбрать всё   \ue0ef Установить файл(ы)   \ue0e2 скрыть Установлено    \ue0f0 Помощь    \ue0e1 Отмена ",
+            "buttons_show": "\ue0e0 Выбрать файл   \ue0e3 Выбрать всё   \ue0ef Установить файл(ы)   \ue0e2 Показать установленные    \ue0f0 Помощь    \ue0e1 Отмена "
         },
         "target": {
             "desc0": "Куда установить ",
@@ -133,10 +134,7 @@
             "Наслаждайтесь вашими \"легальными копиями\"!",
             "Уверены, оценив игру вы получите массу удовольствия действительно купив её!",
             "Семпай ведь купил игру, правда? Nintendo-сан благодарит Вас за покупку!",
-            "Обходить DRM - бесценно! Разве нет?",
-            "Возможно вы сохранили порядка шести деревьев просто не купив эту игру! И весь пластик куда-то делся!",
-            "Ниндзи из Nintendo успешно выяснили ваше текущее местоположение.",
-            "Чтобы сделать всё верно нам даже не потребовалось промывать вам мозги политическими заявлениями!"
+            "Ниндзи из Nintendo успешно выяснили ваше текущее местоположение."
         ]
     },
     "options": {
@@ -147,9 +145,8 @@
             "ask_delete": "Спрашивать разрешения удалять исходные файлы после установки",
             "enableSound": "Информационное аудио в конце",
             "enableLightning": "Информационные индикаторы мигают в конце",
-            "auto_update": "Автоматически проверять наличие обновлений",
+            "fix_ticket": "Превратить временные билеты в постоянные",
             "language": "Язык: ",
-            "check_update": "Проверить наличие обновлений Mohsaua-Buoh-Installer",
             "credits": "Благодарности"
         },
         "nca_warn": {
@@ -173,7 +170,7 @@
         },
         "credits": {
             "title": "Выражаем благодарность следующим людям:",
-            "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- namako8982 for the Momiji art\n- TheXzoron for being a baka"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
         "title": "Выбор языка",

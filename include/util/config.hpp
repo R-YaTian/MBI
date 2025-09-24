@@ -17,7 +17,6 @@ namespace inst::config {
     extern std::string themeColorTextFile;
     extern std::string themeColorTextDir;
     extern std::string themeColorTextInstall;
-    extern std::vector<std::string> updateInfo;
     extern int languageSetting;
     extern int mainMenuItemSize;
     extern int subMenuItemSize;
@@ -27,7 +26,6 @@ namespace inst::config {
     extern bool deletePrompt;
     extern bool enableSound;
     extern bool enableLightning;
-    extern bool autoUpdate;
     extern bool usbAck;
     extern bool fixTicket;
 

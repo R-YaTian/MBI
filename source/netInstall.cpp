@@ -283,22 +283,23 @@ namespace netInstStuff{
                 {
                     return {"supplyUrl"};
                 }
-                if (kDown & HidNpadButton_X)
+                if (kDown & HidNpadButton_Minus)
                 {
                     inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true);
                 }
 
-                if (kDown & HidNpadButton_Minus) {
+                if (kDown & HidNpadButton_X) {
                     std::string url = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl, 500);
                     if (url == "")
                         url = "https://";
-                    inst::config::httpIndexUrl = url;
-                    inst::config::setConfig();
 
                     std::string response;
-                    if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://")
-                        inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
-                    else {
+                    if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://") {
+                        inst::ui::mainApp->CreateShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
+                        goto back_to_loop;
+                    } else {
+                        inst::config::httpIndexUrl = url;
+                        inst::config::setConfig();
                         if (url[url.size() - 1] != '/')
                             url += '/';
                         response = inst::curl::downloadToBuffer(url);
@@ -341,7 +342,7 @@ namespace netInstStuff{
                         LOG_DEBUG("Failed to fetch game list\n");
                     inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true);
                 }
-
+back_to_loop:
                 struct sockaddr_in client;
                 socklen_t clientLen = sizeof(client);
 

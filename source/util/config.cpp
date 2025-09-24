@@ -6,7 +6,6 @@
 namespace inst::config {
     std::string gAuthKey;
     std::string lastNetUrl;
-    std::vector<std::string> updateInfo;
     std::string httpIndexUrl;
     std::string themeColorTextTopInfo;
     std::string themeColorTextBottomInfo;
@@ -18,7 +17,6 @@ namespace inst::config {
     int mainMenuItemSize = 149;
     int subMenuItemSize = 76;
     bool fixTicket;
-    bool autoUpdate;
     bool deletePrompt;
     bool enableSound;
     bool enableLightning;
@@ -30,7 +28,6 @@ namespace inst::config {
     void setConfig() {
         nlohmann::json j = {
             {"fixTicket", fixTicket},
-            {"autoUpdate", autoUpdate},
             {"deletePrompt", deletePrompt},
             {"enableSound", enableSound},
             {"enableLightning", enableLightning},
@@ -53,7 +50,6 @@ namespace inst::config {
             nlohmann::json j;
             file >> j;
             fixTicket = j["fixTicket"].get<bool>();
-            autoUpdate = j["autoUpdate"].get<bool>();
             deletePrompt = j["deletePrompt"].get<bool>();
             enableSound = j["enableSound"].get<bool>();
             enableLightning = j["enableLightning"].get<bool>();
@@ -71,11 +67,10 @@ namespace inst::config {
             gAuthKey = {0x41,0x49,0x7a,0x61,0x53,0x79,0x42,0x4d,0x71,0x76,0x34,0x64,0x58,0x6e,0x54,0x4a,0x4f,0x47,0x51,0x74,0x5a,0x5a,0x53,0x33,0x43,0x42,0x6a,0x76,0x66,0x37,0x34,0x38,0x51,0x76,0x78,0x53,0x7a,0x46,0x30};
             languageSetting = 99;
             fixTicket = true;
-            autoUpdate = true;
-            deletePrompt = true;
+            deletePrompt = false;
             enableSound = true;
             enableLightning = true;
-            ignoreReqVers = true;
+            ignoreReqVers = false;
             overClock = false;
             usbAck = false;
             validateNCAs = true;

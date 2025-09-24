@@ -25,26 +25,26 @@ namespace inst::ui {
     usbHDDInstPage::usbHDDInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
         this->SetBackgroundImage(mainApp->bgImg);
-        this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#170909FF"));
-        this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#17090980"));
-        this->botRect = Rectangle::New(0, 660, 1280, 60, COLOR("#17090980"));
+        this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->infoRect = Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
+        this->botRect = Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
         this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = TextBlock::New(700, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
+        this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
         this->batteryValueText->SetFont("DefaultFont@32");
         this->batteryValueText->SetColor(COLOR(getBatteryChargeText[1]));
-        this->freeSpaceText = TextBlock::New(700, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
+        this->freeSpaceText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang+": " + getFreeSpaceText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 109, "inst.hdd.top_info"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
-        this->butText = TextBlock::New(10, 678, "inst.hdd.buttons"_lang);
+        this->butText = TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "inst.hdd.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
         this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
@@ -214,10 +214,10 @@ namespace inst::ui {
                 this->drawMenuItems(false, currentDir);
             }
         }
-        /* Remove help...need space
-        if ((Down & HidNpadButton_X)) {
+
+        if ((Down & HidNpadButton_Minus)) {
             inst::ui::mainApp->CreateShowDialog("inst.hdd.help.title"_lang, "inst.hdd.help.desc"_lang, {"common.ok"_lang}, true);
-        }*/
+        }
 
         if (Down & HidNpadButton_ZL)
             this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
