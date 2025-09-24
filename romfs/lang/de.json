@@ -29,7 +29,7 @@
         },
         "applet": {
             "title": "Applet-Modus wird nicht unterstützt",
-            "desc": "Es kann zu Problemen bei der Verwendung des AtmoXL-Titel-Installer im Applet-Modus kommen.\nWenn du Probleme hast, starte den AtmoXL-Titel-Installer über einen installierten Titel\n(halte R gedrückt, während du ein Spiel startest)!"
+            "desc": "Es kann zu Problemen bei der Verwendung des Mohsaua-Buoh-Installer im Applet-Modus kommen.\nWenn du Probleme hast, starte den Mohsaua-Buoh-Installer über einen installierten Titel\n(halte R gedrückt, während du ein Spiel startest)!"
         },
         "buttons": "\ue0e0 Auswählen    \ue0ef Beenden"
     },
@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Hilfe",
-                "desc": "Dateien können von anderen Geräten aus mit Tools wie NS-USBloader im\nTinfoil-Modus installiert werden. Um Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät. Gib die IP-Adresse\ndeiner Switch ein (auf dem Bildschirm aufgelistet), wähle die Dateien\naus und übertrage sie dann auf deine Konsole! Wenn die von dir verwendete\nSoftware dir nicht erlaubt bestimmte Dateitypen auszuwählen,\nversuche die Dateiendung in etwas umzubenennen, dass sie akzeptiert. Der AtmoXL-Titel-Installer\nprüft keine Dateiendungen bei Netzinstallationen!\n\nFalls das nicht klappt, kopiere einfach deine Dateien auf die SD-Karte\nund versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!"
+                "desc": "Dateien können von anderen Geräten aus mit Tools wie NS-USBloader im\nTinfoil-Modus installiert werden. Um Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät. Gib die IP-Adresse\ndeiner Switch ein (auf dem Bildschirm aufgelistet), wähle die Dateien\naus und übertrage sie dann auf deine Konsole! Wenn die von dir verwendete\nSoftware dir nicht erlaubt bestimmte Dateitypen auszuwählen,\nversuche die Dateiendung in etwas umzubenennen, dass sie akzeptiert. Der Mohsaua-Buoh-Installer\nprüft keine Dateiendungen bei Netzinstallationen!\n\nFalls das nicht klappt, kopiere einfach deine Dateien auf die SD-Karte\nund versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!"
             },
             "src": {
                 "title": "Von wo aus willst du installieren?",
@@ -124,7 +124,7 @@
         },
         "nca_verify": {
             "title": "Ungültige NCA-Signatur erkannt!",
-            "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von gepackten Spiele Modulen und DLC-Freischaltung enthalten,\nwerden immer diese Warnung anzeigen. Du kannst diese Prüfung in den Einstellungen des AtmoXL-Titel-Installer deaktivieren.\nBist du sicher, dass du die Installation fortsetzen möchten?",
+            "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von gepackten Spiele Modulen und DLC-Freischaltung enthalten,\nwerden immer diese Warnung anzeigen. Du kannst diese Prüfung in den Einstellungen des Mohsaua-Buoh-Installer deaktivieren.\nBist du sicher, dass du die Installation fortsetzen möchten?",
             "opt1": "Ja, ich verstehe die Risiken",
             "error": "Die gewünschte NCA ist nicht richtig signiert: ",
             "ticket_missing": "Es wurde kein Ticket gefunden.\n\nWenn das Spiel nach der Installation nicht startet, versuchen Sie es erneut mit einem gültigen Ticket."
@@ -147,9 +147,9 @@
             "ask_delete": "Frage ob installierte Titel gelöscht werden sollen",
             "enableSound": "Info Audio bei Ende",
             "enableLightning": "Infolicht blinken bei Ende",
-            "auto_update": "Suche automatisch nach Updates für AtmoXL-Titel-Installer",
+            "auto_update": "Suche automatisch nach Updates für Mohsaua-Buoh-Installer",
             "language": "Sprache: ",
-            "check_update": "Suche nach Updates für AtmoXL-Titel-Installer",
+            "check_update": "Suche nach Updates für Mohsaua-Buoh-Installer",
             "credits": "Anerkennung"
         },
         "nca_warn": {
@@ -159,28 +159,28 @@
         },
         "update": {
             "title": "Neue Version verfügbar",
-            "desc0": "AtmoXL-Titel-Installer ",
+            "desc0": "Mohsaua-Buoh-Installer ",
             "desc1": " ist jetzt verfügbar! Bereit zu aktualisieren?",
             "opt0": "Aktualisieren",
-            "top_info": "Aktualisierung zu AtmoXL-Titel-Installer ",
-            "bot_info": "Beziehe AtmoXL-Titel-Installer ",
-            "bot_info2": "Extrahiere AtmoXL-Titel-Installer ",
+            "top_info": "Aktualisierung zu Mohsaua-Buoh-Installer ",
+            "bot_info": "Beziehe Mohsaua-Buoh-Installer ",
+            "bot_info2": "Extrahiere Mohsaua-Buoh-Installer ",
             "complete": "Aktualisierung vollständig!",
             "failed": "Aktualisierung fehlgeschlagen!",
             "end_desc": "Die Software wird nun beendet.",
             "title_check_fail": "Keine Aktualisierungen gefunden",
-            "desc_check_fail": "Du bist auf der aktuellsten Version des AtmoXL-Titel-Installer!"
+            "desc_check_fail": "Du bist auf der aktuellsten Version des Mohsaua-Buoh-Installer!"
         },
         "credits": {
             "title": "Vielen Dank an die folgenden Leute!",
             "desc": "- Huntereb für Awoo Installer\n- HookedBehemoth für viele Beiträge\n- Adubbz und andere Mitwirkende für Tinfoil\n- XorTroll für Plutonium und Goldleaf\n- blawar (Frauenwürger) und nicoboss für NSZ Unterstützung\n- Die netten Leute auf AtlasNX Discuck (Immerhin ein paar davon)\n- Die netten Leute auf RetroNX Discuck (ohne direkte Beteiligung)\n- namako8982 für die Momiji-Kunst\n- TheXzoron dafür das er ein baka ist"
         },
         "language": {
-            "title": "Wähle AtmoXL-Titel-Installer Sprache",
+            "title": "Wähle Mohsaua-Buoh-Installer Sprache",
             "desc": "Die Software wird danach beendet. Drücke B um den Vorgang abzubrechen.",
             "system_language": "System"
         },
-        "title": "Ändere AtmoXL-Titel-Installer Einstellungen!",
+        "title": "Ändere Mohsaua-Buoh-Installer Einstellungen!",
         "buttons": "\ue0e0 Auswählen/Ändern    \ue0e1 Abbrechen "
     },
     "common": {

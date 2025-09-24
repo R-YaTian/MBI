@@ -1,4 +1,4 @@
-name: Build AtmoXL-Titel-Installer
+name: Build MBI
 
 on:
   [push, pull_request, workflow_dispatch]
@@ -42,12 +42,12 @@ jobs:
         cd libusbhsfs
         make BUILD_TYPE=GPL install
 
-    - name: Build AtmoXL-Titel-Installer
+    - name: Build MBI
       run: |
         make -j$(nproc)
 
     - uses: actions/upload-artifact@master
       with:
-        name: AtmoXL-Titel-Installer
-        path: AtmoXL-Titel-Installer.nro
+        name: MBI
+        path: MBI.nro
         if-no-files-found: error

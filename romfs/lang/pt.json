@@ -29,7 +29,7 @@
         },
         "applet": {
             "title": "Modo applet não suportado",
-            "desc": "Poderá ter problemas se usar o AtmoXL-Titel-Installer em modo Applet. Se\ntiver problemas, execute o AtmoXL-Titel-Installer através de um título\ninstalado (mantenha R primido enquanto inicia um jogo)!"
+            "desc": "Poderá ter problemas se usar o Mohsaua-Buoh-Installer em modo Applet. Se\ntiver problemas, execute o Mohsaua-Buoh-Installer através de um título\ninstalado (mantenha R primido enquanto inicia um jogo)!"
         },
         "buttons": "\ue0e0 Selecionar    \ue0ef Sair"
     },
@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Ajuda",
-                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Tinfoil. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO AtmoXL-Titel-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
+                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Tinfoil. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO Mohsaua-Buoh-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
             },
             "src": {
                 "title": "Deseja instalar através de onde?",
@@ -124,7 +124,7 @@
         },
         "nca_verify": {
             "title": "Detetada assinatura NCA inválida!",
-            "desc": "O software não assinado corretamente deverá ser instalado apenas de fontes\nconfiáveis. Ficheiros que contiverem repaks de cartuchos ou desbloqueadores de DLC mostrarão\nsempre esta mensagem. Esta verificação pode ser desligada nas definições do AtmoXL-Titel-Installer.\n\nTem a certeza que deseja continuar a instalação?",
+            "desc": "O software não assinado corretamente deverá ser instalado apenas de fontes\nconfiáveis. Ficheiros que contiverem repaks de cartuchos ou desbloqueadores de DLC mostrarão\nsempre esta mensagem. Esta verificação pode ser desligada nas definições do Mohsaua-Buoh-Installer.\n\nTem a certeza que deseja continuar a instalação?",
             "opt1": "Sim, eu compreendo os riscos",
             "error": "O NCA solicitado não está corretamente assinado: ",
             "ticket_missing": "Ticket não encontrado.\n\nSe o jogo não iniciar após a instalação, tente exportar novamente com um ticket válido."
@@ -147,9 +147,9 @@
             "enableSound": "Áudio informativo no final",
             "enableLightning": "Luzes de informações piscam no final",
             "ask_delete": "Questionar a eliminação dos ficheiros orginais depois da instalação",
-            "auto_update": "Procurar atualizações do AtmoXL-Titel-Installer automaticamente",
+            "auto_update": "Procurar atualizações do Mohsaua-Buoh-Installer automaticamente",
             "language": "Idioma: ",
-            "check_update": "Procurar atualizações do AtmoXL-Titel-Installer",
+            "check_update": "Procurar atualizações do Mohsaua-Buoh-Installer",
             "credits": "Créditos"
         },
         "nca_warn": {
@@ -159,28 +159,28 @@
         },
         "update": {
             "title": "Atualização disponível",
-            "desc0": "AtmoXL-Titel-Installer ",
+            "desc0": "Mohsaua-Buoh-Installer ",
             "desc1": " está disponível! Pronto para atualizar?",
             "opt0": "Atualizar",
-            "top_info": "A atualizar o AtmoXL-Titel-Installer ",
-            "bot_info": "A transferir o AtmoXL-Titel-Installer ",
-            "bot_info2": "A extrair o AtmoXL-Titel-Installer ",
+            "top_info": "A atualizar o Mohsaua-Buoh-Installer ",
+            "bot_info": "A transferir o Mohsaua-Buoh-Installer ",
+            "bot_info2": "A extrair o Mohsaua-Buoh-Installer ",
             "complete": "Atulização completa!",
             "failed": "Atualização falhada!",
             "end_desc": "O software será encerrado.",
             "title_check_fail": "Sem atualizações",
-            "desc_check_fail": "Esta é a versão mais recente do AtmoXL-Titel-Installer!"
+            "desc_check_fail": "Esta é a versão mais recente do Mohsaua-Buoh-Installer!"
         },
         "credits": {
             "title": "Agradecimentos às seguintes pessoas!",
             "desc": "- Huntereb por Awoo Installer\n- HookedBehemoth por muitas contribuições\n- Adubbz e outros contribuidores pelo o Tinfoil\n- XorTroll pelo o Plutonium e Goldleaf\n- blawar (estrangulador de esposas) e nicoboss pelo suporte NSZ\n- O pessoal do AtlasNX Discuck (ou pelo menos alguns deles)\n- Tmabém para o pessoal do RetroNX Discuck (sem involvimento direto)\n- namako8982 pela arte da Momiji\n- TheXzoron por ser um idiota"
         },
         "language": {
-            "title": "Selecione o idioma do AtmoXL-Titel-Installer",
+            "title": "Selecione o idioma do Mohsaua-Buoh-Installer",
             "desc": "O software será encerrado depois de alterar o idioma. Pressione B para cancelar.",
             "system_language": "Sistema"
         },
-        "title": "Alteração de deifinições do AtmoXL-Titel-Installer!",
+        "title": "Alteração de deifinições do Mohsaua-Buoh-Installer!",
         "buttons": "\ue0e0 Selecionar/Alterar    \ue0e1 Cancelar"
     },
     "common": {

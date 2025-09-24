@@ -1,43 +1,31 @@
-# AtmoXL-Titel-Installer
-A No-Bullshit NSP, NSZ, XCI, and XCZ Installer for Nintendo Switch
+# MBI
+MBI or Mohsaua-Buoh-Installer is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer for Nintendo Switch
 
-![AtmoXL-Titel-Installer Main](https://raw.githubusercontent.com/R-YaTian/AtmoXL-Titel-Installer/master/AtmoXL-Titel-Installer-Main.jpg)
+![Preview](doc/preview.jpg)
 
 ## Features
 - Installs NSP/NSZ/XCI/XCZ files and split NSP/XCI files from your SD card
 - Installs NSP/NSZ/XCI/XCZ files and split NSP/XCI files from your USB HDD exFAT, NTFS and EXT2/3/4 (NTFS and EXT2/3/4 currently works only with AMS)
 - Installs NSP/NSZ/XCI/XCZ files over LAN or USB from tools such as [NS-USBloader](https://github.com/developersu/ns-usbloader)
 - Installs NSP/NSZ/XCI/XCZ files over the internet by URL or Google Drive
-- Installs NSP/NSZ/XCI/XCZ files over HTTP Directory Indexing like Nginx / Apache...and Tinfoil style JSON
+- Installs NSP/NSZ/XCI/XCZ files over HTTP Directory Indexing like Nginx / Apache and Tinfoil style JSON
 - Verifies NCAs by header signature before they're installed
-- Forked from [Huntereb Awoo-Installer](https://github.com/Huntereb/Awoo-Installer)
-- Based on [Adubbz Tinfoil](https://github.com/Adubbz/Tinfoil)
+- Forked from [Huntereb's Awoo-Installer](https://github.com/Huntereb/Awoo-Installer) and [dezem's AtmoXL-Titel-Installer](https://github.com/dezem/AtmoXL-Titel-Installer)
+- Based on [Adubbz](https://github.com/Adubbz)'s [Tinfoil](https://github.com/matt-teix/Tinfoil)
 - Uses [XorTroll's Plutonium](https://github.com/XorTroll/Plutonium) for a pretty graphical interface
 - Works on Atmosphere and SX OS
 
 ## Coloring support
-![AtmoXL-Titel-Installer Main Color](https://raw.githubusercontent.com/R-YaTian/AtmoXL-Titel-Installer/master/AtmoXL-Titel-Installer-Main-Color.jpg)
+To use this, you must place the "themecolor.json" at MBI dir.
 
-To use this, you must place the "themecolor.json" at ATI dir.
-
-[Download themecolor.json](https://raw.githubusercontent.com/R-YaTian/AtmoXL-Titel-Installer/master/themecolor.json)
-
-https://github.com/R-YaTian/AtmoXL-Titel-Installer/blob/40226852ffc6e6b77a49f17c1b49702d7e2c94f0/themecolor.json#L1-L9
+[Download example](doc/themecolor.json)
 
 Use your wanted HEX colors -> https://www.w3schools.com/colors/colors_picker.asp
 
-
 ## Thanks to
+- dezem for original [AtmoXL-Titel-Installer](https://github.com/dezem/AtmoXL-Titel-Installer)
 - Huntereb for [Awoo-Installer](https://github.com/Huntereb/Awoo-Installer)
-- HookedBehemoth for A LOT of contributions
-- Adubbz and other contributors for [Tinfoil](https://github.com/Adubbz/Tinfoil)
+- Adubbz and other contributors for [Tinfoil](https://github.com/matt-teix/Tinfoil)
 - XorTroll for [Plutonium](https://github.com/XorTroll/Plutonium) and [Goldleaf](https://github.com/XorTroll/Goldleaf)
-- blawar and nicoboss for [NSZ](https://github.com/nicoboss/nsz) support
-- blawar for [tinleaf](https://github.com/blawar/tinleaf)
+- nicoboss for [NSZ](https://github.com/nicoboss/nsz) support
 - DarkMatterCore, XorTroll and Rhys Koedijk for [libusbhsfs](https://github.com/DarkMatterCore/libusbhsfs)
-- TheLogicMaster for contributing 
-  [HTTP Directory Indexing](https://github.com/dezem/AtmoXL-Titel-Installer/pull/18) 
-  [Net install hide installed content option](https://github.com/dezem/AtmoXL-Titel-Installer/pull/19)
-  [Page up and page down for fast scrolling](https://github.com/dezem/AtmoXL-Titel-Installer/pull/22)
-- R-YaTian for contributing [Update for new font render](https://github.com/dezem/AtmoXL-Titel-Installer/pull/24) and others
-

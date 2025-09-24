@@ -29,7 +29,7 @@
         },
         "applet": {
             "title": "不支援Applet模式",
-            "desc": "在Applet模式下執行AtmoXL-Titel-Installer可能會產生安裝錯誤。\n請在hbmenu模式(啟動任何一個遊戲時按住R)，再執行AtmoXL-Titel-Installer！"
+            "desc": "在Applet模式下執行Mohsaua-Buoh-Installer可能會產生安裝錯誤。\n請在hbmenu模式(啟動任何一個遊戲時按住R)，再執行Mohsaua-Buoh-Installer！"
         },
         "buttons": "\ue0e0 選擇    \ue0ef 退出"
     },   
@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "說明",
-                "desc": "在Tinfoil模式下，檔案可透過NS-USBloader這類工具來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，AtmoXL-Titel-Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
+                "desc": "在Tinfoil模式下，檔案可透過NS-USBloader這類工具來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，Mohsaua-Buoh-Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
             },
             "src": {
                 "title": "要從什麼路徑來源進行安裝？",
@@ -124,7 +124,7 @@
         },
         "nca_verify": {
             "title": "偵測到無效的NCA簽名！",
-            "desc": "要安裝簽名驗證失敗的遊戲，檔案來源必須為可信任的。\n經過重新封裝或有合併更新檔與DLC的檔案，程序會顯示此訊息提醒。\n如需隱藏此提醒通知，可從AtmoXL-Titel-Installer設定內取消勾選檢查。\n\n是否確認要繼續安裝？",
+            "desc": "要安裝簽名驗證失敗的遊戲，檔案來源必須為可信任的。\n經過重新封裝或有合併更新檔與DLC的檔案，程序會顯示此訊息提醒。\n如需隱藏此提醒通知，可從Mohsaua-Buoh-Installer設定內取消勾選檢查。\n\n是否確認要繼續安裝？",
             "opt1": "好，我已瞭解可能的風險",
             "error": "必要的NCA簽名驗證失敗: ",
             "ticket_missing": "未找到門票。\n\n如果安裝後遊戲無法啟動，請嘗試使用有效門票再次轉儲遊戲。"
@@ -147,9 +147,9 @@
             "ask_delete": "在安裝完成後，詢問是否刪除原始檔案",
             "enableSound": "安裝完成時播放通知音效",
             "enableLightning": "安裝完成時閃爍Home鍵LED",
-            "auto_update": "自動檢查AtmoXL-Titel-Installer的更新版本",
+            "auto_update": "自動檢查Mohsaua-Buoh-Installer的更新版本",
             "language": "介面語系： ",
-            "check_update": "檢查AtmoXL-Titel-Installer的更新版本",
+            "check_update": "檢查Mohsaua-Buoh-Installer的更新版本",
             "credits": "感謝名單"
         },
         "nca_warn": {
@@ -159,28 +159,28 @@
         },
         "update": {
             "title": "有可用的更新版本",
-            "desc0": "AtmoXL-Titel-Installer ",
+            "desc0": "Mohsaua-Buoh-Installer ",
             "desc1": " 發佈了新版本！是否立刻進行更新？",
             "opt0": "更新",
-            "top_info": "正在更新AtmoXL-Titel-Installer",
-            "bot_info": "正在下載AtmoXL-Titel-Installer",
-            "bot_info2": "正在解壓AtmoXL-Titel-Installer",
+            "top_info": "正在更新Mohsaua-Buoh-Installer",
+            "bot_info": "正在下載Mohsaua-Buoh-Installer",
+            "bot_info2": "正在解壓Mohsaua-Buoh-Installer",
             "complete": "更新完成！",
             "failed": "更新失敗！",
             "end_desc": "本程式即將關閉！",
             "title_check_fail": "沒有更新版本",
-            "desc_check_fail": "目前使用的AtmoXL-Titel-Installer是最新版本！"
+            "desc_check_fail": "目前使用的Mohsaua-Buoh-Installer是最新版本！"
         },
         "credits": {
             "title": "感謝所有幫助過我們的人",
             "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- namako8982 for the Momiji art\n- TheXzoron for being a baka"
         },
         "language": {
-            "title": "設定AtmoXL-Titel-Installer的介面語系",
+            "title": "設定Mohsaua-Buoh-Installer的介面語系",
             "desc": "當確認變更介面語系後，程式會結束並退出。按B鈕取消變更。",
             "system_language": "系統預設"
         },
-        "title": "變更AtmoXL-Titel-Installer的設定！",
+        "title": "變更Mohsaua-Buoh-Installer的設定！",
         "buttons": "\ue0e0 選擇/變更    \ue0e1 取消"
     },
     "common": {

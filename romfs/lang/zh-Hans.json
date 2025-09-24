@@ -29,7 +29,7 @@
         },
         "applet": {
             "title": "不支持 Applet 模式",
-            "desc": "在 Applet 模式下使用 AtmoXL-Titel-Installer 可能会遇到问题，\n如果遇到问题，请切换 AtmoXL-Titel-Installer 的运行模式！\n(退回主界面，按住 \ue0e5 并打开任意游戏，进入 hbmenu 后再打开 AtmoXL-Titel-Installer 即可)"
+            "desc": "在 Applet 模式下使用 Mohsaua-Buoh-Installer 可能会遇到问题，\n如果遇到问题，请切换 Mohsaua-Buoh-Installer 的运行模式！\n(退回主界面，按住 \ue0e5 并打开任意游戏，进入 hbmenu 后再打开 Mohsaua-Buoh-Installer 即可)"
         },
         "buttons": "\ue0e0 选择    \ue0ef 退出"
     },
@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "帮助",
-                "desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或者移动设备上的任一工具软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请尝试更改文件扩展名。\nAtmoXL-Titel-Installer 在网络安装模式下不会检查文件类型！\n\n如果无法正常安装，请复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！"
+                "desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或者移动设备上的任一工具软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请尝试更改文件扩展名。\nMohsaua-Buoh-Installer 在网络安装模式下不会检查文件类型！\n\n如果无法正常安装，请复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！"
             },
             "src": {
                 "title": "要从哪里安装文件？",
@@ -124,7 +124,7 @@
         },
         "nca_verify": {
             "title": "检测到无效的 NCA 签名！",
-            "desc": "请确保签名无效的安装文件来源可靠。\n当安装文件整合了更新包和 DLC 时，总会显示此警告。\n您可以在 AtmoXL-Titel-Installer 设置中禁用此验证。\n\n是否继续安装？",
+            "desc": "请确保签名无效的安装文件来源可靠。\n当安装文件整合了更新包和 DLC 时，总会显示此警告。\n您可以在 Mohsaua-Buoh-Installer 设置中禁用此验证。\n\n是否继续安装？",
             "opt1": "是的，我理解其中的风险",
             "error": "请求的 NCA 签名不正确：",
             "ticket_missing": "未发现 ticket。\n\n如果游戏启动失败, 请使用有效的 ticket 重新 Dump 游戏。"
@@ -147,9 +147,9 @@
             "ask_delete": "安装完成后询问是否删除原始文件",
             "enableSound": "安装完成后播放提示音",
             "enableLightning": "安装完成后 Home 键指示灯闪烁提示",
-            "auto_update": "自动检查 AtmoXL-Titel-Installer 是否有更新",
+            "auto_update": "自动检查 Mohsaua-Buoh-Installer 是否有更新",
             "language": "显示语言：",
-            "check_update": "检查 AtmoXL-Titel-Installer 更新",
+            "check_update": "检查 Mohsaua-Buoh-Installer 更新",
             "credits": "致谢"
         },
         "nca_warn": {
@@ -159,28 +159,28 @@
         },
         "update": {
             "title": "发现可用的新版本",
-            "desc0": "AtmoXL-Titel-Installer ",
+            "desc0": "Mohsaua-Buoh-Installer ",
             "desc1": " 存在可用更新！是否立即更新？",
             "opt0": "更新",
-            "top_info": "正在更新 AtmoXL-Titel-Installer ",
-            "bot_info": "正在下载 AtmoXL-Titel-Installer ",
-            "bot_info2": "正在解压 AtmoXL-Titel-Installer ",
+            "top_info": "正在更新 Mohsaua-Buoh-Installer ",
+            "bot_info": "正在下载 Mohsaua-Buoh-Installer ",
+            "bot_info2": "正在解压 Mohsaua-Buoh-Installer ",
             "complete": "更新完成！",
             "failed": "更新失败！",
             "end_desc": "软件将会自动关闭，手动打开以使用新版本。",
             "title_check_fail": "没有发现更新",
-            "desc_check_fail": "当前 AtmoXL-Titel-Installer 已是最新版！"
+            "desc_check_fail": "当前 Mohsaua-Buoh-Installer 已是最新版！"
         },
         "credits": {
             "title": "感谢以下人员！",
             "desc": "- Huntereb for Awoo Installer\n- HookedBehemoth for A LOT of contributions\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- blawar (wife strangulator) and nicoboss for NSZ support\n- The kind folks at the AtlasNX Discuck (or at least some of them)\n- The also kind folks at the RetroNX Discuck (of no direct involvement)\n- TheXzoron for being a baka"
         },
         "language": {
-            "title": "选择 AtmoXL-Titel-Installer 的显示语言",
+            "title": "选择 Mohsaua-Buoh-Installer 的显示语言",
             "desc": "软件将在更改显示语言后关闭，按 \ue0e1 取消更改。",
             "system_language": "跟随系统"
         },
-        "title": "更改 AtmoXL-Titel-Installer 的设置！",
+        "title": "更改 Mohsaua-Buoh-Installer 的设置！",
         "buttons": "\ue0e0 选择/更改    \ue0e1 取消"
     },
     "common": {

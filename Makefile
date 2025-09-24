@@ -37,14 +37,14 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	MBI
 BUILD		:=	build
 SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util
 DATA		:=	data
 INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util
-APP_TITLE	:=	AtmoXL Titel Installer
-APP_AUTHOR	:=	dezem & R-YaTian
-APP_VERSION	:=	1.8.2
+APP_TITLE	:=	MBI
+APP_AUTHOR	:=	R-YaTian
+APP_VERSION	:=	1.0.0
 ROMFS		:=	romfs
 
 #---------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ CFLAGS	+=	 `sdl2-config --cflags`
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror #-D__DEBUG__ -DNXLINK_DEBUG
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23 -DAPPVER=\"$(APP_VERSION)\"
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

@@ -114,9 +114,9 @@ namespace tin::install::nsp
                 if (inst::config::enableLightning) {
                     inst::util::lightningStart();
                 }
-                std::string audioPath = "romfs:/audio/achtung.wav";
-                if (std::filesystem::exists(inst::config::appDir + "/achtung.wav")) audioPath = inst::config::appDir + "/achtung.wav";
-                std::thread audioThread(inst::util::playAudio,audioPath);
+                std::string audioPath = "romfs:/audio/fail.wav";
+                if (std::filesystem::exists(inst::config::appDir + "/fail.wav")) audioPath = inst::config::appDir + "/fail.wav";
+                std::thread audioThread(inst::util::playAudio, audioPath);
                 int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
                 audioThread.join();
                 if (inst::config::enableLightning) {

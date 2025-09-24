@@ -29,7 +29,7 @@
         },
         "applet": {
             "title": "Applet Mode non è supportata",
-            "desc": "Puoi incontrare problemi utilizzando AtmoXL-Titel-Installer in Applet Mode. Se\nriscontri problemi, ti prego di utilizzare AtmoXL-Titel-Installer avviandolo attraverso un gioco\ngià installato (tieni premuto R mentre avvii un gioco)!"
+            "desc": "Puoi incontrare problemi utilizzando Mohsaua-Buoh-Installer in Applet Mode. Se\nriscontri problemi, ti prego di utilizzare Mohsaua-Buoh-Installer avviandolo attraverso un gioco\ngià installato (tieni premuto R mentre avvii un gioco)!"
         },
         "buttons": "\ue0e0 Seleziona    \ue0ef Esci"
     },
@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Aiuto",
-                "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Tinfoil\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nAtmoXL-Titel-Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!"
+                "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Tinfoil\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nMohsaua-Buoh-Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!"
             },
             "src": {
                 "title": "Da dove vuoi installare?",
@@ -124,7 +124,7 @@
         },
         "nca_verify": {
             "title": "Rilevata firma NCA non valida!",
-            "desc": "Software firmati impropriamente dovrebbero essere installati solo da fonti\nsicure. I file che contengono repack di cartucce e DLC mostreranno sempre\nquesto avviso. Puoi disabilitarlo dalle impostazioni di AtmoXL-Titel-Installer.\n\nSei sicuro di voler continuare l'installazione?",
+            "desc": "Software firmati impropriamente dovrebbero essere installati solo da fonti\nsicure. I file che contengono repack di cartucce e DLC mostreranno sempre\nquesto avviso. Puoi disabilitarlo dalle impostazioni di Mohsaua-Buoh-Installer.\n\nSei sicuro di voler continuare l'installazione?",
             "opt1": "Sì, comprendo il rischio",
             "error": "Il file NCA seguente non è firmato correttamente: ",
             "ticket_missing": "Nessun ticket è stato trovato.\n\nSe il gioco non si avvia dopo l'installazione, prova a scaricarlo di nuovo con un ticket valido."
@@ -147,9 +147,9 @@
             "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
             "enableSound": "Info audio alla fine",
             "enableLightning": "Le spie informative lampeggiano alla fine",
-            "auto_update": "Controlla aggiornamenti di AtmoXL-Titel-Installer automaticamente",
+            "auto_update": "Controlla aggiornamenti di Mohsaua-Buoh-Installer automaticamente",
             "language": "Lingua: ",
-            "check_update": "Controlla aggiornamenti di AtmoXL-Titel-Installer ora",
+            "check_update": "Controlla aggiornamenti di Mohsaua-Buoh-Installer ora",
             "credits": "Crediti"
         },
         "nca_warn": {
@@ -159,28 +159,28 @@
         },
         "update": {
             "title": "Aggiornamento disponibile",
-            "desc0": "AtmoXL-Titel-Installer ",
+            "desc0": "Mohsaua-Buoh-Installer ",
             "desc1": " è disponibile adesso! Pronto per aggiornare?",
             "opt0": "Aggiorna",
-            "top_info": "Aggiornamento ad AtmoXL-Titel-Installer ",
-            "bot_info": "Sto scaricando AtmoXL-Titel-Installer ",
-            "bot_info2": "Sto estraendo AtmoXL-Titel-Installer ",
+            "top_info": "Aggiornamento ad Mohsaua-Buoh-Installer ",
+            "bot_info": "Sto scaricando Mohsaua-Buoh-Installer ",
+            "bot_info2": "Sto estraendo Mohsaua-Buoh-Installer ",
             "complete": "Aggiornamento completato!",
             "failed": "Aggiornamento fallito!",
             "end_desc": "Il software verrà chiuso.",
             "title_check_fail": "Nessun aggiornamento disponibile",
-            "desc_check_fail": "Stai usando l'ultima versione di AtmoXL-Titel-Installer!"
+            "desc_check_fail": "Stai usando l'ultima versione di Mohsaua-Buoh-Installer!"
         },
         "credits": {
             "title": "Un ringraziamento alle seguenti persone!",
             "desc": "- Huntereb per Awoo Installer\n- HookedBehemoth per UN SACCO di contributi\n- Adubbz ed altra gente for Tinfoil\n- XorTroll per Plutonium e Goldleaf\n- blawar (strangolatore di moglie) e nicoboss per il supporto ai file NSZ\n- I ragazzi del team e discord AtlasNX (o almeno alcuni di loro)\n- I ragazzi del team e discord RetroNX (di nessun coinvolgimento diretto)\n- namako8982 per l'immagine di Momiji\n- TheXzoron per essere un baka"
         },
         "language": {
-            "title": "Seleziona la lingua di AtmoXL-Titel-Installer",
+            "title": "Seleziona la lingua di Mohsaua-Buoh-Installer",
             "desc": "Il software verrà chiuso dopo aver cambiato la lingua. Premi B per annullare.",
             "system_language": "sistema"
         },
-        "title": "Cambia le impostazioni di AtmoXL-Titel-Installer!",
+        "title": "Cambia le impostazioni di Mohsaua-Buoh-Installer!",
         "buttons": "\ue0e0 Seleziona/Cambia    \ue0e1 Annulla"
     },
     "common": {

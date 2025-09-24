@@ -288,7 +288,7 @@ namespace inst::util {
     }
 
     void playAudio(std::string audioPath) {
-        int audio_rate = 22050;
+        int audio_rate = 44100;
         Uint16 audio_format = AUDIO_S16SYS;
         int audio_channels = 2;
         int audio_buffers = 4096;

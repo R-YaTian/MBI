@@ -3,10 +3,10 @@
 #include <vector>
 
 namespace inst::config {
-    static const std::string appDir = "sdmc:/config/AtmoXL-Titel-Installer";
+    static const std::string appDir = "sdmc:/config/MBI";
     static const std::string configPath = appDir + "/config.json";
     static const std::string themecolorPath = appDir + "/themecolor.json";
-    static const std::string appVersion = "1.8.2";
+    static const std::string appVersion = APPVER;
 
     extern std::string gAuthKey;
     extern std::string lastNetUrl;
