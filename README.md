@@ -10,10 +10,6 @@ MBI or Mohsaua-Buoh-Installer is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer 
 - Installs NSP/NSZ/XCI/XCZ files over the internet by URL or Google Drive
 - Installs NSP/NSZ/XCI/XCZ files over HTTP Directory Indexing like Nginx / Apache and Tinfoil style JSON
 - Verifies NCAs by header signature before they're installed
-- Forked from [Huntereb's Awoo-Installer](https://github.com/Huntereb/Awoo-Installer) and [dezem's AtmoXL-Titel-Installer](https://github.com/dezem/AtmoXL-Titel-Installer)
-- Based on [Adubbz](https://github.com/Adubbz)'s [Tinfoil](https://github.com/matt-teix/Tinfoil)
-- Uses [XorTroll's Plutonium](https://github.com/XorTroll/Plutonium) for a pretty graphical interface
-- Works on Atmosphere and SX OS
 
 ## Coloring support
 To use this, you must place the "themecolor.json" at MBI dir. See [example](doc/themecolor.json) for more details.  

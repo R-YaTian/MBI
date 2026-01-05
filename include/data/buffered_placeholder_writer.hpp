@@ -27,7 +27,7 @@ SOFTWARE.
 #include <memory>
 
 #include "nx/ncm.hpp"
-#include "nx/nca_writer.h"
+#include "nx/nca_writer.hpp"
 
 namespace tin::data
 {

@@ -14,7 +14,7 @@
 #include "ui/MainApplication.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/json.hpp"
-#include "nx/usbhdd.h"
+#include "nx/usbhdd.hpp"
 #include "util/error.hpp"
 
 namespace inst::util {

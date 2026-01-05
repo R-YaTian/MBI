@@ -7,7 +7,7 @@
 #include "util/lang.hpp"
 #include "data/buffered_placeholder_writer.hpp"
 #include "nx/fs.hpp"
-#include "nx/usbhdd.h"
+#include "nx/usbhdd.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 

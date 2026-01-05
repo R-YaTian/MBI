@@ -66,13 +66,13 @@ Result awoo_usbCommsInitializeEx(u32 num_interfaces, const awoo_UsbCommsInterfac
                 // Send product
                 if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iProduct, "Nintendo Switch");
                 // Send serial number
-                if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iSerialNumber, "SerialNumber");
+                if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iSerialNumber, APPVER);
 
                 // Send device descriptors
                 struct usb_device_descriptor device_descriptor = {
                     .bLength = USB_DT_DEVICE_SIZE,
                     .bDescriptorType = USB_DT_DEVICE,
-                    .bcdUSB = 0x0110,
+                    .bcdUSB = 0x0200,
                     .bDeviceClass = 0x00,
                     .bDeviceSubClass = 0x00,
                     .bDeviceProtocol = 0x00,

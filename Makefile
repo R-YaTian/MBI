@@ -62,9 +62,9 @@ CFLAGS	+=	 `curl-config --cflags`
 CFLAGS	+=	 `sdl2-config --cflags`
 CFLAGS	+=	 `$(PREFIX)pkg-config --cflags freetype2`
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror $(WITH_DEBUG)
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(WITH_DEBUG)
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23 -DAPPVER=\"$(APP_VERSION)\"
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "nx/nca_writer.h"
+#include "nx/nca_writer.hpp"
 #include "util/error.hpp"
 #include <zstd.h>
 #include <string.h>
@@ -264,11 +264,11 @@ public:
 
                 while(len)
                 {
-                    const size_t writeChunkSz = std::min(0x1000000 - m_deflateBuffer.size(), len);
+                    const size_t writeChunkSz = std::min(0x800000 - m_deflateBuffer.size(), len);
 
                     append(m_deflateBuffer, p, writeChunkSz);
 
-                    if(m_deflateBuffer.size() >= 0x1000000)
+                    if(m_deflateBuffer.size() >= 0x800000)
                     {
                         encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
                         flush();
@@ -329,9 +329,9 @@ public:
 
         while (sz)
         {
-            if (m_buffer.size() + sz >= 0x1000000)
+            if (m_buffer.size() + sz >= 0x800000)
             {
-                u64 chunk = 0x1000000 - m_buffer.size();
+                u64 chunk = 0x800000 - m_buffer.size();
                 append(m_buffer, ptr, chunk);
 
                 processChunk(m_buffer.data(), m_buffer.size());
