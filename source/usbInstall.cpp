@@ -139,7 +139,6 @@ namespace usbInstStuff {
                 installTask->Prepare();
                 installTask->InstallTicketCert();
                 installTask->Begin();
-                inst::util::reinitUsbComms();
             }
         }
         catch (std::exception& e) {
@@ -187,6 +186,7 @@ namespace usbInstStuff {
         }
 
         LOG_DEBUG("Done");
+        inst::util::reinitUsbComms();
         inst::ui::instPage::loadMainMenu();
         inst::util::deinitInstallServices();
         return;
