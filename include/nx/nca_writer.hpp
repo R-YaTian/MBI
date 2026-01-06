@@ -23,9 +23,9 @@ SOFTWARE.
 #pragma once
 #include <switch.h>
 #include <vector>
-#include "nx/ncm.hpp"
 #include <memory>
-#include "install/nca.hpp"
+#include "nx/ncm.hpp"
+#include "nx/nca.hpp"
 
 class NcaBodyWriter
 {

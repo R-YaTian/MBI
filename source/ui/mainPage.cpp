@@ -7,7 +7,7 @@
 #include "util/lang.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/fs.hpp"
-#include "nx/usbhdd.hpp"
+#include "nx/udisk.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -119,8 +119,8 @@ namespace app::ui {
     }
 
     void MainPage::usbHDDInstallMenuItem_Click() {
-		if(nx::hdd::count() && nx::hdd::rootPath()) {
-			mainApp->usbhddinstPage->drawMenuItems(true, nx::hdd::rootPath());
+		if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName()) {
+			mainApp->usbhddinstPage->drawMenuItems(true, nx::udisk::getMountPointName());
 			mainApp->usbhddinstPage->menu->SetSelectedIndex(0);
 			mainApp->LoadLayout(mainApp->usbhddinstPage);
 		} else {

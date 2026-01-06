@@ -16,7 +16,7 @@
 #include "ui/MainApplication.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/json.hpp"
-#include "nx/usbhdd.hpp"
+#include "nx/udisk.hpp"
 #include "nx/error.hpp"
 
 namespace app::util {
@@ -32,7 +32,7 @@ namespace app::util {
         #endif
         awoo_usbCommsInitialize();
 
-		nx::hdd::init();
+		nx::udisk::init();
 
         if(R_FAILED(ncmInitialize()))
             LOG_DEBUG("Failed to initialize ncm\n");
@@ -42,7 +42,7 @@ namespace app::util {
         ncmExit();
         Mix_Quit();
 
-		nx::hdd::exit();
+		nx::udisk::exit();
         socketExit();
         awoo_usbCommsExit();
     }

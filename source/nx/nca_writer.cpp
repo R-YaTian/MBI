@@ -22,12 +22,11 @@ SOFTWARE.
 
 #include "nx/nca_writer.hpp"
 #include "nx/error.hpp"
+
 #include <zstd.h>
 #include <string.h>
+
 #include "util/crypto.hpp"
-#include "util/config.hpp"
-#include "util/title_util.hpp"
-#include "install/nca.hpp"
 
 void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
@@ -461,7 +460,7 @@ u64 NcaWriter::write(const  u8* ptr, u64 sz)
 
 void NcaWriter::flushHeader()
 {
-    app::install::NcaHeader header;
+    nx::nca::NcaHeader header;
     memcpy(&header, m_buffer.data(), sizeof(header));
     Crypto::AesXtr decryptor(Crypto::Keys().headerKey, false);
     Crypto::AesXtr encryptor(Crypto::Keys().headerKey, true);

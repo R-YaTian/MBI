@@ -71,10 +71,10 @@ do not use the software.
 	purpose and non-infringement.
 */
 
-namespace nx::hdd
+namespace nx::udisk
 {
-	const char* rootPath(u32 index = 0);
-	u32 count();
+	const char* getMountPointName(u32 index = 0);
+	u32 getDeviceCount();
 
 	bool init();
 	bool exit();

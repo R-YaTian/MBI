@@ -4,7 +4,8 @@
 
 #define NCA_HEADER_SIZE 0x4000
 #define MAGIC_NCA3 0x3341434E /* "NCA3" */
-namespace app::install
+
+namespace nx::nca
 {
     struct NcaBucketInfo {
         static constexpr size_t HeaderSize = 0x10;

@@ -24,12 +24,12 @@ SOFTWARE.
 
 #include "install/install_xci.hpp"
 #include "util/title_util.hpp"
-#include "nx/error.hpp"
 #include "util/config.hpp"
 #include "util/crypto.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
-#include "install/nca.hpp"
+#include "nx/error.hpp"
+#include "nx/nca.hpp"
 #include "ui/MainApplication.hpp"
 
 namespace app::ui {
@@ -94,11 +94,11 @@ namespace app::install::xci
 
         if (app::config::validateNCAs && !m_declinedValidation)
         {
-            app::install::NcaHeader* header = new NcaHeader;
-            m_xci->BufferData(header, m_xci->GetDataOffset() + fileEntry->dataOffset, sizeof(app::install::NcaHeader));
+            nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
+            m_xci->BufferData(header, m_xci->GetDataOffset() + fileEntry->dataOffset, sizeof(nx::nca::NcaHeader));
 
             Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
-            crypto.decrypt(header, header, sizeof(app::install::NcaHeader), 0, 0x200);
+            crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
 
             if (header->magic != MAGIC_NCA3)
                 THROW_FORMAT("Invalid NCA magic");

@@ -79,7 +79,7 @@ do not use the software.
 #include <mutex>
 #include <algorithm>
 
-namespace nx::hdd
+namespace nx::udisk
 {
 	static const u32 MAX_DEVICES = 32;
 	static UEvent *g_statusChangeEvent = NULL, g_exitEvent = { 0 };
@@ -105,7 +105,7 @@ namespace nx::hdd
 		{
 			rc = waitMulti(&idx, -1, status_change_event_waiter, exit_event_waiter);
 			if(R_FAILED(rc)) continue;
-			
+
 			std::scoped_lock lock(g_mutex);
 
 			if(idx == 1)
@@ -122,18 +122,18 @@ namespace nx::hdd
 				continue;
 			}
 		}
-		
+
 		g_usbDeviceCount = 0;
 
 		return 0;
 	}
 
-	u32 count()
+	u32 getDeviceCount()
 	{
 		return std::min(g_usbDeviceCount, MAX_DEVICES);
 	}
 
-	const char* rootPath(u32 index)
+	const char* getMountPointName(u32 index)
 	{
 		if(index >= MAX_DEVICES)
 		{
@@ -141,7 +141,7 @@ namespace nx::hdd
 		}
 
 		std::scoped_lock lock(g_mutex);
-		
+
 		if(index < usbHsFsGetMountedDeviceCount())
 		{
 			return g_usbDevices[index].name;
@@ -183,7 +183,7 @@ namespace nx::hdd
 		thrd_join(g_thread, NULL);
 
 		g_statusChangeEvent = NULL;
-		
+
 		usbHsFsExit();
 
 		return true;

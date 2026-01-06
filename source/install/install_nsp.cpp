@@ -25,7 +25,7 @@ SOFTWARE.
 #include <machine/endian.h>
 #include <thread>
 
-#include "install/nca.hpp"
+#include "nx/nca.hpp"
 #include "nx/fs.hpp"
 #include "nx/ncm.hpp"
 #include "util/config.hpp"
@@ -98,11 +98,11 @@ namespace app::install::nsp
 
         if (app::config::validateNCAs && !m_declinedValidation)
         {
-            app::install::NcaHeader* header = new NcaHeader;
-            m_NSP->BufferData(header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(app::install::NcaHeader));
+            nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
+            m_NSP->BufferData(header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(nx::nca::NcaHeader));
 
             Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
-            crypto.decrypt(header, header, sizeof(app::install::NcaHeader), 0, 0x200);
+            crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
 
             if (header->magic != MAGIC_NCA3)
                 THROW_FORMAT("Invalid NCA magic");
