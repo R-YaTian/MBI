@@ -41,7 +41,7 @@ namespace app::util
 
     void USBCmdManager::SendExitCmd()
     {
-        USBCmdManager::SendCmdHeader(0, 0);
+        USBCmdManager::SendCmdHeader(0x0F, 0);
     }
 
     USBCmdHeader USBCmdManager::SendFileRangeCmd(std::string nspName, u64 offset, u64 size)
