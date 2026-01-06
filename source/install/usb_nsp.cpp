@@ -26,15 +26,15 @@ SOFTWARE.
 #include <algorithm>
 #include <malloc.h>
 #include <threads.h>
-#include "data/byte_buffer.hpp"
-#include "data/buffered_placeholder_writer.hpp"
-#include "util/usb_util.hpp"
+
+#include "nx/BufferedPlaceholderWriter.hpp"
+#include "nx/ByteBuffer.hpp"
 #include "nx/error.hpp"
+#include "util/usb_util.hpp"
 #include "util/util.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
-
 
 namespace app::install::nsp
 {
@@ -50,7 +50,7 @@ namespace app::install::nsp
     struct USBFuncArgs
     {
         std::string nspName;
-        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -113,7 +113,7 @@ namespace app::install::nsp
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
+        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
         USBFuncArgs args;
         args.nspName = m_nspName;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;

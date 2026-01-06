@@ -26,7 +26,6 @@ SOFTWARE.
 #include <tuple>
 #include <vector>
 
-#include "data/byte_buffer.hpp"
 #include "nx/ncm.hpp"
 
 #include <switch-ipcext.h>
@@ -46,7 +45,7 @@ namespace app::install
 
             virtual std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() = 0;
 
-            virtual void InstallContentMetaRecords(app::data::ByteBuffer& installContentMetaBuf, int i);
+            virtual void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             virtual void InstallApplicationRecord(int i);
             virtual void InstallNCA(const NcmContentId &ncaId) = 0;
 

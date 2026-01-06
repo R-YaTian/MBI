@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <switch.h>
 #include <threads.h>
-#include "data/buffered_placeholder_writer.hpp"
+#include "nx/BufferedPlaceholderWriter.hpp"
 #include "util/title_util.hpp"
 #include "nx/error.hpp"
 #include "util/util.hpp"
@@ -44,7 +44,7 @@ namespace app::install::nsp
     struct StreamFuncArgs
     {
         app::network::HTTPDownload* download;
-        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -90,7 +90,7 @@ namespace app::install::nsp
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
+        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
         StreamFuncArgs args;
         args.download = &m_download;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;

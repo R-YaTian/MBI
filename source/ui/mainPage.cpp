@@ -5,7 +5,7 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
-#include "data/buffered_placeholder_writer.hpp"
+#include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/fs.hpp"
 #include "nx/usbhdd.hpp"
 
@@ -23,14 +23,14 @@ namespace app::ui {
     void MainPage::mainMenuThread() {
         bool menuLoaded = mainApp->IsShown();
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
-            app::data::NUM_BUFFER_SEGMENTS = 2;
+            nx::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded) {
                 app::ui::appletFinished = true;
                 mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
             }
         } else if (!appletFinished) {
             app::ui::appletFinished = true;
-            app::data::NUM_BUFFER_SEGMENTS = 128;
+            nx::data::NUM_BUFFER_SEGMENTS = 128;
         }
         this->updateStatsThread();
     }

@@ -20,32 +20,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#pragma once
+#include "nx/ByteBuffer.hpp"
+#include "nx/error.hpp"
 
-#include <switch/types.h>
-#include "data/byte_buffer.hpp"
-
-namespace app::data
+namespace nx::data
 {
-    class ByteStream
+    ByteBuffer::ByteBuffer(size_t reserveSize)
     {
-        protected:
-            u64 m_offset = 0;
+        m_buffer.resize(reserveSize);
+    }
 
-        public:
-            virtual void ReadBytes(void* dest, size_t length) = 0;
-    };
-
-    // NOTE: This isn't generally useful, it's mainly for things like libpng
-    // which rely  on streams
-    class BufferedByteStream : public ByteStream
+    size_t ByteBuffer::GetSize()
     {
-        private:
-            ByteBuffer m_byteBuffer;
+        return m_buffer.size();
+    }
 
-        public:
-            BufferedByteStream(ByteBuffer buffer);
+    u8* ByteBuffer::GetData()
+    {
+        return m_buffer.data();
+    }
 
-            void ReadBytes(void* dest, size_t length) override;
-    };
+    void ByteBuffer::Resize(size_t size)
+    {
+        m_buffer.resize(size, 0);
+    }
 }

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <threads.h>
 #include "install/nsp.hpp"
-#include "data/buffered_placeholder_writer.hpp"
+#include "nx/BufferedPlaceholderWriter.hpp"
 #include "util/title_util.hpp"
 #include "nx/error.hpp"
 

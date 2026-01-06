@@ -20,15 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "data/buffered_placeholder_writer.hpp"
-
+#include "nx/BufferedPlaceholderWriter.hpp"
+#include "nx/error.hpp"
 #include <climits>
 #include <math.h>
 #include <algorithm>
 #include <exception>
-#include "nx/error.hpp"
 
-namespace app::data
+namespace nx::data
 {
     int NUM_BUFFER_SEGMENTS;
 

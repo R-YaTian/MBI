@@ -26,7 +26,7 @@ SOFTWARE.
 #include <cstring>
 #include <vector>
 
-namespace app::data
+namespace nx::data
 {
     class ByteBuffer
     {
@@ -37,7 +37,7 @@ namespace app::data
             ByteBuffer(size_t reserveSize=0);
 
             size_t GetSize();
-            u8* GetData(); // TODO: Remove this, it shouldn't be needed
+            u8* GetData();
             void Resize(size_t size);
 
             template <typename T>
@@ -61,6 +61,7 @@ namespace app::data
 
                 memcpy(m_buffer.data() + offset, &data, sizeof(T));
             }
+
             template <typename T>
             void Append(T data)
             {

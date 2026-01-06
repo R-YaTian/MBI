@@ -131,7 +131,7 @@ namespace nx::ncm
         return contentInfos;
     }
 
-    void ContentMeta::GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtNcmContentInfo, bool ignoreReqFirmVersion)
+    void ContentMeta::GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtNcmContentInfo, bool ignoreReqFirmVersion)
     {
         NcmExtPackagedContentMetaHeader packagedContentMetaHeader = this->GetPackagedContentMetaHeader();
         std::vector<NcmContentInfo> contentInfos = this->GetContentInfos();
@@ -188,7 +188,7 @@ namespace nx::ncm
         auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName);
         u64 cnmtSize = cnmtFile.GetSize();
 
-        app::data::ByteBuffer cnmtBuf;
+        nx::data::ByteBuffer cnmtBuf;
         cnmtBuf.Resize(cnmtSize);
         cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
 

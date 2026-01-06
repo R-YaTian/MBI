@@ -46,7 +46,7 @@ namespace app::install
     }
 
     // TODO: Implement RAII on NcmContentMetaDatabase
-    void Install::InstallContentMetaRecords(app::data::ByteBuffer& installContentMetaBuf, int i)
+    void Install::InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i)
     {
         NcmContentMetaDatabase contentMetaDatabase;
         NcmContentMetaKey contentMetaKey = m_contentMeta[i].GetContentMetaKey();
@@ -82,7 +82,7 @@ namespace app::install
     // Validate and obtain all data needed for install
     void Install::Prepare()
     {
-        app::data::ByteBuffer cnmtBuf;
+        nx::data::ByteBuffer cnmtBuf;
 
         std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadCNMT();
         
@@ -108,7 +108,7 @@ namespace app::install
             if (m_ignoreReqFirmVersion)
                 LOG_DEBUG("WARNING: Required system firmware version is being IGNORED!\n");
 
-            app::data::ByteBuffer installContentMetaBuf;
+            nx::data::ByteBuffer installContentMetaBuf;
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
             this->InstallContentMetaRecords(installContentMetaBuf, i);

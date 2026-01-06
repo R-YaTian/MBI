@@ -23,7 +23,7 @@ SOFTWARE.
 #include "install/http_xci.hpp"
 
 #include <threads.h>
-#include "data/buffered_placeholder_writer.hpp"
+#include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/error.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
@@ -42,7 +42,7 @@ namespace app::install::xci
     struct StreamFuncArgs
     {
         app::network::HTTPDownload* download;
-        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -88,7 +88,7 @@ namespace app::install::xci
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
+        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
         StreamFuncArgs args;
         args.download = &m_download;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;

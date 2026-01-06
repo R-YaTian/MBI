@@ -25,7 +25,8 @@ SOFTWARE.
 #include <string>
 #include <vector>
 #include <switch-ipcext.h>
-#include "data/byte_buffer.hpp"
+
+#include "ByteBuffer.hpp"
 
 namespace nx::ncm
 {
@@ -60,7 +61,7 @@ namespace nx::ncm
     class ContentMeta final
     {
         private:
-            app::data::ByteBuffer m_bytes;
+            nx::data::ByteBuffer m_bytes;
 
         public:
             ContentMeta();
@@ -70,7 +71,7 @@ namespace nx::ncm
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
 
-            void GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
+            void GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
