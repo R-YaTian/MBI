@@ -21,10 +21,10 @@ SOFTWARE.
 */
 
 #include "nx/content_meta.hpp"
+#include "nx/error.hpp"
+#include "util/title_util.hpp"
 
 #include <string.h>
-#include "util/title_util.hpp"
-#include "util/error.hpp"
 
 namespace nx::ncm
 {

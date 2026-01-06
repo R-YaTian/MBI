@@ -7,15 +7,17 @@
 #include <regex>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "switch.h"
+
+#include <switch.h>
+#include <switch-ipcext.h>
+
 #include "util/util.hpp"
-#include "nx/ipc/tin_ipc.h"
 #include "util/config.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/json.hpp"
 #include "nx/usbhdd.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 namespace app::util {
     void initApp () {
@@ -51,16 +53,14 @@ namespace app::util {
     }
 
     void initInstallServices() {
-        ncmInitialize();
-        nsextInitialize();
+        nsInitialize();
         esInitialize();
         splCryptoInitialize();
         splInitialize();
     }
 
     void deinitInstallServices() {
-        ncmExit();
-        nsextExit();
+        nsExit();
         esExit();
         splCryptoExit();
         splExit();

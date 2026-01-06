@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "install/simple_filesystem.hpp"
+#include "SimpleFileSystem.hpp"
 
 #include <exception>
 #include <memory>
 #include "nx/fs.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
-namespace app::install::nsp
+namespace app
 {
     SimpleFileSystem::SimpleFileSystem(nx::fs::IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :
         m_fileSystem(&fileSystem) , m_rootPath(rootPath), m_absoluteRootPath(absoluteRootPath)
@@ -77,7 +77,7 @@ namespace app::install::nsp
             }
             else if (dirEntry.type == FsDirEntryType_File)
             {
-                auto foundExtension = dirEntryName.substr(dirEntryName.find(".") + 1); 
+                auto foundExtension = dirEntryName.substr(dirEntryName.find(".") + 1);
 
                 if (foundExtension == extension)
                     return dirEntryName;

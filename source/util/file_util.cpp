@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <memory>
 
-#include "install/simple_filesystem.hpp"
+#include "SimpleFileSystem.hpp"
 #include "nx/fs.hpp"
 #include "data/byte_buffer.hpp"
 #include "util/title_util.hpp"
@@ -37,7 +37,7 @@ namespace app::util
         // Create the cnmt filesystem
         nx::fs::IFileSystem cnmtNCAFileSystem;
         cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
-        app::install::nsp::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", ncaPath + "/");
+        app::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", ncaPath + "/");
 
         // Find and read the cnmt file
         auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");

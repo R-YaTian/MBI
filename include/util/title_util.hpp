@@ -23,9 +23,9 @@ SOFTWARE.
 #pragma once
 
 #include <switch/types.h>
+#include <switch-ipcext.h>
 #include <string>
 #include "nx/content_meta.hpp"
-#include "nx/ipc/tin_ipc.h"
 
 namespace app::util
 {

@@ -25,11 +25,10 @@ SOFTWARE.
 #include <switch.h>
 #include <cstring>
 #include <memory>
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 #include "nx/ncm.hpp"
 #include "util/title_util.hpp"
-
 
 // TODO: Check NCA files are present
 // TODO: Check tik/cert is present
@@ -72,12 +71,12 @@ namespace app::install
         const u64 baseTitleId = app::util::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
 
         // Add our new content meta
-        ContentStorageRecord storageRecord;
-        storageRecord.metaRecord = m_contentMeta[i].GetContentMetaKey();
-        storageRecord.storageId = m_destStorageId;
+        NsExtContentStorageMetaKey storageRecord;
+        storageRecord.meta_key = m_contentMeta[i].GetContentMetaKey();
+        storageRecord.storage_id = m_destStorageId;
 
         LOG_DEBUG("Pushing application record...\n");
-        ASSERT_OK(nsPushApplicationRecord(baseTitleId, NsApplicationRecordType_Installed, &storageRecord, 1), "Failed to push application record");
+        ASSERT_OK(nsextPushApplicationRecord(baseTitleId, NsExtApplicationEvent_Present, &storageRecord, 1), "Failed to push application record");
     }
 
     // Validate and obtain all data needed for install

@@ -23,7 +23,7 @@ SOFTWARE.
 #include "util/title_util.hpp"
 
 #include <machine/endian.h>
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 namespace app::util
 {

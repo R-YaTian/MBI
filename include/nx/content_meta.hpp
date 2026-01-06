@@ -22,8 +22,7 @@ SOFTWARE.
 
 #pragma once
 
-#include <switch/services/ncm.h>
-#include <switch/types.h>
+#include <switch.h>
 #include <vector>
 
 #include "data/byte_buffer.hpp"

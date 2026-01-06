@@ -21,7 +21,7 @@ SOFTWARE.
 */
 
 #include "nx/ncm.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 namespace nx::ncm
 {

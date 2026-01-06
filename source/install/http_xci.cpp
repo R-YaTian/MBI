@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <threads.h>
 #include "data/buffered_placeholder_writer.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"

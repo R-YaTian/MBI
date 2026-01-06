@@ -24,7 +24,7 @@ SOFTWARE.
 #include "util/usb_comms_awoo.h"
 
 #include "data/byte_buffer.hpp"
-#include "error.hpp"
+#include "nx/error.hpp"
 
 namespace app::util
 {

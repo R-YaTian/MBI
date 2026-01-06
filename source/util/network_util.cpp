@@ -21,13 +21,14 @@ SOFTWARE.
 */
 
 #include "util/network_util.hpp"
+#include "nx/error.hpp"
 
 #include <switch.h>
+
 #include <curl/curl.h>
 #include <algorithm>
 #include <cstring>
 #include <sstream>
-#include "util/error.hpp"
 
 namespace app::network
 {

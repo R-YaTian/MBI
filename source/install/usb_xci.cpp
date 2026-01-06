@@ -29,7 +29,7 @@ SOFTWARE.
 #include "data/byte_buffer.hpp"
 #include "data/buffered_placeholder_writer.hpp"
 #include "util/usb_util.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "util/util.hpp"
 #include "util/usb_comms_awoo.h"
 #include "util/lang.hpp"

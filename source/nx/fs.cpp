@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "nx/fs.hpp"
 #include <switch.h>
 
 #include <cmath>
 #include <cstring>
-#include "util/error.hpp"
+
+#include "nx/fs.hpp"
+#include "nx/error.hpp"
 
 namespace nx::fs
 {
@@ -63,7 +64,7 @@ namespace nx::fs
     // End IFile
 
     // IDirectory
-    IDirectory::IDirectory(FsDir& dir) 
+    IDirectory::IDirectory(FsDir& dir)
     {
         m_dir = dir;
     }
@@ -213,4 +214,4 @@ namespace nx::fs
         }
         return sizeStr;
     }
-}        
+}

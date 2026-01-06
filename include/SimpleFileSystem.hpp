@@ -1,5 +1,6 @@
 /*
 Copyright (c) 2017-2018 Adubbz
+Copyright (c) 2023-2026 R-YaTian
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,40 +21,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "nx/ipc/ns_ext.h"
+#pragma once
 
-#include <switch.h>
+#include <functional>
+#include "nx/fs.hpp"
 
-Service g_nsAppManSrv;
+namespace app
+{
+    class SimpleFileSystem final
+    {
+        private:
+            nx::fs::IFileSystem* m_fileSystem;
 
-Result nsextInitialize(void) {
-    Result rc = nsInitialize();
+        public:
+            const std::string m_rootPath;
+            const std::string m_absoluteRootPath;
 
-    if (R_SUCCEEDED(rc)) {
-        if(hosversionBefore(3,0,0)) {
-            g_nsAppManSrv = *nsGetServiceSession_ApplicationManagerInterface();
-        } else {
-            rc = nsGetApplicationManagerInterface(&g_nsAppManSrv);
-        }
-    }
+            SimpleFileSystem(nx::fs::IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath);
+            ~SimpleFileSystem();
 
-    return rc;
-}
-
-void nsextExit(void) {
-    if(hosversionAtLeast(3,0,0))
-        serviceClose(&g_nsAppManSrv);
-    nsExit();
-}
-
-Result nsPushApplicationRecord(u64 application_id, NsApplicationRecordType last_modified_event, ContentStorageRecord *content_records, u32 count) {
-    struct {
-        u8 last_modified_event;
-        u64 application_id;
-    } in = { last_modified_event, application_id };
-    
-    return serviceDispatchIn(&g_nsAppManSrv, 16, in,
-        .buffer_attrs = { SfBufferAttr_HipcMapAlias | SfBufferAttr_In },
-        .buffers = { { content_records, count * sizeof(*content_records) }
-    });
+            nx::fs::IFile OpenFile(std::string path);
+            bool HasFile(std::string path);
+            std::string GetFileNameFromExtension(std::string path, std::string extension);
+    };
 }

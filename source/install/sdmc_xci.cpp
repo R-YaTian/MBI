@@ -1,5 +1,5 @@
 #include "install/sdmc_xci.hpp"
-#include "error.hpp"
+#include "nx/error.hpp"
 #include "nx/nca_writer.hpp"
 #include "ui/instPage.hpp"
 #include "util/lang.hpp"

@@ -28,7 +28,7 @@ SOFTWARE.
 #include "install/install_nsp.hpp"
 #include "install/usb_xci.hpp"
 #include "install/install_xci.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "util/usb_util.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"

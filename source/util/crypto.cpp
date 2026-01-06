@@ -72,7 +72,7 @@ bool Crypto::rsa2048PssVerify(const void *data, size_t len, const unsigned char 
         if (m_buf[i] != 0) {
             return false;
         }
-    }   
+    }
     if (m_buf[RSA_2048_BYTES - 0x20 - 0x20 - 1 - 1] != 1) {
         return false;
     }

@@ -26,7 +26,7 @@ SOFTWARE.
 #include <math.h>
 #include <algorithm>
 #include <exception>
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 namespace app::data
 {

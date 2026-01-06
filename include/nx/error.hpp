@@ -22,13 +22,28 @@ SOFTWARE.
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <cstring>
+#include <stdexcept>
+#include <cstdio>
 
-#include "nx/ipc/es.h"
-#include "nx/ipc/ns_ext.h"
+#define ASSERT_OK(res_expr, desc) \
+    ({ \
+        const auto tmp_rc = (res_expr); \
+        if (R_FAILED(tmp_rc)) { \
+            char msg[256] = {}; std::snprintf(msg, 256-1, "%s:%u: %s.  Error code: 0x%08x\n", __func__, __LINE__, desc, tmp_rc); \
+            throw std::runtime_error(msg); \
+        } \
+    })
 
-#ifdef __cplusplus
-}
+#define THROW_FORMAT(format, ...) \
+    ({ \
+        char error_prefix[512] = {}; std::snprintf(error_prefix, 256-1, "%s:%u: ", __func__, __LINE__); \
+        char formatted_msg[256] = {}; std::snprintf(formatted_msg, 256-1, format, ##__VA_ARGS__); \
+        std::strncat(error_prefix, formatted_msg, 512-1); throw std::runtime_error(error_prefix); \
+    })
+
+#ifdef NXLINK_DEBUG
+#define LOG_DEBUG(format, ...) { std::printf("%s:%u: ", __func__, __LINE__); std::printf(format, ##__VA_ARGS__); }
+#else
+#define LOG_DEBUG(format, ...) ;
 #endif

@@ -32,6 +32,10 @@ jobs:
     - name: Checkout latest Plutonium commit
       run: |
         git clone https://github.com/R-YaTian/Plutonium.git -b catnip
+    
+    - name: Checkout latest libnx-ipcext commit
+      run: |
+        git clone https://github.com/R-YaTian/libnx-ext.git -b catnip-ipcext
 
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
@@ -49,6 +53,11 @@ jobs:
     - name: Build Plutonium dependencies
       run: |
         cd Plutonium/Plutonium
+        catnip -T switch -S . -B build install
+
+    - name: Build libnx-ipcext dependencies
+      run: |
+        cd libnx-ext
         catnip -T switch -S . -B build install
 
     - name: Build MBI

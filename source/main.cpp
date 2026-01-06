@@ -1,6 +1,6 @@
 #include <thread>
 #include "switch.h"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"

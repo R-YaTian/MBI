@@ -25,7 +25,7 @@ SOFTWARE.
 #include "install/install_xci.hpp"
 #include "util/file_util.hpp"
 #include "util/title_util.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "util/config.hpp"
 #include "util/crypto.hpp"
 #include "util/util.hpp"

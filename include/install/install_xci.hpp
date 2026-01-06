@@ -26,7 +26,7 @@ SOFTWARE.
 #include "install/install.hpp"
 #include "install/xci.hpp"
 #include "nx/content_meta.hpp"
-#include "nx/ipc/tin_ipc.h"
+#include <switch-ipcext.h>
 
 namespace app::install::xci
 {

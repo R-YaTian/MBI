@@ -22,20 +22,16 @@ SOFTWARE.
 
 #pragma once
 
-extern "C"
-{
-#include <switch/services/fs.h>
-}
-
 #include <memory>
 #include <tuple>
 #include <vector>
 
-#include "install/simple_filesystem.hpp"
+#include "SimpleFileSystem.hpp"
 #include "data/byte_buffer.hpp"
 
 #include "nx/content_meta.hpp"
-#include "nx/ipc/tin_ipc.h"
+
+#include <switch-ipcext.h>
 
 namespace app::install
 {

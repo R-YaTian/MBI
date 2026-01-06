@@ -24,13 +24,7 @@ SOFTWARE.
 
 #include <string>
 
-extern "C"
-{
-#include <switch/types.h>
-#include <switch/services/fs.h>
-}
-
-#include "nx/ipc/tin_ipc.h"
+#include <switch.h>
 
 namespace nx::fs
 {
@@ -48,7 +42,7 @@ namespace nx::fs
         public:
             // Don't allow copying, or garbage may be closed by the destructor
             IFile& operator=(const IFile&) = delete;
-            IFile(const IFile&) = delete;   
+            IFile(const IFile&) = delete;
 
             ~IFile();
 
@@ -68,7 +62,7 @@ namespace nx::fs
         public:
             // Don't allow copying, or garbage may be closed by the destructor
             IDirectory& operator=(const IDirectory&) = delete;
-            IDirectory(const IDirectory&) = delete;   
+            IDirectory(const IDirectory&) = delete;
 
             ~IDirectory();
 
@@ -84,7 +78,7 @@ namespace nx::fs
         public:
             // Don't allow copying, or garbage may be closed by the destructor
             IFileSystem& operator=(const IFileSystem&) = delete;
-            IFileSystem(const IFileSystem&) = delete;   
+            IFileSystem(const IFileSystem&) = delete;
 
             IFileSystem();
             ~IFileSystem();
@@ -92,11 +86,11 @@ namespace nx::fs
             Result OpenSdFileSystem();
             void OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId);
             void CloseFileSystem();
-             
+
             IFile OpenFile(std::string path);
             IDirectory OpenDirectory(std::string path, int flags);
     };
-            
+
     std::string GetFreeStorageSpace();
     std::string convertSize(s64 size);
 }

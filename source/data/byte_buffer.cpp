@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "data/byte_buffer.hpp"
 
-#include "util/error.hpp"
+#include "nx/error.hpp"
 
 namespace app::data
 {

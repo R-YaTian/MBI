@@ -34,7 +34,7 @@ SOFTWARE.
 #include "install/install_xci.hpp"
 #include "install/http_xci.hpp"
 #include "install/install.hpp"
-#include "util/error.hpp"
+#include "nx/error.hpp"
 #include "util/network_util.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"

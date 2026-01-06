@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "install/xci.hpp"
 #include "util/title_util.hpp"
-#include "error.hpp"
+#include "nx/error.hpp"
 
 namespace app::install::xci
 {
