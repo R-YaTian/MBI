@@ -1,4 +1,5 @@
 #pragma once
+
 #include <pu/Plutonium>
 #include "ui/mainPage.hpp"
 #include "ui/netInstPage.hpp"

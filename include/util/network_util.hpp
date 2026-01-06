@@ -35,14 +35,6 @@ SOFTWARE.
 #include <string>
 #include <vector>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
 namespace app::network
 {
     class HTTPHeader
