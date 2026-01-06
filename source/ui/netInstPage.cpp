@@ -12,14 +12,14 @@
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
     std::string lastFileID = "";
     std::string sourceString = "";
     static std::string getFreeSpaceText = nx::fs::GetFreeStorageSpace();
     static std::string getFreeSpaceOldText = getFreeSpaceText;
-    static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
+    static std::string* getBatteryChargeText = app::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
     static bool hideInstalled = false;
 
@@ -30,7 +30,7 @@ namespace inst::ui {
         this->infoRect = Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
-        this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
+        this->appVersionText = TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
@@ -41,15 +41,15 @@ namespace inst::ui {
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 109, "");
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
         this->butText = TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "");
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
+        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
-        this->infoImage = Image::New(780, 292 * pu::ui::render::ScreenFactor, inst::util::LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
+        this->infoImage = Image::New(780, 292 * pu::ui::render::ScreenFactor, app::util::LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -75,14 +75,14 @@ namespace inst::ui {
         for (long unsigned int i = 0; i < this->ourUrls.size(); i++) {
             auto& url = this->ourUrls[i];
 
-            std::string formattedURL = inst::util::formatUrlString(url);
+            std::string formattedURL = app::util::formatUrlString(url);
 
-            if (hideInstalled and inst::util::isTitleInstalled(formattedURL, installedTitles))
+            if (hideInstalled and app::util::isTitleInstalled(formattedURL, installedTitles))
                 continue;
 
-            std::string itm = inst::util::shortenString(formattedURL, 56, true);
+            std::string itm = app::util::shortenString(formattedURL, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-            ourEntry->SetColor(COLOR(inst::config::themeColorTextFile));
+            ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
             ourEntry->SetIcon(mainApp->checkboxBlank);
             for (long unsigned int j = 0; j < this->selectedUrls.size(); j++) {
                 if (this->selectedUrls[j] == url) {
@@ -122,15 +122,15 @@ namespace inst::ui {
             mainApp->LoadLayout(mainApp->mainPage);
             return;
         } else if (this->ourUrls[0] == "supplyUrl") {
-            std::string keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::lastNetUrl, 500);
+            std::string keyboardResult = app::util::softwareKeyboard("inst.net.url.hint"_lang, app::config::lastNetUrl, 500);
             if (keyboardResult.size() > 0) {
-                if (inst::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
+                if (app::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
                     mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
                     this->startNetwork();
                     return;
                 }
-                inst::config::lastNetUrl = keyboardResult;
-                inst::config::setConfig();
+                app::config::lastNetUrl = keyboardResult;
+                app::config::setConfig();
                 sourceString = "inst.net.url.source_string"_lang;
                 this->selectedUrls = {keyboardResult};
                 this->startInstall(true);
@@ -144,7 +144,7 @@ namespace inst::ui {
             netConnected = true;
             this->pageInfoText->SetText("inst.net.top_info"_lang);
             this->butText->SetText(hideInstalled ? "inst.net.buttons1_show"_lang : "inst.net.buttons1"_lang);
-            installedTitles = inst::util::listInstalledTitles();
+            installedTitles = app::util::listInstalledTitles();
             this->drawMenuItems(true);
             this->menu->SetSelectedIndex(0);
             mainApp->CallForRender();
@@ -158,8 +158,8 @@ namespace inst::ui {
         int dialogResult = -1;
         if (this->selectedUrls.size() == 1) {
             std::string ourUrlString;
-            if (this->alternativeNames.size() > 0) ourUrlString = inst::util::shortenString(this->alternativeNames[0], 32, true);
-            else ourUrlString = inst::util::shortenString(inst::util::formatUrlString(this->selectedUrls[0]), 32, true);
+            if (this->alternativeNames.size() > 0) ourUrlString = app::util::shortenString(this->alternativeNames[0], 32, true);
+            else ourUrlString = app::util::shortenString(app::util::formatUrlString(this->selectedUrls[0]), 32, true);
             dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ourUrlString + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         } else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         if (dialogResult == -1 && !urlMode) return;
@@ -168,7 +168,7 @@ namespace inst::ui {
             return;
         }
         netInstStuff::installTitleNet(this->selectedUrls, dialogResult, this->alternativeNames, sourceString);
-        inst::util::listInstalledTitles();
+        app::util::listInstalledTitles();
         return;
     }
 
@@ -178,7 +178,7 @@ namespace inst::ui {
                 if (this->selectedUrls.size() == 0) {
                     this->selectTitle(this->menu->GetSelectedIndex());
                 }
-                netInstStuff::sendExitCommands(inst::util::formatUrlLink(this->selectedUrls[0]));
+                netInstStuff::sendExitCommands(app::util::formatUrlLink(this->selectedUrls[0]));
             }
             netInstStuff::OnUnwound();
             mainApp->LoadLayout(mainApp->mainPage);
@@ -237,7 +237,7 @@ namespace inst::ui {
             mainApp->optionspage->freeSpaceText->SetText("misc.sd_free"_lang+": " + getFreeSpaceText);
         }
 
-        getBatteryChargeText = inst::util::getBatteryCharge();
+        getBatteryChargeText = app::util::getBatteryCharge();
         if (getBatteryChargeOldText[0] != getBatteryChargeText[0]) {
             getBatteryChargeOldText = getBatteryChargeText;
 

@@ -108,7 +108,7 @@ namespace app::install::nsp
         size_t startSizeBuffered = 0;
         double speed = 0.0;
 
-        inst::ui::instPage::setInstBarPerc(0);
+        app::ui::instPage::setInstBarPerc(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreadsHttpNsp)
         {
             u64 newTime = armGetSystemTick();
@@ -125,24 +125,24 @@ namespace app::install::nsp
 
                 int downloadProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeBuffered() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
-                inst::ui::instPage::setInstInfoText("inst.info_page.downloading"_lang + inst::util::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
-                inst::ui::instPage::setInstBarPerc((double)downloadProgress);
+                app::ui::instPage::setInstInfoText("inst.info_page.downloading"_lang + app::util::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                app::ui::instPage::setInstBarPerc((double)downloadProgress);
             }
         }
-        inst::ui::instPage::setInstBarPerc(100);
+        app::ui::instPage::setInstBarPerc(100);
 
-        inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-        inst::ui::instPage::setInstBarPerc(0);
+        app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::ui::instPage::setInstBarPerc(0);
         while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreadsHttpNsp)
         {
             int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
-            inst::ui::instPage::setInstBarPerc((double)installProgress);
+            app::ui::instPage::setInstBarPerc((double)installProgress);
             std::stringstream x;
             x << (int)(installProgress);
-            inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
+            app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
         }
-        inst::ui::instPage::setInstBarPerc(100);
+        app::ui::instPage::setInstBarPerc(100);
 
         thrd_join(curlThread, NULL);
         thrd_join(writeThread, NULL);

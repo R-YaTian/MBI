@@ -3,7 +3,7 @@
 #include <pu/Plutonium>
 
 using namespace pu::ui::elm;
-namespace inst::ui {
+namespace app::ui {
     class usbHDDInstPage : public pu::ui::Layout
     {
         public:

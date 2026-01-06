@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <pu/Plutonium>
 
-namespace inst::util {
+namespace app::util {
     void initApp();
     void deinitApp();
     void reinitUsbComms();

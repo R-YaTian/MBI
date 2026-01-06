@@ -8,11 +8,11 @@
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
     static std::string getFreeSpaceText = nx::fs::GetFreeStorageSpace();
     static std::string getFreeSpaceOldText = getFreeSpaceText;
-    static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
+    static std::string* getBatteryChargeText = app::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
 
     instPage::instPage() : Layout::Layout() {
@@ -21,7 +21,7 @@ namespace inst::ui {
         this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
         this->infoRect = Rectangle::New(0, 94, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
-        this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
+        this->appVersionText = TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
@@ -32,10 +32,10 @@ namespace inst::ui {
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 121, "");
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
         this->installInfoText = TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");
         this->installInfoText->SetFont("DefaultFont@30");
-        this->installInfoText->SetColor(COLOR(inst::config::themeColorTextInstall));
+        this->installInfoText->SetColor(COLOR(app::config::themeColorTextInstall));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->topRect);
@@ -96,7 +96,7 @@ namespace inst::ui {
             mainApp->optionspage->freeSpaceText->SetText("misc.sd_free"_lang+": " + getFreeSpaceText);
         }
 
-        getBatteryChargeText = inst::util::getBatteryCharge();
+        getBatteryChargeText = app::util::getBatteryCharge();
         if (getBatteryChargeOldText[0] != getBatteryChargeText[0]) {
             getBatteryChargeOldText = getBatteryChargeText;
 

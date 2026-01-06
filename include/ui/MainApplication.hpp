@@ -8,7 +8,7 @@
 #include "ui/instPage.hpp"
 #include "ui/optionsPage.hpp"
 
-namespace inst::ui {
+namespace app::ui {
     class MainApplication : public pu::ui::Application {
         public:
             using Application::Application;

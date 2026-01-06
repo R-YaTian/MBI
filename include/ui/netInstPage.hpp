@@ -2,7 +2,7 @@
 #include <pu/Plutonium>
 
 using namespace pu::ui::elm;
-namespace inst::ui {
+namespace app::ui {
     class netInstPage : public pu::ui::Layout
     {
         public:

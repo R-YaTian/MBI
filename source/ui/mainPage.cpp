@@ -11,13 +11,13 @@
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
     bool appletFinished = false;
     static std::string getFreeSpaceText = nx::fs::GetFreeStorageSpace();
     static std::string getFreeSpaceOldText = getFreeSpaceText;
-    static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
+    static std::string* getBatteryChargeText = app::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
 
     void MainPage::mainMenuThread() {
@@ -25,11 +25,11 @@ namespace inst::ui {
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
             app::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded) {
-                inst::ui::appletFinished = true;
+                app::ui::appletFinished = true;
                 mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
             }
         } else if (!appletFinished) {
-            inst::ui::appletFinished = true;
+            app::ui::appletFinished = true;
             app::data::NUM_BUFFER_SEGMENTS = 128;
         }
         this->updateStatsThread();
@@ -41,7 +41,7 @@ namespace inst::ui {
         this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
         this->botRect = Rectangle::New(0, 659 * pu::ui::render::ScreenFactor, 1920, 92, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
-        this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
+        this->appVersionText = TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
@@ -52,29 +52,29 @@ namespace inst::ui {
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->butText = TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), inst::config::mainMenuItemSize, (894 / inst::config::mainMenuItemSize));
+        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (894 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->optionMenu->SetItemAlphaIncrementSteps(1);
         this->optionMenu->SetShadowBaseAlpha(0);
         this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
-        this->installMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->installMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
+        this->installMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->installMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
-        this->netInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->netInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/cloud-download.png"));
+        this->netInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->netInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
-        this->usbInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->usbInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->usbInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->usbHDDInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
-        this->usbHDDInstallMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->usbHDDInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/disk.png"));
+        this->usbHDDInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->usbHDDInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/disk.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
-        this->settingsMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->settingsMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/settings.png"));
+        this->settingsMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->settingsMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/settings.png"));
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
-        this->exitMenuItem->SetColor(COLOR(inst::config::themeColorTextMenu));
-        this->exitMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/exit-run.png"));
+        this->exitMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->exitMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->topRect);
         this->Add(this->botRect);
         this->Add(this->titleImage);
@@ -100,21 +100,21 @@ namespace inst::ui {
     }
 
     void MainPage::netInstallMenuItem_Click() {
-        if (inst::util::getIPAddress() == "1.0.0.127") {
-            inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
+        if (app::util::getIPAddress() == "1.0.0.127") {
+            app::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;
         }
         mainApp->netinstPage->startNetwork();
     }
 
     void MainPage::usbInstallMenuItem_Click() {
-        if (!inst::config::usbAck) {
+        if (!app::config::usbAck) {
             if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1) {
-                inst::config::usbAck = true;
-                inst::config::setConfig();
+                app::config::usbAck = true;
+                app::config::setConfig();
             }
         }
-        if (inst::util::usbIsConnected()) mainApp->usbinstPage->startUsb();
+        if (app::util::usbIsConnected()) mainApp->usbinstPage->startUsb();
         else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, {"common.ok"_lang}, false);
     }
 
@@ -124,7 +124,7 @@ namespace inst::ui {
 			mainApp->usbhddinstPage->menu->SetSelectedIndex(0);
 			mainApp->LoadLayout(mainApp->usbhddinstPage);
 		} else {
-			inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
+			app::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
 		}
     }
 
@@ -185,7 +185,7 @@ namespace inst::ui {
             mainApp->optionspage->freeSpaceText->SetText("misc.sd_free"_lang+": " + getFreeSpaceText);
         }
 
-        getBatteryChargeText = inst::util::getBatteryCharge();
+        getBatteryChargeText = app::util::getBatteryCharge();
         if (getBatteryChargeOldText[0] != getBatteryChargeText[0]) {
             getBatteryChargeOldText = getBatteryChargeText;
 

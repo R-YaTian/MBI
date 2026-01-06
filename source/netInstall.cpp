@@ -49,7 +49,7 @@ static int m_serverSocket = 0;
 static int m_clientSocket = 0;
 bool netConnected = false;
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
 }
 
@@ -93,7 +93,7 @@ namespace netInstStuff{
             close(m_serverSocket);
             m_serverSocket = 0;
         }
-        inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), {"OK"}, true);
+        app::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), {"OK"}, true);
     }
 
     void OnUnwound()
@@ -120,8 +120,8 @@ namespace netInstStuff{
 
     void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames, std::string ourSource)
     {
-        inst::util::initInstallServices();
-        inst::ui::instPage::loadInstallScreen();
+        app::util::initInstallServices();
+        app::ui::instPage::loadInstallScreen();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
@@ -131,19 +131,19 @@ namespace netInstStuff{
         std::vector<std::string> urlNames;
         if (urlListAltNames.size() > 0) {
             for (long unsigned int i = 0; i < urlListAltNames.size(); i++) {
-                urlNames.push_back(inst::util::shortenString(urlListAltNames[i], 28, true));
+                urlNames.push_back(app::util::shortenString(urlListAltNames[i], 28, true));
             }
         } else {
             for (long unsigned int i = 0; i < ourUrlList.size(); i++) {
-                urlNames.push_back(inst::util::shortenString(inst::util::formatUrlString(ourUrlList[i]), 28, true));
+                urlNames.push_back(app::util::shortenString(app::util::formatUrlString(ourUrlList[i]), 28, true));
             }
         }
 
         std::vector<int> previousClockValues;
-        if (inst::config::overClock) {
-            previousClockValues.push_back(inst::util::setClockSpeed(0, 1785000000)[0]);
-            previousClockValues.push_back(inst::util::setClockSpeed(1, 76800000)[0]);
-            previousClockValues.push_back(inst::util::setClockSpeed(2, 1600000000)[0]);
+        if (app::config::overClock) {
+            previousClockValues.push_back(app::util::setClockSpeed(0, 1785000000)[0]);
+            previousClockValues.push_back(app::util::setClockSpeed(1, 76800000)[0]);
+            previousClockValues.push_back(app::util::setClockSpeed(2, 1600000000)[0]);
         }
 
         try {
@@ -151,23 +151,23 @@ namespace netInstStuff{
             for (urlItr = 0; urlItr < urlCount; urlItr++) {
                 LOG_DEBUG("%s %s\n", "Install request from", ourUrlList[urlItr].c_str());
                 if (urlCount > 1) {
-                    inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(urlItr+1) + "/"  + std::to_string(urlCount) + ") " + urlNames[urlItr] + ourSource);
+                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(urlItr+1) + "/"  + std::to_string(urlCount) + ") " + urlNames[urlItr] + ourSource);
                 } else {
-                    inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
+                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                 }
                 std::unique_ptr<app::install::Install> installTask;
 
                 if (app::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
                     auto httpXCI = std::make_shared<app::install::xci::HTTPXCI>(ourUrlList[urlItr]);
-                    installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, httpXCI);
+                    installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, app::config::ignoreReqVers, httpXCI);
                 } else {
                     auto httpNSP = std::make_shared<app::install::nsp::HTTPNSP>(ourUrlList[urlItr]);
-                    installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, inst::config::ignoreReqVers, httpNSP);
+                    installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, app::config::ignoreReqVers, httpNSP);
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
-                inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
-                inst::ui::instPage::setInstBarPerc(0);
+                app::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
+                app::ui::instPage::setInstBarPerc(0);
                 installTask->Prepare();
                 installTask->InstallTicketCert();
                 installTask->Begin();
@@ -177,51 +177,51 @@ namespace netInstStuff{
             LOG_DEBUG("Failed to install");
             LOG_DEBUG("%s", e.what());
             fprintf(stdout, "%s", e.what());
-            inst::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
-            inst::ui::instPage::setInstBarPerc(0);
-            if (inst::config::enableLightning) {
-                inst::util::lightningStart();
+            app::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
+            app::ui::instPage::setInstBarPerc(0);
+            if (app::config::enableLightning) {
+                app::util::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
-            if (std::filesystem::exists(inst::config::appDir + "/fail.wav")) audioPath = inst::config::appDir + "/fail.wav";
-            std::thread audioThread(inst::util::playAudio, audioPath);
-            inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
+            if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
+            std::thread audioThread(app::util::playAudio, audioPath);
+            app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
-            if (inst::config::enableLightning) {
-                inst::util::lightningStop();
+            if (app::config::enableLightning) {
+                app::util::lightningStop();
             }
             nspInstalled = false;
         }
 
         if (previousClockValues.size() > 0) {
-            inst::util::setClockSpeed(0, previousClockValues[0]);
-            inst::util::setClockSpeed(1, previousClockValues[1]);
-            inst::util::setClockSpeed(2, previousClockValues[2]);
+            app::util::setClockSpeed(0, previousClockValues[0]);
+            app::util::setClockSpeed(1, previousClockValues[1]);
+            app::util::setClockSpeed(2, previousClockValues[2]);
         }
 
-        sendExitCommands(inst::util::formatUrlLink(ourUrlList[0]));
+        sendExitCommands(app::util::formatUrlLink(ourUrlList[0]));
         OnUnwound();
 
         if(nspInstalled) {
-            inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
-            inst::ui::instPage::setInstBarPerc(100);
-            if (inst::config::enableLightning) {
-                inst::util::lightningStart();
+            app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
+            app::ui::instPage::setInstBarPerc(100);
+            if (app::config::enableLightning) {
+                app::util::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
-            if (std::filesystem::exists(inst::config::appDir + "/success.wav")) audioPath = inst::config::appDir + "/success.wav";
-            std::thread audioThread(inst::util::playAudio, audioPath);
-            if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
-            else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
+            if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
+            std::thread audioThread(app::util::playAudio, audioPath);
+            if (ourUrlList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
+            else app::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
             audioThread.join();
-            if (inst::config::enableLightning) {
-                inst::util::lightningStop();
+            if (app::config::enableLightning) {
+                app::util::lightningStop();
             }
         }
         
         LOG_DEBUG("Done");
-        inst::ui::instPage::loadMainMenu();
-        inst::util::deinitInstallServices();
+        app::ui::instPage::loadMainMenu();
+        app::util::deinitInstallServices();
         return;
     }
 
@@ -251,9 +251,9 @@ namespace netInstStuff{
                 }
             }
 
-            std::string ourIPAddress = inst::util::getIPAddress();
-            inst::ui::mainApp->netinstPage->pageInfoText->SetText("inst.net.top_info1"_lang + ourIPAddress);
-            inst::ui::mainApp->CallForRender();
+            std::string ourIPAddress = app::util::getIPAddress();
+            app::ui::mainApp->netinstPage->pageInfoText->SetText("inst.net.top_info1"_lang + ourIPAddress);
+            app::ui::mainApp->CallForRender();
             netConnected = false;
             LOG_DEBUG("%s %s\n", "Switch IP is ", ourIPAddress.c_str());
             LOG_DEBUG("%s\n", "Waiting for network");
@@ -267,7 +267,7 @@ namespace netInstStuff{
                 u64 newTime = armGetSystemTick();
                 if (newTime - startTime >= freq * 0.25) {
                     startTime = newTime;
-                    inst::ui::mainApp->CallForRender();
+                    app::ui::mainApp->CallForRender();
                 }
 
                 // Break on input pressed
@@ -284,21 +284,21 @@ namespace netInstStuff{
                 }
                 if (kDown & HidNpadButton_Minus)
                 {
-                    inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true);
+                    app::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true);
                 }
 
                 if (kDown & HidNpadButton_X) {
-                    std::string url = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl, 500);
+                    std::string url = app::util::softwareKeyboard("inst.net.url.hint"_lang, app::config::httpIndexUrl, 500);
                     if (url == "")
                         url = "https://";
 
                     std::string response;
-                    if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://") {
-                        inst::ui::mainApp->CreateShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
+                    if (app::util::formatUrlString(url) == "" || url == "https://" || url == "http://") {
+                        app::ui::mainApp->CreateShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
                         goto back_to_loop;
                     } else {
-                        inst::config::httpIndexUrl = url;
-                        inst::config::setConfig();
+                        app::config::httpIndexUrl = url;
+                        app::config::setConfig();
                         if (url[url.size() - 1] != '/')
                             url += '/';
                         response = app::network::downloadToBuffer(url);
@@ -339,7 +339,7 @@ namespace netInstStuff{
                         }
                     } else
                         LOG_DEBUG("Failed to fetch game list\n");
-                    inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true);
+                    app::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true);
                 }
 back_to_loop:
                 struct sockaddr_in client;
@@ -372,7 +372,7 @@ back_to_loop:
                     std::string segment;
 
                     while (std::getline(urlStream, segment, '\n')) urls.push_back(segment);
-                    std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
+                    std::sort(urls.begin(), urls.end(), app::util::ignoreCaseCompare);
 
                     break;
                 }
@@ -392,7 +392,7 @@ back_to_loop:
             LOG_DEBUG("Failed to perform remote install!\n");
             LOG_DEBUG("%s", e.what());
             fprintf(stdout, "%s", e.what());
-            inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true);
+            app::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true);
             return {};
         }
     }

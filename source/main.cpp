@@ -8,7 +8,7 @@
 using namespace pu::ui::render;
 int main(int argc, char* argv[])
 {
-    inst::util::initApp();
+    app::util::initApp();
     try {
         auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
         renderer_opts.UseImage(pu::ui::render::ImgAllFlags);
@@ -25,12 +25,12 @@ int main(int argc, char* argv[])
         Mix_Init(pu::audio::MixerAllFlags);
 
         auto renderer = Renderer::New(renderer_opts);
-        auto main = inst::ui::MainApplication::New(renderer);
+        auto main = app::ui::MainApplication::New(renderer);
         main->Load();
         main->ShowWithFadeIn();
     } catch (std::exception& e) {
         LOG_DEBUG("An error occurred:\n%s", e.what());
     }
-    inst::util::deinitApp();
+    app::util::deinitApp();
     return 0;
 }

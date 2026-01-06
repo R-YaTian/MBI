@@ -33,7 +33,7 @@ SOFTWARE.
 #include "install/nca.hpp"
 #include "ui/MainApplication.hpp"
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
 }
 
@@ -93,7 +93,7 @@ namespace app::install::xci
 
         LOG_DEBUG("Size: 0x%lx\n", ncaSize);
 
-        if (inst::config::validateNCAs && !m_declinedValidation)
+        if (app::config::validateNCAs && !m_declinedValidation)
         {
             app::install::NcaHeader* header = new NcaHeader;
             m_xci->BufferData(header, m_xci->GetDataOffset() + fileEntry->dataOffset, sizeof(app::install::NcaHeader));
@@ -106,16 +106,16 @@ namespace app::install::xci
 
             if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature))
             {
-                if (inst::config::enableLightning) {
-                    inst::util::lightningStart();
+                if (app::config::enableLightning) {
+                    app::util::lightningStart();
                 }
                 std::string audioPath = "romfs:/audio/fail.wav";
-                if (std::filesystem::exists(inst::config::appDir + "/fail.wav")) audioPath = inst::config::appDir + "/fail.wav";
-                std::thread audioThread(inst::util::playAudio, audioPath);
-                int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
+                if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
+                std::thread audioThread(app::util::playAudio, audioPath);
+                int rc = app::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
                 audioThread.join();
-                if (inst::config::enableLightning) {
-                    inst::util::lightningStop();
+                if (app::config::enableLightning) {
+                    app::util::lightningStop();
                 }
                 if (rc != 1)
                     THROW_FORMAT(("inst.nca_verify.error"_lang + app::util::GetNcaIdString(ncaId)).c_str());
@@ -178,7 +178,7 @@ namespace app::install::xci
             m_xci->BufferData(certBuf.get(), m_xci->GetDataOffset() + certFileEntries[i]->dataOffset, certSize);
 
             // try to fix a temp ticket and change it to a permanent one
-            if (inst::config::fixTicket) {
+            if (app::config::fixTicket) {
                 u16 ECDSA = 0;
                 u16 RSA_2048 = 0;
                 u16 RSA_4096 = 0;

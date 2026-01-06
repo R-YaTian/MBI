@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace inst::config {
+namespace app::config {
     static const std::string appDir = "sdmc:/config/MBI";
     static const std::string configPath = appDir + "/config.json";
     static const std::string themecolorPath = appDir + "/themecolor.json";

@@ -12,13 +12,13 @@
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-namespace inst::ui {
+namespace app::ui {
     extern MainApplication *mainApp;
     std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국전통", "Português", "Русский", "简体中文","正體中文"};
     static s32 prev_touchcount = 0;
     static std::string getFreeSpaceText = nx::fs::GetFreeStorageSpace();
     static std::string getFreeSpaceOldText = getFreeSpaceText;
-    static std::string* getBatteryChargeText = inst::util::getBatteryCharge();
+    static std::string* getBatteryChargeText = app::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
 
     optionsPage::optionsPage() : Layout::Layout() {
@@ -28,7 +28,7 @@ namespace inst::ui {
         this->infoRect = Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
         this->botRect = Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->titleImage = Image::New(0, 0, mainApp->logoImg);
-        this->appVersionText = TextBlock::New(490, 29, "v" + inst::config::appVersion);
+        this->appVersionText = TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang+": " + getBatteryChargeText[0]);
@@ -39,11 +39,11 @@ namespace inst::ui {
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(inst::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
         this->butText = TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "options.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(inst::config::themeColorTextBottomInfo));
-        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), inst::config::subMenuItemSize, (836 / inst::config::subMenuItemSize));
+        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
@@ -104,38 +104,38 @@ namespace inst::ui {
     void optionsPage::setMenuText() {
         this->menu->ClearItems();
         auto ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
-        ignoreFirmOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        ignoreFirmOption->SetIcon(this->getMenuOptionIcon(inst::config::ignoreReqVers));
+        ignoreFirmOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
         this->menu->AddItem(ignoreFirmOption);
         auto validateOption = pu::ui::elm::MenuItem::New("options.menu_items.nca_verify"_lang);
-        validateOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        validateOption->SetIcon(this->getMenuOptionIcon(inst::config::validateNCAs));
+        validateOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        validateOption->SetIcon(this->getMenuOptionIcon(app::config::validateNCAs));
         this->menu->AddItem(validateOption);
         auto overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
-        overclockOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        overclockOption->SetIcon(this->getMenuOptionIcon(inst::config::overClock));
+        overclockOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
         this->menu->AddItem(overclockOption);
         auto deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
-        deletePromptOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        deletePromptOption->SetIcon(this->getMenuOptionIcon(inst::config::deletePrompt));
+        deletePromptOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
         this->menu->AddItem(deletePromptOption);
         auto enableSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.enableSound"_lang);
-        enableSoundOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        enableSoundOption->SetIcon(this->getMenuOptionIcon(inst::config::enableSound));
+        enableSoundOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
         this->menu->AddItem(enableSoundOption);
         auto enableLightningOption = pu::ui::elm::MenuItem::New("options.menu_items.enableLightning"_lang);
-        enableLightningOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        enableLightningOption->SetIcon(this->getMenuOptionIcon(inst::config::enableLightning));
+        enableLightningOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
         this->menu->AddItem(enableLightningOption);
         auto fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
-        fixTicketOption->SetColor(COLOR(inst::config::themeColorTextMenu));
-        fixTicketOption->SetIcon(this->getMenuOptionIcon(inst::config::fixTicket));
+        fixTicketOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
         this->menu->AddItem(fixTicketOption);
-        auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(inst::config::languageSetting));
-        languageOption->SetColor(COLOR(inst::config::themeColorTextMenu));
+        auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
+        languageOption->SetColor(COLOR(app::config::themeColorTextMenu));
         this->menu->AddItem(languageOption);
         auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
-        creditsOption->SetColor(COLOR(inst::config::themeColorTextMenu));
+        creditsOption->SetColor(COLOR(app::config::themeColorTextMenu));
         this->menu->AddItem(creditsOption);
     }
 
@@ -150,46 +150,46 @@ namespace inst::ui {
             std::vector<std::string> languageList;
             switch (this->menu->GetSelectedIndex()) {
                 case 0:
-                    inst::config::ignoreReqVers = !inst::config::ignoreReqVers;
-                    inst::config::setConfig();
+                    app::config::ignoreReqVers = !app::config::ignoreReqVers;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(0);
                     break;
                 case 1:
-                    if (inst::config::validateNCAs) {
-                        if (inst::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, {"common.cancel"_lang, "options.nca_warn.opt1"_lang}, false) == 1) inst::config::validateNCAs = false;
-                    } else inst::config::validateNCAs = true;
-                    inst::config::setConfig();
+                    if (app::config::validateNCAs) {
+                        if (app::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, {"common.cancel"_lang, "options.nca_warn.opt1"_lang}, false) == 1) app::config::validateNCAs = false;
+                    } else app::config::validateNCAs = true;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(1);
                     break;
                 case 2:
-                    inst::config::overClock = !inst::config::overClock;
-                    inst::config::setConfig();
+                    app::config::overClock = !app::config::overClock;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(2);
                     break;
                 case 3:
-                    inst::config::deletePrompt = !inst::config::deletePrompt;
-                    inst::config::setConfig();
+                    app::config::deletePrompt = !app::config::deletePrompt;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(3);
                     break;
                 case 4:
-                    inst::config::enableSound = !inst::config::enableSound;
-                    inst::config::setConfig();
+                    app::config::enableSound = !app::config::enableSound;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(4);
                     break;
                 case 5:
-                    inst::config::enableLightning = !inst::config::enableLightning;
-                    inst::config::setConfig();
+                    app::config::enableLightning = !app::config::enableLightning;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(5);
                     break;
                 case 6:
-                    inst::config::fixTicket = !inst::config::fixTicket;
-                    inst::config::setConfig();
+                    app::config::fixTicket = !app::config::fixTicket;
+                    app::config::setConfig();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(6);
                     break;
@@ -199,51 +199,51 @@ namespace inst::ui {
                         languageList.push_back(languageStrings[i]);
                     }
                     languageList.push_back("options.language.system_language"_lang);
-                    rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false);
+                    rc = app::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false);
                     if (rc == -1) break;
                     switch(rc) {
                         case 0:
-                            inst::config::languageSetting = 1;
+                            app::config::languageSetting = 1;
                             break;
                         case 1:
-                            inst::config::languageSetting = 0;
+                            app::config::languageSetting = 0;
                             break;
                         case 2:
-                            inst::config::languageSetting = 2;
+                            app::config::languageSetting = 2;
                             break;
                         case 3:
-                            inst::config::languageSetting = 3;
+                            app::config::languageSetting = 3;
                             break;
                         case 4:
-                            inst::config::languageSetting = 4;
+                            app::config::languageSetting = 4;
                             break;
                         case 5:
-                            inst::config::languageSetting = 14;
+                            app::config::languageSetting = 14;
                             break;
                         case 6:
-                            inst::config::languageSetting = 7;
+                            app::config::languageSetting = 7;
                             break;
                         case 7:
-                            inst::config::languageSetting = 9;
+                            app::config::languageSetting = 9;
                             break;
                         case 8:
-                            inst::config::languageSetting = 10;
+                            app::config::languageSetting = 10;
                             break;
                         case 9:
-                            inst::config::languageSetting = 6;
+                            app::config::languageSetting = 6;
                             break;
                         case 10:
-                            inst::config::languageSetting = 11;
+                            app::config::languageSetting = 11;
                             break;
                         default:
-                            inst::config::languageSetting = 99;
+                            app::config::languageSetting = 99;
                     }
-                    inst::config::setConfig();
+                    app::config::setConfig();
                     mainApp->FadeOut();
                     mainApp->Close();
                     break;
                 case 8:
-                    inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
+                    app::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
                     break;
                 default:
                     break;
@@ -266,7 +266,7 @@ namespace inst::ui {
             mainApp->optionspage->freeSpaceText->SetText("misc.sd_free"_lang+": " + getFreeSpaceText);
         }
 
-        getBatteryChargeText = inst::util::getBatteryCharge();
+        getBatteryChargeText = app::util::getBatteryCharge();
         if (getBatteryChargeOldText[0] != getBatteryChargeText[0]) {
             getBatteryChargeOldText = getBatteryChargeText;
 

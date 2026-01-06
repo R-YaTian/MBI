@@ -3,7 +3,7 @@
 #include "util/config.hpp"
 #include "util/json.hpp"
 
-namespace inst::config {
+namespace app::config {
     std::string lastNetUrl;
     std::string httpIndexUrl;
     std::string themeColorTextTopInfo;
@@ -38,13 +38,13 @@ namespace inst::config {
             {"lastNetUrl", lastNetUrl},
             {"httpIndexUrl", httpIndexUrl}
         };
-        std::ofstream file(inst::config::configPath);
+        std::ofstream file(app::config::configPath);
         file << std::setw(4) << j << std::endl;
     }
 
     void parseConfig() {
         try {
-            std::ifstream file(inst::config::configPath);
+            std::ifstream file(app::config::configPath);
             nlohmann::json j;
             file >> j;
             fixTicket = j["fixTicket"].get<bool>();
@@ -78,7 +78,7 @@ namespace inst::config {
 
     void parseThemeColorConfig() {
         try {
-            std::ifstream file(inst::config::themecolorPath);
+            std::ifstream file(app::config::themecolorPath);
             nlohmann::json j;
             file >> j;
             try {

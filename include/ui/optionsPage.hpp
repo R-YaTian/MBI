@@ -2,7 +2,7 @@
 #include <pu/Plutonium>
 
 using namespace pu::ui::elm;
-namespace inst::ui {
+namespace app::ui {
     class optionsPage : public pu::ui::Layout
     {
         public:

@@ -17,12 +17,12 @@
 #include "nx/usbhdd.hpp"
 #include "util/error.hpp"
 
-namespace inst::util {
+namespace app::util {
     void initApp () {
         if (!std::filesystem::exists("sdmc:/config")) std::filesystem::create_directory("sdmc:/config");
-        if (!std::filesystem::exists(inst::config::appDir)) std::filesystem::create_directory(inst::config::appDir);
-        inst::config::parseConfig();
-        inst::config::parseThemeColorConfig();
+        if (!std::filesystem::exists(app::config::appDir)) std::filesystem::create_directory(app::config::appDir);
+        app::config::parseConfig();
+        app::config::parseThemeColorConfig();
 
         socketInitializeDefault();
         #ifdef __DEBUG__
@@ -282,7 +282,7 @@ namespace inst::util {
 
         Mix_Chunk *sound = NULL;
         sound = Mix_LoadWAV(audioPath.c_str());
-        if(sound == NULL || !inst::config::enableSound) {
+        if(sound == NULL || !app::config::enableSound) {
             Mix_FreeChunk(sound);
             Mix_CloseAudio();
             return;

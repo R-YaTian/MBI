@@ -11,7 +11,7 @@ namespace Language {
     void Load() {
         std::ifstream ifs;
         std::string languagePath;
-        int langInt = inst::config::languageSetting;
+        int langInt = app::config::languageSetting;
         if (langInt == 99) {
             SetLanguage ourLang;
             u64 lcode = 0;
