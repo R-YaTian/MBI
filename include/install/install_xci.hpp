@@ -25,7 +25,7 @@ SOFTWARE.
 #include <switch.h>
 #include "install/install.hpp"
 #include "install/xci.hpp"
-#include "nx/content_meta.hpp"
+#include "nx/ncm.hpp"
 #include <switch-ipcext.h>
 
 namespace app::install::xci

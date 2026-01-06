@@ -31,7 +31,6 @@ SOFTWARE.
 namespace nx::fs
 {
     // IFile
-
     IFile::IFile(FsFile& file)
     {
         m_file = file;
@@ -60,7 +59,6 @@ namespace nx::fs
         ASSERT_OK(fsFileGetSize(&m_file, &sizeOut), "Failed to get file size");
         return sizeOut;
     }
-
     // End IFile
 
     // IDirectory
@@ -77,12 +75,6 @@ namespace nx::fs
     void IDirectory::Read(s64 inval, FsDirectoryEntry* buf, size_t numEntries)
     {
         ASSERT_OK(fsDirRead(&m_dir, &inval, numEntries, buf), "Failed to read directory");
-
-        /*if (entriesRead != numEntries)
-        {
-            std::string msg = "Entries read " + std::string("" + entriesRead) + " doesn't match expected number " + std::string("" + numEntries);
-            THROW_FORMAT(msg);
-        }*/
     }
 
     u64 IDirectory::GetEntryCount()
@@ -91,7 +83,6 @@ namespace nx::fs
         ASSERT_OK(fsDirGetEntryCount(&m_dir, &entryCount), "Failed to get entry count");
         return entryCount;
     }
-
     // End IDirectory
 
     IFileSystem::IFileSystem() {}

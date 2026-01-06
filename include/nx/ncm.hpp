@@ -23,8 +23,9 @@ SOFTWARE.
 #pragma once
 
 #include <string>
-
+#include <vector>
 #include <switch-ipcext.h>
+#include "data/byte_buffer.hpp"
 
 namespace nx::ncm
 {
@@ -48,5 +49,27 @@ namespace nx::ncm
             void Delete(const NcmContentId &registeredId);
             bool Has(const NcmContentId &registeredId);
             std::string GetPath(const NcmContentId &registeredId);
+    };
+
+    struct PackagedContentInfo
+    {
+        u8 hash[0x20];
+        NcmContentInfo content_info;
+    } NX_PACKED;
+
+    class ContentMeta final
+    {
+        private:
+            app::data::ByteBuffer m_bytes;
+
+        public:
+            ContentMeta();
+            ContentMeta(u8* data, size_t size);
+
+            NcmExtPackagedContentMetaHeader GetPackagedContentMetaHeader();
+            NcmContentMetaKey GetContentMetaKey();
+            std::vector<NcmContentInfo> GetContentInfos();
+
+            void GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
 }

@@ -26,7 +26,7 @@ SOFTWARE.
 #include <tuple>
 #include <vector>
 
-#include "nx/content_meta.hpp"
+#include "nx/ncm.hpp"
 
 namespace app::util
 {

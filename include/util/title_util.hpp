@@ -25,7 +25,7 @@ SOFTWARE.
 #include <switch/types.h>
 #include <switch-ipcext.h>
 #include <string>
-#include "nx/content_meta.hpp"
+#include "nx/ncm.hpp"
 
 namespace app::util
 {

@@ -29,7 +29,7 @@ SOFTWARE.
 #include "SimpleFileSystem.hpp"
 #include "data/byte_buffer.hpp"
 
-#include "nx/content_meta.hpp"
+#include "nx/ncm.hpp"
 
 #include <switch-ipcext.h>
 
