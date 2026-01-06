@@ -25,7 +25,7 @@ SOFTWARE.
 #include <threads.h>
 #include "install/nsp.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
-#include "util/title_util.hpp"
+#include "nx/nca.hpp"
 #include "nx/error.hpp"
 
 namespace app::install::nsp
@@ -106,7 +106,7 @@ namespace app::install::nsp
     const PFS0FileEntry* NSP::GetFileEntryByNcaId(const NcmContentId& ncaId)
     {
         const PFS0FileEntry* fileEntry = nullptr;
-        std::string ncaIdStr = app::util::GetNcaIdString(ncaId);
+        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
 
         if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr)
         {

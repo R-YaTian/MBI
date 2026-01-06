@@ -75,4 +75,5 @@ namespace nx::ncm
     };
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
+    u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
 }

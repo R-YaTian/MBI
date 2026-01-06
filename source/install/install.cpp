@@ -25,10 +25,9 @@ SOFTWARE.
 #include <switch.h>
 #include <cstring>
 #include <memory>
-#include "nx/error.hpp"
 
+#include "nx/error.hpp"
 #include "nx/ncm.hpp"
-#include "util/title_util.hpp"
 
 // TODO: Check NCA files are present
 // TODO: Check tik/cert is present
@@ -68,7 +67,7 @@ namespace app::install
 
     void Install::InstallApplicationRecord(int i)
     {
-        const u64 baseTitleId = app::util::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
+        const u64 baseTitleId = nx::ncm::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
 
         // Add our new content meta
         NsExtContentStorageMetaKey storageRecord;
@@ -122,7 +121,7 @@ namespace app::install
             LOG_DEBUG("Installing NCAs...\n");
             for (auto& record : contentMeta.GetContentInfos())
             {
-                LOG_DEBUG("Installing from %s\n", app::util::GetNcaIdString(record.content_id).c_str());
+                LOG_DEBUG("Installing from %s\n", nx::nca::GetNcaIdString(record.content_id).c_str());
                 this->InstallNCA(record.content_id);
             }
         }

@@ -28,7 +28,7 @@ SOFTWARE.
 #include <memory>
 
 #include "nx/ncm.hpp"
-#include "nx/nca_writer.hpp"
+#include "nx/NcaWriter.hpp"
 
 namespace nx::data
 {

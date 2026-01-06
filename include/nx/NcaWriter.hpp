@@ -21,9 +21,11 @@ SOFTWARE.
 */
 
 #pragma once
+
 #include <switch.h>
 #include <vector>
 #include <memory>
+
 #include "nx/ncm.hpp"
 #include "nx/nca.hpp"
 
@@ -33,7 +35,7 @@ public:
 	NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
 	virtual ~NcaBodyWriter();
 	virtual u64 write(const  u8* ptr, u64 sz);
-	
+
 	bool isOpen() const;
 
 protected:

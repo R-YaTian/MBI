@@ -1,6 +1,6 @@
 #include "install/sdmc_nsp.hpp"
 #include "nx/error.hpp"
-#include "nx/nca_writer.hpp"
+#include "nx/NcaWriter.hpp"
 #include "ui/instPage.hpp"
 #include "util/lang.hpp"
 

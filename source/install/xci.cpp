@@ -21,7 +21,7 @@ SOFTWARE.
 */
 
 #include "install/xci.hpp"
-#include "util/title_util.hpp"
+#include "nx/nca.hpp"
 #include "nx/error.hpp"
 
 namespace app::install::xci
@@ -119,7 +119,7 @@ namespace app::install::xci
     const HFS0FileEntry* XCI::GetFileEntryByNcaId(const NcmContentId& ncaId)
     {
         const HFS0FileEntry* fileEntry = nullptr;
-        std::string ncaIdStr = app::util::GetNcaIdString(ncaId);
+        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
 
         if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr)
         {

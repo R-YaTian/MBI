@@ -20,13 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "nx/nca_writer.hpp"
+#include "nx/NcaWriter.hpp"
+#include "nx/Crypto.hpp"
 #include "nx/error.hpp"
 
 #include <zstd.h>
 #include <string.h>
-
-#include "util/crypto.hpp"
 
 void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
@@ -60,12 +59,12 @@ bool NcaBodyWriter::isOpen() const
     return m_contentStorage != NULL;
 }
 
-//code - https://github.com/nicoboss/nsz
-//https://github.com/nicoboss/nsz/blob/master/nsz/NszDecompressor.py
-//https://www.w3schools.com/cpp/cpp_classes.asp
-//https://github.com/minetest/minetestmapper/blob/master/ZstdDecompressor.cpp
-//https://github.com/nicoboss/nsz/blob/master/nsz/BlockDecompressorReader.py
-//https://switchbrew.org/wiki/NCA
+// code - https://github.com/nicoboss/nsz
+// https://github.com/nicoboss/nsz/blob/master/nsz/NszDecompressor.py
+// https://www.w3schools.com/cpp/cpp_classes.asp
+// https://github.com/minetest/minetestmapper/blob/master/ZstdDecompressor.cpp
+// https://github.com/nicoboss/nsz/blob/master/nsz/BlockDecompressorReader.py
+// https://switchbrew.org/wiki/NCA
 
 class NczHeader
 {
@@ -88,7 +87,7 @@ public:
     class SectionContext : public Section
     {
     public:
-        SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, Crypto::AesCtr(Crypto::swapEndian(((u64*)&s.cryptoCounter)[0])))
+        SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, nx::Crypto::AesCtr(nx::Crypto::swapEndian(((u64*)&s.cryptoCounter)[0])))
         {
         }
 
@@ -116,7 +115,7 @@ public:
                 return;
         }
 
-        Crypto::Aes128Ctr crypto;
+        nx::Crypto::Aes128Ctr crypto;
     };
 
     const bool isValid()
@@ -462,8 +461,8 @@ void NcaWriter::flushHeader()
 {
     nx::nca::NcaHeader header;
     memcpy(&header, m_buffer.data(), sizeof(header));
-    Crypto::AesXtr decryptor(Crypto::Keys().headerKey, false);
-    Crypto::AesXtr encryptor(Crypto::Keys().headerKey, true);
+    nx::Crypto::AesXtr decryptor(nx::Crypto::Keys().headerKey, false);
+    nx::Crypto::AesXtr encryptor(nx::Crypto::Keys().headerKey, true);
     decryptor.decrypt(&header, &header, sizeof(header), 0, 0x200);
 
     if (header.magic == MAGIC_NCA3)

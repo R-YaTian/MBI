@@ -1,10 +1,10 @@
-#include "util/crypto.hpp"
+#include "nx/Crypto.hpp"
 
 #include <stdexcept>
 #include <string.h>
 #include <mbedtls/bignum.h>
 
-void Crypto::calculateMGF1andXOR(unsigned char* data, size_t data_size, const void* source, size_t source_size) {
+void nx::Crypto::calculateMGF1andXOR(unsigned char* data, size_t data_size, const void* source, size_t source_size) {
     unsigned char h_buf[RSA_2048_BYTES] = {0};
     memcpy(h_buf, source, source_size);
 
@@ -24,7 +24,7 @@ void Crypto::calculateMGF1andXOR(unsigned char* data, size_t data_size, const vo
     }
 }
 
-bool Crypto::rsa2048PssVerify(const void *data, size_t len, const unsigned char *signature, const unsigned char *modulus) {
+bool nx::Crypto::rsa2048PssVerify(const void *data, size_t len, const unsigned char *signature, const unsigned char *modulus) {
     mbedtls_mpi signature_mpi;
     mbedtls_mpi modulus_mpi;
     mbedtls_mpi e_mpi;

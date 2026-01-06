@@ -25,7 +25,6 @@ SOFTWARE.
 #include <switch.h>
 #include <threads.h>
 #include "nx/BufferedPlaceholderWriter.hpp"
-#include "util/title_util.hpp"
 #include "nx/error.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"

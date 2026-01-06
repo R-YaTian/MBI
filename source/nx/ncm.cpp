@@ -194,4 +194,19 @@ namespace nx::ncm
 
         return ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
     }
+
+    u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType)
+    {
+        switch (contentMetaType)
+        {
+            case NcmContentMetaType_Patch:
+                return titleId ^ 0x800;
+
+            case NcmContentMetaType_AddOnContent:
+                return (titleId ^ 0x1000) & ~0xFFF;
+
+            default:
+                return titleId;
+        }
+    }
 }

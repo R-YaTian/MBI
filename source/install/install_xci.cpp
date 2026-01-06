@@ -23,11 +23,10 @@ SOFTWARE.
 #include <thread>
 
 #include "install/install_xci.hpp"
-#include "util/title_util.hpp"
 #include "util/config.hpp"
-#include "util/crypto.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
+#include "nx/Crypto.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
 #include "ui/MainApplication.hpp"
@@ -50,7 +49,7 @@ namespace app::install::xci
 
         for (const HFS0FileEntry* fileEntry : m_xci->GetFileEntriesByExtension("cnmt.nca")) {
             std::string cnmtNcaName(m_xci->GetFileEntryName(fileEntry));
-            NcmContentId cnmtContentId = app::util::GetNcaIdFromString(cnmtNcaName);
+            NcmContentId cnmtContentId = nx::nca::GetNcaIdFromString(cnmtNcaName);
             size_t cnmtNcaSize = fileEntry->fileSize;
 
             nx::ncm::ContentStorage contentStorage(m_destStorageId);
@@ -97,13 +96,13 @@ namespace app::install::xci
             nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
             m_xci->BufferData(header, m_xci->GetDataOffset() + fileEntry->dataOffset, sizeof(nx::nca::NcaHeader));
 
-            Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
+            nx::Crypto::AesXtr crypto(nx::Crypto::Keys().headerKey, false);
             crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
 
             if (header->magic != MAGIC_NCA3)
                 THROW_FORMAT("Invalid NCA magic");
 
-            if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature))
+            if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
             {
                 if (app::config::enableLightning) {
                     app::util::lightningStart();
@@ -117,7 +116,7 @@ namespace app::install::xci
                     app::util::lightningStop();
                 }
                 if (rc != 1)
-                    THROW_FORMAT(("inst.nca_verify.error"_lang + app::util::GetNcaIdString(ncaId)).c_str());
+                    THROW_FORMAT(("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId)).c_str());
                 m_declinedValidation = true;
             }
             delete header;
