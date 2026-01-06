@@ -129,6 +129,7 @@ namespace app::ui {
         if (Down & HidNpadButton_B) {
             app::util::USBCmdManager::SendExitCmd();
             mainApp->LoadLayout(mainApp->mainPage);
+            app::util::reinitUsbComms();
         }
         if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
             prev_touchcount = 0;
