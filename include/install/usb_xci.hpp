@@ -25,7 +25,7 @@ SOFTWARE.
 #include <string>
 #include "install/xci.hpp"
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     class USBXCI : public XCI
     {

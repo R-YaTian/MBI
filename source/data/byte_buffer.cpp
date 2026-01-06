@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "util/error.hpp"
 
-namespace tin::data
+namespace app::data
 {
     ByteBuffer::ByteBuffer(size_t reserveSize)
     {

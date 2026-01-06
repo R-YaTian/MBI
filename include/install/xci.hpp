@@ -30,7 +30,7 @@ SOFTWARE.
 #include "nx/ncm.hpp"
 #include <memory>
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     class XCI
     {

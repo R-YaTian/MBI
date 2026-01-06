@@ -23,14 +23,14 @@ namespace inst::ui {
     void MainPage::mainMenuThread() {
         bool menuLoaded = mainApp->IsShown();
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
-            tin::data::NUM_BUFFER_SEGMENTS = 2;
+            app::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded) {
                 inst::ui::appletFinished = true;
                 mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
             }
         } else if (!appletFinished) {
             inst::ui::appletFinished = true;
-            tin::data::NUM_BUFFER_SEGMENTS = 128;
+            app::data::NUM_BUFFER_SEGMENTS = 128;
         }
         this->updateStatsThread();
     }

@@ -25,7 +25,7 @@ SOFTWARE.
 #include <switch/types.h>
 #include "data/byte_buffer.hpp"
 
-namespace tin::data
+namespace app::data
 {
     class ByteStream
     {

@@ -30,7 +30,7 @@ SOFTWARE.
 #include "nx/ncm.hpp"
 #include "util/network_util.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class NSP
     {

@@ -25,12 +25,12 @@ SOFTWARE.
 #include "install/nsp.hpp"
 #include <memory>
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class HTTPNSP : public NSP
     {
         public:
-            tin::network::HTTPDownload m_download;
+            app::network::HTTPDownload m_download;
 
             HTTPNSP(std::string url);
 

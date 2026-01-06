@@ -26,7 +26,7 @@ SOFTWARE.
 #include <cstring>
 #include <vector>
 
-namespace tin::data
+namespace app::data
 {
     class ByteBuffer
     {

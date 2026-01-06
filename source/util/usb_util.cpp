@@ -26,7 +26,7 @@ SOFTWARE.
 #include "data/byte_buffer.hpp"
 #include "error.hpp"
 
-namespace tin::util
+namespace app::util
 {
     void USBCmdManager::SendCmdHeader(u32 cmdId, size_t dataSize)
     {

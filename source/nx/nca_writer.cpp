@@ -461,7 +461,7 @@ u64 NcaWriter::write(const  u8* ptr, u64 sz)
 
 void NcaWriter::flushHeader()
 {
-    tin::install::NcaHeader header;
+    app::install::NcaHeader header;
     memcpy(&header, m_buffer.data(), sizeof(header));
     Crypto::AesXtr decryptor(Crypto::Keys().headerKey, false);
     Crypto::AesXtr encryptor(Crypto::Keys().headerKey, true);

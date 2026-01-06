@@ -37,7 +37,7 @@ extern "C"
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
 
-namespace tin::install
+namespace app::install
 {
     class Install
     {
@@ -52,7 +52,7 @@ namespace tin::install
 
             virtual std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() = 0;
 
-            virtual void InstallContentMetaRecords(tin::data::ByteBuffer& installContentMetaBuf, int i);
+            virtual void InstallContentMetaRecords(app::data::ByteBuffer& installContentMetaBuf, int i);
             virtual void InstallApplicationRecord(int i);
             virtual void InstallNCA(const NcmContentId &ncaId) = 0;
 

@@ -31,7 +31,7 @@ SOFTWARE.
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     bool stopThreadsHttpNsp;
 
@@ -43,8 +43,8 @@ namespace tin::install::nsp
 
     struct StreamFuncArgs
     {
-        tin::network::HTTPDownload* download;
-        tin::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        app::network::HTTPDownload* download;
+        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -90,7 +90,7 @@ namespace tin::install::nsp
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        tin::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
+        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
         StreamFuncArgs args;
         args.download = &m_download;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;

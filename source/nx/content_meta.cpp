@@ -83,7 +83,7 @@ namespace nx::ncm
         return contentInfos;
     }
 
-    void ContentMeta::GetInstallContentMeta(tin::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtNcmContentInfo, bool ignoreReqFirmVersion)
+    void ContentMeta::GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtNcmContentInfo, bool ignoreReqFirmVersion)
     {
         PackagedContentMetaHeader packagedContentMetaHeader = this->GetPackagedContentMetaHeader();
         std::vector<NcmContentInfo> contentInfos = this->GetContentInfos();

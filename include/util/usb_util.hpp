@@ -25,7 +25,7 @@ SOFTWARE.
 #include <switch.h>
 #include <string>
 
-namespace tin::util
+namespace app::util
 {
     enum USBCmdType : u8
     {

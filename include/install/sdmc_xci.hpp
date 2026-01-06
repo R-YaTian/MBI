@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "install/xci.hpp"
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     class SDMCXCI : public XCI
     {

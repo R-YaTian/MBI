@@ -26,12 +26,12 @@ SOFTWARE.
 #include "util/network_util.hpp"
 #include <memory>
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     class HTTPXCI : public XCI
     {
         public:
-            tin::network::HTTPDownload m_download;
+            app::network::HTTPDownload m_download;
 
             HTTPXCI(std::string url);
 

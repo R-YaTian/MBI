@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "install/nsp.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class SDMCNSP : public NSP
     {

@@ -27,7 +27,7 @@ SOFTWARE.
 #include "nx/fs.hpp"
 #include "util/error.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     SimpleFileSystem::SimpleFileSystem(nx::fs::IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :
         m_fileSystem(&fileSystem) , m_rootPath(rootPath), m_absoluteRootPath(absoluteRootPath)

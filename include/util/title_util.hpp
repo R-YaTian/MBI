@@ -27,7 +27,7 @@ SOFTWARE.
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
 
-namespace tin::util
+namespace app::util
 {
     u64 GetRightsIdTid(FsRightsId rightsId);
     u64 GetRightsIdKeyGen(FsRightsId rightsId);

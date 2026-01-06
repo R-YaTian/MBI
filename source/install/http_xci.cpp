@@ -29,7 +29,7 @@ SOFTWARE.
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     bool stopThreadsHttpXci;
 
@@ -41,8 +41,8 @@ namespace tin::install::xci
 
     struct StreamFuncArgs
     {
-        tin::network::HTTPDownload* download;
-        tin::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        app::network::HTTPDownload* download;
+        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -88,7 +88,7 @@ namespace tin::install::xci
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        tin::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
+        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
         StreamFuncArgs args;
         args.download = &m_download;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;

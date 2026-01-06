@@ -4,7 +4,7 @@
 #include "ui/instPage.hpp"
 #include "util/lang.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     SDMCNSP::SDMCNSP(std::string path)
     {

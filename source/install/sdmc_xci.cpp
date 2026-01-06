@@ -4,7 +4,7 @@
 #include "ui/instPage.hpp"
 #include "util/lang.hpp"
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     SDMCXCI::SDMCXCI(std::string path)
     {

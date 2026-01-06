@@ -43,7 +43,7 @@ extern "C" {
 }
 #endif
 
-namespace tin::network
+namespace app::network
 {
     class HTTPHeader
     {

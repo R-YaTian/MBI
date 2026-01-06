@@ -29,7 +29,7 @@ SOFTWARE.
 #include <sstream>
 #include "util/error.hpp"
 
-namespace tin::network
+namespace app::network
 {
     // HTTPHeader
 
@@ -85,7 +85,7 @@ namespace tin::network
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
         curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);
-        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &tin::network::HTTPHeader::ParseHTMLHeader);
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &app::network::HTTPHeader::ParseHTMLHeader);
 
         rc = curl_easy_perform(curl);
         if (rc != CURLE_OK)
@@ -216,7 +216,7 @@ namespace tin::network
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
         curl_easy_setopt(curl, CURLOPT_RANGE, range.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeDataFunc);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &tin::network::HTTPDownload::ParseHTMLData);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &app::network::HTTPDownload::ParseHTMLData);
 
         rc = curl_easy_perform(curl);
 

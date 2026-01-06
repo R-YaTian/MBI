@@ -25,7 +25,7 @@ SOFTWARE.
 #include <functional>
 #include "nx/fs.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class SimpleFileSystem final
     {

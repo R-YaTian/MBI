@@ -33,7 +33,7 @@ SOFTWARE.
 
 // TODO: Check NCA files are present
 // TODO: Check tik/cert is present
-namespace tin::install
+namespace app::install
 {
     Install::Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion) :
         m_destStorageId(destStorageId), m_ignoreReqFirmVersion(ignoreReqFirmVersion), m_contentMeta()
@@ -47,7 +47,7 @@ namespace tin::install
     }
 
     // TODO: Implement RAII on NcmContentMetaDatabase
-    void Install::InstallContentMetaRecords(tin::data::ByteBuffer& installContentMetaBuf, int i)
+    void Install::InstallContentMetaRecords(app::data::ByteBuffer& installContentMetaBuf, int i)
     {
         NcmContentMetaDatabase contentMetaDatabase;
         NcmContentMetaKey contentMetaKey = m_contentMeta[i].GetContentMetaKey();
@@ -69,7 +69,7 @@ namespace tin::install
 
     void Install::InstallApplicationRecord(int i)
     {
-        const u64 baseTitleId = tin::util::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
+        const u64 baseTitleId = app::util::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
 
         // Add our new content meta
         ContentStorageRecord storageRecord;
@@ -83,7 +83,7 @@ namespace tin::install
     // Validate and obtain all data needed for install
     void Install::Prepare()
     {
-        tin::data::ByteBuffer cnmtBuf;
+        app::data::ByteBuffer cnmtBuf;
 
         std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadCNMT();
         
@@ -109,7 +109,7 @@ namespace tin::install
             if (m_ignoreReqFirmVersion)
                 LOG_DEBUG("WARNING: Required system firmware version is being IGNORED!\n");
 
-            tin::data::ByteBuffer installContentMetaBuf;
+            app::data::ByteBuffer installContentMetaBuf;
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
             this->InstallContentMetaRecords(installContentMetaBuf, i);
@@ -123,7 +123,7 @@ namespace tin::install
             LOG_DEBUG("Installing NCAs...\n");
             for (auto& record : contentMeta.GetContentInfos())
             {
-                LOG_DEBUG("Installing from %s\n", tin::util::GetNcaIdString(record.content_id).c_str());
+                LOG_DEBUG("Installing from %s\n", app::util::GetNcaIdString(record.content_id).c_str());
                 this->InstallNCA(record.content_id);
             }
         }

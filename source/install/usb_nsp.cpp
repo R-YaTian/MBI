@@ -36,7 +36,7 @@ SOFTWARE.
 #include "ui/instPage.hpp"
 
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     bool stopThreadsUsbNsp;
     std::string errorMessageUsbNsp;
@@ -50,7 +50,7 @@ namespace tin::install::nsp
     struct USBFuncArgs
     {
         std::string nspName;
-        tin::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
+        app::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;
     };
@@ -58,7 +58,7 @@ namespace tin::install::nsp
     int USBThreadFunc(void* in)
     {
         USBFuncArgs* args = reinterpret_cast<USBFuncArgs*>(in);
-        tin::util::USBCmdHeader header = tin::util::USBCmdManager::SendFileRangeCmd(args->nspName, args->pfs0Offset, args->ncaSize);
+        app::util::USBCmdHeader header = app::util::USBCmdManager::SendFileRangeCmd(args->nspName, args->pfs0Offset, args->ncaSize);
 
         u8* buf = (u8*)memalign(0x1000, 0x800000);
         u64 sizeRemaining = header.dataSize;
@@ -113,7 +113,7 @@ namespace tin::install::nsp
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = fileEntry->fileSize;
 
-        tin::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
+        app::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
         USBFuncArgs args;
         args.nspName = m_nspName;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;
@@ -186,9 +186,9 @@ namespace tin::install::nsp
     void USBNSP::BufferData(void* buf, off_t offset, size_t size)
     {
         LOG_DEBUG("buffering 0x%lx-0x%lx\n", offset, offset + size);
-        tin::util::USBCmdHeader header = tin::util::USBCmdManager::SendFileRangeCmd(m_nspName, offset, size);
+        app::util::USBCmdHeader header = app::util::USBCmdManager::SendFileRangeCmd(m_nspName, offset, size);
         u8* tempBuffer = (u8*)memalign(0x1000, header.dataSize);
-        if (tin::util::USBRead(tempBuffer, header.dataSize) == 0) THROW_FORMAT(("inst.usb.error"_lang).c_str());
+        if (app::util::USBRead(tempBuffer, header.dataSize) == 0) THROW_FORMAT(("inst.usb.error"_lang).c_str());
         memcpy(buf, tempBuffer, header.dataSize);
         free(tempBuffer);
     }

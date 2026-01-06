@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <switch/types.h>
 
-namespace tin::install
+namespace app::install
 {
     struct PFS0FileEntry
     {

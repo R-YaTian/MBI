@@ -29,7 +29,7 @@ SOFTWARE.
 #include "nx/ncm.hpp"
 #include "nx/nca_writer.hpp"
 
-namespace tin::data
+namespace app::data
 {
     static const size_t BUFFER_SEGMENT_DATA_SIZE = 0x800000; // Approximately 8MB
     extern int NUM_BUFFER_SEGMENTS;

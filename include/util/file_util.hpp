@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "nx/content_meta.hpp"
 
-namespace tin::util
+namespace app::util
 {
     nx::ncm::ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
 }

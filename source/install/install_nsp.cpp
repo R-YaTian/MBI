@@ -41,7 +41,7 @@ namespace inst::ui {
      extern MainApplication *mainApp;
 }
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     NSPInstall::NSPInstall(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<NSP>& remoteNSP) :
         Install(destStorageId, ignoreReqFirmVersion), m_NSP(remoteNSP)
@@ -55,7 +55,7 @@ namespace tin::install::nsp
 
         for (const PFS0FileEntry* fileEntry : m_NSP->GetFileEntriesByExtension("cnmt.nca")) {
             std::string cnmtNcaName(m_NSP->GetFileEntryName(fileEntry));
-            NcmContentId cnmtContentId = tin::util::GetNcaIdFromString(cnmtNcaName);
+            NcmContentId cnmtContentId = app::util::GetNcaIdFromString(cnmtNcaName);
             size_t cnmtNcaSize = fileEntry->fileSize;
 
             nx::ncm::ContentStorage contentStorage(m_destStorageId);
@@ -71,7 +71,7 @@ namespace tin::install::nsp
             ncmU64ToContentInfoSize(cnmtNcaSize & 0xFFFFFFFFFFFF, &cnmtContentInfo);
             cnmtContentInfo.content_type = NcmContentType_Meta;
 
-            CNMTList.push_back( { tin::util::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
+            CNMTList.push_back( { app::util::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
         }
 
         return CNMTList;
@@ -99,11 +99,11 @@ namespace tin::install::nsp
 
         if (inst::config::validateNCAs && !m_declinedValidation)
         {
-            tin::install::NcaHeader* header = new NcaHeader;
-            m_NSP->BufferData(header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(tin::install::NcaHeader));
+            app::install::NcaHeader* header = new NcaHeader;
+            m_NSP->BufferData(header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(app::install::NcaHeader));
 
             Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
-            crypto.decrypt(header, header, sizeof(tin::install::NcaHeader), 0, 0x200);
+            crypto.decrypt(header, header, sizeof(app::install::NcaHeader), 0, 0x200);
 
             if (header->magic != MAGIC_NCA3)
                 THROW_FORMAT("Invalid NCA magic");
@@ -122,7 +122,7 @@ namespace tin::install::nsp
                     inst::util::lightningStop();
                 }
                 if (rc != 1)
-                    THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
+                    THROW_FORMAT(("inst.nca_verify.error"_lang + app::util::GetNcaIdString(ncaId)).c_str());
                 m_declinedValidation = true;
             }
             delete header;

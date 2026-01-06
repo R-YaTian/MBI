@@ -4,7 +4,7 @@
 
 #define MAGIC_HFS0 0x30534648
 
-namespace tin::install
+namespace app::install
 {
     struct HFS0FileEntry
     {

@@ -27,7 +27,7 @@ SOFTWARE.
 #include "install/install.hpp"
 #include "install/nsp.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class NSPInstall : public Install
     {

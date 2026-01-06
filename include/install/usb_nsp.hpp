@@ -25,7 +25,7 @@ SOFTWARE.
 #include <string>
 #include "install/nsp.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     class USBNSP : public NSP
     {

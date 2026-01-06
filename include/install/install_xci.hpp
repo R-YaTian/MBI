@@ -28,12 +28,12 @@ SOFTWARE.
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
 
-namespace tin::install::xci
+namespace app::install::xci
 {
     class XCIInstallTask : public Install
     {
         private:
-            const std::shared_ptr<tin::install::xci::XCI> m_xci;
+            const std::shared_ptr<app::install::xci::XCI> m_xci;
 
         protected:
             std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() override;

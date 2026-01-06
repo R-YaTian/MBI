@@ -113,9 +113,9 @@ namespace netInstStuff{
         LOG_DEBUG("Telling the server we're done installing\n");
         // Send 1 byte ack to close the server, OG tinfoil compatibility
         u8 ack = 0;
-        tin::network::WaitSendNetworkData(m_clientSocket, &ack, sizeof(u8));
+        app::network::WaitSendNetworkData(m_clientSocket, &ack, sizeof(u8));
         // Send 'DROP' header so ns-usbloader knows we're done
-        tin::network::NSULDrop(url);
+        app::network::NSULDrop(url);
     }
 
     void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames, std::string ourSource)
@@ -155,14 +155,14 @@ namespace netInstStuff{
                 } else {
                     inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                 }
-                std::unique_ptr<tin::install::Install> installTask;
+                std::unique_ptr<app::install::Install> installTask;
 
-                if (tin::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
-                    auto httpXCI = std::make_shared<tin::install::xci::HTTPXCI>(ourUrlList[urlItr]);
-                    installTask = std::make_unique<tin::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, httpXCI);
+                if (app::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
+                    auto httpXCI = std::make_shared<app::install::xci::HTTPXCI>(ourUrlList[urlItr]);
+                    installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, httpXCI);
                 } else {
-                    auto httpNSP = std::make_shared<tin::install::nsp::HTTPNSP>(ourUrlList[urlItr]);
-                    installTask = std::make_unique<tin::install::nsp::NSPInstall>(m_destStorageId, inst::config::ignoreReqVers, httpNSP);
+                    auto httpNSP = std::make_shared<app::install::nsp::HTTPNSP>(ourUrlList[urlItr]);
+                    installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, inst::config::ignoreReqVers, httpNSP);
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
@@ -301,7 +301,7 @@ namespace netInstStuff{
                         inst::config::setConfig();
                         if (url[url.size() - 1] != '/')
                             url += '/';
-                        response = tin::network::downloadToBuffer(url);
+                        response = app::network::downloadToBuffer(url);
                     }
 
                     if (!response.empty()) {
@@ -351,7 +351,7 @@ back_to_loop:
                 {
                     LOG_DEBUG("%s\n", "Server accepted");
                     u32 size = 0;
-                    tin::network::WaitReceiveNetworkData(m_clientSocket, &size, sizeof(u32));
+                    app::network::WaitReceiveNetworkData(m_clientSocket, &size, sizeof(u32));
                     size = ntohl(size);
 
                     LOG_DEBUG("Received url buf size: 0x%x\n", size);
@@ -365,7 +365,7 @@ back_to_loop:
                     auto urlBuf = std::make_unique<char[]>(size+1);
                     memset(urlBuf.get(), 0, size+1);
 
-                    tin::network::WaitReceiveNetworkData(m_clientSocket, urlBuf.get(), size);
+                    app::network::WaitReceiveNetworkData(m_clientSocket, urlBuf.get(), size);
 
                     // Split the string up into individual URLs
                     std::stringstream urlStream(urlBuf.get());

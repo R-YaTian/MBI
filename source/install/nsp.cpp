@@ -28,7 +28,7 @@ SOFTWARE.
 #include "util/title_util.hpp"
 #include "util/error.hpp"
 
-namespace tin::install::nsp
+namespace app::install::nsp
 {
     NSP::NSP() {}
 
@@ -106,7 +106,7 @@ namespace tin::install::nsp
     const PFS0FileEntry* NSP::GetFileEntryByNcaId(const NcmContentId& ncaId)
     {
         const PFS0FileEntry* fileEntry = nullptr;
-        std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
+        std::string ncaIdStr = app::util::GetNcaIdString(ncaId);
 
         if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr)
         {

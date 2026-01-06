@@ -58,7 +58,7 @@ namespace nx::ncm
     class ContentMeta final
     {
         private:
-            tin::data::ByteBuffer m_bytes;
+            app::data::ByteBuffer m_bytes;
 
         public:
             ContentMeta();
@@ -68,6 +68,6 @@ namespace nx::ncm
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
 
-            void GetInstallContentMeta(tin::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
+            void GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
 }

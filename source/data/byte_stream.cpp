@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "data/byte_stream.hpp"
 
-namespace tin::data
+namespace app::data
 {
     BufferedByteStream::BufferedByteStream(ByteBuffer buffer) :
         m_byteBuffer(buffer)

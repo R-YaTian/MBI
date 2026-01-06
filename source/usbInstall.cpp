@@ -52,7 +52,7 @@ namespace usbInstStuff {
     int bufferData(void* buf, size_t size, u64 timeout = 5000000000)
     {
         u8* tempBuffer = (u8*)memalign(0x1000, size);
-        if (tin::util::USBRead(tempBuffer, size, timeout) == 0) return 0;
+        if (app::util::USBRead(tempBuffer, size, timeout) == 0) return 0;
         memcpy(buf, tempBuffer, size);
         free(tempBuffer);
         return size;
@@ -81,7 +81,7 @@ namespace usbInstStuff {
         char* titleNameBuffer = (char*)memalign(0x1000, header.titleListSize + 1);
         memset(titleNameBuffer, 0, header.titleListSize + 1);
 
-        tin::util::USBRead(titleNameBuffer, header.titleListSize, 10000000000);
+        app::util::USBRead(titleNameBuffer, header.titleListSize, 10000000000);
 
         // Split the string up into individual title names
         std::stringstream titleNamesStream(titleNameBuffer);
@@ -123,14 +123,14 @@ namespace usbInstStuff {
                 } else {
                     inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + fileNames[fileItr] + "inst.usb.source_string"_lang);
                 }
-                std::unique_ptr<tin::install::Install> installTask;
+                std::unique_ptr<app::install::Install> installTask;
 
                 if (ourTitleList[fileItr].compare(ourTitleList[fileItr].size() - 3, 2, "xc") == 0) {
-                    auto usbXCI = std::make_shared<tin::install::xci::USBXCI>(ourTitleList[fileItr]);
-                    installTask = std::make_unique<tin::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, usbXCI);
+                    auto usbXCI = std::make_shared<app::install::xci::USBXCI>(ourTitleList[fileItr]);
+                    installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, usbXCI);
                 } else {
-                    auto usbNSP = std::make_shared<tin::install::nsp::USBNSP>(ourTitleList[fileItr]);
-                    installTask = std::make_unique<tin::install::nsp::NSPInstall>(m_destStorageId, inst::config::ignoreReqVers, usbNSP);
+                    auto usbNSP = std::make_shared<app::install::nsp::USBNSP>(ourTitleList[fileItr]);
+                    installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, inst::config::ignoreReqVers, usbNSP);
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
@@ -168,7 +168,7 @@ namespace usbInstStuff {
         }
 
         if(nspInstalled) {
-            tin::util::USBCmdManager::SendExitCmd();
+            app::util::USBCmdManager::SendExitCmd();
             inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
             inst::ui::instPage::setInstBarPerc(100);
             if (inst::config::enableLightning) {

@@ -28,7 +28,7 @@ SOFTWARE.
 #include <exception>
 #include "util/error.hpp"
 
-namespace tin::data
+namespace app::data
 {
     int NUM_BUFFER_SEGMENTS;
 

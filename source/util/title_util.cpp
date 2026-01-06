@@ -25,7 +25,7 @@ SOFTWARE.
 #include <machine/endian.h>
 #include "util/error.hpp"
 
-namespace tin::util
+namespace app::util
 {
     u64 GetRightsIdTid(FsRightsId rightsId)
     {
