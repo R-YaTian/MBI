@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <cmath>
 #include <cstring>
+#include <memory>
 
 #include "nx/fs.hpp"
 #include "nx/error.hpp"
@@ -204,5 +205,50 @@ namespace nx::fs
             }
         }
         return sizeStr;
+    }
+
+    SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :
+        m_fileSystem(&fileSystem) , m_rootPath(rootPath) {}
+
+    SimpleFileSystem::~SimpleFileSystem() {}
+
+    IFile SimpleFileSystem::OpenFile(std::string path)
+    {
+        return m_fileSystem->OpenFile(m_rootPath + path);
+    }
+
+    std::string SimpleFileSystem::GetFileNameFromExtension(std::string path, std::string extension)
+    {
+        IDirectory dir = m_fileSystem->OpenDirectory(m_rootPath + path, FsDirOpenMode_ReadFiles | FsDirOpenMode_ReadDirs);
+
+        u64 entryCount = dir.GetEntryCount();
+        auto dirEntries = std::make_unique<FsDirectoryEntry[]>(entryCount);
+
+        dir.Read(0, dirEntries.get(), entryCount);
+
+        for (unsigned int i = 0; i < entryCount; i++)
+        {
+            FsDirectoryEntry dirEntry = dirEntries[i];
+            std::string dirEntryName = dirEntry.name;
+
+            if (dirEntry.type == FsDirEntryType_Dir)
+            {
+                auto subdirPath = path + dirEntryName + "/";
+                auto subdirFound = this->GetFileNameFromExtension(subdirPath, extension);
+
+                if (subdirFound != "")
+                    return subdirFound;
+                continue;
+            }
+            else if (dirEntry.type == FsDirEntryType_File)
+            {
+                auto foundExtension = dirEntryName.substr(dirEntryName.find(".") + 1);
+
+                if (foundExtension == extension)
+                    return dirEntryName;
+            }
+        }
+
+        return "";
     }
 }

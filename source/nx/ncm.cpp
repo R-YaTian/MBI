@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "nx/ncm.hpp"
 #include "nx/error.hpp"
+#include "nx/fs.hpp"
 
 #include <string.h>
 
@@ -173,5 +174,24 @@ namespace nx::ncm
             NcmPatchMetaExtendedHeader* patchMetaExtendedHeader = (NcmPatchMetaExtendedHeader*)extendedHeaderSourceBytes;
             installContentMetaBuffer.Resize(installContentMetaBuffer.GetSize() + patchMetaExtendedHeader->extended_data_size);
         }
+    }
+
+    ContentMeta GetContentMetaFromNCA(const std::string& ncaPath)
+    {
+        // Create the cnmt filesystem
+        nx::fs::IFileSystem cnmtNCAFileSystem;
+        cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
+        nx::fs::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", ncaPath + "/");
+
+        // Find and read the cnmt file
+        auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
+        auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName);
+        u64 cnmtSize = cnmtFile.GetSize();
+
+        app::data::ByteBuffer cnmtBuf;
+        cnmtBuf.Resize(cnmtSize);
+        cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
+
+        return ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
     }
 }

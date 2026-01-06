@@ -32,7 +32,6 @@ SOFTWARE.
 #include "install/sdmc_xci.hpp"
 #include "install/sdmc_nsp.hpp"
 #include "nx/fs.hpp"
-#include "util/file_util.hpp"
 #include "util/title_util.hpp"
 #include "nx/error.hpp"
 #include "util/config.hpp"

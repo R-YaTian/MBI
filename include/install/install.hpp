@@ -26,9 +26,7 @@ SOFTWARE.
 #include <tuple>
 #include <vector>
 
-#include "SimpleFileSystem.hpp"
 #include "data/byte_buffer.hpp"
-
 #include "nx/ncm.hpp"
 
 #include <switch-ipcext.h>

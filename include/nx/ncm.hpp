@@ -72,4 +72,6 @@ namespace nx::ncm
 
             void GetInstallContentMeta(app::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
+
+    ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
 }

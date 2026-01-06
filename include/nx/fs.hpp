@@ -92,4 +92,19 @@ namespace nx::fs
 
     std::string GetFreeStorageSpace();
     std::string convertSize(s64 size);
+
+    class SimpleFileSystem final
+    {
+        private:
+            IFileSystem* m_fileSystem;
+
+        public:
+            const std::string m_rootPath;
+
+            SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath);
+            ~SimpleFileSystem();
+
+            IFile OpenFile(std::string path);
+            std::string GetFileNameFromExtension(std::string path, std::string extension);
+    };
 }

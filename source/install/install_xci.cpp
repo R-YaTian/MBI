@@ -23,7 +23,6 @@ SOFTWARE.
 #include <thread>
 
 #include "install/install_xci.hpp"
-#include "util/file_util.hpp"
 #include "util/title_util.hpp"
 #include "nx/error.hpp"
 #include "util/config.hpp"
@@ -67,7 +66,7 @@ namespace app::install::xci
             ncmU64ToContentInfoSize(cnmtNcaSize & 0xFFFFFFFFFFFF, &cnmtContentInfo);
             cnmtContentInfo.content_type = NcmContentType_Meta;
 
-            CNMTList.push_back( { app::util::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
+            CNMTList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
         }
         
         return CNMTList;
