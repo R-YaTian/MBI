@@ -115,16 +115,16 @@ namespace nx::ncm
         NcmExtPackagedContentMetaHeader contentMetaHeader = this->GetPackagedContentMetaHeader();
 
         std::vector<NcmContentInfo> contentInfos;
-        PackagedContentInfo* packagedContentInfos = (PackagedContentInfo*)(m_bytes.GetData() + sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size);
+        NcmPackagedContentInfo* packagedContentInfos = (NcmPackagedContentInfo*)(m_bytes.GetData() + sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size);
 
         for (unsigned int i = 0; i < contentMetaHeader.content_count; i++)
         {
-            PackagedContentInfo packagedContentInfo = packagedContentInfos[i];
+            NcmPackagedContentInfo packagedContentInfo = packagedContentInfos[i];
 
             // Don't install delta fragments. Even patches don't seem to install them.
-            if (static_cast<u8>(packagedContentInfo.content_info.content_type) <= 5)
+            if (static_cast<u8>(packagedContentInfo.info.content_type) <= 5)
             {
-                contentInfos.push_back(packagedContentInfo.content_info); 
+                contentInfos.push_back(packagedContentInfo.info); 
             }
         }
 

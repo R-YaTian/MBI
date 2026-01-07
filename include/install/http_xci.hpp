@@ -23,7 +23,7 @@ SOFTWARE.
 #pragma once
 
 #include "install/xci.hpp"
-#include "util/network_util.hpp"
+#include "nx/network.hpp"
 #include <memory>
 
 namespace app::install::xci
@@ -31,7 +31,7 @@ namespace app::install::xci
     class HTTPXCI : public XCI
     {
         public:
-            app::network::HTTPDownload m_download;
+            nx::network::HTTPDownload m_download;
 
             HTTPXCI(std::string url);
 

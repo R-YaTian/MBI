@@ -30,7 +30,7 @@ namespace app::install::nsp
     class HTTPNSP : public NSP
     {
         public:
-            app::network::HTTPDownload m_download;
+            nx::network::HTTPDownload m_download;
 
             HTTPNSP(std::string url);
 

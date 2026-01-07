@@ -42,7 +42,7 @@ namespace app::install::nsp
 
     struct StreamFuncArgs
     {
-        app::network::HTTPDownload* download;
+        nx::network::HTTPDownload* download;
         nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
         u64 pfs0Offset;
         u64 ncaSize;

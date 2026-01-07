@@ -398,7 +398,7 @@ bool NcaWriter::isOpen() const
     return (bool)m_contentStorage;
 }
 
-u64 NcaWriter::write(const  u8* ptr, u64 sz)
+u64 NcaWriter::write(const u8* ptr, u64 sz)
 {
     if (m_buffer.size() < NCA_HEADER_SIZE)
     {

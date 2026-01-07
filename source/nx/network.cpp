@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "util/network_util.hpp"
+#include "nx/network.hpp"
 #include "nx/error.hpp"
 
 #include <switch.h>
@@ -30,10 +30,9 @@ SOFTWARE.
 #include <cstring>
 #include <sstream>
 
-namespace app::network
+namespace nx::network
 {
     // HTTPHeader
-
     HTTPHeader::HTTPHeader(std::string url) :
         m_url(url)
     {
@@ -86,7 +85,7 @@ namespace app::network
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
         curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);
-        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &app::network::HTTPHeader::ParseHTMLHeader);
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &nx::network::HTTPHeader::ParseHTMLHeader);
 
         rc = curl_easy_perform(curl);
         if (rc != CURLE_OK)
@@ -113,10 +112,9 @@ namespace app::network
     {
         return m_values[key];
     }
-
     // End HTTPHeader
-    // HTTPDownload
 
+    // HTTPDownload
     HTTPDownload::HTTPDownload(std::string url) :
         m_url(url), m_header(url)
     {
@@ -217,7 +215,7 @@ namespace app::network
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
         curl_easy_setopt(curl, CURLOPT_RANGE, range.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeDataFunc);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &app::network::HTTPDownload::ParseHTMLData);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &nx::network::HTTPDownload::ParseHTMLData);
 
         rc = curl_easy_perform(curl);
 
@@ -228,7 +226,6 @@ namespace app::network
         if (httpCode != 206 || rc != CURLE_OK) return 1;
         return 0;
     }
-
     // End HTTPDownload
 
     size_t WaitReceiveNetworkData(int sockfd, void* buf, size_t len)

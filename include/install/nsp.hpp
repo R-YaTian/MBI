@@ -28,7 +28,7 @@ SOFTWARE.
 #include <switch/types.h>
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"
-#include "util/network_util.hpp"
+#include "nx/network.hpp"
 
 namespace app::install::nsp
 {

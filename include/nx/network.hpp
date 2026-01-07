@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include <switch/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
 #include <sys/errno.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -35,7 +35,7 @@ SOFTWARE.
 #include <string>
 #include <vector>
 
-namespace app::network
+namespace nx::network
 {
     class HTTPHeader
     {
@@ -65,7 +65,7 @@ namespace app::network
 
         public:
             HTTPDownload(std::string url);
-    
+
             void BufferDataRange(void* buffer, size_t offset, size_t size, std::function<void (size_t sizeRead)> progressFunc);
             int StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc);
     };

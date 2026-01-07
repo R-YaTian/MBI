@@ -52,12 +52,6 @@ namespace nx::ncm
             std::string GetPath(const NcmContentId &registeredId);
     };
 
-    struct PackagedContentInfo
-    {
-        u8 hash[0x20];
-        NcmContentInfo content_info;
-    } NX_PACKED;
-
     class ContentMeta final
     {
         private:

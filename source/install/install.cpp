@@ -117,7 +117,7 @@ namespace app::install
 
     void Install::Begin()
     {
-        for (nx::ncm::ContentMeta contentMeta: m_contentMeta) {
+        for (nx::ncm::ContentMeta contentMeta : m_contentMeta) {
             LOG_DEBUG("Installing NCAs...\n");
             for (auto& record : contentMeta.GetContentInfos())
             {
