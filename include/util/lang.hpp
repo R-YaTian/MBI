@@ -23,10 +23,6 @@ namespace Language {
     }
 }
 
-#ifdef __INTELLISENSE__
-typedef unsigned long long size_t;
-#endif
-
 inline std::string operator ""_lang (const char* key, size_t size) {
     return Language::LanguageEntry(std::string(key, size));
 }

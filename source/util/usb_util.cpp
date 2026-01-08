@@ -21,8 +21,6 @@ SOFTWARE.
 */
 
 #include "util/usb_util.hpp"
-#include "util/usb_comms_awoo.h"
-
 #include "nx/ByteBuffer.hpp"
 #include "nx/error.hpp"
 
@@ -76,7 +74,7 @@ namespace app::util
 
         while (sizeRemaining)
         {
-            tmpSizeRead = awoo_usbCommsRead(tmpBuf, sizeRemaining, timeout);
+            tmpSizeRead = nx::usb::usbDeviceRead(tmpBuf, sizeRemaining, timeout);
             if (tmpSizeRead == 0) return 0;
             tmpBuf += tmpSizeRead;
             sizeRemaining -= tmpSizeRead;
@@ -93,7 +91,7 @@ namespace app::util
 
         while (cursize)
         {
-            tmpsize = awoo_usbCommsWrite(bufptr, cursize, timeout);
+            tmpsize = nx::usb::usbDeviceWrite(bufptr, cursize, timeout);
             if (tmpsize == 0) return 0;
             bufptr += tmpsize;
             cursize -= tmpsize;

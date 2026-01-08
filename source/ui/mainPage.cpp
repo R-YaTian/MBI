@@ -8,6 +8,7 @@
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/fs.hpp"
 #include "nx/udisk.hpp"
+#include "nx/usb.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -114,7 +115,7 @@ namespace app::ui {
                 app::config::setConfig();
             }
         }
-        if (app::util::usbIsConnected()) mainApp->usbinstPage->startUsb();
+        if (nx::usb::usbDeviceIsConnected()) mainApp->usbinstPage->startUsb();
         else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, {"common.ok"_lang}, false);
     }
 

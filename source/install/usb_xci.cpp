@@ -31,7 +31,7 @@ SOFTWARE.
 #include "nx/error.hpp"
 #include "util/usb_util.hpp"
 #include "util/util.hpp"
-#include "util/usb_comms_awoo.h"
+#include "nx/usb.hpp"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 
@@ -67,7 +67,7 @@ namespace app::install::xci
         {
             while (sizeRemaining && !stopThreadsUsbXci)
             {
-                tmpSizeRead = awoo_usbCommsRead(buf, std::min(sizeRemaining, (u64)0x800000), 5000000000);
+                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, (u64)0x800000), 5000000000);
                 if (tmpSizeRead == 0) THROW_FORMAT(("inst.usb.error"_lang).c_str());
                 sizeRemaining -= tmpSizeRead;
 

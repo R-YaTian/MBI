@@ -25,6 +25,8 @@ SOFTWARE.
 #include <switch.h>
 #include <string>
 
+#include "nx/usb.hpp"
+
 namespace app::util
 {
     enum USBCmdType : u8

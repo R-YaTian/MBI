@@ -72,7 +72,7 @@ namespace usbInstStuff {
             
             if (kDown & HidNpadButton_B) return {};
             if (kDown & HidNpadButton_X) app::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true);
-            if (!app::util::usbIsConnected()) return {};
+            if (!nx::usb::usbDeviceIsConnected()) return {};
         }
 
         if (header.magic != 0x304C5554) return {};
@@ -186,7 +186,7 @@ namespace usbInstStuff {
         }
 
         LOG_DEBUG("Done");
-        app::util::reinitUsbComms();
+        nx::usb::usbDeviceReset();
         app::ui::instPage::loadMainMenu();
         app::util::deinitInstallServices();
         return;

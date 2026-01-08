@@ -14,7 +14,7 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "ui/MainApplication.hpp"
-#include "util/usb_comms_awoo.h"
+#include "nx/usb.hpp"
 #include "util/json.hpp"
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
@@ -30,7 +30,7 @@ namespace app::util {
         #ifdef __DEBUG__
             nxlinkStdio();
         #endif
-        awoo_usbCommsInitialize();
+        nx::usb::usbDeviceInitialize();
 
 		nx::udisk::init();
 
@@ -44,12 +44,7 @@ namespace app::util {
 
 		nx::udisk::exit();
         socketExit();
-        awoo_usbCommsExit();
-    }
-
-    void reinitUsbComms() {
-        awoo_usbCommsExit();
-        awoo_usbCommsInitialize();
+        nx::usb::usbDeviceExit();
     }
 
     void initInstallServices() {
@@ -264,12 +259,6 @@ namespace app::util {
     std::string getIPAddress() {
         struct in_addr addr = {(in_addr_t) gethostid()};
         return inet_ntoa(addr);
-    }
-
-    bool usbIsConnected() {
-        UsbState state = UsbState_Detached;
-        usbDsGetState(&state);
-        return state == UsbState_Configured;
     }
 
     void playAudio(std::string audioPath) {

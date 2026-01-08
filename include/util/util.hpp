@@ -5,7 +5,6 @@
 namespace app::util {
     void initApp();
     void deinitApp();
-    void reinitUsbComms();
     void initInstallServices();
     void deinitInstallServices();
     bool ignoreCaseCompare(const std::string &a, const std::string &b);
@@ -20,7 +19,6 @@ namespace app::util {
     std::string softwareKeyboard(std::string guideText, std::string initialText, int LenMax);
     std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed);
     std::string getIPAddress();
-    bool usbIsConnected();
     void playAudio(std::string audioPath);
     void lightningStart();
     void lightningStop();
