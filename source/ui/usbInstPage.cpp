@@ -3,9 +3,9 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
-#include "util/usb_util.hpp"
 #include "usbInstall.hpp"
 #include "nx/fs.hpp"
+#include "nx/usb.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -127,7 +127,7 @@ namespace app::ui {
 
     void usbInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
         if (Down & HidNpadButton_B) {
-            app::util::USBCmdManager::SendExitCmd();
+            nx::usb::USBCommandManager::SendExitCommand();
             mainApp->LoadLayout(mainApp->mainPage);
             nx::usb::usbDeviceReset();
         }

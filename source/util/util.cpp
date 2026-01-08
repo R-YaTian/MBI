@@ -104,34 +104,6 @@ namespace app::util {
         return files;
     }
 
-    bool removeDirectory(std::string dir) {
-        try {
-            for(auto & p: std::filesystem::recursive_directory_iterator(dir))
-            {
-                if (std::filesystem::is_regular_file(p))
-                {
-                    std::filesystem::remove(p);
-                }
-            }
-            rmdir(dir.c_str());
-            return true;
-        }
-        catch (std::filesystem::filesystem_error & e) {
-            return false;
-        }
-    }
-
-    bool copyFile(std::string inFile, std::string outFile) {
-       char ch;
-       std::ifstream f1(inFile);
-       std::ofstream f2(outFile);
-
-       if(!f1 || !f2) return false;
-
-       while(f1 && f1.get(ch)) f2.put(ch);
-       return true;
-    }
-
     std::string formatUrlString(std::string ourString) {
         std::stringstream ourStream(ourString);
         std::string segment;
@@ -164,19 +136,6 @@ namespace app::util {
             if(isFile) return (std::string)ourString.substr(0,ourLength) + "(...)" + ourExtension;
             else return (std::string)ourString.substr(0,ourLength) + "...";
         } else return ourString;
-    }
-
-    std::string readTextFromFile(std::string ourFile) {
-        if (std::filesystem::exists(ourFile)) {
-            FILE * file = fopen(ourFile.c_str(), "r");
-            char line[1024];
-            fgets(line, 1024, file);
-            std::string url = line;
-            fflush(file);
-            fclose(file);
-            return url;
-        }
-        return "";
     }
 
     std::string softwareKeyboard(std::string guideText, std::string initialText, int LenMax) {

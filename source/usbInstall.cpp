@@ -29,7 +29,7 @@ SOFTWARE.
 #include "install/usb_xci.hpp"
 #include "install/install_xci.hpp"
 #include "nx/error.hpp"
-#include "util/usb_util.hpp"
+#include "nx/usb.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
@@ -52,7 +52,7 @@ namespace usbInstStuff {
     int bufferData(void* buf, size_t size, u64 timeout = 5000000000)
     {
         u8* tempBuffer = (u8*)memalign(0x1000, size);
-        if (app::util::USBRead(tempBuffer, size, timeout) == 0) return 0;
+        if (nx::usb::USBReadData(tempBuffer, size, timeout) == 0) return 0;
         memcpy(buf, tempBuffer, size);
         free(tempBuffer);
         return size;
@@ -81,7 +81,7 @@ namespace usbInstStuff {
         char* titleNameBuffer = (char*)memalign(0x1000, header.titleListSize + 1);
         memset(titleNameBuffer, 0, header.titleListSize + 1);
 
-        app::util::USBRead(titleNameBuffer, header.titleListSize, 10000000000);
+        nx::usb::USBReadData(titleNameBuffer, header.titleListSize, 10000000000);
 
         // Split the string up into individual title names
         std::stringstream titleNamesStream(titleNameBuffer);
@@ -168,7 +168,7 @@ namespace usbInstStuff {
         }
 
         if(nspInstalled) {
-            app::util::USBCmdManager::SendExitCmd();
+            nx::usb::USBCommandManager::SendExitCommand();
             app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
             app::ui::instPage::setInstBarPerc(100);
             if (app::config::enableLightning) {

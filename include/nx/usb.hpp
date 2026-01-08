@@ -1,6 +1,7 @@
 #pragma once
 
 #include <switch.h>
+#include <string>
 
 namespace nx::usb
 {
@@ -50,4 +51,50 @@ namespace nx::usb
 
     /// Checks whether the USB device is connected.
     bool usbDeviceIsConnected();
+
+    enum class USBCommandId : u32
+    {
+        FileRange = 0x01,
+        Exit      = 0x0F,
+    };
+
+    enum class USBCommandType : u8
+    {
+        REQUEST = 0,
+        RESPONSE = 1
+    };
+
+    struct NX_PACKED USBCommandHeader
+    {
+        u32 magic;
+        USBCommandType type;
+        u8 protocolVersion;
+        u8 padding[0x2] = {0};
+        USBCommandId cmdId;
+        u64 dataSize;
+        u8 reserved[0xC] = {0};
+    };
+
+    static_assert(sizeof(USBCommandId) == 0x04, "USBCommandId must be 0x04!");
+    static_assert(sizeof(USBCommandType) == 0x01, "USBCommandType must be 0x01!");
+    static_assert(sizeof(USBCommandHeader) == 0x20, "USBCommandHeader must be 0x20!");
+
+    struct FileRangeCommandHeader
+    {
+        u64 size;
+        u64 offset;
+        u64 fileNameLen;
+        u64 padding;
+    } NX_PACKED;
+
+    class USBCommandManager
+    {
+        public:
+            static void SendCommandHeader(USBCommandId cmdId, u64 dataSize);
+            static void SendExitCommand();
+            static USBCommandHeader SendFileRangeCommand(std::string fileName, u64 offset, u64 size);
+    };
+
+    size_t USBReadData(void* out, size_t len, u64 timeout = 5000000000);
+    size_t USBWriteData(const void* in, size_t len, u64 timeout = 5000000000);
 } // namespace nx::usb

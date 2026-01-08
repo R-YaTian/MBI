@@ -587,4 +587,76 @@ namespace nx::usb
         usbDsGetState(&state);
         return state == UsbState_Configured;
     }
+
+    void USBCommandManager::SendCommandHeader(USBCommandId cmdId, u64 dataSize)
+    {
+        const USBCommandHeader header {
+            .magic = 0x30435554, // TUC0 (Tinfoil USB Command 0)
+            .type = USBCommandType::REQUEST,
+            .protocolVersion = 1,
+            .padding = {0},
+            .cmdId = cmdId,
+            .dataSize = dataSize,
+            .reserved = {0}
+        };
+
+        USBWriteData(&header, sizeof(USBCommandHeader));
+    }
+
+    void USBCommandManager::SendExitCommand()
+    {
+        USBCommandManager::SendCommandHeader(USBCommandId::Exit, 0);
+    }
+
+    USBCommandHeader USBCommandManager::SendFileRangeCommand(std::string fileName, u64 offset, u64 size)
+    {
+        const FileRangeCommandHeader fRangeHeader {
+            .size = size,
+            .offset = offset,
+            .fileNameLen = fileName.size(),
+            .padding = 0
+        };
+
+        USBCommandManager::SendCommandHeader(USBCommandId::FileRange, sizeof(FileRangeCommandHeader) + fRangeHeader.fileNameLen);
+        USBWriteData(&fRangeHeader, sizeof(FileRangeCommandHeader));
+        USBWriteData(fileName.c_str(), fRangeHeader.fileNameLen);
+
+        USBCommandHeader responseHeader;
+        USBReadData(&responseHeader, sizeof(USBCommandHeader));
+        return responseHeader;
+    }
+
+    size_t USBReadData(void* out, size_t len, u64 timeout)
+    {
+        u8* tmpBuf = (u8*)out;
+        size_t sizeRemaining = len;
+        size_t tmpSizeRead = 0;
+
+        while (sizeRemaining)
+        {
+            tmpSizeRead = usbDeviceRead(tmpBuf, sizeRemaining, timeout);
+            if (tmpSizeRead == 0) return 0;
+            tmpBuf += tmpSizeRead;
+            sizeRemaining -= tmpSizeRead;
+        }
+
+        return len;
+    }
+
+    size_t USBWriteData(const void* in, size_t len, u64 timeout)
+    {
+        const u8 *bufptr = (const u8 *)in;
+        size_t cursize = len;
+        size_t tmpsize = 0;
+
+        while (cursize)
+        {
+            tmpsize = usbDeviceWrite(bufptr, cursize, timeout);
+            if (tmpsize == 0) return 0;
+            bufptr += tmpsize;
+            cursize -= tmpsize;
+        }
+
+        return len;
+    }
 }

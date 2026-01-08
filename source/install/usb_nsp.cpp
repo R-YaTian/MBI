@@ -30,9 +30,8 @@ SOFTWARE.
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/ByteBuffer.hpp"
 #include "nx/error.hpp"
-#include "util/usb_util.hpp"
-#include "util/util.hpp"
 #include "nx/usb.hpp"
+#include "util/util.hpp"
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 
@@ -58,7 +57,7 @@ namespace app::install::nsp
     int USBThreadFunc(void* in)
     {
         USBFuncArgs* args = reinterpret_cast<USBFuncArgs*>(in);
-        app::util::USBCmdHeader header = app::util::USBCmdManager::SendFileRangeCmd(args->nspName, args->pfs0Offset, args->ncaSize);
+        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(args->nspName, args->pfs0Offset, args->ncaSize);
 
         u8* buf = (u8*)memalign(0x1000, 0x800000);
         u64 sizeRemaining = header.dataSize;
@@ -186,9 +185,9 @@ namespace app::install::nsp
     void USBNSP::BufferData(void* buf, off_t offset, size_t size)
     {
         LOG_DEBUG("buffering 0x%lx-0x%lx\n", offset, offset + size);
-        app::util::USBCmdHeader header = app::util::USBCmdManager::SendFileRangeCmd(m_nspName, offset, size);
+        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(m_nspName, offset, size);
         u8* tempBuffer = (u8*)memalign(0x1000, header.dataSize);
-        if (app::util::USBRead(tempBuffer, header.dataSize) == 0) THROW_FORMAT(("inst.usb.error"_lang).c_str());
+        if (nx::usb::USBReadData(tempBuffer, header.dataSize) == 0) THROW_FORMAT(("inst.usb.error"_lang).c_str());
         memcpy(buf, tempBuffer, header.dataSize);
         free(tempBuffer);
     }
