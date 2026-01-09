@@ -20,7 +20,6 @@ namespace app::ui {
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
     static std::vector <int> lastIndex;
     static int subPathCounter = 0;
-    static bool hideInstalled = false;
 
     usbHDDInstPage::usbHDDInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
@@ -59,7 +58,6 @@ namespace app::ui {
         this->Add(this->pageInfoText);
         this->Add(this->menu);
         this->updateStatsThread();
-        installedTitles = app::util::listInstalledTitles();
         this->AddRenderCallback(std::bind(&usbHDDInstPage::updateStatsThread, this));
     }
 
@@ -107,10 +105,6 @@ namespace app::ui {
             auto& file = this->ourFiles[i];
 
             std::string itm = file.filename().string();
-
-            if (hideInstalled and app::util::isTitleInstalled(itm, installedTitles))
-                continue;
-
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
             ourEntry->SetIcon(mainApp->checkboxBlank);
@@ -181,7 +175,6 @@ namespace app::ui {
         } else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         if (dialogResult == -1) return;
         hddInstStuff::installNspFromFile(this->selectedTitles, dialogResult);
-        installedTitles = app::util::listInstalledTitles();
         subPathCounter = 0;
         lastIndex.clear();
     }
@@ -224,12 +217,6 @@ namespace app::ui {
         if (Down & HidNpadButton_ZR)
             this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
 
-        if (Down & HidNpadButton_X) {
-            hideInstalled = !hideInstalled;
-            this->butText->SetText(hideInstalled ? "inst.hdd.buttons_show"_lang : "inst.hdd.buttons"_lang);
-            this->drawMenuItems(true, currentDir);
-            this->menu->SetSelectedIndex(0);
-        }
         if (Down & HidNpadButton_Plus) {
             if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == mainApp->checkboxBlank) {
                 this->selectNsp(this->menu->GetSelectedIndex());

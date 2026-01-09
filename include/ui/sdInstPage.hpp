@@ -23,7 +23,6 @@ namespace app::ui {
             std::vector<std::filesystem::path> ourDirectories;
             std::vector<std::filesystem::path> ourFiles;
             std::vector<std::filesystem::path> selectedTitles;
-            std::vector<std::pair<u64, u32>> installedTitles;
             std::vector<long unsigned int> menuIndices;
             std::filesystem::path currentDir;
             TextBlock::Ref butText;

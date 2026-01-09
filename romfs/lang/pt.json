@@ -53,8 +53,7 @@
             "transfer_interput": "Ocorreu um erro ao tranferir os dados. Verifique a sua ligação à rede.",
             "source_string": " através de rede local",
             "buttons": "\ue0e3 Instalar através da Internet    \ue0e2 Instalar do diretório HTTP    \ue0f0 Ajuda    \ue0e1 Cancelar",
-            "buttons1": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 ocultar Instalado    \ue0e1 Cancelar",
-            "buttons1_show": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 Mostrar instalado    \ue0e1 Cancelar"
+            "buttons1": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e1 Cancelar"
         },
         "sd": {
             "help": {
@@ -66,8 +65,7 @@
             "delete_info": " instalado! Eliminar do cartão SD?",
             "delete_info_multi": " instalados com sucesso! Eliminar do cartão SD?",
             "delete_desc": "Os ficheiros originais não são necessários depois de instalados",
-            "buttons": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 ocultar Instalado    \ue0f0 Ajuda    \ue0e1 Cancelar",
-            "buttons_show": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 Mostrar instalado    \ue0f0 Ajuda    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0f0 Ajuda    \ue0e1 Cancelar"
         },
         "usb": {
             "help": {
@@ -91,8 +89,7 @@
             "delete_info": " instalado! Eliminar do USB HDD?",
             "delete_info_multi": " instalados com sucesso! Eliminar do USB HDD?",
             "delete_desc": "Os ficheiros originais não são necessários depois de instalados",
-            "buttons": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 ocultar Instalado    \ue0f0 Ajuda    \ue0e1 Cancelar",
-            "buttons_show": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e2 Mostrar instalado    \ue0f0 Ajuda    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0f0 Ajuda    \ue0e1 Cancelar"
         },
         "target": {
             "desc0": "Onde será o ",

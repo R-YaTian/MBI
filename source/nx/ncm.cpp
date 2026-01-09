@@ -28,6 +28,8 @@ SOFTWARE.
 
 namespace nx::ncm
 {
+    constexpr auto ContentMetaKeyMax = 64000;
+
     ContentStorage::ContentStorage(NcmStorageId storageId) 
     {
         ASSERT_OK(ncmOpenContentStorage(&m_contentStorage, storageId), "Failed to open NCM ContentStorage");
@@ -208,5 +210,34 @@ namespace nx::ncm
             default:
                 return titleId;
         }
+    }
+
+    std::vector<std::pair<u64, u32>> ListInstalledTitles()
+    {
+        std::vector<std::pair<u64, u32>> installedTitles = {};
+        const NcmStorageId storageIDs[] { NcmStorageId_SdCard, NcmStorageId_BuiltInUser };
+        for (const auto storageID : storageIDs)
+        {
+            NcmContentMetaDatabase metaDatabase = {};
+            if (R_SUCCEEDED(ncmOpenContentMetaDatabase(&metaDatabase, storageID)))
+            {
+                auto metaKeys = new NcmContentMetaKey[ContentMetaKeyMax]();
+                s32 written = 0;
+                s32 total = 0;
+                if (R_SUCCEEDED(ncmContentMetaDatabaseList(&metaDatabase,
+                    &total, &written, metaKeys, ContentMetaKeyMax, NcmContentMetaType_Unknown,
+                    0, 0, UINT64_MAX, NcmContentInstallType_Full)) && (written > 0))
+                {
+                    for (s32 i = 0; i < written; i++)
+                    {
+                        const auto &metaKey = metaKeys[i];
+                        installedTitles.push_back({metaKey.id, metaKey.version});
+                    }
+                }
+                delete[] metaKeys;
+                ncmContentMetaDatabaseClose(&metaDatabase);
+            }
+        }
+        return installedTitles;
     }
 }

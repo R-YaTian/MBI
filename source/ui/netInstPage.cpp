@@ -21,7 +21,6 @@ namespace app::ui {
     static std::string getFreeSpaceOldText = getFreeSpaceText;
     static std::string* getBatteryChargeText = app::util::getBatteryCharge();
     static std::string* getBatteryChargeOldText = getBatteryChargeText;
-    static bool hideInstalled = false;
 
     netInstPage::netInstPage() : Layout::Layout() {
         this->SetBackgroundColor(COLOR("#670000FF"));
@@ -76,10 +75,6 @@ namespace app::ui {
             auto& url = this->ourUrls[i];
 
             std::string formattedURL = app::util::formatUrlString(url);
-
-            if (hideInstalled and app::util::isTitleInstalled(formattedURL, installedTitles))
-                continue;
-
             std::string itm = app::util::shortenString(formattedURL, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
@@ -143,8 +138,7 @@ namespace app::ui {
             sourceString = "inst.net.source_string"_lang;
             netConnected = true;
             this->pageInfoText->SetText("inst.net.top_info"_lang);
-            this->butText->SetText(hideInstalled ? "inst.net.buttons1_show"_lang : "inst.net.buttons1"_lang);
-            installedTitles = app::util::listInstalledTitles();
+            this->butText->SetText("inst.net.buttons1"_lang);
             this->drawMenuItems(true);
             this->menu->SetSelectedIndex(0);
             mainApp->CallForRender();
@@ -168,7 +162,6 @@ namespace app::ui {
             return;
         }
         netInstStuff::installTitleNet(this->selectedUrls, dialogResult, this->alternativeNames, sourceString);
-        app::util::listInstalledTitles();
         return;
     }
 
@@ -200,12 +193,6 @@ namespace app::ui {
                     }
                     this->drawMenuItems(false);
                 }
-            }
-            if (Down & HidNpadButton_X) {
-                hideInstalled = !hideInstalled;
-                this->butText->SetText(hideInstalled ? "inst.net.buttons1_show"_lang : "inst.net.buttons1"_lang);
-                this->drawMenuItems(true);
-                this->menu->SetSelectedIndex(0);
             }
 
             if (Down & HidNpadButton_ZL)

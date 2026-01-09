@@ -20,8 +20,6 @@ namespace app::util {
     void lightningStart();
     void lightningStop();
     std::string* getBatteryCharge();
-    std::vector<std::pair<u64, u32>> listInstalledTitles();
-    bool isTitleInstalled(std::string filename, const std::vector<std::pair<u64, u32>> &installedTitles);
 
     inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path) {
         return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
