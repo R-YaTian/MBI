@@ -15,7 +15,6 @@
 #include "util/config.hpp"
 #include "ui/MainApplication.hpp"
 #include "nx/usb.hpp"
-#include "util/json.hpp"
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
 

@@ -178,7 +178,7 @@ namespace app::ui {
                 if (this->selectedUrls.size() == 0) {
                     this->selectTitle(this->menu->GetSelectedIndex());
                 }
-                netInstStuff::sendExitCommands(app::util::formatUrlLink(this->selectedUrls[0]));
+                netInstStuff::pushExitCommand(app::util::formatUrlLink(this->selectedUrls[0]));
             }
             netInstStuff::OnUnwound();
             mainApp->LoadLayout(mainApp->mainPage);

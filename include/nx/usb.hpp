@@ -54,8 +54,8 @@ namespace nx::usb
 
     enum class USBCommandId : u32
     {
+        Exit      = 0x00,
         FileRange = 0x01,
-        Exit      = 0x0F,
     };
 
     enum class USBCommandType : u8
@@ -84,6 +84,13 @@ namespace nx::usb
         u64 size;
         u64 offset;
         u64 fileNameLen;
+        u64 padding;
+    } NX_PACKED;
+
+    struct FileListHeader
+    {
+        u32 magic; // TUL0 (Tinfoil USB List 0)
+        u32 titleListSize;
         u64 padding;
     } NX_PACKED;
 

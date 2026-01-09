@@ -108,7 +108,7 @@ namespace netInstStuff{
         curl_global_cleanup();
     }
 
-    void sendExitCommands(std::string url)
+    void pushExitCommand(std::string url)
     {
         LOG_DEBUG("Telling the server we're done installing\n");
         // Send 1 byte ack to close the server, OG tinfoil compatibility
@@ -199,7 +199,7 @@ namespace netInstStuff{
             app::util::setClockSpeed(2, previousClockValues[2]);
         }
 
-        sendExitCommands(app::util::formatUrlLink(ourUrlList[0]));
+        pushExitCommand(app::util::formatUrlLink(ourUrlList[0]));
         OnUnwound();
 
         if(nspInstalled) {

@@ -41,14 +41,8 @@ namespace app::ui {
     extern MainApplication *mainApp;
 }
 
-namespace usbInstStuff {
-    struct TUSHeader
-    {
-        u32 magic; // TUL0 (Tinfoil Usb List 0)
-        u32 titleListSize;
-        u64 padding;
-    } NX_PACKED;
-
+namespace usbInstStuff
+{
     int bufferData(void* buf, size_t size, u64 timeout = 5000000000)
     {
         u8* tempBuffer = (u8*)memalign(0x1000, size);
@@ -59,17 +53,17 @@ namespace usbInstStuff {
     }
 
     std::vector<std::string> OnSelected() {
-        TUSHeader header;
+        nx::usb::FileListHeader header;
 
         padConfigureInput(8, HidNpadStyleSet_NpadStandard);
         PadState pad;
         padInitializeAny(&pad);
 
         while(true) {
-            if (bufferData(&header, sizeof(TUSHeader), 500000000) != 0) break;
+            if (bufferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0) break;
             padUpdate(&pad);
             u64 kDown = padGetButtonsDown(&pad);
-            
+
             if (kDown & HidNpadButton_B) return {};
             if (kDown & HidNpadButton_X) app::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true);
             if (!nx::usb::usbDeviceIsConnected()) return {};
