@@ -20,16 +20,18 @@
 
 namespace app::util {
     void initApp () {
+        nx::usb::usbDeviceInitialize();
+
         if (!std::filesystem::exists("sdmc:/config")) std::filesystem::create_directory("sdmc:/config");
         if (!std::filesystem::exists(app::config::appDir)) std::filesystem::create_directory(app::config::appDir);
         app::config::parseConfig();
         app::config::parseThemeColorConfig();
 
         socketInitializeDefault();
+
         #ifdef __DEBUG__
             nxlinkStdio();
         #endif
-        nx::usb::usbDeviceInitialize();
 
 		nx::udisk::init();
 

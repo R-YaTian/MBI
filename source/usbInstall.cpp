@@ -162,7 +162,7 @@ namespace usbInstStuff
         }
 
         if(nspInstalled) {
-            nx::usb::USBCommandManager::SendExitCommand();
+            nx::usb::USBCommandManager::SendFinishedCommand();
             app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
             app::ui::instPage::setInstBarPerc(100);
             if (app::config::enableLightning) {

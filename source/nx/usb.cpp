@@ -352,9 +352,6 @@ namespace nx::usb
 
     void usbDeviceExit()
     {
-        if (!g_UsbDeviceInitialized)
-            return;
-
         rwlockWriteLock(&g_UsbDeviceRwLock);
 
         usbDsExit();
@@ -528,9 +525,9 @@ namespace nx::usb
         rwlockReadUnlock(&inter->lock);
         if (!initialized) return 0;
 
-        rwlockWriteLock(&inter->lock_in);
+        rwlockWriteLock(&inter->lock_out);
         rc = _usbDeviceRead(&g_UsbDeviceInterfaces[interface], buffer, size, &transferredSize, timeout);
-        rwlockWriteUnlock(&inter->lock_in);
+        rwlockWriteUnlock(&inter->lock_out);
 
         if (R_SUCCEEDED(rc) && usbDeviceIsConnected())
         {
@@ -588,7 +585,7 @@ namespace nx::usb
         return state == UsbState_Configured;
     }
 
-    void USBCommandManager::SendCommandHeader(USBCommandId cmdId, u64 dataSize)
+    void USBCommandManager::SendCommandHeader(USBCommandId cmdId, u64 dataSize, u64 timeout)
     {
         const USBCommandHeader header {
             .magic = 0x30435554, // TUC0 (Tinfoil USB Command 0)
@@ -600,12 +597,17 @@ namespace nx::usb
             .reserved = {0}
         };
 
-        USBWriteData(&header, sizeof(USBCommandHeader));
+        USBWriteData(&header, sizeof(USBCommandHeader), timeout);
+    }
+
+    void USBCommandManager::SendFinishedCommand()
+    {
+        USBCommandManager::SendCommandHeader(USBCommandId::Finished, 0, 1000000);
     }
 
     void USBCommandManager::SendExitCommand()
     {
-        USBCommandManager::SendCommandHeader(USBCommandId::Exit, 0);
+        USBCommandManager::SendCommandHeader(USBCommandId::Exit, 0, 1000000);
     }
 
     USBCommandHeader USBCommandManager::SendFileRangeCommand(std::string fileName, u64 offset, u64 size)

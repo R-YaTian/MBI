@@ -54,8 +54,9 @@ namespace nx::usb
 
     enum class USBCommandId : u32
     {
-        Exit      = 0x00,
+        Finished  = 0x00,
         FileRange = 0x01,
+        Exit      = 0x0F,
     };
 
     enum class USBCommandType : u8
@@ -97,7 +98,8 @@ namespace nx::usb
     class USBCommandManager
     {
         public:
-            static void SendCommandHeader(USBCommandId cmdId, u64 dataSize);
+            static void SendCommandHeader(USBCommandId cmdId, u64 dataSize, u64 timeout = 5000000000);
+            static void SendFinishedCommand();
             static void SendExitCommand();
             static USBCommandHeader SendFileRangeCommand(std::string fileName, u64 offset, u64 size);
     };
