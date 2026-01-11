@@ -1,12 +1,7 @@
-#include <filesystem>
-#include <vector>
 #include <algorithm>
 #include <fstream>
 #include <unistd.h>
-#include <curl/curl.h>
 #include <regex>
-#include <arpa/inet.h>
-#include <unistd.h>
 
 #include <switch.h>
 #include <switch-ipcext.h>
@@ -18,50 +13,8 @@
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
 
-namespace app::util {
-    void initApp () {
-        nx::usb::usbDeviceInitialize();
-
-        if (!std::filesystem::exists("sdmc:/config")) std::filesystem::create_directory("sdmc:/config");
-        if (!std::filesystem::exists(app::config::appDir)) std::filesystem::create_directory(app::config::appDir);
-        app::config::parseConfig();
-        app::config::parseThemeColorConfig();
-
-        socketInitializeDefault();
-
-        #ifdef __DEBUG__
-            nxlinkStdio();
-        #endif
-
-		nx::udisk::init();
-
-        if(R_FAILED(ncmInitialize()))
-            LOG_DEBUG("Failed to initialize ncm\n");
-    }
-
-    void deinitApp () {
-        ncmExit();
-        Mix_Quit();
-
-		nx::udisk::exit();
-        socketExit();
-        nx::usb::usbDeviceExit();
-    }
-
-    void initInstallServices() {
-        nsInitialize();
-        esInitialize();
-        splCryptoInitialize();
-        splInitialize();
-    }
-
-    void deinitInstallServices() {
-        nsExit();
-        esExit();
-        splCryptoExit();
-        splExit();
-    }
-
+namespace app::util
+{
     auto caseInsensitiveLess = [](auto& x, auto& y)->bool {
         return toupper(static_cast<unsigned char>(x)) < toupper(static_cast<unsigned char>(y));
     };
@@ -105,29 +58,13 @@ namespace app::util {
         return files;
     }
 
-    std::string formatUrlString(std::string ourString) {
-        std::stringstream ourStream(ourString);
-        std::string segment;
-        std::vector<std::string> seglist;
-
-        while(std::getline(ourStream, segment, '/')) {
-            seglist.push_back(segment);
-        }
-
-        CURL *curl = curl_easy_init();
-        int outlength;
-        std::string finalString = curl_easy_unescape(curl, seglist[seglist.size() - 1].c_str(), seglist[seglist.size() - 1].length(), &outlength);
-        curl_easy_cleanup(curl);
-
-        return finalString;
-    }
-
-    std::string formatUrlLink(std::string ourString){
-        std::string::size_type pos = ourString.find('/');
+    std::string getUrlHost(const std::string &url)
+    {
+        std::string::size_type pos = url.find('/');
         if (pos != std::string::npos)
-            return ourString.substr(0, pos);
+            return url.substr(0, pos);
         else
-            return ourString;
+            return url;
     }
 
     std::string shortenString(std::string ourString, int ourLength, bool isFile) {
@@ -216,115 +153,9 @@ namespace app::util {
         }
     }
 
-    std::string getIPAddress() {
-        struct in_addr addr = {(in_addr_t) gethostid()};
-        return inet_ntoa(addr);
-    }
+    
 
-    void playAudio(std::string audioPath) {
-        int audio_rate = 44100;
-        Uint16 audio_format = AUDIO_S16SYS;
-        int audio_channels = 2;
-        int audio_buffers = 4096;
 
-        if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) return;
-
-        Mix_Chunk *sound = NULL;
-        sound = Mix_LoadWAV(audioPath.c_str());
-        if(sound == NULL || !app::config::enableSound) {
-            Mix_FreeChunk(sound);
-            Mix_CloseAudio();
-            return;
-        }
-
-        int channel = Mix_PlayChannel(-1, sound, 0);
-        if(channel == -1) {
-            Mix_FreeChunk(sound);
-            Mix_CloseAudio();
-            return;
-        }
-
-        while(Mix_Playing(channel) != 0);
-
-        Mix_FreeChunk(sound);
-        Mix_CloseAudio();
-
-        return;
-    }
-
-    void lightningStart() {
-        padConfigureInput(8, HidNpadStyleSet_NpadStandard);
-        PadState pad;
-        padInitializeDefault(&pad);
-        padUpdate(&pad);
-
-        Result rc=0;
-        s32 i;
-        s32 total_entries;
-        HidsysUniquePadId unique_pad_ids[2]={0};
-        HidsysNotificationLedPattern pattern;
-
-        rc = hidsysInitialize();
-        if (R_SUCCEEDED(rc)) {
-            memset(&pattern, 0, sizeof(pattern));
-
-            pattern.baseMiniCycleDuration = 0x1;
-            pattern.totalMiniCycles = 0xF;
-            pattern.totalFullCycles = 0x0;
-            pattern.startIntensity = 0x0;
-
-            pattern.miniCycles[0].ledIntensity = 0xF;
-            pattern.miniCycles[0].transitionSteps = 0xF;
-            pattern.miniCycles[0].finalStepDuration = 0x0;
-            pattern.miniCycles[1].ledIntensity = 0x0;
-            pattern.miniCycles[1].transitionSteps = 0xF;
-            pattern.miniCycles[1].finalStepDuration = 0x0;
-            pattern.miniCycles[2].ledIntensity = 0xF;
-            pattern.miniCycles[2].transitionSteps = 0xF;
-            pattern.miniCycles[2].finalStepDuration = 0x0;
-            pattern.miniCycles[3].ledIntensity = 0x0;
-            pattern.miniCycles[3].transitionSteps = 0xF;
-            pattern.miniCycles[3].finalStepDuration = 0x0;
-
-            total_entries = 0;
-            memset(unique_pad_ids, 0, sizeof(unique_pad_ids));
-            rc = hidsysGetUniquePadsFromNpad(padIsHandheld(&pad) ? HidNpadIdType_Handheld : HidNpadIdType_No1, unique_pad_ids, 2, &total_entries);
-
-            if (R_SUCCEEDED(rc)) {
-                for(i=0; i<total_entries; i++) {
-                    rc = hidsysSetNotificationLedPattern(&pattern, unique_pad_ids[i]);
-                }
-            }
-        }
-    }
-
-    void lightningStop() {
-        padConfigureInput(8, HidNpadStyleSet_NpadStandard);
-        PadState pad;
-        padInitializeDefault(&pad);
-        padUpdate(&pad);
-
-        Result rc=0;
-        s32 i;
-        s32 total_entries;
-        HidsysUniquePadId unique_pad_ids[2]={0};
-        HidsysNotificationLedPattern pattern;
-
-        rc = hidsysInitialize();
-        if (R_SUCCEEDED(rc)) {
-            memset(&pattern, 0, sizeof(pattern));
-
-            total_entries = 0;
-            memset(unique_pad_ids, 0, sizeof(unique_pad_ids));
-            rc = hidsysGetUniquePadsFromNpad(padIsHandheld(&pad) ? HidNpadIdType_Handheld : HidNpadIdType_No1, unique_pad_ids, 2, &total_entries);
-
-            if (R_SUCCEEDED(rc)) {
-                for(i=0; i<total_entries; i++) {
-                    rc = hidsysSetNotificationLedPattern(&pattern, unique_pad_ids[i]);
-                }
-            }
-        }
-    }
 
     std::string* getBatteryCharge() {
         std::string batColBlue = "#0000FFFF";

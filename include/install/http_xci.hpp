@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "install/xci.hpp"
 #include "nx/network.hpp"
-#include <memory>
 
 namespace app::install::xci
 {

@@ -41,6 +41,7 @@ SOFTWARE.
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/instPage.hpp"
+#include "manager.hpp"
 
 const unsigned int MAX_URL_SIZE = 1024;
 const unsigned int MAX_URLS = 256;
@@ -120,7 +121,7 @@ namespace netInstStuff{
 
     void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames, std::string ourSource)
     {
-        app::util::initInstallServices();
+        app::manager::initInstallServices();
         app::ui::instPage::loadInstallScreen();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
@@ -135,7 +136,7 @@ namespace netInstStuff{
             }
         } else {
             for (long unsigned int i = 0; i < ourUrlList.size(); i++) {
-                urlNames.push_back(app::util::shortenString(app::util::formatUrlString(ourUrlList[i]), 28, true));
+                urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 28, true));
             }
         }
 
@@ -180,15 +181,15 @@ namespace netInstStuff{
             app::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
             app::ui::instPage::setInstBarPerc(0);
             if (app::config::enableLightning) {
-                app::util::lightningStart();
+                app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
             if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
-            std::thread audioThread(app::util::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, audioPath);
             app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
-                app::util::lightningStop();
+                app::manager::lightningStop();
             }
             nspInstalled = false;
         }
@@ -199,29 +200,29 @@ namespace netInstStuff{
             app::util::setClockSpeed(2, previousClockValues[2]);
         }
 
-        pushExitCommand(app::util::formatUrlLink(ourUrlList[0]));
+        pushExitCommand(app::util::getUrlHost(ourUrlList[0]));
         OnUnwound();
 
         if(nspInstalled) {
             app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
             app::ui::instPage::setInstBarPerc(100);
             if (app::config::enableLightning) {
-                app::util::lightningStart();
+                app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
             if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
-            std::thread audioThread(app::util::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourUrlList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
             else app::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
-                app::util::lightningStop();
+                app::manager::lightningStop();
             }
         }
         
         LOG_DEBUG("Done");
         app::ui::instPage::loadMainMenu();
-        app::util::deinitInstallServices();
+        app::manager::deinitInstallServices();
         return;
     }
 
@@ -251,7 +252,7 @@ namespace netInstStuff{
                 }
             }
 
-            std::string ourIPAddress = app::util::getIPAddress();
+            std::string ourIPAddress = nx::network::getIPAddress();
             app::ui::mainApp->netinstPage->pageInfoText->SetText("inst.net.top_info1"_lang + ourIPAddress);
             app::ui::mainApp->CallForRender();
             netConnected = false;
@@ -293,7 +294,7 @@ namespace netInstStuff{
                         url = "https://";
 
                     std::string response;
-                    if (app::util::formatUrlString(url) == "" || url == "https://" || url == "http://") {
+                    if (nx::network::formatUrlString(url) == "" || url == "https://" || url == "http://") {
                         app::ui::mainApp->CreateShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
                         goto back_to_loop;
                     } else {

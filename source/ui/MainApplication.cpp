@@ -1,7 +1,7 @@
 #include "ui/MainApplication.hpp"
+#include "manager.hpp"
 #include "util/lang.hpp"
 #include "util/config.hpp"
-#include "util/util.hpp"
 
 namespace app::ui {
     MainApplication *mainApp;
@@ -11,12 +11,12 @@ namespace app::ui {
 
         Language::Load();
 
-        this->checkboxBlank = app::util::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
-        this->checkboxTick = app::util::LoadTexture("romfs:/images/icons/check-box-outline.png");
-        this->bgImg = app::util::LoadBackground(app::config::appDir);
-        this->logoImg = app::util::LoadTexture("romfs:/images/logo.png");
-        this->dirbackImg = app::util::LoadTexture("romfs:/images/icons/folder-upload.png");
-        this->dirImg = app::util::LoadTexture("romfs:/images/icons/folder.png");
+        this->checkboxBlank = app::manager::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
+        this->checkboxTick = app::manager::LoadTexture("romfs:/images/icons/check-box-outline.png");
+        this->bgImg = app::manager::LoadBackground(app::config::appDir);
+        this->logoImg = app::manager::LoadTexture("romfs:/images/logo.png");
+        this->dirbackImg = app::manager::LoadTexture("romfs:/images/icons/folder-upload.png");
+        this->dirImg = app::manager::LoadTexture("romfs:/images/icons/folder.png");
 
         this->mainPage = MainPage::New();
         this->netinstPage = netInstPage::New();

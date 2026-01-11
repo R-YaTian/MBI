@@ -26,14 +26,10 @@ SOFTWARE.
 #include <sys/socket.h>
 #include <sys/errno.h>
 #include <arpa/inet.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 #include <functional>
 #include <map>
-#include <memory>
 #include <string>
-#include <vector>
 
 namespace nx::network
 {
@@ -76,4 +72,6 @@ namespace nx::network
     size_t WaitSendNetworkData(int sockfd, void* buf, size_t len);
 
     std::string downloadToBuffer(const std::string ourUrl, int firstRange = -1, int secondRange = -1, long timeout = 5000);
+    std::string formatUrlString(std::string ourString);
+    std::string getIPAddress();
 }

@@ -6,6 +6,7 @@
 #include "usbInstall.hpp"
 #include "nx/fs.hpp"
 #include "nx/usb.hpp"
+#include "manager.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -43,7 +44,7 @@ namespace app::ui {
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
-        this->infoImage = Image::New(780, 332 * pu::ui::render::ScreenFactor, app::util::LoadTexture("romfs:/images/icons/usb-connection-waiting.png"));
+        this->infoImage = Image::New(780, 332 * pu::ui::render::ScreenFactor, app::manager::LoadTexture("romfs:/images/icons/usb-connection-waiting.png"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -64,7 +65,7 @@ namespace app::ui {
         if (clearItems) this->selectedTitles = {};
         this->menu->ClearItems();
         for (auto& url: this->ourTitles) {
-            std::string itm = app::util::shortenString(app::util::formatUrlString(url), 56, true);
+            std::string itm = app::util::shortenString(url, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
             ourEntry->SetIcon(mainApp->checkboxBlank);
@@ -118,7 +119,7 @@ namespace app::ui {
 
     void usbInstPage::startInstall() {
         int dialogResult = -1;
-        if (this->selectedTitles.size() == 1) dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + app::util::shortenString(app::util::formatUrlString(this->selectedTitles[0]), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+        if (this->selectedTitles.size() == 1) dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + app::util::shortenString(this->selectedTitles[0], 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         if (dialogResult == -1) return;
         usbInstStuff::installTitleUsb(this->selectedTitles, dialogResult);

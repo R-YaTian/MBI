@@ -8,6 +8,8 @@
 #include "util/lang.hpp"
 #include "netInstall.hpp"
 #include "nx/fs.hpp"
+#include "nx/network.hpp"
+#include "manager.hpp"
 #include <regex>
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
@@ -48,7 +50,7 @@ namespace app::ui {
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
-        this->infoImage = Image::New(780, 292 * pu::ui::render::ScreenFactor, app::util::LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
+        this->infoImage = Image::New(780, 292 * pu::ui::render::ScreenFactor, app::manager::LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
         this->Add(this->topRect);
         this->Add(this->infoRect);
         this->Add(this->botRect);
@@ -74,7 +76,7 @@ namespace app::ui {
         for (long unsigned int i = 0; i < this->ourUrls.size(); i++) {
             auto& url = this->ourUrls[i];
 
-            std::string formattedURL = app::util::formatUrlString(url);
+            std::string formattedURL = nx::network::formatUrlString(url);
             std::string itm = app::util::shortenString(formattedURL, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
@@ -119,7 +121,7 @@ namespace app::ui {
         } else if (this->ourUrls[0] == "supplyUrl") {
             std::string keyboardResult = app::util::softwareKeyboard("inst.net.url.hint"_lang, app::config::lastNetUrl, 500);
             if (keyboardResult.size() > 0) {
-                if (app::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
+                if (nx::network::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
                     mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
                     this->startNetwork();
                     return;
@@ -153,7 +155,7 @@ namespace app::ui {
         if (this->selectedUrls.size() == 1) {
             std::string ourUrlString;
             if (this->alternativeNames.size() > 0) ourUrlString = app::util::shortenString(this->alternativeNames[0], 32, true);
-            else ourUrlString = app::util::shortenString(app::util::formatUrlString(this->selectedUrls[0]), 32, true);
+            else ourUrlString = app::util::shortenString(nx::network::formatUrlString(this->selectedUrls[0]), 32, true);
             dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ourUrlString + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         } else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         if (dialogResult == -1 && !urlMode) return;
@@ -171,7 +173,7 @@ namespace app::ui {
                 if (this->selectedUrls.size() == 0) {
                     this->selectTitle(this->menu->GetSelectedIndex());
                 }
-                netInstStuff::pushExitCommand(app::util::formatUrlLink(this->selectedUrls[0]));
+                netInstStuff::pushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
             }
             netInstStuff::OnUnwound();
             mainApp->LoadLayout(mainApp->mainPage);

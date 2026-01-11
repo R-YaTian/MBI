@@ -23,11 +23,7 @@ SOFTWARE.
 #include "nx/network.hpp"
 #include "nx/error.hpp"
 
-#include <switch.h>
-
 #include <curl/curl.h>
-#include <algorithm>
-#include <cstring>
 #include <sstream>
 
 namespace nx::network
@@ -83,7 +79,7 @@ namespace nx::network
         curl_easy_setopt(curl, CURLOPT_URL, m_url.c_str());
         curl_easy_setopt(curl, CURLOPT_NOBODY, true);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
         curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &nx::network::HTTPHeader::ParseHTMLHeader);
 
@@ -138,7 +134,7 @@ namespace nx::network
             curl_easy_setopt(curl, CURLOPT_URL, m_url.c_str());
             curl_easy_setopt(curl, CURLOPT_NOBODY, true);
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
             curl_easy_setopt(curl, CURLOPT_RANGE, "0-0");
 
             rc = curl_easy_perform(curl);
@@ -212,7 +208,7 @@ namespace nx::network
 
         curl_easy_setopt(curl, CURLOPT_URL, m_url.c_str());
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
         curl_easy_setopt(curl, CURLOPT_RANGE, range.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeDataFunc);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &nx::network::HTTPDownload::ParseHTMLData);
@@ -246,21 +242,14 @@ namespace nx::network
         int ret = 0;
         size_t written = 0;
 
-        padConfigureInput(8, HidNpadStyleSet_NpadStandard);
-        PadState pad;
-        padInitializeAny(&pad);
-
         while (written < len)
         {
-            padUpdate(&pad);
-            u64 kDown = padGetButtonsDown(&pad);
-            if (kDown & HidNpadButton_B)  // Break if user clicks 'B'
-                break;
-
             errno = 0;
             ret = send(sockfd, (u8*)buf + written, len - written, 0);
 
-            if (ret < 0){ // If error
+            if (ret < 0)
+            {
+                // If error
                 if (errno == EWOULDBLOCK || errno == EAGAIN){ // Is it because other side is busy?
                     sleep(5);
                     continue;
@@ -285,7 +274,7 @@ namespace nx::network
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DROP");
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "tinfoil");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 50);
 
@@ -337,5 +326,30 @@ namespace nx::network
             LOG_DEBUG(curl_easy_strerror(result));
             return "";
         }
+    }
+
+    std::string formatUrlString(std::string ourString)
+    {
+        std::stringstream ourStream(ourString);
+        std::string segment;
+        std::vector<std::string> seglist;
+
+        while(std::getline(ourStream, segment, '/'))
+        {
+            seglist.push_back(segment);
+        }
+
+        CURL *curl = curl_easy_init();
+        int outlength;
+        std::string finalString = curl_easy_unescape(curl, seglist[seglist.size() - 1].c_str(), seglist[seglist.size() - 1].length(), &outlength);
+        curl_easy_cleanup(curl);
+
+        return finalString;
+    }
+
+    std::string getIPAddress()
+    {
+        struct in_addr addr = {(in_addr_t) gethostid()};
+        return inet_ntoa(addr);
     }
 }

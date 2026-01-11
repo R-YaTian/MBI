@@ -23,7 +23,7 @@ SOFTWARE.
 #pragma once
 
 #include "install/nsp.hpp"
-#include <memory>
+#include "nx/network.hpp"
 
 namespace app::install::nsp
 {

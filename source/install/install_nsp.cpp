@@ -34,6 +34,7 @@ SOFTWARE.
 #include "util/util.hpp"
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
+#include "manager.hpp"
 
 namespace app::ui {
      extern MainApplication *mainApp;
@@ -109,15 +110,15 @@ namespace app::install::nsp
             if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
             {
                 if (app::config::enableLightning) {
-                    app::util::lightningStart();
+                    app::manager::lightningStart();
                 }
                 std::string audioPath = "romfs:/audio/fail.wav";
                 if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
-                std::thread audioThread(app::util::playAudio, audioPath);
+                std::thread audioThread(app::manager::playAudio, audioPath);
                 int rc = app::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
                 audioThread.join();
                 if (app::config::enableLightning) {
-                    app::util::lightningStop();
+                    app::manager::lightningStop();
                 }
                 if (rc != 1)
                     THROW_FORMAT(("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId)).c_str());

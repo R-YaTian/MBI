@@ -63,7 +63,7 @@ namespace app::ui {
 
     void instPage::setInstBarPerc(double ourPercent){
         mainApp->instpage->installBar->SetVisible(true);
-        mainApp->instpage->installBar->SetProgress(ourPercent);
+        mainApp->instpage->installBar->SetProgress(ourPercent < 2.0f ? 2.0f : ourPercent);
         mainApp->CallForRender();
     }
 

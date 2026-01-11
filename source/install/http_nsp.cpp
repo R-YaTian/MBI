@@ -124,7 +124,7 @@ namespace app::install::nsp
 
                 int downloadProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeBuffered() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
-                app::ui::instPage::setInstInfoText("inst.info_page.downloading"_lang + app::util::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                app::ui::instPage::setInstInfoText("inst.info_page.downloading"_lang + nx::network::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
                 app::ui::instPage::setInstBarPerc((double)downloadProgress);
             }
         }

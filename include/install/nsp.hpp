@@ -24,11 +24,11 @@ SOFTWARE.
 
 #include <functional>
 #include <vector>
+#include <memory>
 
 #include <switch/types.h>
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"
-#include "nx/network.hpp"
 
 namespace app::install::nsp
 {

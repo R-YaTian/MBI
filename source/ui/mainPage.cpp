@@ -9,6 +9,8 @@
 #include "nx/fs.hpp"
 #include "nx/udisk.hpp"
 #include "nx/usb.hpp"
+#include "nx/network.hpp"
+#include "manager.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -60,22 +62,22 @@ namespace app::ui {
         this->optionMenu->SetShadowBaseAlpha(0);
         this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->installMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->installMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
+        this->installMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->netInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/cloud-download.png"));
+        this->netInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->usbInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->usbHDDInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->usbHDDInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->usbHDDInstallMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/disk.png"));
+        this->usbHDDInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/disk.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->settingsMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/settings.png"));
+        this->settingsMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/settings.png"));
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
-        this->exitMenuItem->SetIcon(app::util::LoadTexture("romfs:/images/icons/exit-run.png"));
+        this->exitMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->topRect);
         this->Add(this->botRect);
         this->Add(this->titleImage);
@@ -101,7 +103,7 @@ namespace app::ui {
     }
 
     void MainPage::netInstallMenuItem_Click() {
-        if (app::util::getIPAddress() == "1.0.0.127") {
+        if (nx::network::getIPAddress() == "1.0.0.127") {
             app::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;
         }

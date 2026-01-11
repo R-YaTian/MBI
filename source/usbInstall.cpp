@@ -36,6 +36,7 @@ SOFTWARE.
 #include "ui/MainApplication.hpp"
 #include "ui/usbInstPage.hpp"
 #include "ui/instPage.hpp"
+#include "manager.hpp"
 
 namespace app::ui {
     extern MainApplication *mainApp;
@@ -89,7 +90,7 @@ namespace usbInstStuff
 
     void installTitleUsb(std::vector<std::string> ourTitleList, int ourStorage)
     {
-        app::util::initInstallServices();
+        app::manager::initInstallServices();
         app::ui::instPage::loadInstallScreen();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
@@ -99,7 +100,7 @@ namespace usbInstStuff
 
         std::vector<std::string> fileNames;
         for (long unsigned int i = 0; i < ourTitleList.size(); i++) {
-            fileNames.push_back(app::util::shortenString(app::util::formatUrlString(ourTitleList[i]), 30, true));
+            fileNames.push_back(app::util::shortenString(ourTitleList[i], 30, true));
         }
 
         std::vector<int> previousClockValues;
@@ -142,15 +143,15 @@ namespace usbInstStuff
             app::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
             app::ui::instPage::setInstBarPerc(0);
             if (app::config::enableLightning) {
-                app::util::lightningStart();
+                app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
             if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
-            std::thread audioThread(app::util::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, audioPath);
             app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
-                app::util::lightningStop();
+                app::manager::lightningStop();
             }
             nspInstalled = false;
         }
@@ -166,23 +167,23 @@ namespace usbInstStuff
             app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
             app::ui::instPage::setInstBarPerc(100);
             if (app::config::enableLightning) {
-                app::util::lightningStart();
+                app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
             if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
-            std::thread audioThread(app::util::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourTitleList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
             else app::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
-                app::util::lightningStop();
+                app::manager::lightningStop();
             }
         }
 
         LOG_DEBUG("Done");
         nx::usb::usbDeviceReset();
         app::ui::instPage::loadMainMenu();
-        app::util::deinitInstallServices();
+        app::manager::deinitInstallServices();
         return;
     }
 }
