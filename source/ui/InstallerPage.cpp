@@ -2,8 +2,6 @@
 #include "ui/InstallerPage.hpp"
 #include "util/config.hpp"
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace app::ui {
     extern MainApplication *mainApp;
 

@@ -6,8 +6,6 @@
 #include "util/config.hpp"
 #include "util/lang.hpp"
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace app::ui {
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;

@@ -11,7 +11,10 @@
 #include "ui/InstallerPage.hpp"
 #include "ui/optionsPage.hpp"
 
-namespace app::ui {
+namespace app::ui
+{
+    #define COLOR(hex) pu::ui::Color::FromHex(hex)
+
     class MainApplication : public pu::ui::Application {
         public:
             using Application::Application;

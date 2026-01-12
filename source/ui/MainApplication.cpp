@@ -5,8 +5,6 @@
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace app::ui {
     MainApplication *mainApp;
 

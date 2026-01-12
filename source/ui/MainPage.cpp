@@ -8,8 +8,6 @@
 #include "nx/usb.hpp"
 #include "nx/network.hpp"
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace app::ui {
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
