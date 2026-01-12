@@ -151,16 +151,17 @@ namespace nx::fs
         return IDirectory(dir);
     }
 
-	std::string GetFreeStorageSpace() {
-		s64 size = 0;
+    std::string GetFreeStorageSpace() {
+        s64 size = 0;
         std::string sizeStr = "";
-		Result ret = 0;
-		if (R_FAILED(ret = fsFsGetFreeSpace(fsdevGetDeviceFileSystem("sdmc:"), "/", &size))) {
-			return sizeStr;
-		}
+        Result ret = 0;
+        if (R_FAILED(ret = fsFsGetFreeSpace(fsdevGetDeviceFileSystem("sdmc:"), "/", &size)))
+        {
+            return sizeStr;
+        }
         sizeStr = convertSize(size);
-		return sizeStr;
-	}
+        return sizeStr;
+    }
 
     std::string convertSize(s64 size)
     {

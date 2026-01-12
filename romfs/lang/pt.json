@@ -141,20 +141,6 @@
             "desc": "Alguns ficheiros instaláveis podem conter conteúdo malicioso! Apenas desligue esta\nfuncionalidade se tiver a certeza que o software que instala\né fidedigno!\n\nTem a certeza que deseja desativar a verificação NCA?",
             "opt1": "Sim, Eu quero um tijolo"
         },
-        "update": {
-            "title": "Atualização disponível",
-            "desc0": "Mohsaua-Buoh-Installer ",
-            "desc1": " está disponível! Pronto para atualizar?",
-            "opt0": "Atualizar",
-            "top_info": "A atualizar o Mohsaua-Buoh-Installer ",
-            "bot_info": "A transferir o Mohsaua-Buoh-Installer ",
-            "bot_info2": "A extrair o Mohsaua-Buoh-Installer ",
-            "complete": "Atulização completa!",
-            "failed": "Atualização falhada!",
-            "end_desc": "O software será encerrado.",
-            "title_check_fail": "Sem atualizações",
-            "desc_check_fail": "Esta é a versão mais recente do Mohsaua-Buoh-Installer!"
-        },
         "credits": {
             "title": "Agradecimentos às seguintes pessoas!",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

@@ -42,8 +42,8 @@ namespace app::install::nsp
 
         try
         {
-            app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-            app::ui::instPage::setInstBarPerc(0);
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+            app::ui::InstallerPage::setInstBarPerc(0);
             while (fileOff < ncaSize)
             {
                 progress = (float) fileOff / (float) ncaSize;
@@ -58,10 +58,10 @@ namespace app::install::nsp
                     startSizeBuffered = newSizeBuffered;
 
                     LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0), "%");
-                    app::ui::instPage::setInstBarPerc((double)(progress * 100.0));
+                    app::ui::InstallerPage::setInstBarPerc((double)(progress * 100.0));
                     std::stringstream x;
                     x << (int)(progress * 100.0);
-                    app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                    app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
                 }
 
                 if (fileOff + readSize >= ncaSize) readSize = ncaSize - fileOff;
@@ -71,7 +71,7 @@ namespace app::install::nsp
 
                 fileOff += readSize;
             }
-            app::ui::instPage::setInstBarPerc(100);
+            app::ui::InstallerPage::setInstBarPerc(100);
         }
         catch (std::exception& e)
         {

@@ -30,6 +30,7 @@ SOFTWARE.
 #include "install/install_xci.hpp"
 #include "nx/error.hpp"
 #include "nx/usb.hpp"
+#include "nx/misc.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
@@ -91,7 +92,7 @@ namespace usbInstStuff
     void installTitleUsb(std::vector<std::string> ourTitleList, int ourStorage)
     {
         app::manager::initInstallServices();
-        app::ui::instPage::loadInstallScreen();
+        app::ui::InstallerPage::loadInstallScreen();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
@@ -105,18 +106,18 @@ namespace usbInstStuff
 
         std::vector<int> previousClockValues;
         if (app::config::overClock) {
-            previousClockValues.push_back(app::util::setClockSpeed(0, 1785000000)[0]);
-            previousClockValues.push_back(app::util::setClockSpeed(1, 76800000)[0]);
-            previousClockValues.push_back(app::util::setClockSpeed(2, 1600000000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000)[0]);
         }
 
         try {
             unsigned int titleCount = ourTitleList.size();
             for (fileItr = 0; fileItr < titleCount; fileItr++) {
                 if (titleCount > 1) {
-                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(fileItr+1) + "/"  + std::to_string(titleCount) + ") " + fileNames[fileItr] + "inst.usb.source_string"_lang);
+                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(fileItr+1) + "/"  + std::to_string(titleCount) + ") " + fileNames[fileItr] + "inst.usb.source_string"_lang);
                 } else {
-                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + fileNames[fileItr] + "inst.usb.source_string"_lang);
+                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + fileNames[fileItr] + "inst.usb.source_string"_lang);
                 }
                 std::unique_ptr<app::install::Install> installTask;
 
@@ -129,8 +130,8 @@ namespace usbInstStuff
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
-                app::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
-                app::ui::instPage::setInstBarPerc(0);
+                app::ui::InstallerPage::setInstInfoText("inst.info_page.preparing"_lang);
+                app::ui::InstallerPage::setInstBarPerc(0);
                 installTask->Prepare();
                 installTask->InstallTicketCert();
                 installTask->Begin();
@@ -140,8 +141,8 @@ namespace usbInstStuff
             LOG_DEBUG("Failed to install");
             LOG_DEBUG("%s", e.what());
             fprintf(stdout, "%s", e.what());
-            app::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
-            app::ui::instPage::setInstBarPerc(0);
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
+            app::ui::InstallerPage::setInstBarPerc(0);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
@@ -157,15 +158,15 @@ namespace usbInstStuff
         }
 
         if (previousClockValues.size() > 0) {
-            app::util::setClockSpeed(0, previousClockValues[0]);
-            app::util::setClockSpeed(1, previousClockValues[1]);
-            app::util::setClockSpeed(2, previousClockValues[2]);
+            nx::misc::SetClockSpeed(0, previousClockValues[0]);
+            nx::misc::SetClockSpeed(1, previousClockValues[1]);
+            nx::misc::SetClockSpeed(2, previousClockValues[2]);
         }
 
         if(nspInstalled) {
             nx::usb::USBCommandManager::SendFinishedCommand();
-            app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
-            app::ui::instPage::setInstBarPerc(100);
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.complete"_lang);
+            app::ui::InstallerPage::setInstBarPerc(100);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
@@ -182,7 +183,7 @@ namespace usbInstStuff
 
         LOG_DEBUG("Done");
         nx::usb::usbDeviceReset();
-        app::ui::instPage::loadMainMenu();
+        app::ui::InstallerPage::loadMainMenu();
         app::manager::deinitInstallServices();
         return;
     }

@@ -36,6 +36,7 @@ SOFTWARE.
 #include "install/install.hpp"
 #include "nx/error.hpp"
 #include "nx/network.hpp"
+#include "nx/misc.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
@@ -122,7 +123,7 @@ namespace netInstStuff{
     void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames, std::string ourSource)
     {
         app::manager::initInstallServices();
-        app::ui::instPage::loadInstallScreen();
+        app::ui::InstallerPage::loadInstallScreen();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
@@ -142,9 +143,9 @@ namespace netInstStuff{
 
         std::vector<int> previousClockValues;
         if (app::config::overClock) {
-            previousClockValues.push_back(app::util::setClockSpeed(0, 1785000000)[0]);
-            previousClockValues.push_back(app::util::setClockSpeed(1, 76800000)[0]);
-            previousClockValues.push_back(app::util::setClockSpeed(2, 1600000000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000)[0]);
         }
 
         try {
@@ -152,9 +153,9 @@ namespace netInstStuff{
             for (urlItr = 0; urlItr < urlCount; urlItr++) {
                 LOG_DEBUG("%s %s\n", "Install request from", ourUrlList[urlItr].c_str());
                 if (urlCount > 1) {
-                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(urlItr+1) + "/"  + std::to_string(urlCount) + ") " + urlNames[urlItr] + ourSource);
+                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(urlItr+1) + "/"  + std::to_string(urlCount) + ") " + urlNames[urlItr] + ourSource);
                 } else {
-                    app::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
+                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                 }
                 std::unique_ptr<app::install::Install> installTask;
 
@@ -167,8 +168,8 @@ namespace netInstStuff{
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
-                app::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
-                app::ui::instPage::setInstBarPerc(0);
+                app::ui::InstallerPage::setInstInfoText("inst.info_page.preparing"_lang);
+                app::ui::InstallerPage::setInstBarPerc(0);
                 installTask->Prepare();
                 installTask->InstallTicketCert();
                 installTask->Begin();
@@ -178,8 +179,8 @@ namespace netInstStuff{
             LOG_DEBUG("Failed to install");
             LOG_DEBUG("%s", e.what());
             fprintf(stdout, "%s", e.what());
-            app::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
-            app::ui::instPage::setInstBarPerc(0);
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
+            app::ui::InstallerPage::setInstBarPerc(0);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
@@ -195,17 +196,17 @@ namespace netInstStuff{
         }
 
         if (previousClockValues.size() > 0) {
-            app::util::setClockSpeed(0, previousClockValues[0]);
-            app::util::setClockSpeed(1, previousClockValues[1]);
-            app::util::setClockSpeed(2, previousClockValues[2]);
+            nx::misc::SetClockSpeed(0, previousClockValues[0]);
+            nx::misc::SetClockSpeed(1, previousClockValues[1]);
+            nx::misc::SetClockSpeed(2, previousClockValues[2]);
         }
 
         pushExitCommand(app::util::getUrlHost(ourUrlList[0]));
         OnUnwound();
 
         if(nspInstalled) {
-            app::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
-            app::ui::instPage::setInstBarPerc(100);
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.complete"_lang);
+            app::ui::InstallerPage::setInstBarPerc(100);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
@@ -221,7 +222,7 @@ namespace netInstStuff{
         }
         
         LOG_DEBUG("Done");
-        app::ui::instPage::loadMainMenu();
+        app::ui::InstallerPage::loadMainMenu();
         app::manager::deinitInstallServices();
         return;
     }
@@ -289,7 +290,7 @@ namespace netInstStuff{
                 }
 
                 if (kDown & HidNpadButton_X) {
-                    std::string url = app::util::softwareKeyboard("inst.net.url.hint"_lang, app::config::httpIndexUrl, 500);
+                    std::string url = nx::misc::OpenSoftwareKeyboard("inst.net.url.hint"_lang, app::config::httpIndexUrl, 500);
                     if (url == "")
                         url = "https://";
 

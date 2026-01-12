@@ -384,7 +384,7 @@ namespace nx::usb
 
         while (size)
         {
-            // When bufptr isn't page-aligned copy the data into g_usbComms_endpoint_in_buffer and transfer that, otherwise use the bufptr directly
+            // When bufptr isn't page-aligned copy the data into endpoint_out_buffer and transfer that, otherwise use the bufptr directly
             if(((u64)bufptr) & 0xFFF)
             {
                 transfer_buffer = interface->endpoint_out_buffer;
@@ -456,7 +456,7 @@ namespace nx::usb
 
         while (size)
         {
-            // When bufptr isn't page-aligned copy the data into g_usbComms_endpoint_in_buffer and transfer that, otherwise use the bufptr directly
+            // When bufptr isn't page-aligned copy the data into endpoint_in_buffer and transfer that, otherwise use the bufptr directly
             if (((u64)bufptr) & 0xFFF)
             {
                 transfer_buffer = interface->endpoint_in_buffer;

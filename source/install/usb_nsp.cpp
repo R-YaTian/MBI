@@ -130,7 +130,7 @@ namespace app::install::nsp
         size_t startSizeBuffered = 0;
         double speed = 0.0;
 
-        app::ui::instPage::setInstBarPerc(0);
+        app::ui::InstallerPage::setInstBarPerc(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreadsUsbNsp)
         {
             u64 newTime = armGetSystemTick();
@@ -151,18 +151,18 @@ namespace app::install::nsp
                     LOG_DEBUG("> Download Progress: %lu/%lu MB (%i%s) (%.2f MB/s)\r", downloadSizeMB, totalSizeMB, downloadProgress, "%", speed);
                 #endif
 
-                app::ui::instPage::setInstInfoText("inst.info_page.downloading"_lang + ncaFileName + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
-                app::ui::instPage::setInstBarPerc((double)downloadProgress);
+                app::ui::InstallerPage::setInstInfoText("inst.info_page.downloading"_lang + ncaFileName + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                app::ui::InstallerPage::setInstBarPerc((double)downloadProgress);
             }
         }
-        app::ui::instPage::setInstBarPerc(100);
+        app::ui::InstallerPage::setInstBarPerc(100);
 
         #ifdef NXLINK_DEBUG
             u64 totalSizeMB = bufferedPlaceholderWriter.GetTotalDataSize() / 1000000;
         #endif
 
-        app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-        app::ui::instPage::setInstBarPerc(0);
+        app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::ui::InstallerPage::setInstBarPerc(0);
         while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreadsUsbNsp)
         {
             int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
@@ -170,12 +170,12 @@ namespace app::install::nsp
                 u64 installSizeMB = bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / 1000000;
                 LOG_DEBUG("> Install Progress: %lu/%lu MB (%i%s)\r", installSizeMB, totalSizeMB, installProgress, "%");
             #endif
-            app::ui::instPage::setInstBarPerc((double)installProgress);
+            app::ui::InstallerPage::setInstBarPerc((double)installProgress);
             std::stringstream x;
             x << (int)(installProgress);
-            app::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
+            app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
         }
-        app::ui::instPage::setInstBarPerc(100);
+        app::ui::InstallerPage::setInstBarPerc(100);
 
         thrd_join(usbThread, NULL);
         thrd_join(writeThread, NULL);

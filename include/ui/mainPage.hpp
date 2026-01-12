@@ -1,36 +1,31 @@
 #pragma once
+
 #include <pu/Plutonium>
 
-using namespace pu::ui::elm;
-namespace app::ui {
+namespace app::ui
+{
     class MainPage : public pu::ui::Layout
     {
         public:
             MainPage();
             PU_SMART_CTOR(MainPage)
-            void installMenuItem_Click();
-            void netInstallMenuItem_Click();
-            void usbInstallMenuItem_Click();
-            void settingsMenuItem_Click();
-            void usbHDDInstallMenuItem_Click();
-            void exitMenuItem_Click();
+            void SdInstallMenuItem_Click();
+            void NetInstallMenuItem_Click();
+            void UsbInstallMenuItem_Click();
+            void SettingsMenuItem_Click();
+            void UdiskInstallMenuItem_Click();
+            void ExitMenuItem_Click();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
-            void updateStatsThread();
             void mainMenuThread();
-            Image::Ref titleImage;
-            TextBlock::Ref appVersionText;
-            TextBlock::Ref freeSpaceText;
-            TextBlock::Ref batteryValueText;
         private:
             bool appletFinished;
-            TextBlock::Ref butText;
-            Rectangle::Ref topRect;
-            Rectangle::Ref botRect;
+            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Menu::Ref optionMenu;
-            pu::ui::elm::MenuItem::Ref installMenuItem;
+            pu::ui::elm::MenuItem::Ref sdInstallMenuItem;
             pu::ui::elm::MenuItem::Ref netInstallMenuItem;
             pu::ui::elm::MenuItem::Ref usbInstallMenuItem;
-            pu::ui::elm::MenuItem::Ref usbHDDInstallMenuItem;
+            pu::ui::elm::MenuItem::Ref udiskInstallMenuItem;
             pu::ui::elm::MenuItem::Ref settingsMenuItem;
             pu::ui::elm::MenuItem::Ref exitMenuItem;
     };

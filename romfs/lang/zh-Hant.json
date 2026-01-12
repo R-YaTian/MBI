@@ -141,20 +141,6 @@
             "desc": "雖然是極少數的情況，但檔案還是有可能會被加入損害主機的惡意代碼！\n除非確保所有檔案都從可信任的來源下載，否則不建議關閉簽名驗證。\n\n是否確認要關閉NCA簽名驗證？",
             "opt1": "好，我已瞭解可能的風險"
         },
-        "update": {
-            "title": "有可用的更新版本",
-            "desc0": "Mohsaua-Buoh-Installer ",
-            "desc1": " 發佈了新版本！是否立刻進行更新？",
-            "opt0": "更新",
-            "top_info": "正在更新Mohsaua-Buoh-Installer",
-            "bot_info": "正在下載Mohsaua-Buoh-Installer",
-            "bot_info2": "正在解壓Mohsaua-Buoh-Installer",
-            "complete": "更新完成！",
-            "failed": "更新失敗！",
-            "end_desc": "本程式即將關閉！",
-            "title_check_fail": "沒有更新版本",
-            "desc_check_fail": "目前使用的Mohsaua-Buoh-Installer是最新版本！"
-        },
         "credits": {
             "title": "感謝所有幫助過我們的人",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

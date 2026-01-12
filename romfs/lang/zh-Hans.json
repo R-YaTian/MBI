@@ -141,20 +141,6 @@
             "desc": "某些安装文件可能包含使主机变砖的恶意代码！\n只有在您确信安装文件绝对可靠的情况下\n才可以禁用此功能！\n\n是否仍然禁用 NCA 签名验证？",
             "opt1": "是的，我不怕变砖"
         },
-        "update": {
-            "title": "发现可用的新版本",
-            "desc0": "Mohsaua-Buoh-Installer ",
-            "desc1": " 存在可用更新！是否立即更新？",
-            "opt0": "更新",
-            "top_info": "正在更新 Mohsaua-Buoh-Installer ",
-            "bot_info": "正在下载 Mohsaua-Buoh-Installer ",
-            "bot_info2": "正在解压 Mohsaua-Buoh-Installer ",
-            "complete": "更新完成！",
-            "failed": "更新失败！",
-            "end_desc": "软件将会自动关闭，手动打开以使用新版本。",
-            "title_check_fail": "没有发现更新",
-            "desc_check_fail": "当前 Mohsaua-Buoh-Installer 已是最新版！"
-        },
         "credits": {
             "title": "感谢以下人员！",
             "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供 Tinfoil\n- XorTroll 提供 Plutonium 以及 Goldleaf\n- nicoboss 提供 NSZ 支持\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs"

@@ -141,20 +141,6 @@
             "desc": "Some installable files may contain malicious contents! Only disable this\nfeature if you are absolutely certain the software you will be installing\nis trustworthy!\n\nDo you still want to disable NCA signature verification?",
             "opt1": "Yes, I want a brick"
         },
-        "update": {
-            "title": "Update available",
-            "desc0": "Mohsaua-Buoh-Installer ",
-            "desc1": " is available now! Ready to update?",
-            "opt0": "Update",
-            "top_info": "Updating to Mohsaua-Buoh-Installer ",
-            "bot_info": "Downloading Mohsaua-Buoh-Installer ",
-            "bot_info2": "Extracting Mohsaua-Buoh-Installer ",
-            "complete": "Update complete!",
-            "failed": "Update failed!",
-            "end_desc": "The software will now be closed.",
-            "title_check_fail": "No updates found",
-            "desc_check_fail": "You are on the latest version of Mohsaua-Buoh-Installer!"
-        },
         "credits": {
             "title": "Thanks to the following people!",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

@@ -141,20 +141,6 @@
             "desc": "Некоторые устанавливаемые приложения могут содержать вредоносный код!\nОтключайте эту опцию только если вы совершенно точно уверены в качестве\nустанавливаемых приложений и доверяете их источникам!\n\n\nВсё ещё хотите отключить проверку проверку NCA подписей?",
             "opt1": "Да, я хочу получить кирпич"
         },
-        "update": {
-            "title": "Доступно обновление",
-            "desc0": "Mohsaua-Buoh-Installer ",
-            "desc1": " уже доступен! Готовы обновиться?",
-            "opt0": "Обновление",
-            "top_info": "Обновление Mohsaua-Buoh-Installer ",
-            "bot_info": "Загрузка Mohsaua-Buoh-Installer ",
-            "bot_info2": "Извлечение Mohsaua-Buoh-Installer ",
-            "complete": "Обновление завершено!",
-            "failed": "Обновление провалилось!",
-            "end_desc": "Сейчас приложение будет закрыто.",
-            "title_check_fail": "Обновлений нет",
-            "desc_check_fail": "Вы уже используете последнюю версию Mohsaua-Buoh-Installer!"
-        },
         "credits": {
             "title": "Выражаем благодарность следующим людям:",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

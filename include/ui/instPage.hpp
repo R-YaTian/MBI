@@ -1,29 +1,24 @@
 #pragma once
+
 #include <pu/Plutonium>
 
-using namespace pu::ui::elm;
-namespace app::ui {
-    class instPage : public pu::ui::Layout
+namespace app::ui
+{
+    class InstallerPage : public pu::ui::Layout
     {
         public:
-            instPage();
-            PU_SMART_CTOR(instPage)
+            InstallerPage();
+            PU_SMART_CTOR(InstallerPage)
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
-            void updateStatsThread();
-            TextBlock::Ref pageInfoText;
-            TextBlock::Ref installInfoText;
+            pu::ui::elm::TextBlock::Ref pageInfoText;
+            pu::ui::elm::TextBlock::Ref installInfoText;
             pu::ui::elm::ProgressBar::Ref installBar;
-            Image::Ref titleImage;
-            TextBlock::Ref appVersionText;
-            TextBlock::Ref freeSpaceText;
-            TextBlock::Ref batteryValueText;
             static void setTopInstInfoText(std::string ourText);
             static void setInstInfoText(std::string ourText);
             static void setInstBarPerc(double ourPercent);
             static void loadMainMenu();
             static void loadInstallScreen();
         private:
-            Rectangle::Ref infoRect;
-            Rectangle::Ref topRect;
+            pu::ui::elm::Rectangle::Ref infoRect;
     };
 }
