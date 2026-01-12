@@ -38,7 +38,7 @@ SOFTWARE.
 #include "util/util.hpp"
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "manager.hpp"
 
 namespace app::ui {

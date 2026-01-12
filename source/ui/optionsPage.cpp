@@ -2,11 +2,10 @@
 #include <switch.h>
 #include "ui/MainApplication.hpp"
 #include "ui/MainPage.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "ui/optionsPage.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
-#include "ui/instPage.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 

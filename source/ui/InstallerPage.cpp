@@ -1,5 +1,5 @@
 #include "ui/MainApplication.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "util/config.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)

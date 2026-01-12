@@ -24,8 +24,6 @@ SOFTWARE.
 #include "nx/error.hpp"
 #include <climits>
 #include <math.h>
-#include <algorithm>
-#include <exception>
 
 namespace nx::data
 {

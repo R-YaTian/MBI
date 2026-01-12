@@ -68,16 +68,10 @@ do not use the software.
 	implied warranties of merchantability, fitness for a particular
 	purpose and non-infringement.
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include <errno.h>
-#include <dirent.h>
+
 #include <threads.h>
 #include <usbhsfs.h>
 #include <mutex>
-#include <algorithm>
 
 namespace nx::udisk
 {

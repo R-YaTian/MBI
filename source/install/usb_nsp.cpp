@@ -33,7 +33,7 @@ SOFTWARE.
 #include "nx/usb.hpp"
 #include "util/util.hpp"
 #include "util/lang.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 
 namespace app::install::nsp
 {

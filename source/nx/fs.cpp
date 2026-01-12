@@ -23,7 +23,6 @@ SOFTWARE.
 #include <switch.h>
 
 #include <cmath>
-#include <cstring>
 #include <memory>
 
 #include "nx/fs.hpp"

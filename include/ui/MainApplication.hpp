@@ -8,7 +8,7 @@
 #include "ui/sdInstPage.hpp"
 #include "ui/usbInstPage.hpp"
 #include "ui/usbHDDInstPage.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "ui/optionsPage.hpp"
 
 namespace app::ui {

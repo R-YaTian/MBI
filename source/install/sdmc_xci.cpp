@@ -1,7 +1,7 @@
 #include "install/sdmc_xci.hpp"
 #include "nx/error.hpp"
 #include "nx/NcaWriter.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "util/lang.hpp"
 
 namespace app::install::xci

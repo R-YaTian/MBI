@@ -36,7 +36,7 @@ SOFTWARE.
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/usbInstPage.hpp"
-#include "ui/instPage.hpp"
+#include "ui/InstallerPage.hpp"
 #include "manager.hpp"
 
 namespace app::ui {
