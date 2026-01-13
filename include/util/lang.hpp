@@ -3,26 +3,29 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include "json.hpp"
+#include <jtjson.h>
 
-using json = nlohmann::json;
-
-namespace Language {
+namespace app::i18n
+{
     void Load();
     std::string LanguageEntry(std::string key);
     std::string GetRandomMsg();
-    inline json GetRelativeJson(json j, std::string key) {
+
+    inline jt::Json GetRelativeJson(jt::Json j, std::string key)
+    {
         std::istringstream ss(key);
         std::string token;
+        jt::Json ret = j;
 
-        while (std::getline(ss, token, '.') && j != nullptr) {
-            j = j[token];
+        while (std::getline(ss, token, '.') && !ret.is_null())
+        {
+            ret = ret[token];
         }
 
-        return j;
+        return ret;
     }
 }
 
 inline std::string operator ""_lang (const char* key, size_t size) {
-    return Language::LanguageEntry(std::string(key, size));
+    return app::i18n::LanguageEntry(std::string(key, size));
 }

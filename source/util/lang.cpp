@@ -1,18 +1,20 @@
-#include <iostream>
 #include <switch.h>
-#include <filesystem>
-#include <pu/Plutonium>
+
+#include "nx/error.hpp"
 #include "util/lang.hpp"
 #include "util/config.hpp"
 
-namespace Language {
-    json lang;
+namespace app::i18n
+{
+    jt::Json lang;
 
-    void Load() {
-        std::ifstream ifs;
+    void Load()
+    {
+        FILE *fp;
         std::string languagePath;
         int langInt = app::config::languageSetting;
-        if (langInt == 99) {
+        if (langInt == -1)
+        {
             SetLanguage ourLang;
             u64 lcode = 0;
             setInitialize();
@@ -21,7 +23,9 @@ namespace Language {
             setExit();
             langInt = (int)ourLang;
         }
-        switch (langInt) {
+
+        switch (langInt)
+        {
             case 0:
                 languagePath = "romfs:/lang/jp.json";
                 break;
@@ -50,38 +54,44 @@ namespace Language {
                 languagePath = "romfs:/lang/nl.json";
                 break;
             case 9:
+            case 17:
                 languagePath = "romfs:/lang/pt.json";
                 break;
             case 10:
                 languagePath = "romfs:/lang/ru.json";
                 break;
             case 11:
+            case 16:
                 languagePath = "romfs:/lang/zh-Hant.json";
                 break;
             default:
                 languagePath = "romfs:/lang/en.json";
         }
-        if (std::filesystem::exists(languagePath)) ifs = std::ifstream(languagePath);
-        else ifs = std::ifstream("romfs:/lang/en.json");
-        if (!ifs.good()) {
-            std::cout << "[FAILED TO LOAD LANGUAGE FILE]" << std::endl;
+
+        fp = fopen(languagePath.c_str(), "rb");
+        if (!fp)
+        {
+            LOG_DEBUG("FAILED TO LOAD LANGUAGE FILE\n");
             return;
         }
-        lang = json::parse(ifs);
-        ifs.close();
+        lang = jt::Json::parse(fp);
+        fclose(fp);
     }
 
-    std::string LanguageEntry(std::string key) {
-        json j = GetRelativeJson(lang, key);
-        if (j == nullptr) {
-            return "didn't find: " + key;
+    std::string LanguageEntry(std::string key)
+    {
+        jt::Json j = GetRelativeJson(lang, key);
+        if (j.is_null())
+        {
+            return "Missing key: " + key;
         }
         return j.get<std::string>();
     }
 
-    std::string GetRandomMsg() {
-        json j = Language::GetRelativeJson(lang, "inst.finished");
+    std::string GetRandomMsg()
+    {
+        jt::Json j = app::i18n::GetRelativeJson(lang, "inst.finished");
         srand(time(NULL));
-        return(j[rand() % j.size()]);
+        return j[rand() % j.getArray().size()];
     }
 }

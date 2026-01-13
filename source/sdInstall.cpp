@@ -138,7 +138,7 @@ namespace nspInstStuff {
                             }
                         }
                     }
-                } else app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
+                } else app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             } else {
                 if (app::config::deletePrompt) {
                     if(app::ui::mainApp->CreateShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, {"common.no"_lang,"common.yes"_lang}, false) == 1) {
@@ -148,7 +148,7 @@ namespace nspInstStuff {
                             } catch (...){ };
                         }
                     }
-                } else app::ui::mainApp->CreateShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), {"common.ok"_lang}, true);
+                } else app::ui::mainApp->CreateShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             }
             audioThread.join();
             if (app::config::enableLightning) {

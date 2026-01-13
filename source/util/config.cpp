@@ -1,9 +1,10 @@
 #include <fstream>
 #include <iomanip>
+#include <jtjson.h>
 #include "util/config.hpp"
-#include "util/json.hpp"
 
-namespace app::config {
+namespace app::config
+{
     std::string lastNetUrl;
     std::string httpIndexUrl;
     std::string themeColorTextTopInfo;
@@ -24,28 +25,31 @@ namespace app::config {
     bool usbAck;
     bool validateNCAs;
 
-    void setConfig() {
-        nlohmann::json j = {
-            {"fixTicket", fixTicket},
-            {"deletePrompt", deletePrompt},
-            {"enableSound", enableSound},
-            {"enableLightning", enableLightning},
-            {"ignoreReqVers", ignoreReqVers},
-            {"languageSetting", languageSetting},
-            {"overClock", overClock},
-            {"usbAck", usbAck},
-            {"validateNCAs", validateNCAs},
-            {"lastNetUrl", lastNetUrl},
-            {"httpIndexUrl", httpIndexUrl}
-        };
+    void setConfig()
+    {
+        jt::Json j;
+        j["fixTicket"] = fixTicket;
+        j["deletePrompt"] = deletePrompt;
+        j["enableSound"] = enableSound;
+        j["enableLightning"] = enableLightning;
+        j["ignoreReqVers"] = ignoreReqVers;
+        j["languageSetting"] = languageSetting;
+        j["overClock"] = overClock;
+        j["usbAck"] = usbAck;
+        j["validateNCAs"] = validateNCAs;
+        j["lastNetUrl"] = lastNetUrl;
+        j["httpIndexUrl"] = httpIndexUrl;
+        auto json_str = j.dump(2);
+
         std::ofstream file(app::config::configPath);
-        file << std::setw(4) << j << std::endl;
+        file << std::setw(4) << json_str << std::endl;
     }
 
-    void parseConfig() {
+    void parseConfig()
+    {
         try {
             std::ifstream file(app::config::configPath);
-            nlohmann::json j;
+            jt::Json j;
             file >> j;
             fixTicket = j["fixTicket"].get<bool>();
             deletePrompt = j["deletePrompt"].get<bool>();
@@ -61,7 +65,7 @@ namespace app::config {
         }
         catch (...) {
             // If loading values from the config fails, we just load the defaults and overwrite the old config
-            languageSetting = 99;
+            languageSetting = -1;
             fixTicket = true;
             deletePrompt = false;
             enableSound = true;

@@ -41,7 +41,7 @@ namespace app::ui {
     void MainApplication::OnLoad() {
         mainApp = this;
 
-        Language::Load();
+        app::i18n::Load();
 
         this->checkboxBlank = app::manager::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
         this->checkboxTick = app::manager::LoadTexture("romfs:/images/icons/check-box-outline.png");
