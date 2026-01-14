@@ -24,21 +24,26 @@ SOFTWARE.
 
 #include <cstring>
 #include <stdexcept>
+
+#ifdef NXLINK_DEBUG
 #include <cstdio>
+#endif
+
+#include "mini-printf/mini-printf.h"
 
 #define ASSERT_OK(res_expr, desc) \
     ({ \
         const auto tmp_rc = (res_expr); \
         if (R_FAILED(tmp_rc)) { \
-            char msg[256] = {}; std::snprintf(msg, 256-1, "%s:%u: %s.  Error code: 0x%08x\n", __func__, __LINE__, desc, tmp_rc); \
+            char msg[256] = {}; snprintf(msg, 256-1, "%s:%u: %s.  Error code: 0x%08x\n", __func__, __LINE__, desc, tmp_rc); \
             throw std::runtime_error(msg); \
         } \
     })
 
 #define THROW_FORMAT(format, ...) \
     ({ \
-        char error_prefix[512] = {}; std::snprintf(error_prefix, 256-1, "%s:%u: ", __func__, __LINE__); \
-        char formatted_msg[256] = {}; std::snprintf(formatted_msg, 256-1, format, ##__VA_ARGS__); \
+        char error_prefix[512] = {}; snprintf(error_prefix, 256-1, "%s:%u: ", __func__, __LINE__); \
+        char formatted_msg[256] = {}; snprintf(formatted_msg, 256-1, format, ##__VA_ARGS__); \
         std::strncat(error_prefix, formatted_msg, 512-1); throw std::runtime_error(error_prefix); \
     })
 

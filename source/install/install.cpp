@@ -23,10 +23,10 @@ SOFTWARE.
 #include "install/install.hpp"
 
 #include <switch.h>
-#include <cstring>
 #include <memory>
 
 #include "nx/error.hpp"
+#include "nx/nca.hpp"
 #include "nx/ncm.hpp"
 
 // TODO: Check NCA files are present

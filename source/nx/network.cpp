@@ -25,6 +25,7 @@ SOFTWARE.
 
 #include <curl/curl.h>
 #include <sstream>
+#include <cstring>
 
 namespace nx::network
 {

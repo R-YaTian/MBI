@@ -39,16 +39,16 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	MBI
 BUILD		:=	build
-SOURCES		:=	source source/ui source/install source/nx source/util
+SOURCES		:=	source source/ui source/install source/nx source/util third_party/mini-printf
 DATA		:=	data
-INCLUDES	:=	include include/ui include/install include/nx include/util
+INCLUDES	:=	include include/ui include/install include/nx include/util third_party
 APP_TITLE	:=	MBI
 APP_AUTHOR	:=	R-YaTian
 APP_VERSION	:=	1.0.0
 ROMFS		:=	romfs
 
 ifneq ($(WITH_DEBUG),)
-	WITH_DEBUG := -D__DEBUG__ -DNXLINK_DEBUG
+	DEBUGFLAGS := -D__DEBUG__ -DNXLINK_DEBUG
 endif
 
 #---------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ CFLAGS	+=	 `curl-config --cflags`
 CFLAGS	+=	 `sdl2-config --cflags`
 CFLAGS	+=	 `$(PREFIX)pkg-config --cflags freetype2`
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(WITH_DEBUG)
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS)
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
 
