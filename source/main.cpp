@@ -13,8 +13,8 @@ int main(int argc, char* argv[])
         renderer_opts.UseImage(pu::ui::render::ImgAllFlags);
         renderer_opts.UseRomfs();
         renderer_opts.SetPlServiceType(PlServiceType_User);
-        renderer_opts.AddDefaultAllSharedFonts();
-        renderer_opts.AddExtraDefaultFontSize(30);
+        renderer_opts.AddDefaultFontPath("romfs:/DroidSansCJK-Regular.ttf");
+        renderer_opts.AddDefaultSharedFont(PlSharedFontType_NintendoExt);
         renderer_opts.AddExtraDefaultFontSize(32);
         renderer_opts.AddExtraDefaultFontSize(42);
         renderer_opts.SetInputPlayerCount(1);

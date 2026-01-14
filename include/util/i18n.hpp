@@ -10,13 +10,13 @@ namespace app::i18n
     std::string LanguageEntry(std::string key);
     std::string GetRandomMsg();
 
-    inline jt::Json GetRelativeJson(jt::Json j, std::string key)
+    inline jt::Json GetRelativeJson(const jt::Json& j, std::string key)
     {
         std::istringstream ss(key);
         std::string token;
         jt::Json ret = j;
 
-        while (std::getline(ss, token, '.') && !ret.is_null())
+        while (std::getline(ss, token, '.') && !ret.is_string())
         {
             ret = ret[token];
         }
