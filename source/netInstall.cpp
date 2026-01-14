@@ -39,7 +39,7 @@ SOFTWARE.
 #include "nx/misc.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
 #include "manager.hpp"
@@ -80,7 +80,7 @@ namespace netInstStuff{
         // Set as non-blocking
         fcntl(m_serverSocket, F_SETFL, fcntl(m_serverSocket, F_GETFL, 0) | O_NONBLOCK);
 
-        if (listen(m_serverSocket, 5) < 0) 
+        if (listen(m_serverSocket, 5) < 0)
         {
             THROW_FORMAT("Failed to listen on server socket. Error code: %u\n", errno);
         }
@@ -185,7 +185,7 @@ namespace netInstStuff{
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
-            if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
@@ -211,7 +211,7 @@ namespace netInstStuff{
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
-            if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/success.wav")) audioPath = app::config::storagePath + "/success.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourUrlList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             else app::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
@@ -220,7 +220,7 @@ namespace netInstStuff{
                 app::manager::lightningStop();
             }
         }
-        
+
         LOG_DEBUG("Done");
         app::ui::InstallerPage::loadMainMenu();
         app::manager::deinitInstallServices();
@@ -289,7 +289,8 @@ namespace netInstStuff{
                     app::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true);
                 }
 
-                if (kDown & HidNpadButton_X) {
+                if (kDown & HidNpadButton_X)
+                {
                     std::string url = nx::misc::OpenSoftwareKeyboard("inst.net.url.hint"_lang, app::config::httpIndexUrl, 500);
                     if (url == "")
                         url = "https://";
@@ -300,47 +301,79 @@ namespace netInstStuff{
                         goto back_to_loop;
                     } else {
                         app::config::httpIndexUrl = url;
-                        app::config::setConfig();
+                        app::config::SaveSettings();
                         if (url[url.size() - 1] != '/')
                             url += '/';
                         response = nx::network::downloadToBuffer(url);
                     }
 
-                    if (!response.empty()) {
+                    if (!response.empty())
+                    {
                         if (response[0] == '{')
-                            try {
-                                nlohmann::json j = nlohmann::json::parse(response);
-                                for (const auto &file : j["files"])
-                                    urls.push_back(file["url"]);
+                        {
+                            jt::Json parse = jt::Json::parse(response);
+
+                            if (parse.contains("files") && parse["files"].is_array())
+                            {
+                                const auto& fileArray = parse["files"];
+                                for (const auto& curFile : fileArray)
+                                {
+                                    if (curFile.contains("url"))
+                                    {
+                                        urls.push_back(curFile["url"]);
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
                                 return urls;
-                            } catch (const nlohmann::detail::exception& ex) {
+                            }
+                            else
+                            {
                                 LOG_DEBUG("Failed to parse JSON\n");
                             }
-                        else if (response[0] == '<') {
+                        }
+                        else if (response[0] == '<')
+                        {
                             std::size_t index = 0;
-                            while (index < response.size()) {
+                            while (index < response.size())
+                            {
                                 std::string link;
                                 auto found = response.find("href=\"", index);
                                 if (found == std::string::npos)
                                     break;
                                 index = found + 6;
-                                while (index < response.size()) {
-                                    if (response[index] == '"') {
+                                while (index < response.size())
+                                {
+                                    if (response[index] == '"')
+                                    {
                                         if (link.find("../") == std::string::npos)
-                                            if (link.find(".nsp") != std::string::npos || link.find(".nsz") != std::string::npos || link.find(".xci") != std::string::npos || link.find(".xcz") != std::string::npos)
+                                        {
+                                            if (link.find(".nsp") != std::string::npos ||
+                                                link.find(".nsz") != std::string::npos ||
+                                                link.find(".xci") != std::string::npos ||
+                                                link.find(".xcz") != std::string::npos)
+                                            {
                                                 urls.push_back(url + link);
+                                            }
+                                        }
                                         break;
                                     }
                                     link += response[index++];
                                 }
-
                             }
                             if (urls.size() > 0)
+                            {
                                 return urls;
+                            }
                             LOG_DEBUG("Failed to parse games from HTML\n");
                         }
-                    } else
+                    }
+                    else
+                    {
                         LOG_DEBUG("Failed to fetch game list\n");
+                    }
                     app::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true);
                 }
 back_to_loop:

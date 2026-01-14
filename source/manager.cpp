@@ -14,10 +14,10 @@ namespace app::manager
 
         if (!std::filesystem::exists("sdmc:/config"))
             std::filesystem::create_directory("sdmc:/config");
-        if (!std::filesystem::exists(app::config::appDir))
-            std::filesystem::create_directory(app::config::appDir);
-        app::config::parseConfig();
-        app::config::parseThemeColorConfig();
+        if (!std::filesystem::exists(app::config::storagePath))
+            std::filesystem::create_directory(app::config::storagePath);
+        app::config::ParseSettings();
+        app::config::ParseThemeColor();
 
         socketInitializeDefault();
 

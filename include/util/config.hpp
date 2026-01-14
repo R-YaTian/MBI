@@ -1,25 +1,25 @@
 #pragma once
 
-#include <vector>
+#include <string>
 
 namespace app::config
 {
-    static const std::string appDir = "sdmc:/config/MBI";
-    static const std::string configPath = appDir + "/config.json";
-    static const std::string themecolorPath = appDir + "/themecolor.json";
-    static const std::string appVersion = APPVER;
+    inline const std::string storagePath = "sdmc:/config/MBI";
+    inline const std::string settingsFile = storagePath + "/config.json";
+    inline const std::string themecolorFile = storagePath + "/color.json";
+    inline const std::string appVersion = APPVER;
+    inline constexpr auto mainMenuItemSize = 149;
+    inline constexpr auto subMenuItemSize = 76;
 
     extern std::string lastNetUrl;
     extern std::string httpIndexUrl;
-    extern std::string themeColorTextTopInfo;
-    extern std::string themeColorTextBottomInfo;
-    extern std::string themeColorTextMenu;
-    extern std::string themeColorTextFile;
-    extern std::string themeColorTextDir;
-    extern std::string themeColorTextInstall;
+    extern std::string TopInfoTextColor;
+    extern std::string BottomInfoTextColor;
+    extern std::string MenuTextColor;
+    extern std::string FileTextColor;
+    extern std::string DirTextColor;
+    extern std::string InstallerInfoTextColor;
     extern int languageSetting;
-    extern int mainMenuItemSize;
-    extern int subMenuItemSize;
     extern bool ignoreReqVers;
     extern bool validateNCAs;
     extern bool overClock;
@@ -29,7 +29,7 @@ namespace app::config
     extern bool usbAck;
     extern bool fixTicket;
 
-    void setConfig();
-    void parseConfig();
-    void parseThemeColorConfig();
+    void SaveSettings();
+    void ParseSettings();
+    void ParseThemeColor();
 }

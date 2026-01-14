@@ -13,10 +13,10 @@ namespace app::manager
         return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
     }
 
-    inline pu::sdl2::TextureHandle::Ref LoadBackground(std::string appDir) {
+    inline pu::sdl2::TextureHandle::Ref LoadBackground(std::string bgDir) {
         static const std::vector<std::string> exts = {".png", ".jpg", ".bmp"};
         for (auto const& ext : exts) {
-            auto path = appDir + "/background" + ext;
+            auto path = bgDir + "/background" + ext;
             if (std::filesystem::exists(path)) {
                 return LoadTexture(path);
             }

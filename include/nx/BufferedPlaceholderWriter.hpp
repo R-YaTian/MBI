@@ -32,7 +32,7 @@ SOFTWARE.
 
 namespace nx::data
 {
-    static const size_t BUFFER_SEGMENT_DATA_SIZE = 0x800000; // Approximately 8MB
+    inline constexpr size_t BUFFER_SEGMENT_DATA_SIZE = 0x800000; // Approximately 8MB
     extern int NUM_BUFFER_SEGMENTS;
 
     struct BufferSegment

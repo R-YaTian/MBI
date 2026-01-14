@@ -33,7 +33,7 @@ SOFTWARE.
 #include "nx/misc.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/usbInstPage.hpp"
 #include "ui/InstallerPage.hpp"
@@ -147,7 +147,7 @@ namespace usbInstStuff
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
-            if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
@@ -171,7 +171,7 @@ namespace usbInstStuff
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
-            if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/success.wav")) audioPath = app::config::storagePath + "/success.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourTitleList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             else app::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);

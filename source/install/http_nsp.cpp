@@ -27,7 +27,7 @@ SOFTWARE.
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/error.hpp"
 #include "util/util.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "ui/InstallerPage.hpp"
 
 namespace app::install::nsp

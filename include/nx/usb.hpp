@@ -5,7 +5,7 @@
 
 namespace nx::usb
 {
-    static constexpr auto TOTAL_INTERFACES = 4;
+    inline constexpr auto TOTAL_INTERFACES = 4;
 
     struct usbDeviceInterface
     {

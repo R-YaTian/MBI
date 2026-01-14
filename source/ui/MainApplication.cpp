@@ -1,6 +1,6 @@
 #include "ui/MainApplication.hpp"
 #include "manager.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "util/config.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
@@ -41,11 +41,11 @@ namespace app::ui {
     void MainApplication::OnLoad() {
         mainApp = this;
 
-        app::i18n::Load();
+        app::i18n::Load(app::config::languageSetting);
 
         this->checkboxBlank = app::manager::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
         this->checkboxTick = app::manager::LoadTexture("romfs:/images/icons/check-box-outline.png");
-        this->bgImg = app::manager::LoadBackground(app::config::appDir);
+        this->bgImg = app::manager::LoadBackground(app::config::storagePath);
         this->logoImg = app::manager::LoadTexture("romfs:/images/logo.png");
         this->dirbackImg = app::manager::LoadTexture("romfs:/images/icons/folder-upload.png");
         this->dirImg = app::manager::LoadTexture("romfs:/images/icons/folder.png");

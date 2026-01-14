@@ -4,7 +4,7 @@
 #include "usbHDDInstall.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 
 namespace app::ui {
     extern MainApplication *mainApp;
@@ -19,10 +19,10 @@ namespace app::ui {
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->pageInfoText = pu::ui::elm::TextBlock::New(10, 109, "inst.hdd.top_info"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->butText = pu::ui::elm::TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "inst.hdd.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
@@ -61,7 +61,7 @@ namespace app::ui {
 
         std::string itm = "..";
         auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-        ourEntry->SetColor(COLOR(app::config::themeColorTextDir));
+        ourEntry->SetColor(COLOR(app::config::DirTextColor));
         ourEntry->SetIcon(mainApp->dirbackImg);
         this->menu->AddItem(ourEntry);
 
@@ -69,7 +69,7 @@ namespace app::ui {
             if (file == "..") break;
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-            ourEntry->SetColor(COLOR(app::config::themeColorTextDir));
+            ourEntry->SetColor(COLOR(app::config::DirTextColor));
             ourEntry->SetIcon(mainApp->dirImg);
             this->menu->AddItem(ourEntry);
         }
@@ -79,7 +79,7 @@ namespace app::ui {
 
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-            ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
+            ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(mainApp->checkboxBlank);
             for (long unsigned int j = 0; j < this->selectedTitles.size(); j++) {
                 if (this->selectedTitles[j] == file) {

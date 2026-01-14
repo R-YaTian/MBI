@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iomanip>
 #include <jtjson.h>
 #include "util/config.hpp"
 
@@ -7,15 +5,13 @@ namespace app::config
 {
     std::string lastNetUrl;
     std::string httpIndexUrl;
-    std::string themeColorTextTopInfo;
-    std::string themeColorTextBottomInfo;
-    std::string themeColorTextMenu;
-    std::string themeColorTextFile;
-    std::string themeColorTextDir;
-    std::string themeColorTextInstall;
+    std::string TopInfoTextColor;
+    std::string BottomInfoTextColor;
+    std::string MenuTextColor;
+    std::string FileTextColor;
+    std::string DirTextColor;
+    std::string InstallerInfoTextColor;
     int languageSetting;
-    int mainMenuItemSize = 149;
-    int subMenuItemSize = 76;
     bool fixTicket;
     bool deletePrompt;
     bool enableSound;
@@ -25,7 +21,7 @@ namespace app::config
     bool usbAck;
     bool validateNCAs;
 
-    void setConfig()
+    void SaveSettings()
     {
         jt::Json j;
         j["fixTicket"] = fixTicket;
@@ -41,95 +37,63 @@ namespace app::config
         j["httpIndexUrl"] = httpIndexUrl;
         auto json_str = j.dump(2);
 
-        std::ofstream file(app::config::configPath);
-        file << std::setw(4) << json_str << std::endl;
+        FILE *fpOut = fopen(settingsFile.c_str(), "w");
+        fputs(json_str.c_str(), fpOut);
+        fclose(fpOut);
     }
 
-    void parseConfig()
+    void ParseSettings()
     {
-        try {
-            std::ifstream file(app::config::configPath);
-            jt::Json j;
-            file >> j;
-            fixTicket = j["fixTicket"].get<bool>();
-            deletePrompt = j["deletePrompt"].get<bool>();
-            enableSound = j["enableSound"].get<bool>();
-            enableLightning = j["enableLightning"].get<bool>();
-            ignoreReqVers = j["ignoreReqVers"].get<bool>();
-            languageSetting = j["languageSetting"].get<int>();
-            overClock = j["overClock"].get<bool>();
-            usbAck = j["usbAck"].get<bool>();
-            validateNCAs = j["validateNCAs"].get<bool>();
-            lastNetUrl = j["lastNetUrl"].get<std::string>();
-            httpIndexUrl = j["httpIndexUrl"].get<std::string>();
+        FILE *fp;
+        jt::Json j;
+        j.setObject();
+
+        fp = fopen(settingsFile.c_str(), "r");
+        if (fp)
+        {
+            j = jt::Json::parse(fp);
         }
-        catch (...) {
-            // If loading values from the config fails, we just load the defaults and overwrite the old config
-            languageSetting = -1;
-            fixTicket = true;
-            deletePrompt = false;
-            enableSound = true;
-            enableLightning = true;
-            ignoreReqVers = false;
-            overClock = false;
-            usbAck = false;
-            validateNCAs = true;
-            lastNetUrl = "https://";
-            httpIndexUrl = "http://";
-            setConfig();
+
+        fixTicket = j.value("fixTicket", false);
+        deletePrompt = j.value("deletePrompt", false);
+        enableSound = j.value("enableSound", true);
+        enableLightning = j.value("enableLightning", true);
+        ignoreReqVers = j.value("ignoreReqVers", false);
+        languageSetting = j.value("languageSetting", -1);
+        overClock = j.value("overClock", false);
+        usbAck = j.value("usbAck", false);
+        validateNCAs = j.value("validateNCAs", true);
+        lastNetUrl = j.value("lastNetUrl", std::string("https://"));
+        httpIndexUrl = j.value("httpIndexUrl", std::string("http://"));
+
+        if (!fp)
+        {
+            SaveSettings();
+        }
+        else
+        {
+            fclose(fp);
         }
     }
 
-    void parseThemeColorConfig() {
-        try {
-            std::ifstream file(app::config::themecolorPath);
-            nlohmann::json j;
-            file >> j;
-            try {
-                themeColorTextTopInfo = j["themeColorTextTopInfo"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextTopInfo = "#FFFFFFFF";
-            }
-            try {
-                themeColorTextBottomInfo = j["themeColorTextBottomInfo"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextBottomInfo = "#FFFFFFFF";
-            }
-            try {
-                themeColorTextMenu = j["themeColorTextMenu"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextMenu = "#FFFFFFFF";
-            }
-            try {
-                themeColorTextFile = j["themeColorTextFile"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextFile = "#FFFFFFFF";
-            }
-            try {
-                themeColorTextDir = j["themeColorTextDir"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextDir = "#FFFFFFFF";
-            }
-            try {
-                themeColorTextInstall = j["themeColorTextInstall"].get<std::string>();
-            }
-            catch (...) {
-                themeColorTextInstall = "#FFFFFFFF";
-            }
+    void ParseThemeColor()
+    {
+        FILE *fp;
+        jt::Json j;
+        j.setObject();
+
+        fp = fopen(themecolorFile.c_str(), "r");
+        if (fp)
+        {
+            j = jt::Json::parse(fp);
+            fclose(fp);
         }
-        catch (...) {
-            // If themecolor.json is missing, load the defaults
-            themeColorTextTopInfo = "#FFFFFFFF";
-            themeColorTextBottomInfo = "#FFFFFFFF";
-            themeColorTextMenu = "#FFFFFFFF";
-            themeColorTextFile = "#FFFFFFFF";
-            themeColorTextDir = "#FFFFFFFF";
-            themeColorTextInstall = "#FFFFFFFF";
-        }
+
+        TopInfoTextColor = j.value("TopInfoTextColor", std::string("#FFFFFFFF"));
+        BottomInfoTextColor = j.value("BottomInfoTextColor", std::string("#FFFFFFFF"));
+        MenuTextColor = j.value("MenuTextColor", std::string("#FFFFFFFF"));
+        FileTextColor = j.value("FileTextColor", std::string("#FFFFFFFF"));
+        DirTextColor = j.value("DirTextColor", std::string("#FFFFFFFF"));
+        InstallerInfoTextColor = j.value("InstallerInfoTextColor", std::string("#FFFFFFFF"));
     }
 }

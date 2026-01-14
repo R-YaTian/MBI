@@ -2,7 +2,7 @@
 #include "nx/error.hpp"
 #include "nx/NcaWriter.hpp"
 #include "ui/InstallerPage.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 
 namespace app::install::xci
 {

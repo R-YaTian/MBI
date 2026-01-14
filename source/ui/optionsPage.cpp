@@ -5,7 +5,7 @@
 #include "ui/InstallerPage.hpp"
 #include "ui/optionsPage.hpp"
 #include "util/config.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 
 namespace app::ui
 {
@@ -19,10 +19,10 @@ namespace app::ui
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->pageInfoText = pu::ui::elm::TextBlock::New(10, 109, "options.title"_lang);
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->butText = pu::ui::elm::TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "options.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
@@ -81,38 +81,38 @@ namespace app::ui
     {
         this->menu->ClearItems();
         auto ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
-        ignoreFirmOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));
         ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
         this->menu->AddItem(ignoreFirmOption);
         auto validateOption = pu::ui::elm::MenuItem::New("options.menu_items.nca_verify"_lang);
-        validateOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        validateOption->SetColor(COLOR(app::config::MenuTextColor));
         validateOption->SetIcon(this->getMenuOptionIcon(app::config::validateNCAs));
         this->menu->AddItem(validateOption);
         auto overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
-        overclockOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        overclockOption->SetColor(COLOR(app::config::MenuTextColor));
         overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
         this->menu->AddItem(overclockOption);
         auto deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
-        deletePromptOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        deletePromptOption->SetColor(COLOR(app::config::MenuTextColor));
         deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
         this->menu->AddItem(deletePromptOption);
         auto enableSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.enableSound"_lang);
-        enableSoundOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        enableSoundOption->SetColor(COLOR(app::config::MenuTextColor));
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
         this->menu->AddItem(enableSoundOption);
         auto enableLightningOption = pu::ui::elm::MenuItem::New("options.menu_items.enableLightning"_lang);
-        enableLightningOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        enableLightningOption->SetColor(COLOR(app::config::MenuTextColor));
         enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
         this->menu->AddItem(enableLightningOption);
         auto fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
-        fixTicketOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        fixTicketOption->SetColor(COLOR(app::config::MenuTextColor));
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
         this->menu->AddItem(fixTicketOption);
         auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
-        languageOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        languageOption->SetColor(COLOR(app::config::MenuTextColor));
         this->menu->AddItem(languageOption);
         auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
-        creditsOption->SetColor(COLOR(app::config::themeColorTextMenu));
+        creditsOption->SetColor(COLOR(app::config::MenuTextColor));
         this->menu->AddItem(creditsOption);
     }
 
@@ -133,7 +133,7 @@ namespace app::ui
             {
                 case 0:
                     app::config::ignoreReqVers = !app::config::ignoreReqVers;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(0);
                     break;
@@ -141,37 +141,37 @@ namespace app::ui
                     if (app::config::validateNCAs) {
                         if (app::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, {"common.cancel"_lang, "options.nca_warn.opt1"_lang}, false) == 1) app::config::validateNCAs = false;
                     } else app::config::validateNCAs = true;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(1);
                     break;
                 case 2:
                     app::config::overClock = !app::config::overClock;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(2);
                     break;
                 case 3:
                     app::config::deletePrompt = !app::config::deletePrompt;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(3);
                     break;
                 case 4:
                     app::config::enableSound = !app::config::enableSound;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(4);
                     break;
                 case 5:
                     app::config::enableLightning = !app::config::enableLightning;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(5);
                     break;
                 case 6:
                     app::config::fixTicket = !app::config::fixTicket;
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(6);
                     break;
@@ -220,7 +220,7 @@ namespace app::ui
                         default:
                             app::config::languageSetting = 99;
                     }
-                    app::config::setConfig();
+                    app::config::SaveSettings();
                     mainApp->FadeOut();
                     mainApp->Close();
                     break;

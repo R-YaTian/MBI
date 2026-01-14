@@ -1,7 +1,7 @@
 #include "ui/MainApplication.hpp"
 #include "ui/MainPage.hpp"
 #include "util/config.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "manager.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/udisk.hpp"
@@ -31,28 +31,28 @@ namespace app::ui {
         this->botRect = pu::ui::elm::Rectangle::New(0, 659 * pu::ui::render::ScreenFactor, 1920, 92, COLOR("#17090980"));
         this->butText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (894 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->optionMenu->SetItemAlphaIncrementSteps(1);
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
-        this->sdInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->sdInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
-        this->netInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->netInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->netInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
-        this->usbInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->usbInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->usbInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/usb-port.png"));
         this->udiskInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
-        this->udiskInstallMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->udiskInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->udiskInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/disk.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
-        this->settingsMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->settingsMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/settings.png"));
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
-        this->exitMenuItem->SetColor(COLOR(app::config::themeColorTextMenu));
+        this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->botRect);
         this->Add(this->butText);
@@ -87,7 +87,7 @@ namespace app::ui {
             if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1)
             {
                 app::config::usbAck = true;
-                app::config::setConfig();
+                app::config::SaveSettings();
             }
         }
         if (nx::usb::usbDeviceIsConnected())

@@ -9,10 +9,10 @@ namespace app::ui {
         this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->pageInfoText = pu::ui::elm::TextBlock::New(10, 121, "");
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->installInfoText = pu::ui::elm::TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");
         this->installInfoText->SetFont("DefaultFont@30");
-        this->installInfoText->SetColor(COLOR(app::config::themeColorTextInstall));
+        this->installInfoText->SetColor(COLOR(app::config::InstallerInfoTextColor));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->infoRect);

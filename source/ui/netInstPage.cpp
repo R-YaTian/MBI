@@ -4,7 +4,7 @@
 #include "ui/netInstPage.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "netInstall.hpp"
 #include "nx/network.hpp"
 #include "nx/misc.hpp"
@@ -22,10 +22,10 @@ namespace app::ui {
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->pageInfoText = pu::ui::elm::TextBlock::New(10, 109, "");
         this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(app::config::themeColorTextTopInfo));
+        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->butText = pu::ui::elm::TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "");
         this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::themeColorTextBottomInfo));
+        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetItemAlphaIncrementSteps(1);
@@ -52,7 +52,7 @@ namespace app::ui {
             std::string formattedURL = nx::network::formatUrlString(url);
             std::string itm = app::util::shortenString(formattedURL, 56, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-            ourEntry->SetColor(COLOR(app::config::themeColorTextFile));
+            ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(mainApp->checkboxBlank);
             for (long unsigned int j = 0; j < this->selectedUrls.size(); j++) {
                 if (this->selectedUrls[j] == url) {
@@ -100,7 +100,7 @@ namespace app::ui {
                     return;
                 }
                 app::config::lastNetUrl = keyboardResult;
-                app::config::setConfig();
+                app::config::SaveSettings();
                 sourceString = "inst.net.url.source_string"_lang;
                 this->selectedUrls = {keyboardResult};
                 this->startInstall(true);

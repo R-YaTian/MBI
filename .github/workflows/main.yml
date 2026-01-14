@@ -37,6 +37,10 @@ jobs:
       run: |
         git clone https://github.com/R-YaTian/libnx-ext.git -b catnip-ipcext
 
+    - name: Checkout latest libjtjson commit
+      run: |
+        git clone https://github.com/R-YaTian/libjtjson.git
+
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
 
@@ -58,6 +62,11 @@ jobs:
     - name: Build libnx-ipcext dependencies
       run: |
         cd libnx-ext
+        catnip -T switch -S . -B build install
+
+    - name: Build libjtjson dependencies
+      run: |
+        cd libjtjson
         catnip -T switch -S . -B build install
 
     - name: Build MBI

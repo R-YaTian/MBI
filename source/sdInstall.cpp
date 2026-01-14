@@ -36,7 +36,7 @@ SOFTWARE.
 #include "nx/misc.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"
-#include "util/lang.hpp"
+#include "util/i18n.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
 #include "manager.hpp"
@@ -102,7 +102,7 @@ namespace nspInstStuff {
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/fail.wav";
-            if (std::filesystem::exists(app::config::appDir + "/fail.wav")) audioPath = app::config::appDir + "/fail.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
@@ -125,7 +125,7 @@ namespace nspInstStuff {
                 app::manager::lightningStart();
             }
             std::string audioPath = "romfs:/audio/success.wav";
-            if (std::filesystem::exists(app::config::appDir + "/success.wav")) audioPath = app::config::appDir + "/success.wav";
+            if (std::filesystem::exists(app::config::storagePath + "/success.wav")) audioPath = app::config::storagePath + "/success.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourTitleList.size() > 1) {
                 if (app::config::deletePrompt) {

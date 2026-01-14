@@ -1,18 +1,17 @@
 #include <switch.h>
 
 #include "nx/error.hpp"
-#include "util/lang.hpp"
-#include "util/config.hpp"
+#include "util/i18n.hpp"
 
 namespace app::i18n
 {
     jt::Json lang;
 
-    void Load()
+    void Load(int languageCode)
     {
         FILE *fp;
         std::string languagePath;
-        int langInt = app::config::languageSetting;
+        int langInt = languageCode;
         if (langInt == -1)
         {
             SetLanguage ourLang;
@@ -68,7 +67,7 @@ namespace app::i18n
                 languagePath = "romfs:/lang/en.json";
         }
 
-        fp = fopen(languagePath.c_str(), "rb");
+        fp = fopen(languagePath.c_str(), "r");
         if (!fp)
         {
             LOG_DEBUG("FAILED TO LOAD LANGUAGE FILE\n");

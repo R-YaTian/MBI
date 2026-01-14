@@ -2,12 +2,11 @@
 
 #include <string>
 #include <sstream>
-#include <fstream>
 #include <jtjson.h>
 
 namespace app::i18n
 {
-    void Load();
+    void Load(int languageCode);
     std::string LanguageEntry(std::string key);
     std::string GetRandomMsg();
 

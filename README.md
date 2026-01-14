@@ -11,7 +11,7 @@ MBI or Mohsaua-Buoh-Installer is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer 
 - Verifies NCAs by header signature before they're installed
 
 ## Coloring support
-To use this, you must place the "themecolor.json" at MBI dir. See [example](doc/themecolor.json) for more details.  
+To use this, you must place the "color.json" at "sdmc:/config/MBI" dir. See [example](doc/color.json) for more details.  
 Use your wanted HEX colors -> https://www.w3schools.com/colors/colors_picker.asp
 
 ## Thanks to
