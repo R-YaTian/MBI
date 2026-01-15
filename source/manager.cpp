@@ -25,9 +25,8 @@ namespace app::manager
         nxlinkStdio();
 #endif
 
-#if !NO_UDISK
-        nx::udisk::init();
-#endif
+        if (nx::usb::usbDeviceIsInitialized())
+            nx::udisk::init();
 
         Mix_Init(MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG);
         if (R_FAILED(ncmInitialize()))
@@ -39,9 +38,7 @@ namespace app::manager
         ncmExit();
         Mix_Quit();
 
-#if !NO_UDISK
         nx::udisk::exit();
-#endif
 
         socketExit();
 

@@ -579,10 +579,16 @@ namespace nx::usb
         usbDeviceInitialize();
     }
 
-    bool usbDeviceIsConnected() {
+    bool usbDeviceIsConnected()
+    {
         UsbState state = UsbState_Detached;
         usbDsGetState(&state);
         return state == UsbState_Configured;
+    }
+
+    bool usbDeviceIsInitialized()
+    {
+        return g_UsbDeviceInitialized;
     }
 
     void USBCommandManager::SendCommandHeader(USBCommandId cmdId, u64 dataSize, u64 timeout)

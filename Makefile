@@ -51,10 +51,6 @@ ifneq ($(WITH_DEBUG),)
 	DEBUGFLAGS := -D__DEBUG__ -DNXLINK_DEBUG
 endif
 
-ifneq ($(WITHOUT_UDISK),)
-	UDISKFLAGS := -DNO_UDISK
-endif
-
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -66,7 +62,7 @@ CFLAGS	+=	 `curl-config --cflags`
 CFLAGS	+=	 `sdl2-config --cflags`
 CFLAGS	+=	 `$(PREFIX)pkg-config --cflags freetype2`
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS) $(UDISKFLAGS)
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS)
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
 

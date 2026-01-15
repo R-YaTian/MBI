@@ -52,6 +52,9 @@ namespace nx::usb
     /// Checks whether the USB device is connected.
     bool usbDeviceIsConnected();
 
+    /// Checks whether the USB device service is initialized.
+    bool usbDeviceIsInitialized();
+
     enum class USBCommandId : u32
     {
         Finished  = 0x00,
