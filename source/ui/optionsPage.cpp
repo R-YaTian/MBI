@@ -218,7 +218,7 @@ namespace app::ui
                             app::config::languageSetting = 11;
                             break;
                         default:
-                            app::config::languageSetting = 99;
+                            app::config::languageSetting = -1;
                     }
                     app::config::SaveSettings();
                     mainApp->FadeOut();

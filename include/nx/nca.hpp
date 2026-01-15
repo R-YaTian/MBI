@@ -1,7 +1,6 @@
 #pragma once
 
 #include <switch.h>
-#include "mini-printf/mini-printf.h"
 
 #define NCA_HEADER_SIZE 0x4000
 #define MAGIC_NCA3 0x3341434E /* "NCA3" */
@@ -101,7 +100,7 @@ namespace nx::nca
         char ncaIdStr[FS_MAX_PATH] = {0};
         u64 ncaIdLower = __bswap64(*(u64 *)ncaId.c);
         u64 ncaIdUpper = __bswap64(*(u64 *)(ncaId.c + 0x8));
-        snprintf(ncaIdStr, FS_MAX_PATH, "%016lx%016lx", ncaIdLower, ncaIdUpper);
+        std::snprintf(ncaIdStr, FS_MAX_PATH, "%016lx%016lx", ncaIdLower, ncaIdUpper);
         return std::string(ncaIdStr);
     }
 

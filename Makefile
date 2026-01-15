@@ -39,9 +39,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	MBI
 BUILD		:=	build
-SOURCES		:=	source source/ui source/install source/nx source/util third_party/mini-printf
+SOURCES		:=	source source/ui source/install source/nx source/util
 DATA		:=	data
-INCLUDES	:=	include include/ui include/install include/nx include/util third_party
+INCLUDES	:=	include include/ui include/install include/nx include/util
 APP_TITLE	:=	MBI
 APP_AUTHOR	:=	R-YaTian
 APP_VERSION	:=	1.0.0
