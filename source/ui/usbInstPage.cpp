@@ -15,20 +15,19 @@ namespace app::ui {
     {
         this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
-        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 109, "");
+        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 103, "");
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
-        this->butText = pu::ui::elm::TextBlock::New(10, 678 * pu::ui::render::ScreenFactor, "");
-        this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
+        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "");
+        this->botText->SetFont("DefaultFont@30");
+        this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
-        this->menu->SetItemAlphaIncrementSteps(1);
         this->menu->SetShadowBaseAlpha(0);
         this->infoImage = pu::ui::elm::Image::New(780, 332 * pu::ui::render::ScreenFactor, app::manager::LoadTexture("romfs:/images/icons/usb-connection-waiting.png"));
         this->Add(this->infoRect);
         this->Add(this->botRect);
-        this->Add(this->butText);
+        this->Add(this->botText);
         this->Add(this->pageInfoText);
         this->Add(this->menu);
         this->Add(this->infoImage);
@@ -68,7 +67,7 @@ namespace app::ui {
 
     void usbInstPage::startUsb() {
         this->pageInfoText->SetText("inst.usb.top_info"_lang);
-        this->butText->SetText("inst.usb.buttons"_lang);
+        this->botText->SetText("inst.usb.buttons"_lang);
         this->menu->SetVisible(false);
         this->menu->ClearItems();
         this->infoImage->SetVisible(true);
@@ -81,7 +80,7 @@ namespace app::ui {
         } else {
             mainApp->CallForRender(); // If we re-render a few times during this process the main screen won't flicker
             this->pageInfoText->SetText("inst.usb.top_info2"_lang);
-            this->butText->SetText("inst.usb.buttons2"_lang);
+            this->botText->SetText("inst.usb.buttons2"_lang);
             this->drawMenuItems(true);
             this->menu->SetSelectedIndex(0);
             mainApp->CallForRender();

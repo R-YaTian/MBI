@@ -20,7 +20,7 @@ namespace app::ui
             std::vector<std::filesystem::path> selectedTitles;
             std::vector<long unsigned int> menuIndices;
             std::filesystem::path currentDir;
-            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::TextBlock::Ref pageInfoText;

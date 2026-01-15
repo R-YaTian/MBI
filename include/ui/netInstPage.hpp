@@ -17,7 +17,7 @@ namespace app::ui {
             std::vector<std::string> selectedUrls;
             std::vector<std::string> alternativeNames;
             std::vector<long unsigned int> menuIndices;
-            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Menu::Ref menu;

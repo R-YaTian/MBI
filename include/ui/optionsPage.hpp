@@ -10,7 +10,7 @@ namespace app::ui {
             PU_SMART_CTOR(OptionsPage)
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
-            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::TextBlock::Ref pageInfoText;

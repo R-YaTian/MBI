@@ -6,8 +6,8 @@ namespace app::ui {
     extern MainApplication *mainApp;
 
     InstallerPage::InstallerPage() : Layout::Layout() {
-        this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
-        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 121, "");
+        this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
+        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 103, "");
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->installInfoText = pu::ui::elm::TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");

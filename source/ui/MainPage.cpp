@@ -28,13 +28,12 @@ namespace app::ui {
     }
 
     MainPage::MainPage() : Layout::Layout() {
-        this->botRect = pu::ui::elm::Rectangle::New(0, 659 * pu::ui::render::ScreenFactor, 1920, 92, COLOR("#17090980"));
-        this->butText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
-        this->butText->SetFont("DefaultFont@30");
-        this->butText->SetColor(COLOR(app::config::BottomInfoTextColor));
+        this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
+        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
+        this->botText->SetFont("DefaultFont@30");
+        this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (894 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
-        this->optionMenu->SetItemAlphaIncrementSteps(1);
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
@@ -55,7 +54,7 @@ namespace app::ui {
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->botRect);
-        this->Add(this->butText);
+        this->Add(this->botText);
         this->optionMenu->AddItem(this->sdInstallMenuItem);
         this->optionMenu->AddItem(this->netInstallMenuItem);
         this->optionMenu->AddItem(this->usbInstallMenuItem);

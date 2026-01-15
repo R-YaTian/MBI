@@ -17,7 +17,7 @@ namespace app::ui {
             std::string lastUrl;
             std::string lastFileID;
             pu::ui::elm::TextBlock::Ref pageInfoText;
-            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Menu::Ref menu;

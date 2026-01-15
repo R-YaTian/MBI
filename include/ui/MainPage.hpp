@@ -19,7 +19,7 @@ namespace app::ui
             void mainMenuThread();
         private:
             bool appletFinished;
-            pu::ui::elm::TextBlock::Ref butText;
+            pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Menu::Ref optionMenu;
             pu::ui::elm::MenuItem::Ref sdInstallMenuItem;
