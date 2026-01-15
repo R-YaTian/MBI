@@ -16,7 +16,7 @@ namespace app::i18n
         std::string token;
         jt::Json ret = j;
 
-        while (std::getline(ss, token, '.') && !ret.is_string())
+        while (std::getline(ss, token, '.') && !ret.empty())
         {
             ret = ret[token];
         }

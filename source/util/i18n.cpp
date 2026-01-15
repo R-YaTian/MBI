@@ -91,6 +91,6 @@ namespace app::i18n
     {
         jt::Json j = app::i18n::GetRelativeJson(lang, "inst.finished");
         srand(time(NULL));
-        return j[rand() % j.getArray().size()];
+        return j[rand() % j.size()];
     }
 }
