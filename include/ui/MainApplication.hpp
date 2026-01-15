@@ -9,7 +9,7 @@
 #include "ui/usbInstPage.hpp"
 #include "ui/usbHDDInstPage.hpp"
 #include "ui/InstallerPage.hpp"
-#include "ui/optionsPage.hpp"
+#include "ui/OptionsPage.hpp"
 
 namespace app::ui
 {
@@ -25,7 +25,7 @@ namespace app::ui
             sdInstPage::Ref sdinstPage;
             usbInstPage::Ref usbinstPage;
             usbHDDInstPage::Ref usbhddinstPage;
-            InstallerPage::Ref instpage;
+            InstallerPage::Ref installerPage;
             OptionsPage::Ref optionspage;
             pu::sdl2::TextureHandle::Ref checkboxBlank;
             pu::sdl2::TextureHandle::Ref checkboxTick;

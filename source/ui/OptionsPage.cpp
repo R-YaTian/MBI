@@ -3,7 +3,7 @@
 #include "ui/MainApplication.hpp"
 #include "ui/MainPage.hpp"
 #include "ui/InstallerPage.hpp"
-#include "ui/optionsPage.hpp"
+#include "ui/OptionsPage.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 

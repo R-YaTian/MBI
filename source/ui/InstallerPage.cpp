@@ -22,18 +22,18 @@ namespace app::ui {
     }
 
     void InstallerPage::setTopInstInfoText(std::string ourText){
-        mainApp->instpage->pageInfoText->SetText(ourText);
+        mainApp->installerPage->pageInfoText->SetText(ourText);
         mainApp->CallForRender();
     }
 
     void InstallerPage::setInstInfoText(std::string ourText){
-        mainApp->instpage->installInfoText->SetText(ourText);
+        mainApp->installerPage->installInfoText->SetText(ourText);
         mainApp->CallForRender();
     }
 
     void InstallerPage::setInstBarPerc(double ourPercent){
-        mainApp->instpage->installBar->SetVisible(true);
-        mainApp->instpage->installBar->SetProgress(ourPercent < 2.0f ? 2.0f : ourPercent);
+        mainApp->installerPage->installBar->SetVisible(true);
+        mainApp->installerPage->installBar->SetProgress(ourPercent < 2.0f ? 2.0f : ourPercent);
         mainApp->CallForRender();
     }
 
@@ -42,11 +42,11 @@ namespace app::ui {
     }
 
     void InstallerPage::loadInstallScreen(){
-        mainApp->instpage->pageInfoText->SetText("");
-        mainApp->instpage->installInfoText->SetText("");
-        mainApp->instpage->installBar->SetProgress(0);
-        mainApp->instpage->installBar->SetVisible(false);
-        mainApp->LoadLayout(mainApp->instpage);
+        mainApp->installerPage->pageInfoText->SetText("");
+        mainApp->installerPage->installInfoText->SetText("");
+        mainApp->installerPage->installBar->SetProgress(0);
+        mainApp->installerPage->installBar->SetVisible(false);
+        mainApp->LoadLayout(mainApp->installerPage);
         mainApp->CallForRender();
     }
 
