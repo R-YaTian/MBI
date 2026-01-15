@@ -18,11 +18,11 @@ namespace app::ui {
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
             nx::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded) {
-                app::ui::appletFinished = true;
+                appletFinished = true;
                 mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
             }
         } else if (!appletFinished) {
-            app::ui::appletFinished = true;
+            appletFinished = true;
             nx::data::NUM_BUFFER_SEGMENTS = 128;
         }
     }
@@ -37,22 +37,22 @@ namespace app::ui {
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->sdInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/micro-sd.png"));
+        this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->netInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/cloud-download.png"));
+        this->netInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->usbInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-port.png"));
         this->udiskInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->udiskInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->udiskInstallMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/disk.png"));
+        this->udiskInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/disk.png"));
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->settingsMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/settings.png"));
+        this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.png"));
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->exitMenuItem->SetIcon(app::manager::LoadTexture("romfs:/images/icons/exit-run.png"));
+        this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
         this->Add(this->botRect);
         this->Add(this->botText);
         this->optionMenu->AddItem(this->sdInstallMenuItem);
@@ -74,7 +74,7 @@ namespace app::ui {
     void MainPage::NetInstallMenuItem_Click() {
         if (nx::network::getIPAddress() == "1.0.0.127")
         {
-            app::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
+            mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;
         }
         mainApp->netinstPage->startNetwork();
@@ -105,7 +105,7 @@ namespace app::ui {
 			mainApp->usbhddinstPage->menu->SetSelectedIndex(0);
 			mainApp->LoadLayout(mainApp->usbhddinstPage);
 		} else {
-			app::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
+			mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
 		}
     }
 

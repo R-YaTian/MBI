@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <SDL2/SDL_mixer.h>
 #include <switch-ipcext.h>
 #include "manager.hpp"
 #include "nx/usb.hpp"

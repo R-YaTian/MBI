@@ -42,6 +42,12 @@ namespace app::ui
             pu::ui::elm::TextBlock::Ref batteryValueText;
             pu::ui::elm::Rectangle::Ref topRect;
 
-            void updateStats();
+            pu::sdl2::TextureHandle::Ref LoadBackground(std::string bgDir);
+            void UpdateStats();
     };
+
+    inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path)
+    {
+        return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
+    }
 }

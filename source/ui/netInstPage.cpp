@@ -29,7 +29,7 @@ namespace app::ui {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
-        this->infoImage = pu::ui::elm::Image::New(780, 292 * pu::ui::render::ScreenFactor, app::manager::LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
+        this->infoImage = pu::ui::elm::Image::New(780, 292 * pu::ui::render::ScreenFactor, LoadTexture("romfs:/images/icons/lan-connection-waiting.png"));
         this->Add(this->infoRect);
         this->Add(this->botRect);
         this->Add(this->botText);

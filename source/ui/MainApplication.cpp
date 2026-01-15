@@ -18,7 +18,21 @@ namespace app::ui {
         layout->Add(this->freeSpaceText); \
     }
 
-    void MainApplication::updateStats()
+    pu::sdl2::TextureHandle::Ref MainApplication::LoadBackground(std::string bgDir)
+    {
+        static const std::vector<std::string> exts = {".png", ".jpg", ".bmp"};
+        for (auto const& ext : exts)
+        {
+            auto path = bgDir + "/background" + ext;
+            if (std::filesystem::exists(path))
+            {
+                return LoadTexture(path);
+            }
+        }
+        return LoadTexture("romfs:/images/background.jpg");
+    }
+
+    void MainApplication::UpdateStats()
     {
         const auto newfreeSpaceText = nx::fs::GetFreeStorageSpace();
         if (freeSpaceCurrentText != newfreeSpaceText)
@@ -43,12 +57,12 @@ namespace app::ui {
 
         app::i18n::Load(app::config::languageSetting);
 
-        this->checkboxBlank = app::manager::LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
-        this->checkboxTick = app::manager::LoadTexture("romfs:/images/icons/check-box-outline.png");
-        this->bgImg = app::manager::LoadBackground(app::config::storagePath);
-        this->logoImg = app::manager::LoadTexture("romfs:/images/logo.png");
-        this->dirbackImg = app::manager::LoadTexture("romfs:/images/icons/folder-upload.png");
-        this->dirImg = app::manager::LoadTexture("romfs:/images/icons/folder.png");
+        this->checkboxBlank = LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
+        this->checkboxTick = LoadTexture("romfs:/images/icons/check-box-outline.png");
+        this->bgImg = LoadBackground(app::config::storagePath);
+        this->logoImg = LoadTexture("romfs:/images/logo.png");
+        this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.png");
+        this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
 
         batteryCurrentValue = 255;
 
@@ -63,7 +77,7 @@ namespace app::ui {
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
 
-        this->updateStats();
+        this->UpdateStats();
 
         this->mainPage = MainPage::New();
         this->netinstPage = netInstPage::New();
@@ -87,7 +101,7 @@ namespace app::ui {
         _UI_MAINAPP_MENU_SET_BASE(this->usbinstPage);
         _UI_MAINAPP_MENU_SET_BASE(this->usbhddinstPage);
 
-        this->AddRenderCallback(std::bind(&MainApplication::updateStats, this));
+        this->AddRenderCallback(std::bind(&MainApplication::UpdateStats, this));
         this->LoadLayout(this->mainPage);
     }
 }
