@@ -35,13 +35,9 @@ SOFTWARE.
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "ui/MainApplication.hpp"
-#include "ui/usbInstPage.hpp"
 #include "ui/InstallerPage.hpp"
 #include "manager.hpp"
-
-namespace app::ui {
-    extern MainApplication *mainApp;
-}
+#include "facade.hpp"
 
 namespace usbInstStuff
 {
@@ -67,7 +63,7 @@ namespace usbInstStuff
             u64 kDown = padGetButtonsDown(&pad);
 
             if (kDown & HidNpadButton_B) return {};
-            if (kDown & HidNpadButton_X) app::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true);
+            if (kDown & HidNpadButton_X) app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true);
             if (!nx::usb::usbDeviceIsConnected()) return {};
         }
 
@@ -149,7 +145,7 @@ namespace usbInstStuff
             std::string audioPath = "romfs:/audio/fail.wav";
             if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
-            app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
+            app::facade::ShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
                 app::manager::lightningStop();
@@ -173,8 +169,8 @@ namespace usbInstStuff
             std::string audioPath = "romfs:/audio/success.wav";
             if (std::filesystem::exists(app::config::storagePath + "/success.wav")) audioPath = app::config::storagePath + "/success.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
-            if (ourTitleList.size() > 1) app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-            else app::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+            if (ourTitleList.size() > 1) app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+            else app::facade::ShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
                 app::manager::lightningStop();

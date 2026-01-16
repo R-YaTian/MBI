@@ -1,17 +1,28 @@
-#include "ui/MainApplication.hpp"
 #include "manager.hpp"
 #include "util/i18n.hpp"
 #include "util/config.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
+#include "ui/MainApplication.hpp"
+#include "ui/OptionsPage.hpp"
+#include "ui/netInstPage.hpp"
+#include "ui/usbInstPage.hpp"
 
-namespace app::ui {
+namespace app::ui
+{
     MainApplication *mainApp;
+    OptionsPage::Ref optionspage;
+    netInstPage::Ref netinstPage;
+    usbInstPage::Ref usbinstPage;
 
     #define _UI_MAINAPP_MENU_SET_BASE(layout) { \
         layout->SetBackgroundColor(COLOR("#670000FF")); \
         layout->SetBackgroundImage(this->bgImg); \
         layout->Add(this->topRect); \
+        layout->Add(this->botRect); \
+        layout->Add(this->botText); \
+        layout->Add(this->infoRect); \
+        layout->Add(this->pageInfoText); \
         layout->Add(this->titleImage); \
         layout->Add(this->appVersionText); \
         layout->Add(this->batteryValueText); \
@@ -52,7 +63,8 @@ namespace app::ui {
         }
     }
 
-    void MainApplication::OnLoad() {
+    void MainApplication::OnLoad()
+    {
         mainApp = this;
 
         app::i18n::Load(app::config::languageSetting);
@@ -67,6 +79,14 @@ namespace app::ui {
         batteryCurrentValue = 255;
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
+        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "");
+        this->botText->SetFont("DefaultFont@30");
+        this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
+        this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
+        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 103, "");
+        this->pageInfoText->SetFont("DefaultFont@30");
+        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->titleImage = pu::ui::elm::Image::New(0, 0, this->logoImg);
         this->appVersionText = pu::ui::elm::TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
@@ -80,28 +100,108 @@ namespace app::ui {
         this->UpdateStats();
 
         this->mainPage = MainPage::New();
-        this->netinstPage = netInstPage::New();
+        netinstPage = netInstPage::New();
         this->sdinstPage = sdInstPage::New();
-        this->usbinstPage = usbInstPage::New();
+        usbinstPage = usbInstPage::New();
         this->usbhddinstPage = usbHDDInstPage::New();
         this->installerPage = InstallerPage::New();
-        this->optionspage = OptionsPage::New();
+        optionspage = OptionsPage::New();
         this->mainPage->SetOnInput(std::bind(&MainPage::onInput, this->mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->netinstPage->SetOnInput(std::bind(&netInstPage::onInput, this->netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        netinstPage->SetOnInput(std::bind(&netInstPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->sdinstPage->SetOnInput(std::bind(&sdInstPage::onInput, this->sdinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->usbinstPage->SetOnInput(std::bind(&usbInstPage::onInput, this->usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        usbinstPage->SetOnInput(std::bind(&usbInstPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->usbhddinstPage->SetOnInput(std::bind(&usbHDDInstPage::onInput, this->usbhddinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->installerPage->SetOnInput(std::bind(&InstallerPage::onInput, this->installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->optionspage->SetOnInput(std::bind(&OptionsPage::onInput, this->optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         _UI_MAINAPP_MENU_SET_BASE(this->mainPage);
-        _UI_MAINAPP_MENU_SET_BASE(this->optionspage);
+        _UI_MAINAPP_MENU_SET_BASE(optionspage);
         _UI_MAINAPP_MENU_SET_BASE(this->installerPage);
-        _UI_MAINAPP_MENU_SET_BASE(this->netinstPage);
+        _UI_MAINAPP_MENU_SET_BASE(netinstPage);
         _UI_MAINAPP_MENU_SET_BASE(this->sdinstPage);
-        _UI_MAINAPP_MENU_SET_BASE(this->usbinstPage);
+        _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
         _UI_MAINAPP_MENU_SET_BASE(this->usbhddinstPage);
 
         this->AddRenderCallback(std::bind(&MainApplication::UpdateStats, this));
-        this->LoadLayout(this->mainPage);
+        SceneJump(Scene::Main);
+    }
+
+    void SceneJump(Scene idx)
+    {
+        switch (idx)
+        {
+        case Scene::Main:
+            mainApp->HidePageInfo();
+            mainApp->SetBottomText("main.buttons"_lang);
+            mainApp->LoadLayout(mainApp->mainPage);
+            break;
+        case Scene::Options:
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("options.title"_lang);
+            mainApp->SetBottomText("options.buttons"_lang);
+            mainApp->LoadLayout(optionspage);
+            break;
+        case Scene::NetworkInstll:
+            mainApp->ShowPageInfo();
+            mainApp->SetBottomText("inst.net.buttons"_lang);
+            mainApp->LoadLayout(netinstPage);
+            netinstPage->startNetwork();
+            break;
+        case Scene::UsbInstll:
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("inst.usb.top_info"_lang);
+            mainApp->SetBottomText("inst.usb.buttons"_lang);
+            mainApp->LoadLayout(usbinstPage);
+            usbinstPage->startUsb();
+            break;
+        case Scene::SdInstll:
+            break;
+        case Scene::UdiskInstll:
+            break;
+        case Scene::MtpInstll:
+            break;
+        case Scene::Installer:
+            break;
+        }
+    }
+
+    pu::sdl2::TextureHandle::Ref GetResource(Resources idx)
+    {
+        switch (idx)
+        {
+        case Resources::UncheckedImage:
+            return mainApp->checkboxBlank;
+        case Resources::CheckedImage:
+            return mainApp->checkboxTick;
+        case Resources::DirectoryImage:
+            return mainApp->dirImg;
+        case Resources::BackToParentImage:
+            return mainApp->dirbackImg;
+        default:
+            return nullptr;
+        }
+    }
+
+    void CloseWithFadeOut()
+    {
+        mainApp->FadeOut();
+        mainApp->Close();
+    }
+
+    bool IsShown()
+    {
+        return mainApp->IsShown();
+    }
+
+    bool IsTouched()
+    {
+        s32 touchCount = mainApp->GetTouchState().count;
+        if (touchCount == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

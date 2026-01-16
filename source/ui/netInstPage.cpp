@@ -14,7 +14,6 @@ bool netListRevceived = false;
 namespace app::ui
 {
     static s32 prev_touchcount = 0;
-    std::string lastFileID = "";
     std::string sourceString = "";
 
     netInstPage::netInstPage() : Layout::Layout()

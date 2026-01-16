@@ -35,10 +35,7 @@ SOFTWARE.
 #include "util/i18n.hpp"
 #include "ui/MainApplication.hpp"
 #include "manager.hpp"
-
-namespace app::ui {
-     extern MainApplication *mainApp;
-}
+#include "facade.hpp"
 
 namespace app::install::nsp
 {
@@ -115,7 +112,7 @@ namespace app::install::nsp
                 std::string audioPath = "romfs:/audio/fail.wav";
                 if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
                 std::thread audioThread(app::manager::playAudio, audioPath);
-                int rc = app::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
+                int rc = app::facade::ShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
                 audioThread.join();
                 if (app::config::enableLightning) {
                     app::manager::lightningStop();
@@ -161,7 +158,7 @@ namespace app::install::nsp
         }
         if (ss.str().length() == 0) {
             if (app::config::validateNCAs)
-                app::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false);
+                app::facade::ShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false);
             return; // don't bother trying to install the ticket or cert if it doesn't exist.
         }
         // end of ticket check

@@ -40,12 +40,10 @@ SOFTWARE.
 #include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
 #include "manager.hpp"
+#include "facade.hpp"
 
-namespace app::ui {
-    extern MainApplication *mainApp;
-}
-
-namespace nspInstStuff {
+namespace nspInstStuff
+{
 
     void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whereToInstall)
     {
@@ -104,7 +102,7 @@ namespace nspInstStuff {
             std::string audioPath = "romfs:/audio/fail.wav";
             if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
             std::thread audioThread(app::manager::playAudio, audioPath);
-            app::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
+            app::facade::ShowDialog("inst.info_page.failed"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
                 app::manager::lightningStop();
@@ -129,7 +127,7 @@ namespace nspInstStuff {
             std::thread audioThread(app::manager::playAudio, audioPath);
             if (ourTitleList.size() > 1) {
                 if (app::config::deletePrompt) {
-                    if(app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang, "inst.sd.delete_desc"_lang, {"common.no"_lang,"common.yes"_lang}, false) == 1) {
+                    if(app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang, "inst.sd.delete_desc"_lang, {"common.no"_lang,"common.yes"_lang}, false) == 1) {
                         for (long unsigned int i = 0; i < ourTitleList.size(); i++) {
                             if (std::filesystem::exists(ourTitleList[i])) {
                                 try {
@@ -138,17 +136,17 @@ namespace nspInstStuff {
                             }
                         }
                     }
-                } else app::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+                } else app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             } else {
                 if (app::config::deletePrompt) {
-                    if(app::ui::mainApp->CreateShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, {"common.no"_lang,"common.yes"_lang}, false) == 1) {
+                    if(app::facade::ShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, {"common.no"_lang,"common.yes"_lang}, false) == 1) {
                         if (std::filesystem::exists(ourTitleList[0])) {
                             try {
                                 std::filesystem::remove(ourTitleList[0]);
                             } catch (...){ };
                         }
                     }
-                } else app::ui::mainApp->CreateShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+                } else app::facade::ShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             }
             audioThread.join();
             if (app::config::enableLightning) {

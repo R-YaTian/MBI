@@ -3,35 +3,39 @@
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "manager.hpp"
+#include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/udisk.hpp"
 #include "nx/usb.hpp"
 #include "nx/network.hpp"
 
-namespace app::ui {
+namespace app::ui
+{
     extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
-    bool appletFinished = false;
 
-    void MainPage::mainMenuThread() {
-        bool menuLoaded = mainApp->IsShown();
-        if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
+    void MainPage::mainMenuThread()
+    {
+        bool menuLoaded = IsShown();
+        if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet)
+        {
             nx::data::NUM_BUFFER_SEGMENTS = 2;
-            if (menuLoaded) {
+            if (menuLoaded)
+            {
                 appletFinished = true;
-                mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
+                app::facade::ShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true);
             }
-        } else if (!appletFinished) {
+        }
+        else if (!appletFinished)
+        {
             appletFinished = true;
             nx::data::NUM_BUFFER_SEGMENTS = 128;
         }
     }
 
-    MainPage::MainPage() : Layout::Layout() {
-        this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
-        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "main.buttons"_lang);
-        this->botText->SetFont("DefaultFont@30");
-        this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
+    MainPage::MainPage() : Layout::Layout()
+    {
+        appletFinished = false;
         this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (894 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->optionMenu->SetShadowBaseAlpha(0);
@@ -53,8 +57,6 @@ namespace app::ui {
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
-        this->Add(this->botRect);
-        this->Add(this->botText);
         this->optionMenu->AddItem(this->sdInstallMenuItem);
         this->optionMenu->AddItem(this->netInstallMenuItem);
         this->optionMenu->AddItem(this->usbInstallMenuItem);
@@ -65,25 +67,28 @@ namespace app::ui {
         this->AddRenderCallback(std::bind(&MainPage::mainMenuThread, this));
     }
 
-    void MainPage::SdInstallMenuItem_Click() {
+    void MainPage::SdInstallMenuItem_Click()
+    {
         mainApp->sdinstPage->drawMenuItems(true, "sdmc:/");
         mainApp->sdinstPage->menu->SetSelectedIndex(0);
         mainApp->LoadLayout(mainApp->sdinstPage);
     }
 
-    void MainPage::NetInstallMenuItem_Click() {
+    void MainPage::NetInstallMenuItem_Click()
+    {
         if (nx::network::getIPAddress() == "1.0.0.127")
         {
-            mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
+            app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;
         }
-        mainApp->netinstPage->startNetwork();
+        SceneJump(Scene::NetworkInstll);
     }
 
-    void MainPage::UsbInstallMenuItem_Click() {
+    void MainPage::UsbInstallMenuItem_Click()
+    {
         if (!app::config::usbAck)
         {
-            if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1)
+            if (app::facade::ShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1)
             {
                 app::config::usbAck = true;
                 app::config::SaveSettings();
@@ -91,40 +96,46 @@ namespace app::ui {
         }
         if (nx::usb::usbDeviceIsConnected())
         {
-            mainApp->usbinstPage->startUsb();
+            SceneJump(Scene::UsbInstll);
         }
         else
         {
-            mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, {"common.ok"_lang}, false);
+            app::facade::ShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, {"common.ok"_lang}, false);
         }
     }
 
-    void MainPage::UdiskInstallMenuItem_Click() {
-		if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName()) {
+    void MainPage::UdiskInstallMenuItem_Click()
+    {
+		if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName())
+        {
 			mainApp->usbhddinstPage->drawMenuItems(true, nx::udisk::getMountPointName());
 			mainApp->usbhddinstPage->menu->SetSelectedIndex(0);
 			mainApp->LoadLayout(mainApp->usbhddinstPage);
-		} else {
-			mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
+		}
+        else
+        {
+			app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
 		}
     }
 
-    void MainPage::ExitMenuItem_Click() {
-        mainApp->FadeOut();
-        mainApp->Close();
+    void MainPage::ExitMenuItem_Click()
+    {
+        CloseWithFadeOut();
     }
 
-    void MainPage::SettingsMenuItem_Click() {
-        mainApp->LoadLayout(mainApp->optionspage);
+    void MainPage::SettingsMenuItem_Click()
+    {
+        SceneJump(Scene::Options);
     }
 
-    void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
-        if ((Down & HidNpadButton_Plus) && mainApp->IsShown()) {
-            mainApp->FadeOut();
-            mainApp->Close();
+    void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    {
+        if ((Down & HidNpadButton_Plus) && IsShown())
+        {
+            CloseWithFadeOut();
         }
 
-        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
         {
             prev_touchcount = 0;
             switch (this->optionMenu->GetSelectedIndex())
@@ -152,7 +163,7 @@ namespace app::ui {
             }
         }
 
-        if (mainApp->GetTouchState().count == 1)
+        if (IsTouched())
         {
             prev_touchcount = 1;
         }

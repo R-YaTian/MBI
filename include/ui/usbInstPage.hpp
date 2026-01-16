@@ -2,7 +2,8 @@
 
 #include <pu/Plutonium>
 
-namespace app::ui {
+namespace app::ui
+{
     class usbInstPage : public pu::ui::Layout
     {
         public:
@@ -14,12 +15,6 @@ namespace app::ui {
         private:
             std::vector<std::string> ourTitles;
             std::vector<std::string> selectedTitles;
-            std::string lastUrl;
-            std::string lastFileID;
-            pu::ui::elm::TextBlock::Ref pageInfoText;
-            pu::ui::elm::TextBlock::Ref botText;
-            pu::ui::elm::Rectangle::Ref infoRect;
-            pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Menu::Ref menu;
             pu::ui::elm::Image::Ref infoImage;
             void drawMenuItems(bool clearItems);
