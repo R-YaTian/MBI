@@ -251,7 +251,8 @@ namespace nx::network
             if (ret < 0)
             {
                 // If error
-                if (errno == EWOULDBLOCK || errno == EAGAIN){ // Is it because other side is busy?
+                if (errno == EWOULDBLOCK || errno == EAGAIN) // Is it because other side is busy?
+                {
                     sleep(5);
                     continue;
                 }

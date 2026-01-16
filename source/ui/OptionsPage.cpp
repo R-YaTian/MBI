@@ -1,45 +1,30 @@
-#include <filesystem>
-#include <switch.h>
 #include "ui/MainApplication.hpp"
-#include "ui/MainPage.hpp"
-#include "ui/InstallerPage.hpp"
 #include "ui/OptionsPage.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
+#include "facade.hpp"
 
 namespace app::ui
 {
-    extern MainApplication *mainApp;
-    std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국전통", "Português", "Русский", "简体中文","正體中文"};
+    std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국전통", "Português", "Русский", "简体中文", "正體中文"};
     static s32 prev_touchcount = 0;
 
     OptionsPage::OptionsPage() : Layout::Layout()
     {
-        this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));
-        this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
-        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 103, "options.title"_lang);
-        this->pageInfoText->SetFont("DefaultFont@30");
-        this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
-        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "options.buttons"_lang);
-        this->botText->SetFont("DefaultFont@30");
-        this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
-        this->Add(this->infoRect);
-        this->Add(this->botRect);
-        this->Add(this->botText);
-        this->Add(this->pageInfoText);
         this->setMenuText();
         this->Add(this->menu);
+        languageStrings.push_back("options.language.system_language"_lang);
     }
 
     pu::sdl2::TextureHandle::Ref OptionsPage::getMenuOptionIcon(bool ourBool)
     {
-        if(ourBool)
-            return mainApp->checkboxTick;
+        if (ourBool)
+            return GetResource(Resources::CheckedImage);
         else
-            return mainApp->checkboxBlank;
+            return GetResource(Resources::UncheckedImage);
     }
 
     std::string OptionsPage::getMenuLanguage(int ourLangCode)
@@ -64,12 +49,15 @@ namespace app::ui
             case 7:
                 return languageStrings[6];
             case 9:
+            case 17:
                 return languageStrings[7];
             case 10:
                 return languageStrings[8];
             case 6:
+            case 15:
                 return languageStrings[9];
             case 11:
+            case 16:
                 return languageStrings[10];
             default:
                 return "options.language.system_language"_lang;
@@ -119,15 +107,13 @@ namespace app::ui
     {
         if (Down & HidNpadButton_B)
         {
-            mainApp->LoadLayout(mainApp->mainPage);
+            SceneJump(Scene::Main);
         }
 
-        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
         {
             prev_touchcount = 0;
-            std::string keyboardResult;
             int rc;
-            std::vector<std::string> languageList;
             switch (this->menu->GetSelectedIndex())
             {
                 case 0:
@@ -137,9 +123,19 @@ namespace app::ui
                     this->menu->SetSelectedIndex(0);
                     break;
                 case 1:
-                    if (app::config::validateNCAs) {
-                        if (app::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, {"common.cancel"_lang, "options.nca_warn.opt1"_lang}, false) == 1) app::config::validateNCAs = false;
-                    } else app::config::validateNCAs = true;
+                    if (app::config::validateNCAs)
+                    {
+                        if (app::facade::ShowDialog("options.nca_warn.title"_lang,
+                                                "options.nca_warn.desc"_lang, {"common.cancel"_lang,
+                                                "options.nca_warn.opt1"_lang}, false) == 1)
+                        {
+                            app::config::validateNCAs = false;
+                        }
+                    }
+                    else
+                    {
+                        app::config::validateNCAs = true;
+                    }
                     app::config::SaveSettings();
                     this->setMenuText();
                     this->menu->SetSelectedIndex(1);
@@ -175,14 +171,13 @@ namespace app::ui
                     this->menu->SetSelectedIndex(6);
                     break;
                 case 7:
-                    for (int i = 0; i < 11; i++)
+                    rc = app::facade::ShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageStrings, false);
+                    if (rc == -1)
                     {
-                        languageList.push_back(languageStrings[i]);
+                        break;
                     }
-                    languageList.push_back("options.language.system_language"_lang);
-                    rc = app::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false);
-                    if (rc == -1) break;
-                    switch(rc) {
+                    switch (rc)
+                    {
                         case 0:
                             app::config::languageSetting = 1;
                             break;
@@ -218,19 +213,19 @@ namespace app::ui
                             break;
                         default:
                             app::config::languageSetting = -1;
+                            break;
                     }
                     app::config::SaveSettings();
-                    mainApp->FadeOut();
-                    mainApp->Close();
+                    CloseWithFadeOut();
                     break;
                 case 8:
-                    app::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
+                    app::facade::ShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
                     break;
                 default:
                     break;
             }
         }
-        if (mainApp->GetTouchState().count == 1)
+        if (IsTouched())
             prev_touchcount = 1;
     }
 }
