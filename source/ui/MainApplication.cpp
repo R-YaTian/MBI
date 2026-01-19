@@ -156,6 +156,12 @@ namespace app::ui
             usbinstPage->startUsb();
             break;
         case Scene::SdInstll:
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("inst.sd.top_info"_lang);
+            mainApp->SetBottomText("inst.sd.buttons"_lang);
+            mainApp->sdinstPage->drawMenuItems(true, "sdmc:/");
+            mainApp->sdinstPage->setMenuIndex(0);
+            mainApp->LoadLayout(mainApp->sdinstPage);
             break;
         case Scene::UdiskInstll:
             break;

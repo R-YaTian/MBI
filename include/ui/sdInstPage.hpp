@@ -1,6 +1,8 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
+#include <memory>
 #include <pu/Plutonium>
 
 namespace app::ui
@@ -9,21 +11,21 @@ namespace app::ui
     {
         public:
             sdInstPage();
+            ~sdInstPage();
             PU_SMART_CTOR(sdInstPage)
             void startInstall();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
-            pu::ui::elm::Menu::Ref menu;
+            void setMenuIndex(int index);
         private:
             std::vector<std::filesystem::path> ourDirectories;
             std::vector<std::filesystem::path> ourFiles;
             std::vector<std::filesystem::path> selectedTitles;
             std::vector<long unsigned int> menuIndices;
             std::filesystem::path currentDir;
-            pu::ui::elm::TextBlock::Ref botText;
-            pu::ui::elm::Rectangle::Ref infoRect;
-            pu::ui::elm::Rectangle::Ref botRect;
-            pu::ui::elm::TextBlock::Ref pageInfoText;
+            pu::ui::elm::Menu::Ref menu;
+            struct InternalData;
+            std::unique_ptr<InternalData> pageData;
             void followDirectory();
             void selectNsp(int selectedIndex, bool redraw = true);
     };

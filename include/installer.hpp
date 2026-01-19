@@ -7,7 +7,7 @@ namespace app::installer
 {
     namespace Local
     {
-        enum class StorageSource
+        enum class StorageSource : u8
         {
             SD,
             UDISK

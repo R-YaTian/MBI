@@ -1,7 +1,7 @@
 #include "ui/MainApplication.hpp"
 #include "ui/MainPage.hpp"
 #include "ui/usbHDDInstPage.hpp"
-#include "usbHDDInstall.hpp"
+#include "installer.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
@@ -146,7 +146,7 @@ namespace app::ui {
             dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + app::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         } else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
         if (dialogResult == -1) return;
-        hddInstStuff::installNspFromFile(this->selectedTitles, dialogResult);
+        app::installer::Local::installFromFile(this->selectedTitles, dialogResult, app::installer::Local::StorageSource::UDISK);
         subPathCounter = 0;
         lastIndex.clear();
     }

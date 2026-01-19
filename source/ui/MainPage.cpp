@@ -69,9 +69,7 @@ namespace app::ui
 
     void MainPage::SdInstallMenuItem_Click()
     {
-        mainApp->sdinstPage->drawMenuItems(true, "sdmc:/");
-        mainApp->sdinstPage->menu->SetSelectedIndex(0);
-        mainApp->LoadLayout(mainApp->sdinstPage);
+        SceneJump(Scene::SdInstll);
     }
 
     void MainPage::NetInstallMenuItem_Click()
