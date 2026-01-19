@@ -25,14 +25,14 @@ namespace nx::misc
         return "";
     }
 
-    std::vector<uint32_t> SetClockSpeed(int deviceToClock, uint32_t clockSpeed)
+    uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed)
     {
         uint32_t hz = 0;
         uint32_t previousHz = 0;
 
         if (deviceToClock > 2 || deviceToClock < 0)
         {
-            return {0, 0};
+            return 0;
         }
 
         if(hosversionAtLeast(8,0,0))
@@ -64,7 +64,7 @@ namespace nx::misc
             clkrstCloseSession(&session);
             clkrstExit();
 
-            return {previousHz, hz};
+            return previousHz;
         }
         else
         {
@@ -90,7 +90,7 @@ namespace nx::misc
 
             pcvExit();
 
-            return {previousHz, hz};
+            return previousHz;
         }
     }
 

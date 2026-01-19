@@ -4,11 +4,11 @@
 
 namespace app::ui
 {
-    class netInstPage : public pu::ui::Layout
+    class NetInstallPage : public pu::ui::Layout
     {
         public:
-            netInstPage();
-            PU_SMART_CTOR(netInstPage)
+            NetInstallPage();
+            PU_SMART_CTOR(NetInstallPage)
             void startInstall(bool urlMode);
             void startNetwork();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);

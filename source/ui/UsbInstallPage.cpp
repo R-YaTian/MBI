@@ -1,4 +1,4 @@
-#include "ui/usbInstPage.hpp"
+#include "ui/UsbInstallPage.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
@@ -12,7 +12,7 @@ namespace app::ui
 {
     static s32 prev_touchcount = 0;
 
-    usbInstPage::usbInstPage() : Layout::Layout()
+    UsbInstallPage::UsbInstallPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
@@ -22,7 +22,7 @@ namespace app::ui
         this->Add(this->infoImage);
     }
 
-    void usbInstPage::drawMenuItems(bool clearItems)
+    void UsbInstallPage::drawMenuItems(bool clearItems)
     {
         s32 menuIndex = this->menu->GetSelectedIndex();
         if (clearItems)
@@ -48,7 +48,7 @@ namespace app::ui
         }
     }
 
-    void usbInstPage::selectTitle(int selectedIndex, bool redraw)
+    void UsbInstallPage::selectTitle(int selectedIndex, bool redraw)
     {
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
@@ -71,7 +71,7 @@ namespace app::ui
         }
     }
 
-    void usbInstPage::startUsb()
+    void UsbInstallPage::startUsb()
     {
         this->menu->SetVisible(false);
         this->menu->ClearItems();
@@ -94,7 +94,7 @@ namespace app::ui
         return;
     }
 
-    void usbInstPage::startInstall()
+    void UsbInstallPage::startInstall()
     {
         int dialogResult = -1;
         if (this->selectedTitles.size() == 1)
@@ -112,7 +112,7 @@ namespace app::ui
         usbInstStuff::installTitleUsb(this->selectedTitles, dialogResult);
     }
 
-    void usbInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void UsbInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {

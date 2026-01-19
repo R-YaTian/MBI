@@ -1,5 +1,5 @@
 #include "ui/MainApplication.hpp"
-#include "ui/netInstPage.hpp"
+#include "ui/NetInstallPage.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
@@ -16,7 +16,7 @@ namespace app::ui
     static s32 prev_touchcount = 0;
     std::string sourceString = "";
 
-    netInstPage::netInstPage() : Layout::Layout()
+    NetInstallPage::NetInstallPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
@@ -26,7 +26,7 @@ namespace app::ui
         this->Add(this->infoImage);
     }
 
-    void netInstPage::drawMenuItems(bool clearItems)
+    void NetInstallPage::drawMenuItems(bool clearItems)
     {
         s32 menuIndex = this->menu->GetSelectedIndex();
         if (clearItems) this->selectedUrls = {};
@@ -55,7 +55,7 @@ namespace app::ui
         }
     }
 
-    void netInstPage::selectTitle(int selectedIndex, bool redraw)
+    void NetInstallPage::selectTitle(int selectedIndex, bool redraw)
     {
         long unsigned int urlIndex = 0;
         if (this->menuIndices.size() > 0)
@@ -85,7 +85,7 @@ namespace app::ui
         }
     }
 
-    void netInstPage::startNetwork()
+    void NetInstallPage::startNetwork()
     {
         netListRevceived = false;
         this->menu->SetVisible(false);
@@ -132,7 +132,7 @@ namespace app::ui
         return;
     }
 
-    void netInstPage::startInstall(bool urlMode)
+    void NetInstallPage::startInstall(bool urlMode)
     {
         int dialogResult = -1;
         if (this->selectedUrls.size() == 1)
@@ -161,7 +161,7 @@ namespace app::ui
         netInstStuff::installTitleNet(this->selectedUrls, dialogResult, sourceString);
     }
 
-    void netInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void NetInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {

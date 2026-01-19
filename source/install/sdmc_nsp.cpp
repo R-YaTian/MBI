@@ -1,8 +1,8 @@
 #include "install/sdmc_nsp.hpp"
 #include "nx/error.hpp"
 #include "nx/NcaWriter.hpp"
-#include "ui/InstallerPage.hpp"
 #include "util/i18n.hpp"
+#include "facade.hpp"
 
 namespace app::install::nsp
 {
@@ -42,8 +42,8 @@ namespace app::install::nsp
 
         try
         {
-            app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-            app::ui::InstallerPage::setInstBarPerc(0);
+            app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+            app::facade::SendInstallProgress(0);
             while (fileOff < ncaSize)
             {
                 progress = (float) fileOff / (float) ncaSize;
@@ -58,10 +58,10 @@ namespace app::install::nsp
                     startSizeBuffered = newSizeBuffered;
 
                     LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0), "%");
-                    app::ui::InstallerPage::setInstBarPerc((double)(progress * 100.0));
+                    app::facade::SendInstallProgress((double)(progress * 100.0));
                     std::stringstream x;
                     x << (int)(progress * 100.0);
-                    app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                    app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
                 }
 
                 if (fileOff + readSize >= ncaSize) readSize = ncaSize - fileOff;
@@ -71,7 +71,7 @@ namespace app::install::nsp
 
                 fileOff += readSize;
             }
-            app::ui::InstallerPage::setInstBarPerc(100);
+            app::facade::SendInstallProgress(100);
         }
         catch (std::exception& e)
         {

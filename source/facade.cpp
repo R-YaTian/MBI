@@ -1,9 +1,11 @@
 #include "facade.hpp"
 #include "ui/MainApplication.hpp"
+#include "ui/InstallerPage.hpp"
 
 namespace app::ui
 {
     extern MainApplication *mainApp;
+    extern InstallerPage::Ref installerPage;
 }
 
 namespace app::facade
@@ -26,5 +28,33 @@ namespace app::facade
     bool SendRenderRequest()
     {
         return app::ui::mainApp->CallForRender();
+    }
+
+    void SendPageInfoTextAndRender(std::string text)
+    {
+        SendPageInfoText(text);
+        SendRenderRequest();
+    }
+
+    void SendInstallInfoText(std::string text)
+    {
+        app::ui::installerPage->SetInstllInfoText(text);
+        SendRenderRequest();
+    }
+
+    void SendInstallProgress(double percent)
+    {
+        app::ui::installerPage->SetProgressBar(percent);
+        SendRenderRequest();
+    }
+
+    void SendInstallFinished()
+    {
+        app::ui::SceneJump(app::ui::Scene::Main);
+    }
+
+    void ShowInstaller()
+    {
+        app::ui::SceneJump(app::ui::Scene::Installer);
     }
 }

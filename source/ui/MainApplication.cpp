@@ -5,15 +5,17 @@
 #include "nx/misc.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/OptionsPage.hpp"
-#include "ui/netInstPage.hpp"
-#include "ui/usbInstPage.hpp"
+#include "ui/NetInstallPage.hpp"
+#include "ui/UsbInstallPage.hpp"
+#include "ui/InstallerPage.hpp"
 
 namespace app::ui
 {
     MainApplication *mainApp;
     OptionsPage::Ref optionspage;
-    netInstPage::Ref netinstPage;
-    usbInstPage::Ref usbinstPage;
+    NetInstallPage::Ref netinstPage;
+    UsbInstallPage::Ref usbinstPage;
+    InstallerPage::Ref installerPage;
 
     #define _UI_MAINAPP_MENU_SET_BASE(layout) { \
         layout->SetBackgroundColor(COLOR("#670000FF")); \
@@ -78,7 +80,7 @@ namespace app::ui
 
         batteryCurrentValue = 255;
 
-        this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#170909FF"));
+        this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#170909C0"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
         this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "");
         this->botText->SetFont("DefaultFont@30");
@@ -100,22 +102,22 @@ namespace app::ui
         this->UpdateStats();
 
         this->mainPage = MainPage::New();
-        netinstPage = netInstPage::New();
+        netinstPage = NetInstallPage::New();
         this->sdinstPage = sdInstPage::New();
-        usbinstPage = usbInstPage::New();
+        usbinstPage = UsbInstallPage::New();
         this->usbhddinstPage = usbHDDInstPage::New();
-        this->installerPage = InstallerPage::New();
+        installerPage = InstallerPage::New();
         optionspage = OptionsPage::New();
         this->mainPage->SetOnInput(std::bind(&MainPage::onInput, this->mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        netinstPage->SetOnInput(std::bind(&netInstPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->sdinstPage->SetOnInput(std::bind(&sdInstPage::onInput, this->sdinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        usbinstPage->SetOnInput(std::bind(&usbInstPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->usbhddinstPage->SetOnInput(std::bind(&usbHDDInstPage::onInput, this->usbhddinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->installerPage->SetOnInput(std::bind(&InstallerPage::onInput, this->installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        installerPage->SetOnInput(std::bind(&InstallerPage::onInput, installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         _UI_MAINAPP_MENU_SET_BASE(this->mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
-        _UI_MAINAPP_MENU_SET_BASE(this->installerPage);
+        _UI_MAINAPP_MENU_SET_BASE(installerPage);
         _UI_MAINAPP_MENU_SET_BASE(netinstPage);
         _UI_MAINAPP_MENU_SET_BASE(this->sdinstPage);
         _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
@@ -160,6 +162,11 @@ namespace app::ui
         case Scene::MtpInstll:
             break;
         case Scene::Installer:
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("");
+            installerPage->Prepare();
+            mainApp->LoadLayout(installerPage);
+            mainApp->CallForRender();
             break;
         }
     }

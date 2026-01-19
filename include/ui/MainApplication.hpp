@@ -6,7 +6,6 @@
 #include "ui/MainPage.hpp"
 #include "ui/sdInstPage.hpp"
 #include "ui/usbHDDInstPage.hpp"
-#include "ui/InstallerPage.hpp"
 
 namespace app::ui
 {
@@ -41,7 +40,6 @@ namespace app::ui
             MainPage::Ref mainPage;
             sdInstPage::Ref sdinstPage;
             usbHDDInstPage::Ref usbhddinstPage;
-            InstallerPage::Ref installerPage;
             pu::sdl2::TextureHandle::Ref checkboxBlank;
             pu::sdl2::TextureHandle::Ref checkboxTick;
             pu::sdl2::TextureHandle::Ref dirImg;

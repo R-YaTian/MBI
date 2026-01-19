@@ -64,6 +64,12 @@ namespace app::manager
 
     void playAudio(std::string audioPath)
     {
+        std::string finalPath = "romfs:/audio"  + audioPath;
+        if (std::filesystem::exists(app::config::storagePath + audioPath))
+        {
+            finalPath = app::config::storagePath + audioPath;
+        }
+
         int audio_rate = 44100;
         Uint16 audio_format = AUDIO_S16SYS;
         int audio_channels = 2;
@@ -73,7 +79,7 @@ namespace app::manager
             return;
 
         Mix_Chunk *sound = NULL;
-        sound = Mix_LoadWAV(audioPath.c_str());
+        sound = Mix_LoadWAV(finalPath.c_str());
         if (sound == NULL || !app::config::enableSound)
         {
             Mix_FreeChunk(sound);

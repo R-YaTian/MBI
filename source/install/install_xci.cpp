@@ -29,7 +29,6 @@ SOFTWARE.
 #include "nx/Crypto.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
-#include "ui/MainApplication.hpp"
 #include "manager.hpp"
 #include "facade.hpp"
 
@@ -105,9 +104,7 @@ namespace app::install::xci
                 if (app::config::enableLightning) {
                     app::manager::lightningStart();
                 }
-                std::string audioPath = "romfs:/audio/fail.wav";
-                if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
-                std::thread audioThread(app::manager::playAudio, audioPath);
+                std::thread audioThread(app::manager::playAudio, "/fail.wav");
                 int rc = app::facade::ShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false);
                 audioThread.join();
                 if (app::config::enableLightning) {

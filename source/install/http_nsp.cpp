@@ -28,7 +28,7 @@ SOFTWARE.
 #include "nx/error.hpp"
 #include "util/util.hpp"
 #include "util/i18n.hpp"
-#include "ui/InstallerPage.hpp"
+#include "facade.hpp"
 
 namespace app::install::nsp
 {
@@ -107,7 +107,7 @@ namespace app::install::nsp
         size_t startSizeBuffered = 0;
         double speed = 0.0;
 
-        app::ui::InstallerPage::setInstBarPerc(0);
+        app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreadsHttpNsp)
         {
             u64 newTime = armGetSystemTick();
@@ -124,24 +124,24 @@ namespace app::install::nsp
 
                 int downloadProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeBuffered() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
-                app::ui::InstallerPage::setInstInfoText("inst.info_page.downloading"_lang + nx::network::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
-                app::ui::InstallerPage::setInstBarPerc((double)downloadProgress);
+                app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + nx::network::formatUrlString(ncaFileName) + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size()-4) + "MB/s");
+                app::facade::SendInstallProgress((double)downloadProgress);
             }
         }
-        app::ui::InstallerPage::setInstBarPerc(100);
+        app::facade::SendInstallProgress(100);
 
-        app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-        app::ui::InstallerPage::setInstBarPerc(0);
+        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreadsHttpNsp)
         {
             int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
-            app::ui::InstallerPage::setInstBarPerc((double)installProgress);
+            app::facade::SendInstallProgress((double)installProgress);
             std::stringstream x;
             x << (int)(installProgress);
-            app::ui::InstallerPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
+            app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
         }
-        app::ui::InstallerPage::setInstBarPerc(100);
+        app::facade::SendInstallProgress(100);
 
         thrd_join(curlThread, NULL);
         thrd_join(writeThread, NULL);

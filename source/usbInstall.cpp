@@ -34,8 +34,6 @@ SOFTWARE.
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "ui/MainApplication.hpp"
-#include "ui/InstallerPage.hpp"
 #include "manager.hpp"
 #include "facade.hpp"
 
@@ -57,8 +55,13 @@ namespace usbInstStuff
         PadState pad;
         padInitializeAny(&pad);
 
-        while(true) {
-            if (bufferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0) break;
+        while(true)
+        {
+            app::facade::SendRenderRequest();
+            if (bufferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
+            {
+                break;
+            }
             padUpdate(&pad);
             u64 kDown = padGetButtonsDown(&pad);
 
@@ -88,7 +91,7 @@ namespace usbInstStuff
     void installTitleUsb(std::vector<std::string> ourTitleList, int ourStorage)
     {
         app::manager::initInstallServices();
-        app::ui::InstallerPage::loadInstallScreen();
+        app::facade::ShowInstaller();
         bool nspInstalled = true;
         NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
@@ -102,18 +105,18 @@ namespace usbInstStuff
 
         std::vector<int> previousClockValues;
         if (app::config::overClock) {
-            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000)[0]);
-            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000)[0]);
-            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000)[0]);
+            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
+            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
+            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
         }
 
         try {
             unsigned int titleCount = ourTitleList.size();
             for (fileItr = 0; fileItr < titleCount; fileItr++) {
                 if (titleCount > 1) {
-                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + "(" + std::to_string(fileItr+1) + "/"  + std::to_string(titleCount) + ") " + fileNames[fileItr] + "inst.usb.source_string"_lang);
+                    app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + "(" + std::to_string(fileItr+1) + "/"  + std::to_string(titleCount) + ") " + fileNames[fileItr] + "inst.usb.source_string"_lang);
                 } else {
-                    app::ui::InstallerPage::setTopInstInfoText("inst.info_page.top_info0"_lang + fileNames[fileItr] + "inst.usb.source_string"_lang);
+                    app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + fileNames[fileItr] + "inst.usb.source_string"_lang);
                 }
                 std::unique_ptr<app::install::Install> installTask;
 
@@ -126,8 +129,8 @@ namespace usbInstStuff
                 }
 
                 LOG_DEBUG("%s\n", "Preparing installation");
-                app::ui::InstallerPage::setInstInfoText("inst.info_page.preparing"_lang);
-                app::ui::InstallerPage::setInstBarPerc(0);
+                app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
+                app::facade::SendInstallProgress(0);
                 installTask->Prepare();
                 installTask->InstallTicketCert();
                 installTask->Begin();
@@ -137,14 +140,12 @@ namespace usbInstStuff
             LOG_DEBUG("Failed to install");
             LOG_DEBUG("%s", e.what());
             fprintf(stdout, "%s", e.what());
-            app::ui::InstallerPage::setInstInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
-            app::ui::InstallerPage::setInstBarPerc(0);
+            app::facade::SendInstallInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
+            app::facade::SendInstallProgress(0);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
-            std::string audioPath = "romfs:/audio/fail.wav";
-            if (std::filesystem::exists(app::config::storagePath + "/fail.wav")) audioPath = app::config::storagePath + "/fail.wav";
-            std::thread audioThread(app::manager::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, "/fail.wav");
             app::facade::ShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
             audioThread.join();
             if (app::config::enableLightning) {
@@ -161,14 +162,12 @@ namespace usbInstStuff
 
         if(nspInstalled) {
             nx::usb::USBCommandManager::SendFinishedCommand();
-            app::ui::InstallerPage::setInstInfoText("inst.info_page.complete"_lang);
-            app::ui::InstallerPage::setInstBarPerc(100);
+            app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
+            app::facade::SendInstallProgress(100);
             if (app::config::enableLightning) {
                 app::manager::lightningStart();
             }
-            std::string audioPath = "romfs:/audio/success.wav";
-            if (std::filesystem::exists(app::config::storagePath + "/success.wav")) audioPath = app::config::storagePath + "/success.wav";
-            std::thread audioThread(app::manager::playAudio, audioPath);
+            std::thread audioThread(app::manager::playAudio, "/success.wav");
             if (ourTitleList.size() > 1) app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             else app::facade::ShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
             audioThread.join();
@@ -179,7 +178,7 @@ namespace usbInstStuff
 
         LOG_DEBUG("Done");
         nx::usb::usbDeviceReset();
-        app::ui::InstallerPage::loadMainMenu();
+        app::facade::SendInstallFinished();
         app::manager::deinitInstallServices();
         return;
     }

@@ -4,11 +4,11 @@
 
 namespace app::ui
 {
-    class usbInstPage : public pu::ui::Layout
+    class UsbInstallPage : public pu::ui::Layout
     {
         public:
-            usbInstPage();
-            PU_SMART_CTOR(usbInstPage)
+            UsbInstallPage();
+            PU_SMART_CTOR(UsbInstallPage)
             void startInstall();
             void startUsb();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
