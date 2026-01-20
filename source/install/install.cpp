@@ -29,9 +29,7 @@ SOFTWARE.
 #include "nx/nca.hpp"
 #include "nx/ncm.hpp"
 
-// TODO: Check NCA files are present
-// TODO: Check tik/cert is present
-namespace app::install
+namespace app
 {
     Install::Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion) :
         m_destStorageId(destStorageId), m_ignoreReqFirmVersion(ignoreReqFirmVersion), m_contentMeta()

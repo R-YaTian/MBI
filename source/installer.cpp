@@ -66,7 +66,7 @@ namespace app::installer
                                                                (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
                     }
 
-                    std::unique_ptr<app::install::Install> installTask;
+                    std::unique_ptr<app::Install> installTask;
                     if (ourTitleList[titleItr].extension() == ".xci" || ourTitleList[titleItr].extension() == ".xcz")
                     {
                         auto sdmcXCI = std::make_shared<app::install::xci::SDMCXCI>(ourTitleList[titleItr]);
@@ -294,7 +294,7 @@ namespace app::installer
                                                                "inst.usb.source_string"_lang);
                     }
 
-                    std::unique_ptr<app::install::Install> installTask;
+                    std::unique_ptr<app::Install> installTask;
                     if (ourTitleList[fileItr].compare(ourTitleList[fileItr].size() - 3, 2, "xc") == 0)
                     {
                         auto usbXCI = std::make_shared<app::install::xci::USBXCI>(ourTitleList[fileItr]);
@@ -698,7 +698,7 @@ back_to_loop:
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                     }
 
-                    std::unique_ptr<app::install::Install> installTask;
+                    std::unique_ptr<app::Install> installTask;
                     if (nx::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD")
                     {
                         auto httpXCI = std::make_shared<app::install::xci::HTTPXCI>(ourUrlList[urlItr]);

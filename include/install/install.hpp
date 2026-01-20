@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include <switch-ipcext.h>
 
-namespace app::install
+namespace app
 {
     class Install
     {
