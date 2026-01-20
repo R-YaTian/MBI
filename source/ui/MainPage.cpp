@@ -2,7 +2,6 @@
 #include "ui/MainPage.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "manager.hpp"
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/udisk.hpp"
@@ -11,8 +10,6 @@
 
 namespace app::ui
 {
-    static s32 prev_touchcount = 0;
-
     void MainPage::mainMenuThread()
     {
         bool menuLoaded = IsShown();
@@ -130,9 +127,9 @@ namespace app::ui
             CloseWithFadeOut();
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
-            prev_touchcount = 0;
+            previousTouchCount = 0;
             switch (this->optionMenu->GetSelectedIndex())
             {
                 case 0:
@@ -160,7 +157,7 @@ namespace app::ui
 
         if (IsTouched())
         {
-            prev_touchcount = 1;
+            previousTouchCount = 1;
         }
     }
 }

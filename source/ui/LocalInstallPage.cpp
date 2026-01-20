@@ -8,8 +8,6 @@
 
 namespace app::ui
 {
-    static s32 prev_touchcount = 0;
-
     struct LocalInstallPage::InternalData
     {
         std::vector<int> lastIndex;
@@ -199,7 +197,7 @@ namespace app::ui
         {
             return;
         }
-        app::installer::Local::installFromFile(this->selectedTitles, dialogResult, pageData->storageSrc);
+        app::installer::Local::InstallFromFile(this->selectedTitles, dialogResult, pageData->storageSrc);
         pageData->subPathCounter = 0;
         pageData->lastIndex.clear();
     }
@@ -219,9 +217,9 @@ namespace app::ui
             }
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
-            prev_touchcount = 0;
+            previousTouchCount = 0;
             this->selectFile(this->menu->GetSelectedIndex());
             if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1)
             {
@@ -287,7 +285,7 @@ namespace app::ui
 
         if (IsTouched())
         {
-            prev_touchcount = 1;
+            previousTouchCount = 1;
         }
     }
 

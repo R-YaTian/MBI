@@ -1,4 +1,3 @@
-#include "manager.hpp"
 #include "util/i18n.hpp"
 #include "util/config.hpp"
 #include "nx/fs.hpp"

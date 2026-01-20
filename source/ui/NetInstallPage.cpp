@@ -3,16 +3,13 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "netInstall.hpp"
 #include "nx/network.hpp"
 #include "nx/misc.hpp"
-#include "manager.hpp"
+#include "installer.hpp"
 #include "facade.hpp"
 
 namespace app::ui
 {
-    static s32 prev_touchcount = 0;
-
     NetInstallPage::NetInstallPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -88,7 +85,7 @@ namespace app::ui
         this->menu->SetVisible(false);
         this->menu->ClearItems();
         this->infoImage->SetVisible(true);
-        this->ourUrls = netInstStuff::OnSelected();
+        this->ourUrls = app::installer::Network::WaitingForNetworkData();
         if (!this->ourUrls.size())
         {
             SceneJump(Scene::Main);
@@ -155,7 +152,7 @@ namespace app::ui
             this->startNetwork();
             return;
         }
-        netInstStuff::installTitleNet(this->selectedUrls, dialogResult, sourceString);
+        app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult, sourceString);
     }
 
     void NetInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
@@ -168,16 +165,16 @@ namespace app::ui
                 {
                     this->selectTitle(this->menu->GetSelectedIndex());
                 }
-                netInstStuff::pushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
+                app::installer::Network::PushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
             }
-            netInstStuff::OnUnwound();
+            app::installer::Network::Cleanup();
             SceneJump(Scene::Main);
         }
         if (netListRevceived)
         {
-            if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+            if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
             {
-                prev_touchcount = 0;
+                previousTouchCount = 0;
                 this->selectTitle(this->menu->GetSelectedIndex());
                 if (this->menu->GetItems().size() == 1 && this->selectedUrls.size() == 1) {
                     this->startInstall(false);
@@ -224,9 +221,10 @@ namespace app::ui
                 this->startInstall(false);
             }
         }
+
         if (IsTouched())
         {
-            prev_touchcount = 1;
+            previousTouchCount = 1;
         }
     }
 }

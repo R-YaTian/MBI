@@ -3,15 +3,12 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "usbInstall.hpp"
 #include "nx/usb.hpp"
-#include "manager.hpp"
+#include "installer.hpp"
 #include "facade.hpp"
 
 namespace app::ui
 {
-    static s32 prev_touchcount = 0;
-
     UsbInstallPage::UsbInstallPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -76,7 +73,7 @@ namespace app::ui
         this->menu->SetVisible(false);
         this->menu->ClearItems();
         this->infoImage->SetVisible(true);
-        this->ourTitles = usbInstStuff::OnSelected();
+        this->ourTitles = app::installer::Usb::WaitingForFileList();
         if (!this->ourTitles.size())
         {
             SceneJump(Scene::Main);
@@ -109,7 +106,7 @@ namespace app::ui
         {
             return;
         }
-        usbInstStuff::installTitleUsb(this->selectedTitles, dialogResult);
+        app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult);
     }
 
     void UsbInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
@@ -120,9 +117,9 @@ namespace app::ui
             SceneJump(Scene::Main);
             nx::usb::usbDeviceReset();
         }
-        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
-            prev_touchcount = 0;
+            previousTouchCount = 0;
             this->selectTitle(this->menu->GetSelectedIndex());
             if (this->menu->GetItems().size() == 1 && this->selectedTitles.size() == 1)
             {
@@ -161,9 +158,10 @@ namespace app::ui
             }
             this->startInstall();
         }
+
         if (IsTouched())
         {
-            prev_touchcount = 1;
+            previousTouchCount = 1;
         }
     }
 }

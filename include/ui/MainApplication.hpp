@@ -27,6 +27,8 @@ namespace app::ui
         BackToParentImage,
     };
 
+    inline s32 previousTouchCount = 0;
+
     class MainApplication : public pu::ui::Application
     {
         public:

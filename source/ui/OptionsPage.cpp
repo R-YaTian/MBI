@@ -6,8 +6,6 @@
 
 namespace app::ui
 {
-    static s32 prev_touchcount = 0;
-
     OptionsPage::OptionsPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -109,9 +107,9 @@ namespace app::ui
             SceneJump(Scene::Main);
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1 && !touchGuard))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1 && !touchGuard))
         {
-            prev_touchcount = 0;
+            previousTouchCount = 0;
             int rc;
             switch (this->menu->GetSelectedIndex())
             {
@@ -225,7 +223,10 @@ namespace app::ui
                     break;
             }
         }
+
         if (IsTouched())
-            prev_touchcount = 1;
+        {
+            previousTouchCount = 1;
+        }
     }
 }
