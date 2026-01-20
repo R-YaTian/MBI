@@ -9,7 +9,7 @@
 #include "ui/NetInstallPage.hpp"
 #include "ui/UsbInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
-#include "ui/sdInstPage.hpp"
+#include "ui/LocalInstallPage.hpp"
 #include "ui/MainPage.hpp"
 
 namespace app::ui
@@ -19,7 +19,7 @@ namespace app::ui
     NetInstallPage::Ref netinstPage;
     UsbInstallPage::Ref usbinstPage;
     InstallerPage::Ref installerPage;
-    sdInstPage::Ref localinstPage;
+    LocalInstallPage::Ref localinstPage;
     MainPage::Ref mainPage;
 
     #define _UI_MAINAPP_MENU_SET_BASE(layout) { \
@@ -108,13 +108,13 @@ namespace app::ui
 
         mainPage = MainPage::New();
         netinstPage = NetInstallPage::New();
-        localinstPage = sdInstPage::New();
+        localinstPage = LocalInstallPage::New();
         usbinstPage = UsbInstallPage::New();
         installerPage = InstallerPage::New();
         optionspage = OptionsPage::New();
         mainPage->SetOnInput(std::bind(&MainPage::onInput, mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        localinstPage->SetOnInput(std::bind(&sdInstPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        localinstPage->SetOnInput(std::bind(&LocalInstallPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         installerPage->SetOnInput(std::bind(&InstallerPage::onInput, installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));

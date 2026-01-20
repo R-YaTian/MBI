@@ -7,12 +7,12 @@
 
 namespace app::ui
 {
-    class sdInstPage : public pu::ui::Layout
+    class LocalInstallPage : public pu::ui::Layout
     {
         public:
-            sdInstPage();
-            ~sdInstPage();
-            PU_SMART_CTOR(sdInstPage)
+            LocalInstallPage();
+            ~LocalInstallPage();
+            PU_SMART_CTOR(LocalInstallPage)
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
             void setMenuIndex(int index);

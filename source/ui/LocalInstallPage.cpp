@@ -1,6 +1,5 @@
 #include "ui/MainApplication.hpp"
-#include "ui/MainPage.hpp"
-#include "ui/sdInstPage.hpp"
+#include "ui/LocalInstallPage.hpp"
 #include "installer.hpp"
 #include "facade.hpp"
 #include "util/util.hpp"
@@ -11,16 +10,16 @@ namespace app::ui
 {
     static s32 prev_touchcount = 0;
 
-    struct sdInstPage::InternalData
+    struct LocalInstallPage::InternalData
     {
         std::vector<int> lastIndex;
         int subPathCounter = 0;
         installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
     };
 
-    sdInstPage::~sdInstPage() = default;
+    LocalInstallPage::~LocalInstallPage() = default;
 
-    sdInstPage::sdInstPage() : Layout::Layout()
+    LocalInstallPage::LocalInstallPage() : Layout::Layout()
     {
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
@@ -29,7 +28,7 @@ namespace app::ui
         pageData = std::make_unique<InternalData>();
     }
 
-    void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath)
+    void LocalInstallPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath)
     {
         s32 menuIndex = this->menu->GetSelectedIndex();
         if (clearItems)
@@ -105,7 +104,7 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::followDirectory()
+    void LocalInstallPage::followDirectory()
     {
         int selectedIndex = this->menu->GetSelectedIndex();
         int dirListSize = this->ourDirectories.size();
@@ -145,7 +144,7 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::selectFile(int selectedIndex, bool redraw)
+    void LocalInstallPage::selectFile(int selectedIndex, bool redraw)
     {
         int dirListSize = this->ourDirectories.size();
         if (this->currentDir != "sdmc:/")
@@ -185,7 +184,7 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::startInstall()
+    void LocalInstallPage::startInstall()
     {
         int dialogResult = -1;
         if (this->selectedTitles.size() == 1)
@@ -205,7 +204,7 @@ namespace app::ui
         pageData->lastIndex.clear();
     }
 
-    void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void LocalInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {
@@ -292,17 +291,17 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::setMenuIndex(int index)
+    void LocalInstallPage::setMenuIndex(int index)
     {
         this->menu->SetSelectedIndex(index);
     }
 
-    void sdInstPage::setStorageSourceToSdmc()
+    void LocalInstallPage::setStorageSourceToSdmc()
     {
         pageData->storageSrc = installer::Local::StorageSource::SD;
     }
 
-    void sdInstPage::setStorageSourceToUdisk()
+    void LocalInstallPage::setStorageSourceToUdisk()
     {
         pageData->storageSrc = installer::Local::StorageSource::UDISK;
     }
