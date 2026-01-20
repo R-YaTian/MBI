@@ -4,7 +4,6 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
-#include "nx/udisk.hpp"
 #include "nx/usb.hpp"
 #include "nx/network.hpp"
 
@@ -100,14 +99,7 @@ namespace app::ui
 
     void MainPage::UdiskInstallMenuItem_Click()
     {
-        if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName())
-        {
-            SceneJump(Scene::UdiskInstll);
-        }
-        else
-        {
-            app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
-        }
+        SceneJump(Scene::UdiskInstll);
     }
 
     void MainPage::ExitMenuItem_Click()

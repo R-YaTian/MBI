@@ -130,6 +130,8 @@ namespace app::ui
 
     void SceneJump(Scene idx)
     {
+        int ret = -1;
+        int deviceCount = 0;
         switch (idx)
         {
         case Scene::Main:
@@ -166,10 +168,33 @@ namespace app::ui
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::UdiskInstll:
+            deviceCount = nx::udisk::getDeviceCount();
+            if(deviceCount > 1)
+            {
+                std::vector<std::string> mountPointList;
+                for (int i=0; i < deviceCount; i++)
+                {
+                    mountPointList.push_back(nx::udisk::getMountPointName(i));
+                }
+                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "", mountPointList, false);
+                if (ret == -1)
+                {
+                    return;
+                }
+            }
+            else if (deviceCount == 1)
+            {
+                ret = 0;
+            }
+            else
+            {
+                mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
+                return;
+            }
             mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
             mainApp->SetBottomText("inst.hdd.buttons"_lang);
-            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName());
+            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName(ret));
             localinstPage->setMenuIndex(0);
             localinstPage->setStorageSourceToUdisk();
             mainApp->LoadLayout(localinstPage);

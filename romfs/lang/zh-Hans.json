@@ -88,7 +88,7 @@
             "source_string": " 从 USB 设备安装",
             "delete_info": " 安装完成！是否要从 USB 移动硬盘中删除安装文件？",
             "delete_info_multi": " 批量安装完成！是否要从 USB 移动硬盘中删除本次所有安装文件？",
-            "delete_desc": "安装完成后不再需要使用安装文件",
+            "multi_device_desc": "请选择一个 USB 设备或分区",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "target": {
