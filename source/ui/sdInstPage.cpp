@@ -2,20 +2,20 @@
 #include "ui/MainPage.hpp"
 #include "ui/sdInstPage.hpp"
 #include "installer.hpp"
+#include "facade.hpp"
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 
 namespace app::ui
 {
-    extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
 
     struct sdInstPage::InternalData
     {
         std::vector<int> lastIndex;
         int subPathCounter = 0;
-        app::installer::Local::StorageSource storageSrc = app::installer::Local::StorageSource::SD;
+        installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
     };
 
     sdInstPage::~sdInstPage() = default;
@@ -32,44 +32,71 @@ namespace app::ui
     void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath)
     {
         s32 menuIndex = this->menu->GetSelectedIndex();
-        if (clearItems) this->selectedTitles = {};
-        if (ourPath == "sdmc:") this->currentDir = std::filesystem::path(ourPath.string() + "/");
-        else this->currentDir = ourPath;
+        if (clearItems)
+        {
+            this->selectedTitles = {};
+        }
+
+        this->currentDir = ourPath;
+
+		auto pathStr = this->currentDir.string();
+		if(pathStr.length())
+		{
+			if(pathStr[pathStr.length() - 1] == ':')
+			{
+				this->currentDir = std::filesystem::path(pathStr + "/");
+			}
+		}
+
         this->menu->ClearItems();
         this->menuIndices = {};
 
-        try {
+        try
+        {
             this->ourDirectories = util::getDirsAtPath(this->currentDir);
             this->ourFiles = util::getDirectoryFiles(this->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
-        } catch (std::exception& e) {
+        }
+        catch (std::exception& e)
+        {
             this->drawMenuItems(false, this->currentDir.parent_path());
             return;
         }
-        if (this->currentDir != "sdmc:/") {
+
+        if (this->currentDir != "sdmc:/")
+        {
             std::string itm = "..";
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::DirTextColor));
-            ourEntry->SetIcon(mainApp->dirbackImg);
+            ourEntry->SetIcon(GetResource(Resources::BackToParentImage));
             this->menu->AddItem(ourEntry);
         }
-        for (auto& file: this->ourDirectories) {
-            if (file == "..") break;
+
+        for (auto& file: this->ourDirectories)
+        {
+            if (file == "..")
+            {
+                break;
+            }
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::DirTextColor));
-            ourEntry->SetIcon(mainApp->dirImg);
+            ourEntry->SetIcon(GetResource(Resources::DirectoryImage));
             this->menu->AddItem(ourEntry);
         }
-        for (long unsigned int i = 0; i < this->ourFiles.size(); i++) {
+
+        for (long unsigned int i = 0; i < this->ourFiles.size(); i++)
+        {
             auto& file = this->ourFiles[i];
 
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
-            ourEntry->SetIcon(mainApp->checkboxBlank);
-            for (long unsigned int j = 0; j < this->selectedTitles.size(); j++) {
-                if (this->selectedTitles[j] == file) {
-                    ourEntry->SetIcon(mainApp->checkboxTick);
+            ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
+            for (long unsigned int j = 0; j < this->selectedTitles.size(); j++)
+            {
+                if (this->selectedTitles[j] == file)
+                {
+                    ourEntry->SetIcon(GetResource(Resources::CheckedImage));
                 }
             }
             this->menu->AddItem(ourEntry);
@@ -78,27 +105,38 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::followDirectory() {
+    void sdInstPage::followDirectory()
+    {
         int selectedIndex = this->menu->GetSelectedIndex();
         int dirListSize = this->ourDirectories.size();
         int selectNewIndex = 0;
-        if (this->currentDir != "sdmc:/") {
+        if (this->currentDir != "sdmc:/")
+        {
             dirListSize++;
             selectedIndex--;
         }
-        if (selectedIndex < dirListSize) {
-            if (this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == ".." && this->menu->GetSelectedIndex() == 0) {
+
+        if (selectedIndex < dirListSize)
+        {
+            if (this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == ".." && this->menu->GetSelectedIndex() == 0)
+            {
                 this->drawMenuItems(true, this->currentDir.parent_path());
-                if (pageData->subPathCounter > 0) {
+                if (pageData->subPathCounter > 0)
+                {
                     pageData->subPathCounter--;
                     selectNewIndex = pageData->lastIndex[pageData->subPathCounter];
                     pageData->lastIndex.pop_back();
                 }
-            } else {
+            }
+            else
+            {
                 this->drawMenuItems(true, this->ourDirectories[selectedIndex]);
-                if (pageData->subPathCounter > 0) {
+                if (pageData->subPathCounter > 0 || pageData->storageSrc == installer::Local::StorageSource::UDISK)
+                {
                     pageData->lastIndex.push_back(selectedIndex + 1);
-                } else {
+                }
+                else
+                {
                     pageData->lastIndex.push_back(selectedIndex);
                 }
                 pageData->subPathCounter++;
@@ -107,92 +145,165 @@ namespace app::ui
         }
     }
 
-    void sdInstPage::selectNsp(int selectedIndex, bool redraw) {
+    void sdInstPage::selectFile(int selectedIndex, bool redraw)
+    {
         int dirListSize = this->ourDirectories.size();
-        if (this->currentDir != "sdmc:/") dirListSize++;
+        if (this->currentDir != "sdmc:/")
+        {
+            dirListSize++;
+        }
 
-        long unsigned int nspIndex = 0;
-        if (this->menuIndices.size() > 0) nspIndex = this->menuIndices[selectedIndex - dirListSize];
+        long unsigned int fileIdx = 0;
+        if (this->menuIndices.size() > 0)
+        {
+            fileIdx = this->menuIndices[selectedIndex - dirListSize];
+        }
 
-        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxTick) {
-            for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
-                if (this->selectedTitles[i] == this->ourFiles[nspIndex])
+        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
+        {
+            for (long unsigned int i = 0; i < this->selectedTitles.size(); i++)
+            {
+                if (this->selectedTitles[i] == this->ourFiles[fileIdx])
                 {
                     this->selectedTitles.erase(this->selectedTitles.begin() + i);
                     break;
                 }
             }
-        } else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == mainApp->checkboxBlank) this->selectedTitles.push_back(this->ourFiles[nspIndex]);
-        else {
+        }
+        else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::UncheckedImage))
+        {
+            this->selectedTitles.push_back(this->ourFiles[fileIdx]);
+        }
+        else
+        {
             this->followDirectory();
             return;
         }
         if (redraw)
+        {
             this->drawMenuItems(false, currentDir);
+        }
     }
 
     void sdInstPage::startInstall()
     {
         int dialogResult = -1;
-        if (this->selectedTitles.size() == 1) {
-            dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + app::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
-        } else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
-        if (dialogResult == -1) return;
-        app::installer::Local::installFromFile(this->selectedTitles, dialogResult, app::installer::Local::StorageSource::SD);
+        if (this->selectedTitles.size() == 1)
+        {
+            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + app::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+        }
+        else
+        {
+            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+        }
+        if (dialogResult == -1)
+        {
+            return;
+        }
+        app::installer::Local::installFromFile(this->selectedTitles, dialogResult, pageData->storageSrc);
         pageData->subPathCounter = 0;
         pageData->lastIndex.clear();
     }
 
-    void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos) {
-        if (Down & HidNpadButton_B) {
-            if (pageData->subPathCounter > 0) {
+    void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    {
+        if (Down & HidNpadButton_B)
+        {
+            if (pageData->subPathCounter > 0)
+            {
                 this->menu->SetSelectedIndex(0);
                 this->followDirectory();
-            } else {
-                mainApp->LoadLayout(mainApp->mainPage);
+            }
+            else
+            {
+                SceneJump(Scene::Main);
             }
         }
-        if ((Down & HidNpadButton_A) || (mainApp->GetTouchState().count == 0 && prev_touchcount == 1)) {
+
+        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+        {
             prev_touchcount = 0;
-            this->selectNsp(this->menu->GetSelectedIndex());
-            if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1) {
+            this->selectFile(this->menu->GetSelectedIndex());
+            if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1)
+            {
                 this->startInstall();
             }
         }
-        if ((Down & HidNpadButton_Y)) {
-            if (this->selectedTitles.size() == this->ourFiles.size()) this->drawMenuItems(true, currentDir);
-            else {
+
+        if ((Down & HidNpadButton_Y))
+        {
+            if (this->selectedTitles.size() == this->ourFiles.size())
+            {
+                this->drawMenuItems(true, currentDir);
+            }
+            else
+            {
                 int topDir = 0;
-                if (this->currentDir != "sdmc:/") topDir++;
-                for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-                    if (this->menu->GetItems()[i]->GetIconTexture() == mainApp->checkboxTick) continue;
-                    else this->selectNsp(i, false);
+                if (this->currentDir != "sdmc:/")
+                {
+                    topDir++;
+                }
+                for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++)
+                {
+                    if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        this->selectFile(i, false);
+                    }
                 }
                 this->drawMenuItems(false, currentDir);
             }
         }
 
-        if ((Down & HidNpadButton_Minus)) {
-            app::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, {"common.ok"_lang}, true);
+        if ((Down & HidNpadButton_Minus))
+        {
+            app::facade::ShowDialog(pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.title"_lang : "inst.hdd.help.title"_lang,
+                                    pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.desc"_lang : "inst.hdd.help.desc"_lang,
+                                    {"common.ok"_lang}, true);
         }
 
         if (Down & HidNpadButton_ZL)
+        {
             this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
-        if (Down & HidNpadButton_ZR)
-            this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
-
-        if (Down & HidNpadButton_Plus) {
-            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == mainApp->checkboxBlank) {
-                this->selectNsp(this->menu->GetSelectedIndex());
-            }
-            if (this->selectedTitles.size() > 0) this->startInstall();
         }
-        if (mainApp->GetTouchState().count == 1)
+        if (Down & HidNpadButton_ZR)
+        {
+            this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
+        }
+
+        if (Down & HidNpadButton_Plus)
+        {
+            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == GetResource(Resources::UncheckedImage))
+            {
+                this->selectFile(this->menu->GetSelectedIndex());
+            }
+            if (this->selectedTitles.size() > 0)
+            {
+                this->startInstall();
+            }
+        }
+
+        if (IsTouched())
+        {
             prev_touchcount = 1;
+        }
     }
 
     void sdInstPage::setMenuIndex(int index)
     {
         this->menu->SetSelectedIndex(index);
+    }
+
+    void sdInstPage::setStorageSourceToSdmc()
+    {
+        pageData->storageSrc = installer::Local::StorageSource::SD;
+    }
+
+    void sdInstPage::setStorageSourceToUdisk()
+    {
+        pageData->storageSrc = installer::Local::StorageSource::UDISK;
     }
 }

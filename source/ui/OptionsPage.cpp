@@ -6,7 +6,6 @@
 
 namespace app::ui
 {
-    std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국전통", "Português", "Русский", "简体中文", "正體中文"};
     static s32 prev_touchcount = 0;
 
     OptionsPage::OptionsPage() : Layout::Layout()
@@ -110,7 +109,7 @@ namespace app::ui
             SceneJump(Scene::Main);
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && prev_touchcount == 1 && !touchGuard))
         {
             prev_touchcount = 0;
             int rc;
@@ -216,6 +215,7 @@ namespace app::ui
                             break;
                     }
                     app::config::SaveSettings();
+                    touchGuard = true;
                     CloseWithFadeOut();
                     break;
                 case 8:

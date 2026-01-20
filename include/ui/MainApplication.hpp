@@ -3,10 +3,6 @@
 #include <pu/Plutonium>
 #include <string>
 
-#include "ui/MainPage.hpp"
-#include "ui/sdInstPage.hpp"
-#include "ui/usbHDDInstPage.hpp"
-
 namespace app::ui
 {
     #define COLOR(hex) pu::ui::Color::FromHex(hex)
@@ -37,9 +33,6 @@ namespace app::ui
             using Application::Application;
             PU_SMART_CTOR(MainApplication)
             void OnLoad() override;
-            MainPage::Ref mainPage;
-            sdInstPage::Ref sdinstPage;
-            usbHDDInstPage::Ref usbhddinstPage;
             pu::sdl2::TextureHandle::Ref checkboxBlank;
             pu::sdl2::TextureHandle::Ref checkboxTick;
             pu::sdl2::TextureHandle::Ref dirImg;

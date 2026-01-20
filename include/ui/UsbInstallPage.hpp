@@ -9,7 +9,6 @@ namespace app::ui
         public:
             UsbInstallPage();
             PU_SMART_CTOR(UsbInstallPage)
-            void startInstall();
             void startUsb();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
@@ -19,5 +18,6 @@ namespace app::ui
             pu::ui::elm::Image::Ref infoImage;
             void drawMenuItems(bool clearItems);
             void selectTitle(int selectedIndex, bool redraw = true);
+            void startInstall();
     };
 }

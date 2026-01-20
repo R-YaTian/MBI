@@ -11,7 +11,6 @@
 
 namespace app::ui
 {
-    extern MainApplication *mainApp;
     static s32 prev_touchcount = 0;
 
     void MainPage::mainMenuThread()
@@ -104,16 +103,14 @@ namespace app::ui
 
     void MainPage::UdiskInstallMenuItem_Click()
     {
-		if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName())
+        if(nx::udisk::getDeviceCount() && nx::udisk::getMountPointName())
         {
-			mainApp->usbhddinstPage->drawMenuItems(true, nx::udisk::getMountPointName());
-			mainApp->usbhddinstPage->menu->SetSelectedIndex(0);
-			mainApp->LoadLayout(mainApp->usbhddinstPage);
-		}
+            SceneJump(Scene::UdiskInstll);
+        }
         else
         {
-			app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
-		}
+            app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
+        }
     }
 
     void MainPage::ExitMenuItem_Click()

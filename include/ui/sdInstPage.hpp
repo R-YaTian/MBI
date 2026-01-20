@@ -13,10 +13,11 @@ namespace app::ui
             sdInstPage();
             ~sdInstPage();
             PU_SMART_CTOR(sdInstPage)
-            void startInstall();
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
             void setMenuIndex(int index);
+            void setStorageSourceToSdmc();
+            void setStorageSourceToUdisk();
         private:
             std::vector<std::filesystem::path> ourDirectories;
             std::vector<std::filesystem::path> ourFiles;
@@ -27,6 +28,7 @@ namespace app::ui
             struct InternalData;
             std::unique_ptr<InternalData> pageData;
             void followDirectory();
-            void selectNsp(int selectedIndex, bool redraw = true);
+            void selectFile(int selectedIndex, bool redraw = true);
+            void startInstall();
     };
 }

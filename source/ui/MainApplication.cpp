@@ -3,11 +3,14 @@
 #include "util/config.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
+#include "nx/udisk.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/OptionsPage.hpp"
 #include "ui/NetInstallPage.hpp"
 #include "ui/UsbInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
+#include "ui/sdInstPage.hpp"
+#include "ui/MainPage.hpp"
 
 namespace app::ui
 {
@@ -16,6 +19,8 @@ namespace app::ui
     NetInstallPage::Ref netinstPage;
     UsbInstallPage::Ref usbinstPage;
     InstallerPage::Ref installerPage;
+    sdInstPage::Ref localinstPage;
+    MainPage::Ref mainPage;
 
     #define _UI_MAINAPP_MENU_SET_BASE(layout) { \
         layout->SetBackgroundColor(COLOR("#670000FF")); \
@@ -101,27 +106,24 @@ namespace app::ui
 
         this->UpdateStats();
 
-        this->mainPage = MainPage::New();
+        mainPage = MainPage::New();
         netinstPage = NetInstallPage::New();
-        this->sdinstPage = sdInstPage::New();
+        localinstPage = sdInstPage::New();
         usbinstPage = UsbInstallPage::New();
-        this->usbhddinstPage = usbHDDInstPage::New();
         installerPage = InstallerPage::New();
         optionspage = OptionsPage::New();
-        this->mainPage->SetOnInput(std::bind(&MainPage::onInput, this->mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        mainPage->SetOnInput(std::bind(&MainPage::onInput, mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->sdinstPage->SetOnInput(std::bind(&sdInstPage::onInput, this->sdinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        localinstPage->SetOnInput(std::bind(&sdInstPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->usbhddinstPage->SetOnInput(std::bind(&usbHDDInstPage::onInput, this->usbhddinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         installerPage->SetOnInput(std::bind(&InstallerPage::onInput, installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        _UI_MAINAPP_MENU_SET_BASE(this->mainPage);
+        _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
         _UI_MAINAPP_MENU_SET_BASE(installerPage);
         _UI_MAINAPP_MENU_SET_BASE(netinstPage);
-        _UI_MAINAPP_MENU_SET_BASE(this->sdinstPage);
+        _UI_MAINAPP_MENU_SET_BASE(localinstPage);
         _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
-        _UI_MAINAPP_MENU_SET_BASE(this->usbhddinstPage);
 
         this->AddRenderCallback(std::bind(&MainApplication::UpdateStats, this));
         SceneJump(Scene::Main);
@@ -134,7 +136,7 @@ namespace app::ui
         case Scene::Main:
             mainApp->HidePageInfo();
             mainApp->SetBottomText("main.buttons"_lang);
-            mainApp->LoadLayout(mainApp->mainPage);
+            mainApp->LoadLayout(mainPage);
             break;
         case Scene::Options:
             mainApp->ShowPageInfo();
@@ -159,11 +161,19 @@ namespace app::ui
             mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.sd.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
-            mainApp->sdinstPage->drawMenuItems(true, "sdmc:/");
-            mainApp->sdinstPage->setMenuIndex(0);
-            mainApp->LoadLayout(mainApp->sdinstPage);
+            localinstPage->drawMenuItems(true, "sdmc:/");
+            localinstPage->setMenuIndex(0);
+            localinstPage->setStorageSourceToSdmc();
+            mainApp->LoadLayout(localinstPage);
             break;
         case Scene::UdiskInstll:
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
+            mainApp->SetBottomText("inst.hdd.buttons"_lang);
+            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName());
+            localinstPage->setMenuIndex(0);
+            localinstPage->setStorageSourceToUdisk();
+            mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstll:
             break;

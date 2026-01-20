@@ -9,12 +9,9 @@
 #include "manager.hpp"
 #include "facade.hpp"
 
-bool netListRevceived = false;
-
 namespace app::ui
 {
     static s32 prev_touchcount = 0;
-    std::string sourceString = "";
 
     NetInstallPage::NetInstallPage() : Layout::Layout()
     {
