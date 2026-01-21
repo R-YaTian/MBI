@@ -4,14 +4,14 @@
             "sd": "Installa dalla SD",
             "net": "Installa via LAN o da internet",
             "usb": "Installa via USB",
-			"hdd": "Installa tramite USB HDD",
+            "hdd": "Installa tramite USB HDD",
             "set": "Impostazioni",
             "exit": "Esci"
         },
-		"hdd": {
-			"title": "USB HDD",
-			"notfound": "USB HDD non è collegato."
-		},
+        "hdd": {
+            "title": "USB HDD",
+            "notfound": "USB HDD non è collegato."
+        },
         "net": {
             "title": "Connessione alla rete non disponibile",
             "desc": "Controlla che la modalità aereo sia disattivata e che tu sia connesso ad una rete."
@@ -88,7 +88,7 @@
             "source_string": " dalla USB HDD",
             "delete_info": " installato! Cancellarlo dalla USB HDD?",
             "delete_info_multi": " file installati correttamente! Cancellarli dalla USB HDD?",
-            "delete_desc": "I file originali non sono più necessari dopo averli installati",
+            "multi_device_desc": "Seleziona un dispositivo USB o una partizione",
             "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0f0 Aiuto    \ue0e1 Annulla"
         },
         "target": {

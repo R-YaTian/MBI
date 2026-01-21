@@ -4,11 +4,11 @@
             "sd": "使用SD記憶卡進行安裝",
             "net": "使用網路進行安裝",
             "usb": "使用USB進行安裝",
-			"hdd": "使用USB HDD行動硬碟進行安裝",
+            "hdd": "使用USB HDD行動硬碟進行安裝",
             "set": "設定",
             "exit": "退出"
         },
-		"hdd": {
+        "hdd": {
             "title": "USB HDD",
             "notfound": "沒有偵測到USB HDD行動硬碟"
         },
@@ -79,7 +79,7 @@
             "buttons": "\ue0e2 (長按) 說明    \ue0e1 (長按) 取消",
             "buttons2": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
         },
-		"hdd": {
+        "hdd": {
             "help": {
                 "title": "說明",
                 "desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到USB HDD行動硬碟，\n選定要進行安裝的檔案後，請按+鈕"
@@ -88,9 +88,9 @@
             "source_string": " 從USB HDD行動硬碟",
             "delete_info": " 安裝完成！\n是否將檔案從行動硬碟刪除？",
             "delete_info_multi": " 所選的檔案均安裝完成！\n是否將所選的檔案從行動硬碟刪除？",
-            "delete_desc": "安裝完成後，不會再使用到原始檔案",
+            "multi_device_desc": "請選擇一個 USB 裝置或分割區",
             "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
-	    },
+        },
         "target": {
             "desc0": "要將遊戲",
             "desc1": "安裝到哪裡？",

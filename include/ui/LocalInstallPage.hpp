@@ -24,6 +24,7 @@ namespace app::ui
             std::vector<std::filesystem::path> selectedTitles;
             std::vector<long unsigned int> menuIndices;
             std::filesystem::path currentDir;
+            bool isRootDirectory = true;
             pu::ui::elm::Menu::Ref menu;
             struct InternalData;
             std::unique_ptr<InternalData> pageData;

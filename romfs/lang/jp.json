@@ -4,14 +4,14 @@
             "sd": "SDカードからインストール",
             "net": "ネットワーク経由でインストール",
             "usb": "USB経由でインストール",
-			"hdd": "USBHDD経由でインストール",
+            "hdd": "USBHDD経由でインストール",
             "set": "設定",
             "exit": "終了"
         },
-		"hdd": {
-			"title": "USB HDD",
-			"notfound": "USBHDDが接続されていません."
-		},
+        "hdd": {
+            "title": "USB HDD",
+            "notfound": "USBHDDが接続されていません."
+        },
         "net": {
             "title": "ネットワーク接続は利用できません",
             "desc": "機内モードが無効になっていて、ローカルネットワークに接続していることを確認してください。"
@@ -88,7 +88,7 @@
             "source_string": " USBHDDから",
             "delete_info": " インストール完了！ USBHDDから削除しますか？",
             "delete_info_multi": " ファイルが正常にインストールされました！ USBHDDから削除しますか？",
-            "delete_desc": "元のファイルはインストール後に不要になりました",
+            "multi_device_desc": "USB デバイスまたはパーティションを選択してください",
             "buttons": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0f0 ヘルプ    \ue0e1 キャンセル"
         },
         "target": {

@@ -4,14 +4,14 @@
             "sd": "Instalar através do cartão SD",
             "net": "Instalar através da LAN ou da Internet",
             "usb": "Instalar atráves do USB",
-			"hdd": "Instalar via USB HDD",
+            "hdd": "Instalar via USB HDD",
             "set": "Definições",
             "exit": "Sair"
         },
-		"hdd": {
-			"title": "USB HDD",
-			"notfound": "HDD USB não está conectado."
-		},
+        "hdd": {
+            "title": "USB HDD",
+            "notfound": "HDD USB não está conectado."
+        },
         "net": {
             "title": "Ligação à rede indisponível",
             "desc": "Verifique se o modo avião está desligado e se está ligado à rede local."
@@ -88,7 +88,7 @@
             "source_string": " através do USB HDD",
             "delete_info": " instalado! Eliminar do USB HDD?",
             "delete_info_multi": " instalados com sucesso! Eliminar do USB HDD?",
-            "delete_desc": "Os ficheiros originais não são necessários depois de instalados",
+            "multi_device_desc": "Selecione um dispositivo USB ou uma partição",
             "buttons": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0f0 Ajuda    \ue0e1 Cancelar"
         },
         "target": {

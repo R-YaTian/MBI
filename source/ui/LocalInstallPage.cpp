@@ -42,7 +42,12 @@ namespace app::ui
 			if(pathStr[pathStr.length() - 1] == ':')
 			{
 				this->currentDir = std::filesystem::path(pathStr + "/");
+                isRootDirectory = true;
 			}
+            else
+            {
+                isRootDirectory = false;
+            }
 		}
 
         this->menu->ClearItems();
@@ -59,7 +64,7 @@ namespace app::ui
             return;
         }
 
-        if (this->currentDir != "sdmc:/")
+        if (!isRootDirectory)
         {
             std::string itm = "..";
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
@@ -107,7 +112,7 @@ namespace app::ui
         int selectedIndex = this->menu->GetSelectedIndex();
         int dirListSize = this->ourDirectories.size();
         int selectNewIndex = 0;
-        if (this->currentDir != "sdmc:/")
+        if (!isRootDirectory)
         {
             dirListSize++;
             selectedIndex--;
@@ -128,7 +133,7 @@ namespace app::ui
             else
             {
                 this->drawMenuItems(true, this->ourDirectories[selectedIndex]);
-                if (pageData->subPathCounter > 0 || pageData->storageSrc == installer::Local::StorageSource::UDISK)
+                if (pageData->subPathCounter > 0)
                 {
                     pageData->lastIndex.push_back(selectedIndex + 1);
                 }
@@ -145,7 +150,7 @@ namespace app::ui
     void LocalInstallPage::selectFile(int selectedIndex, bool redraw)
     {
         int dirListSize = this->ourDirectories.size();
-        if (this->currentDir != "sdmc:/")
+        if (!isRootDirectory)
         {
             dirListSize++;
         }
@@ -236,7 +241,7 @@ namespace app::ui
             else
             {
                 int topDir = 0;
-                if (this->currentDir != "sdmc:/")
+                if (!isRootDirectory)
                 {
                     topDir++;
                 }

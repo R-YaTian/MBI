@@ -4,14 +4,14 @@
             "sd": "Von SD-Karte installieren",
             "net": "Über LAN oder Internet installieren",
             "usb": "Über USB installieren",
-			"hdd": "Über USB HDD installieren",
+            "hdd": "Über USB HDD installieren",
             "set": "Einstellungen",
             "exit": "Beenden"
         },
-		"hdd": {
-			"title": "USB HDD",
-			"notfound": "USB HDD ist nicht angeschlossen."
-		},
+        "hdd": {
+            "title": "USB HDD",
+            "notfound": "USB HDD ist nicht angeschlossen."
+        },
         "net": {
             "title": "Netzwerk Verbindung nicht verfügbar",
             "desc": "Überprüfe ob der Flugzeug-Modus deaktiviert ist und ob du mit einem lokalen Netzwerk verbunden bist"
@@ -88,7 +88,7 @@
             "source_string": " von der USB HDD",
             "delete_info": " installiert! Soll es von der USB HDD gelöscht werden?",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der USB HDD gelöscht werden?",
-            "delete_desc": "Die originalen Dateien werden nach der Installation nicht mehr benötigt",
+            "multi_device_desc": "Bitte wählen Sie ein USB-Gerät oder eine Partition",
             "buttons": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0f0 Hilfe    \ue0e1 Abbrechen"
         },
         "target": {

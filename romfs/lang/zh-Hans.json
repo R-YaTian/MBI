@@ -8,10 +8,10 @@
             "set": "设置",
             "exit": "退出"
         },
-		"hdd": {
-			"title": "USB 移动硬盘",
-			"notfound": "没有找到 USB 移动硬盘。"
-		},
+        "hdd": {
+            "title": "USB 移动硬盘",
+            "notfound": "没有找到 USB 移动硬盘。"
+        },
         "net": {
             "title": "网络连接错误",
             "desc": "请确保已经关闭飞行模式，并且当前网络连接状态正常。"

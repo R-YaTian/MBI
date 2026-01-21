@@ -4,11 +4,11 @@
             "sd": "SD 메모리 카드를 사용하여 설치",
             "net": "네트워크를 사용하여 설치",
             "usb": "USB를 사용하여 설치",
-			"hdd": "USB HDD 하드 드라이브를 사용하여 설치",
+            "hdd": "USB HDD 하드 드라이브를 사용하여 설치",
             "set": "설정",
             "exit": "종료"
         },
-		"hdd": {
+        "hdd": {
             "title": "USB HDD",
             "notfound": "USB HDD 하드 드라이브가 감지되지 않음"
         },
@@ -79,7 +79,7 @@
             "buttons": "\ue0e2 (길게) 설명    \ue0e1 (길게) 취소",
             "buttons2": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0e1 취소"
         },
-		"hdd": {
+        "hdd": {
             "help": {
                 "title": "도움말",
                 "desc": "먼저 NSP, NSZ, XCI 또는 XCZ 파일을 USB HDD 모바일 하드 드라이브에 복사하고,\n설치할 파일을 선택한 후 + 버튼을 누릅니다."
@@ -88,9 +88,9 @@
             "source_string": " USB HDD 하드 드라이브를 통해",
             "delete_info": " 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
             "delete_info_multi": " 선택한 파일이 모두 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
-            "delete_desc": " 설치가 완료되면 원본 파일은 더 이상 사용되지 않습니다. ",
+            "multi_device_desc": "USB 장치 또는 파티션을 선택하세요",
             "buttons": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0f0 도움말    \ue0e1 취소"
-	    },
+        },
         "target": {
             "desc0": " ",
             "desc1": "어디에 설치할까요?",

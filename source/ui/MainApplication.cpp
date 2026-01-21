@@ -162,7 +162,7 @@ namespace app::ui
             mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.sd.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
-            localinstPage->drawMenuItems(true, "sdmc:/");
+            localinstPage->drawMenuItems(true, "sdmc:");
             localinstPage->setMenuIndex(0);
             localinstPage->setStorageSourceToSdmc();
             mainApp->LoadLayout(localinstPage);
@@ -176,7 +176,7 @@ namespace app::ui
                 {
                     mountPointList.push_back(nx::udisk::getMountPointName(i));
                 }
-                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "", mountPointList, false);
+                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, false);
                 if (ret == -1)
                 {
                     return;
