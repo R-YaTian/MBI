@@ -95,7 +95,7 @@ namespace nx::nca
 
     static_assert(sizeof(NcaHeader) == 0xc00, "NcaHeader must be 0xc00");
 
-    inline std::string GetNcaIdString(const NcmContentId& ncaId)
+    NX_INLINE std::string GetNcaIdString(const NcmContentId& ncaId)
     {
         char ncaIdStr[FS_MAX_PATH] = {0};
         u64 ncaIdLower = __bswap64(*(u64 *)ncaId.c);
@@ -104,7 +104,7 @@ namespace nx::nca
         return std::string(ncaIdStr);
     }
 
-    inline NcmContentId GetNcaIdFromString(std::string ncaIdStr)
+    NX_INLINE NcmContentId GetNcaIdFromString(std::string ncaIdStr)
     {
         NcmContentId ncaId = {0};
         char lowerU64[17] = {0};

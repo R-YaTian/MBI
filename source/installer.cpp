@@ -26,7 +26,7 @@
 
 namespace app::installer
 {
-    void OnFailed(const std::string& msg, const std::exception& e)
+    NX_INLINE void OnFailed(const std::string& msg, const std::exception& e)
     {
         LOG_DEBUG("Failed to install");
         LOG_DEBUG("%s", e.what());
@@ -45,7 +45,7 @@ namespace app::installer
         }
     }
 
-    void OnSuccess(const size_t count, const std::string& msg)
+    NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
     {
         app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
         app::facade::SendInstallProgress(100);
