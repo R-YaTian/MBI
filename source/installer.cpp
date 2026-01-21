@@ -26,6 +26,49 @@
 
 namespace app::installer
 {
+    void OnFailed(const std::string& msg, const std::exception& e)
+    {
+        LOG_DEBUG("Failed to install");
+        LOG_DEBUG("%s", e.what());
+        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg);
+        app::facade::SendInstallProgress(0);
+        if (app::config::enableLightning)
+        {
+            app::manager::lightningStart();
+        }
+        std::thread audioThread(app::manager::playAudio, "/fail.wav");
+        app::facade::ShowDialog("inst.info_page.failed"_lang + msg + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
+        audioThread.join();
+        if (app::config::enableLightning)
+        {
+            app::manager::lightningStop();
+        }
+    }
+
+    void OnSuccess(const size_t count, const std::string& msg)
+    {
+        app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
+        app::facade::SendInstallProgress(100);
+        if (app::config::enableLightning)
+        {
+            app::manager::lightningStart();
+        }
+        std::thread audioThread(app::manager::playAudio, "/success.wav");
+        if (count > 1)
+        {
+            app::facade::ShowDialog(std::to_string(count) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+        }
+        else
+        {
+            app::facade::ShowDialog(msg + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
+        }
+        audioThread.join();
+        if (app::config::enableLightning)
+        {
+            app::manager::lightningStop();
+        }
+    }
+
     namespace Local
     {
         void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, int whereToInstall, StorageSource storageSrc)
@@ -88,21 +131,7 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                LOG_DEBUG("Failed to install");
-                LOG_DEBUG("%s", e.what());
-                app::facade::SendInstallInfoText("inst.info_page.failed"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true));
-                app::facade::SendInstallProgress(0);
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/fail.wav");
-                app::facade::ShowDialog("inst.info_page.failed"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
-                }
+                OnFailed(app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true), e);
                 fileInstalled = false;
             }
 
@@ -113,7 +142,7 @@ namespace app::installer
                 nx::misc::SetClockSpeed(2, previousClockValues[2]);
             }
 
-            if(fileInstalled)
+            if (fileInstalled)
             {
                 app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
                 app::facade::SendInstallProgress(100);
@@ -316,21 +345,7 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                LOG_DEBUG("Failed to install");
-                LOG_DEBUG("%s", e.what());
-                app::facade::SendInstallInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
-                app::facade::SendInstallProgress(0);
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/fail.wav");
-                app::facade::ShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
-                }
+                OnFailed(fileNames[fileItr], e);
                 fileInstalled = false;
             }
 
@@ -344,26 +359,7 @@ namespace app::installer
             if (fileInstalled)
             {
                 nx::usb::USBCommandManager::SendFinishedCommand();
-                app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
-                app::facade::SendInstallProgress(100);
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/success.wav");
-                if (ourTitleList.size() > 1)
-                {
-                    app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                }
-                else
-                {
-                    app::facade::ShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                }
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
-                }
+                OnSuccess(ourTitleList.size(), fileNames[0]);
             }
 
             LOG_DEBUG("Done");
@@ -720,25 +716,12 @@ back_to_loop:
             }
             catch (std::exception& e)
             {
-                LOG_DEBUG("Failed to install");
-                LOG_DEBUG("%s", e.what());
-                app::facade::SendInstallInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
-                app::facade::SendInstallProgress(0);
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/fail.wav");
-                app::facade::ShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
-                }
+                OnFailed(urlNames[urlItr], e);
                 fileInstalled = false;
             }
 
-            if (previousClockValues.size() > 0) {
+            if (previousClockValues.size() > 0)
+            {
                 nx::misc::SetClockSpeed(0, previousClockValues[0]);
                 nx::misc::SetClockSpeed(1, previousClockValues[1]);
                 nx::misc::SetClockSpeed(2, previousClockValues[2]);
@@ -749,26 +732,7 @@ back_to_loop:
 
             if (fileInstalled)
             {
-                app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
-                app::facade::SendInstallProgress(100);
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/success.wav");
-                if (ourUrlList.size() > 1)
-                {
-                    app::facade::ShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                }
-                else
-                {
-                    app::facade::ShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                }
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
-                }
+                OnSuccess(ourUrlList.size(), urlNames[0]);
             }
 
             LOG_DEBUG("Done");
