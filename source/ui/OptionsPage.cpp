@@ -14,6 +14,7 @@ namespace app::ui
         this->setMenuText();
         this->Add(this->menu);
         languageStrings.push_back("options.language.system_language"_lang);
+        languageStrings.push_back("common.cancel"_lang);
     }
 
     pu::sdl2::TextureHandle::Ref OptionsPage::getMenuOptionIcon(bool ourBool)
@@ -168,8 +169,8 @@ namespace app::ui
                     this->menu->SetSelectedIndex(6);
                     break;
                 case 7:
-                    rc = app::facade::ShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageStrings, false);
-                    if (rc == -1)
+                    rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, true);
+                    if (rc < 0)
                     {
                         break;
                     }

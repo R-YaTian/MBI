@@ -86,7 +86,7 @@ namespace app::ui
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#170909C0"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#17090980"));
-        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 678 * pu::ui::render::ScreenFactor, "");
+        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 676 * pu::ui::render::ScreenFactor, "");
         this->botText->SetFont("DefaultFont@30");
         this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#17090980"));

@@ -57,4 +57,38 @@ namespace app::facade
     {
         app::ui::SceneJump(app::ui::Scene::Installer);
     }
+
+    s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel)
+    {
+        auto dialog = pu::ui::Dialog::New(title, content);
+        dialog->SetSpaceBetweenOptions(31);
+        dialog->SetOptionHorizontalMargin(40);
+
+        for (u32 i = 0; i < opts.size(); i++)
+        {
+            const auto &opt = opts.at(i);
+            if (last_opt_is_cancel && (i == (opts.size() - 1)))
+            {
+                dialog->SetCancelOption(opt);
+            }
+            else
+            {
+                dialog->AddOption(opt);
+            }
+        }
+
+        const auto opt = app::ui::mainApp->ShowDialog(dialog);
+        if (dialog->UserCancelled())
+        {
+            return -1;
+        }
+        else if (!dialog->IsOk())
+        {
+            return -2;
+        }
+        else
+        {
+            return opt;
+        }
+    }
 }
