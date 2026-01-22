@@ -144,16 +144,10 @@ namespace app::installer
 
             if (fileInstalled)
             {
-                app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
-                app::facade::SendInstallProgress(100);
-                if (app::config::enableLightning)
+                OnSuccess(ourTitleList.size(), app::util::shortenString(ourTitleList[0].filename().string(), 42, true));
+                if (app::config::deletePrompt)
                 {
-                    app::manager::lightningStart();
-                }
-                std::thread audioThread(app::manager::playAudio, "/success.wav");
-                if (ourTitleList.size() > 1)
-                {
-                    if (app::config::deletePrompt)
+                    if (ourTitleList.size() > 1)
                     {
                         if(app::facade::ShowDialog(std::to_string(ourTitleList.size()) +
                                                    (storageSrc == StorageSource::SD ? "inst.sd.delete_info_multi"_lang : "inst.hdd.delete_info_multi"_lang),
@@ -170,14 +164,6 @@ namespace app::installer
                     }
                     else
                     {
-                        app::facade::ShowDialog(std::to_string(ourTitleList.size()) +
-                                                "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                    }
-                }
-                else
-                {
-                    if (app::config::deletePrompt)
-                    {
                         if (app::facade::ShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 32, true) +
                                                     (storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
                                                     "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false) == 1)
@@ -188,16 +174,6 @@ namespace app::installer
                             }
                         }
                     }
-                    else
-                    {
-                        app::facade::ShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 42, true) +
-                                                "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-                    }
-                }
-                audioThread.join();
-                if (app::config::enableLightning)
-                {
-                    app::manager::lightningStop();
                 }
             }
 
