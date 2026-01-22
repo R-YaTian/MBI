@@ -61,7 +61,7 @@ namespace app::facade
     s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel)
     {
         auto dialog = pu::ui::Dialog::New(title, content);
-        dialog->SetSpaceBetweenOptions(31);
+        dialog->SetSpaceBetweenOptions(35);
         dialog->SetOptionHorizontalMargin(40);
 
         for (u32 i = 0; i < opts.size(); i++)
