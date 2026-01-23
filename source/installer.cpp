@@ -6,8 +6,7 @@
 #include "install/install_xci.hpp"
 #include "install/InstallTask.hpp"
 #include "install/LocalWorker.hpp"
-#include "install/usb_nsp.hpp"
-#include "install/usb_xci.hpp"
+#include "install/UsbWorker.hpp"
 #include "nx/nnsp.hpp"
 #include "nx/nxci.hpp"
 #include "nx/error.hpp"
@@ -111,8 +110,6 @@ namespace app::installer
                                                                (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
                     }
 
-                    std::unique_ptr<app::InstallTask> installTask;
-                    std::unique_ptr<app::install::Worker> worker;
                     std::unique_ptr<nx::Content> content;
                     if (ourTitleList[titleItr].extension() == ".xci" || ourTitleList[titleItr].extension() == ".xcz")
                     {
@@ -122,9 +119,8 @@ namespace app::installer
                     {
                         content = std::make_unique<nx::NSP>();
                     }
-
-                    worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
-                    installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
@@ -304,17 +300,17 @@ namespace app::installer
                                                                "inst.usb.source_string"_lang);
                     }
 
-                    std::unique_ptr<app::Install> installTask;
+                    std::unique_ptr<nx::Content> content;
                     if (ourTitleList[fileItr].compare(ourTitleList[fileItr].size() - 3, 2, "xc") == 0)
                     {
-                        auto usbXCI = std::make_shared<app::install::xci::USBXCI>(ourTitleList[fileItr]);
-                        installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, app::config::ignoreReqVers, usbXCI);
+                        content = std::make_unique<nx::XCI>();
                     }
                     else
                     {
-                        auto usbNSP = std::make_shared<app::install::nsp::USBNSP>(ourTitleList[fileItr]);
-                        installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, app::config::ignoreReqVers, usbNSP);
+                        content = std::make_unique<nx::NSP>();
                     }
+                    std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
