@@ -4,10 +4,12 @@
 #include <malloc.h>
 #include "install/install_nsp.hpp"
 #include "install/install_xci.hpp"
-#include "install/sdmc_xci.hpp"
-#include "install/sdmc_nsp.hpp"
+#include "install/InstallTask.hpp"
+#include "install/LocalWorker.hpp"
 #include "install/usb_nsp.hpp"
 #include "install/usb_xci.hpp"
+#include "nx/nnsp.hpp"
+#include "nx/nxci.hpp"
 #include "nx/error.hpp"
 #include "nx/misc.hpp"
 #include "nx/usb.hpp"
@@ -109,17 +111,20 @@ namespace app::installer
                                                                (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
                     }
 
-                    std::unique_ptr<app::Install> installTask;
+                    std::unique_ptr<app::InstallTask> installTask;
+                    std::unique_ptr<app::install::Worker> worker;
+                    std::unique_ptr<nx::Content> content;
                     if (ourTitleList[titleItr].extension() == ".xci" || ourTitleList[titleItr].extension() == ".xcz")
                     {
-                        auto sdmcXCI = std::make_shared<app::install::xci::SDMCXCI>(ourTitleList[titleItr]);
-                        installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, app::config::ignoreReqVers, sdmcXCI);
+                        content = std::make_unique<nx::XCI>();
                     }
                     else
                     {
-                        auto sdmcNSP = std::make_shared<app::install::nsp::SDMCNSP>(ourTitleList[titleItr]);
-                        installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, app::config::ignoreReqVers, sdmcNSP);
+                        content = std::make_unique<nx::NSP>();
                     }
+
+                    worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
+                    installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
