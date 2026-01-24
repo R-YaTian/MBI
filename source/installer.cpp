@@ -107,8 +107,10 @@ namespace app::installer
                                                                (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
                     }
 
+                    std::string ext = ourTitleList[titleItr].extension().string();
+                    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
                     std::unique_ptr<nx::Content> content;
-                    if (ourTitleList[titleItr].extension() == ".xci" || ourTitleList[titleItr].extension() == ".xcz")
+                    if (ext == ".xci" || ext == ".xcz")
                     {
                         content = std::make_unique<nx::XCI>();
                     }
@@ -297,8 +299,10 @@ namespace app::installer
                                                                "inst.usb.source_string"_lang);
                     }
 
+                    std::string extPart = ourTitleList[fileItr].substr(ourTitleList[fileItr].size() - 3, 2);
+                    std::transform(extPart.begin(), extPart.end(), extPart.begin(), ::tolower);
                     std::unique_ptr<nx::Content> content;
-                    if (ourTitleList[fileItr].compare(ourTitleList[fileItr].size() - 3, 2, "xc") == 0)
+                    if (extPart == "xc")
                     {
                         content = std::make_unique<nx::XCI>();
                     }
