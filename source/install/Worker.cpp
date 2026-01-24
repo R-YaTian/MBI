@@ -1,8 +1,8 @@
 #include "install/Worker.hpp"
 #include "nx/error.hpp"
 #include "nx/xfs0.hpp"
-#include "nx/nnsp.hpp"
-#include "nx/nxci.hpp"
+#include "nx/nsp.hpp"
+#include "nx/xci.hpp"
 
 namespace app::install
 {

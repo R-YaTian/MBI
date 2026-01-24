@@ -16,9 +16,9 @@ namespace app::install
 
     UsbWorker::~UsbWorker() = default;
 
-    void UsbWorker::USBThreadFunc(void* in)
+    void UsbWorker::USBReadThread(void* in)
     {
-        USBFuncArgs* args = static_cast<USBFuncArgs*>(in);
+        USBArgs* args = static_cast<USBArgs*>(in);
         nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(args->fileName, args->xfs0Offset, args->ncaSize);
 
         u8* buf = (u8*)memalign(0x1000, 0x800000);
@@ -56,9 +56,9 @@ namespace app::install
         free(buf);
     }
 
-    void UsbWorker::USBPlaceholderWrite(void* in)
+    void UsbWorker::PlaceholderWrite(void* in)
     {
-        USBFuncArgs* args = static_cast<USBFuncArgs*>(in);
+        USBArgs* args = static_cast<USBArgs*>(in);
 
         while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
         {
@@ -69,24 +69,24 @@ namespace app::install
         }
     }
 
-    void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId placeholderId)
+    void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId)
     {
-        const void* fileEntry = m_content->GetFileEntryByNcaId(placeholderId);
+        const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
 
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = m_content->GetFileEntrySize(fileEntry);
 
-        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, placeholderId, ncaSize);
-        USBFuncArgs args;
+        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
+        USBArgs args;
         args.fileName = m_fileName;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;
         args.xfs0Offset = m_content->GetFileEntryOffset(fileEntry);
         args.ncaSize = ncaSize;
         stopThreads = false;
 
-        std::thread usbThread = std::thread(&UsbWorker::USBThreadFunc, this, &args);
-        std::thread writeThread = std::thread(&UsbWorker::USBPlaceholderWrite, this, &args);
+        std::thread usbThread = std::thread(&UsbWorker::USBReadThread, this, &args);
+        std::thread writeThread = std::thread(&UsbWorker::PlaceholderWrite, this, &args);
 
         u64 freq = armGetSystemTickFreq();
         u64 startTime = armGetSystemTick();

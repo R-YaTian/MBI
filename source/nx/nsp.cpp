@@ -20,61 +20,68 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "nx/nxci.hpp"
+#include "nx/nsp.hpp"
 #include "nx/error.hpp"
 
 namespace nx
 {
-    XCI::XCI() {}
+    NSP::NSP() {}
 
-    void XCI::CommitHeader(std::vector<u8>&& headerBytes, u64 headerOffset)
+    void NSP::CommitHeader(std::vector<u8>&& headerBytes)
     {
-        m_secureHeaderBytes  = std::move(headerBytes);
-        m_secureHeaderOffset = headerOffset;
+        m_headerBytes = std::move(headerBytes);
     }
 
-    const XFS0BaseHeader* XCI::GetBaseHeader()
+    const XFS0BaseHeader* NSP::GetBaseHeader()
     {
-        if (m_secureHeaderBytes.empty())
+        if (m_headerBytes.empty())
         {
             THROW_FORMAT("Cannot retrieve header as header bytes are empty. Have you commited it yet?\n");
         }
 
-        return reinterpret_cast<XFS0BaseHeader*>(m_secureHeaderBytes.data());
+        return reinterpret_cast<XFS0BaseHeader*>(m_headerBytes.data());
     }
 
-    const u64 XCI::GetDataOffset()
+    const u64 NSP::GetDataOffset()
     {
-        if (m_secureHeaderBytes.empty())
+        if (m_headerBytes.empty())
         {
             THROW_FORMAT("Cannot get data offset as header is empty. Have you commited it yet?\n");
         }
 
-        return m_secureHeaderOffset + m_secureHeaderBytes.size();
+        return m_headerBytes.size();
     }
 
-    const u64 XCI::GetFileEntrySize(const void *fileEntry)
+    const u64 NSP::GetFileEntrySize(const void *fileEntry)
     {
-        return ((HFS0FileEntry *)fileEntry)->fileSize;
+        return ((PFS0FileEntry *)fileEntry)->fileSize;
     }
 
-    const u64 XCI::GetFileEntryOffset(const void *fileEntry)
+    const u64 NSP::GetFileEntryOffset(const void *fileEntry)
     {
-        return GetDataOffset() + ((HFS0FileEntry *)fileEntry)->dataOffset;
+        return GetDataOffset() + ((PFS0FileEntry *)fileEntry)->dataOffset;
     }
 
-    const void* XCI::GetFileEntry(unsigned int index)
+    const void* NSP::GetFileEntry(unsigned int index)
     {
         if (index >= this->GetBaseHeader()->numFiles)
         {
             THROW_FORMAT("File entry index is out of bounds\n");
         }
 
-        return hfs0GetFileEntry(this->GetBaseHeader(), index);
+        size_t fileEntryOffset = sizeof(XFS0BaseHeader) + index * sizeof(PFS0FileEntry);
+
+        if (m_headerBytes.size() < fileEntryOffset + sizeof(PFS0FileEntry))
+        {
+            THROW_FORMAT("Header bytes is too small to get file entry!");
+        }
+
+        return reinterpret_cast<PFS0FileEntry*>(m_headerBytes.data() + fileEntryOffset);
     }
 
-    const char* XCI::GetFileEntryName(const void* fileEntry)
+    const char* NSP::GetFileEntryName(const void* fileEntry)
     {
-        return hfs0GetFileName(this->GetBaseHeader(), (HFS0FileEntry *)fileEntry);
+        u64 stringTableStart = sizeof(XFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
+        return reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + ((PFS0FileEntry *)fileEntry)->stringTableOffset);
     }
 }

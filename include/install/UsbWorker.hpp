@@ -18,7 +18,7 @@ namespace app::install
         private:
             std::string m_fileName;
 
-            struct USBFuncArgs
+            struct USBArgs
             {
                 std::string fileName;
                 nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
@@ -29,7 +29,7 @@ namespace app::install
             std::atomic<bool> stopThreads{false};
             std::string errorMessage;
 
-            void USBThreadFunc(void* in);
-            void USBPlaceholderWrite(void* in);
+            void USBReadThread(void* in);
+            void PlaceholderWrite(void* in);
     };
 }
