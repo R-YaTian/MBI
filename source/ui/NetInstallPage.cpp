@@ -152,7 +152,7 @@ namespace app::ui
             this->startNetwork();
             return;
         }
-        app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult, sourceString);
+        app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);
     }
 
     void NetInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)

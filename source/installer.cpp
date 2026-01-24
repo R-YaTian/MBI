@@ -69,16 +69,10 @@ namespace app::installer
 
     namespace Local
     {
-        void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, int whereToInstall, StorageSource storageSrc)
+        void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
         {
             app::manager::initInstallServices();
             app::facade::ShowInstaller();
-            bool fileInstalled = true;
-            NcmStorageId m_destStorageId = NcmStorageId_SdCard;
-            if (whereToInstall)
-            {
-                m_destStorageId = NcmStorageId_BuiltInUser;
-            }
 
             std::vector<uint32_t> previousClockValues;
             if (app::config::overClock)
@@ -88,6 +82,7 @@ namespace app::installer
                 previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
             }
 
+            bool fileInstalled = true;
             unsigned int titleItr;
             try
             {
@@ -119,7 +114,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
@@ -255,17 +250,10 @@ namespace app::installer
             return titleNames;
         }
 
-        void InstallTitles(std::vector<std::string> ourTitleList, int ourStorage)
+        void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
         {
             app::manager::initInstallServices();
             app::facade::ShowInstaller();
-            bool fileInstalled = true;
-
-            NcmStorageId m_destStorageId = NcmStorageId_SdCard;
-            if (ourStorage)
-            {
-                m_destStorageId = NcmStorageId_BuiltInUser;
-            }
 
             std::vector<std::string> fileNames;
             for (long unsigned int i = 0; i < ourTitleList.size(); i++)
@@ -281,6 +269,7 @@ namespace app::installer
                 previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
             }
 
+            bool fileInstalled = true;
             unsigned int fileItr;
             try
             {
@@ -311,7 +300,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
@@ -628,17 +617,10 @@ back_to_loop:
             }
         }
 
-        void InstallFromUrl(std::vector<std::string> ourUrlList, int ourStorage, std::string ourSource)
+        void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource)
         {
             app::manager::initInstallServices();
             app::facade::ShowInstaller();
-            bool fileInstalled = true;
-
-            NcmStorageId m_destStorageId = NcmStorageId_SdCard;
-            if (ourStorage)
-            {
-                m_destStorageId = NcmStorageId_BuiltInUser;
-            }
 
             std::vector<std::string> urlNames;
             for (long unsigned int i = 0; i < ourUrlList.size(); i++)
@@ -654,6 +636,7 @@ back_to_loop:
                 previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
             }
 
+            bool fileInstalled = true;
             unsigned int urlItr;
             try
             {
@@ -682,7 +665,7 @@ back_to_loop:
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::HttpWorker>(std::move(content), ourUrlList[urlItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);

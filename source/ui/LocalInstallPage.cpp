@@ -202,7 +202,7 @@ namespace app::ui
         {
             return;
         }
-        app::installer::Local::InstallFromFile(this->selectedTitles, dialogResult, pageData->storageSrc);
+        app::installer::Local::InstallFromFile(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
         pageData->subPathCounter = 0;
         pageData->lastIndex.clear();
     }

@@ -106,7 +106,7 @@ namespace app::ui
         {
             return;
         }
-        app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult);
+        app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
     void UsbInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
