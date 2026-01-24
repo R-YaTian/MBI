@@ -2,13 +2,11 @@
 #include <thread>
 #include <memory>
 #include <malloc.h>
-#include "install/install_nsp.hpp"
-#include "install/install_xci.hpp"
 #include "install/InstallTask.hpp"
 #include "install/LocalWorker.hpp"
 #include "install/UsbWorker.hpp"
-#include "nx/nnsp.hpp"
-#include "nx/nxci.hpp"
+#include "nx/nsp.hpp"
+#include "nx/xci.hpp"
 #include "nx/error.hpp"
 #include "nx/misc.hpp"
 #include "nx/usb.hpp"
@@ -22,8 +20,7 @@
 #include <fcntl.h>
 #include <curl/curl.h>
 #include "nx/network.hpp"
-#include "install/http_nsp.hpp"
-#include "install/http_xci.hpp"
+#include "install/HttpWorker.hpp"
 
 namespace app::installer
 {
@@ -671,17 +668,17 @@ back_to_loop:
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                     }
 
-                    std::unique_ptr<app::Install> installTask;
+                    std::unique_ptr<nx::Content> content;
                     if (nx::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD")
                     {
-                        auto httpXCI = std::make_shared<app::install::xci::HTTPXCI>(ourUrlList[urlItr]);
-                        installTask = std::make_unique<app::install::xci::XCIInstallTask>(m_destStorageId, app::config::ignoreReqVers, httpXCI);
+                        content = std::make_unique<nx::XCI>();
                     }
                     else
                     {
-                        auto httpNSP = std::make_shared<app::install::nsp::HTTPNSP>(ourUrlList[urlItr]);
-                        installTask = std::make_unique<app::install::nsp::NSPInstall>(m_destStorageId, app::config::ignoreReqVers, httpNSP);
+                        content = std::make_unique<nx::NSP>();
                     }
+                    std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::HttpWorker>(std::move(content), ourUrlList[urlItr]);
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(m_destStorageId, app::config::ignoreReqVers, std::move(worker));
 
                     LOG_DEBUG("%s\n", "Preparing installation");
                     app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
