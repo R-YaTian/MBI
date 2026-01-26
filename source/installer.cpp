@@ -67,20 +67,41 @@ namespace app::installer
         }
     }
 
+    NX_INLINE std::vector<uint32_t> OnStart()
+    {
+        app::manager::initInstallServices();
+        app::facade::ShowInstaller();
+
+        std::vector<uint32_t> previousClockValues;
+        if (app::config::overClock)
+        {
+            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
+            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
+            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
+        }
+
+        return previousClockValues;
+    }
+
+    NX_INLINE void OnExit(const std::vector<uint32_t>& previousClockValues)
+    {
+        if (previousClockValues.size() > 0)
+        {
+            nx::misc::SetClockSpeed(0, previousClockValues[0]);
+            nx::misc::SetClockSpeed(1, previousClockValues[1]);
+            nx::misc::SetClockSpeed(2, previousClockValues[2]);
+        }
+
+        LOG_DEBUG("Done");
+        app::facade::SendInstallFinished();
+        app::manager::deinitInstallServices();
+    }
+
     namespace Local
     {
         void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
         {
-            app::manager::initInstallServices();
-            app::facade::ShowInstaller();
-
-            std::vector<uint32_t> previousClockValues;
-            if (app::config::overClock)
-            {
-                previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
-            }
+            std::vector<uint32_t> previousClockValues = OnStart();
 
             bool fileInstalled = true;
             unsigned int titleItr;
@@ -130,13 +151,6 @@ namespace app::installer
                 fileInstalled = false;
             }
 
-            if (previousClockValues.size() > 0)
-            {
-                nx::misc::SetClockSpeed(0, previousClockValues[0]);
-                nx::misc::SetClockSpeed(1, previousClockValues[1]);
-                nx::misc::SetClockSpeed(2, previousClockValues[2]);
-            }
-
             if (fileInstalled)
             {
                 OnSuccess(ourTitleList.size(), app::util::shortenString(ourTitleList[0].filename().string(), 42, true));
@@ -172,9 +186,7 @@ namespace app::installer
                 }
             }
 
-            LOG_DEBUG("Done");
-            app::facade::SendInstallFinished();
-            app::manager::deinitInstallServices();
+            OnExit(previousClockValues);
         }
     }
 
@@ -252,21 +264,12 @@ namespace app::installer
 
         void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
         {
-            app::manager::initInstallServices();
-            app::facade::ShowInstaller();
+            std::vector<uint32_t> previousClockValues = OnStart();
 
             std::vector<std::string> fileNames;
             for (long unsigned int i = 0; i < ourTitleList.size(); i++)
             {
                 fileNames.push_back(app::util::shortenString(ourTitleList[i], 30, true));
-            }
-
-            std::vector<int> previousClockValues;
-            if (app::config::overClock)
-            {
-                previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
             }
 
             bool fileInstalled = true;
@@ -316,23 +319,14 @@ namespace app::installer
                 fileInstalled = false;
             }
 
-            if (previousClockValues.size() > 0)
-            {
-                nx::misc::SetClockSpeed(0, previousClockValues[0]);
-                nx::misc::SetClockSpeed(1, previousClockValues[1]);
-                nx::misc::SetClockSpeed(2, previousClockValues[2]);
-            }
-
             if (fileInstalled)
             {
                 nx::usb::USBCommandManager::SendFinishedCommand();
                 OnSuccess(ourTitleList.size(), fileNames[0]);
             }
 
-            LOG_DEBUG("Done");
             nx::usb::usbDeviceReset();
-            app::facade::SendInstallFinished();
-            app::manager::deinitInstallServices();
+            OnExit(previousClockValues);
         }
     }
 
@@ -619,21 +613,12 @@ back_to_loop:
 
         void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource)
         {
-            app::manager::initInstallServices();
-            app::facade::ShowInstaller();
+            std::vector<uint32_t> previousClockValues = OnStart();
 
             std::vector<std::string> urlNames;
             for (long unsigned int i = 0; i < ourUrlList.size(); i++)
             {
                 urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 28, true));
-            }
-
-            std::vector<int> previousClockValues;
-            if (app::config::overClock)
-            {
-                previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
-                previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
             }
 
             bool fileInstalled = true;
@@ -681,13 +666,6 @@ back_to_loop:
                 fileInstalled = false;
             }
 
-            if (previousClockValues.size() > 0)
-            {
-                nx::misc::SetClockSpeed(0, previousClockValues[0]);
-                nx::misc::SetClockSpeed(1, previousClockValues[1]);
-                nx::misc::SetClockSpeed(2, previousClockValues[2]);
-            }
-
             PushExitCommand(app::util::getUrlHost(ourUrlList[0]));
             Cleanup();
 
@@ -696,9 +674,7 @@ back_to_loop:
                 OnSuccess(ourUrlList.size(), urlNames[0]);
             }
 
-            LOG_DEBUG("Done");
-            app::facade::SendInstallFinished();
-            app::manager::deinitInstallServices();
+            OnExit(previousClockValues);
         }
     }
 }
