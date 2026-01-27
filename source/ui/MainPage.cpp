@@ -37,18 +37,23 @@ namespace app::ui
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.png"));
+        this->sdInstallMenuItem->AddOnKey(std::bind(&MainPage::SdInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->netInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/cloud-download.png"));
+        this->netInstallMenuItem->AddOnKey(std::bind(&MainPage::NetInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->usbInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbInstallMenuItem->AddOnKey(std::bind(&MainPage::UsbInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->udiskInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->udiskInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->udiskInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/disk.png"));
+        this->udiskInstallMenuItem->AddOnKey(std::bind(&MainPage::UdiskInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.png"));
+        this->settingsMenuItem->AddOnKey(std::bind(&MainPage::SettingsMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
@@ -122,28 +127,9 @@ namespace app::ui
         if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
             previousTouchCount = 0;
-            switch (this->optionMenu->GetSelectedIndex())
+            if (this->optionMenu->GetSelectedIndex() == 5)
             {
-                case 0:
-                    this->SdInstallMenuItem_Click();
-                    break;
-                case 1:
-                    this->NetInstallMenuItem_Click();
-                    break;
-                case 2:
-                    this->UsbInstallMenuItem_Click();
-                    break;
-                case 3:
-                    this->UdiskInstallMenuItem_Click();
-                    break;
-                case 4:
-                    this->SettingsMenuItem_Click();
-                    break;
-                case 5:
-                    this->ExitMenuItem_Click();
-                    break;
-                default:
-                    break;
+                this->ExitMenuItem_Click();
             }
         }
 

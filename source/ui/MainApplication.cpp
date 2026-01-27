@@ -115,7 +115,6 @@ namespace app::ui
         netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         localinstPage->SetOnInput(std::bind(&LocalInstallPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        installerPage->SetOnInput(std::bind(&InstallerPage::onInput, installerPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);

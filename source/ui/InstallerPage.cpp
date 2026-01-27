@@ -34,8 +34,4 @@ namespace app::ui
         this->installBar->SetProgress(0);
         this->installBar->SetVisible(false);
     }
-
-    void InstallerPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
-    {
-    }
 }

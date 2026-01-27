@@ -17,10 +17,12 @@
 #include "manager.hpp"
 #include "facade.hpp"
 
+#ifdef ENABLE_NET
 #include <fcntl.h>
 #include <curl/curl.h>
 #include "nx/network.hpp"
 #include "install/HttpWorker.hpp"
+#endif
 
 namespace app::installer
 {
@@ -330,6 +332,7 @@ namespace app::installer
         }
     }
 
+#ifdef ENABLE_NET
     namespace Network
     {
         constexpr auto MAX_URL_SIZE = 1024;
@@ -677,4 +680,5 @@ back_to_loop:
             OnExit(previousClockValues);
         }
     }
+#endif
 }

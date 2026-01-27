@@ -9,7 +9,6 @@ namespace app::ui
         public:
             InstallerPage();
             PU_SMART_CTOR(InstallerPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void SetInstllInfoText(std::string text);
             void SetProgressBar(double percent);
             void Prepare();
