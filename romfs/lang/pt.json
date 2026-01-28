@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Ajuda",
-                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Tinfoil. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO Mohsaua-Buoh-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
+                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Awoo. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO Mohsaua-Buoh-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
             },
             "url": {
                 "warn": "Aviso!",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "Ajuda",
-                "desc": "Os Ficheiros podem ser instalados através do USB a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Tinfoil. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC, selecione os ficheiros e envie para\na consola!\n\nInfelizmente as instalações USB requerem configurações epecíficas em algumas\nplataformas causando problemas. Se for o caso,\ntente instalar através da LAN/Internet, ou copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
+                "desc": "Os Ficheiros podem ser instalados através do USB a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Awoo. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC, selecione os ficheiros e envie para\na consola!\n\nInfelizmente as instalações USB requerem configurações epecíficas em algumas\nplataformas causando problemas. Se for o caso,\ntente instalar através da LAN/Internet, ou copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
             },
             "top_info": "USB connection successful! Waiting for list of files to be sent...",
             "top_info2": "Selecione os ficheiros que deseja instalar através do USB, depois pressione o botão Mais!",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "Agradecimentos às seguintes pessoas!",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Selecione o idioma do Mohsaua-Buoh-Installer",

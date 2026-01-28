@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Aiuto",
-                "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Tinfoil\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nMohsaua-Buoh-Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!"
+                "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Awoo\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nMohsaua-Buoh-Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!"
             },
             "url": {
                 "warn": "Attenzione!",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "Aiuto",
-                "desc": "I file possono essere installati via USB da altri dispositivi utilizzando programmi come\nNS-USBloader in modalità \"Tinfoil\". Per inviare i file, apri uno di\nquesti software sul tuo PC, seleziona i file, poi mandali\nalla console!\n\nSfortunatamente l'installazione via USB richiede configurazioni specifiche in certe\npiattaforme, che possono non funzionare correttamente alle volte. Se proprio non riesci,\ndai una possibilità all'installazione via LAN/internet, o copia i file nella SD e\nseleziona l'opzione \"Installa dalla SD\" nel menù principale!"
+                "desc": "I file possono essere installati via USB da altri dispositivi utilizzando programmi come\nNS-USBloader in modalità \"Awoo\". Per inviare i file, apri uno di\nquesti software sul tuo PC, seleziona i file, poi mandali\nalla console!\n\nSfortunatamente l'installazione via USB richiede configurazioni specifiche in certe\npiattaforme, che possono non funzionare correttamente alle volte. Se proprio non riesci,\ndai una possibilità all'installazione via LAN/internet, o copia i file nella SD e\nseleziona l'opzione \"Installa dalla SD\" nel menù principale!"
             },
             "top_info": "Connessione USB avvenuta correttamete! Aspetto che la lista dei file venga inviata...",
             "top_info2": "Seleziona quali file vuoi installare via USB, poi premi il tasto Più!",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "Un ringraziamento alle seguenti persone!",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Seleziona la lingua di Mohsaua-Buoh-Installer",

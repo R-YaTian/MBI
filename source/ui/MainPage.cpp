@@ -5,7 +5,10 @@
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/usb.hpp"
+
+#ifdef ENABLE_NET
 #include "nx/network.hpp"
+#endif
 
 namespace app::ui
 {
@@ -38,10 +41,12 @@ namespace app::ui
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.png"));
         this->sdInstallMenuItem->AddOnKey(std::bind(&MainPage::SdInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+#ifdef ENABLE_NET
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->netInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/cloud-download.png"));
         this->netInstallMenuItem->AddOnKey(std::bind(&MainPage::NetInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+#endif
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->usbInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-port.png"));
@@ -57,14 +62,22 @@ namespace app::ui
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
-        this->optionMenu->AddItem(this->sdInstallMenuItem);
-        this->optionMenu->AddItem(this->netInstallMenuItem);
-        this->optionMenu->AddItem(this->usbInstallMenuItem);
-        this->optionMenu->AddItem(this->udiskInstallMenuItem);
-        this->optionMenu->AddItem(this->settingsMenuItem);
-        this->optionMenu->AddItem(this->exitMenuItem);
+        MenuAddItem(this->optionMenu, this->sdInstallMenuItem);
+#ifdef ENABLE_NET
+        MenuAddItem(this->optionMenu, this->netInstallMenuItem);
+#endif
+        MenuAddItem(this->optionMenu, this->usbInstallMenuItem);
+        MenuAddItem(this->optionMenu, this->udiskInstallMenuItem);
+        MenuAddItem(this->optionMenu, this->settingsMenuItem);
+        MenuAddItem(this->optionMenu, this->exitMenuItem);
         this->Add(this->optionMenu);
         this->AddRenderCallback(std::bind(&MainPage::mainMenuThread, this));
+    }
+
+    void MainPage::MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item)
+    {
+        menu->AddItem(Item);
+        menuItemCount++;
     }
 
     void MainPage::SdInstallMenuItem_Click()
@@ -72,6 +85,7 @@ namespace app::ui
         SceneJump(Scene::SdInstll);
     }
 
+#ifdef ENABLE_NET
     void MainPage::NetInstallMenuItem_Click()
     {
         if (nx::network::getIPAddress() == "1.0.0.127")
@@ -81,6 +95,7 @@ namespace app::ui
         }
         SceneJump(Scene::NetworkInstll);
     }
+#endif
 
     void MainPage::UsbInstallMenuItem_Click()
     {
@@ -107,11 +122,6 @@ namespace app::ui
         SceneJump(Scene::UdiskInstll);
     }
 
-    void MainPage::ExitMenuItem_Click()
-    {
-        CloseWithFadeOut();
-    }
-
     void MainPage::SettingsMenuItem_Click()
     {
         SceneJump(Scene::Options);
@@ -127,9 +137,9 @@ namespace app::ui
         if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
             previousTouchCount = 0;
-            if (this->optionMenu->GetSelectedIndex() == 5)
+            if (this->optionMenu->GetSelectedIndex() == menuItemCount - 1)
             {
-                this->ExitMenuItem_Click();
+                CloseWithFadeOut();
             }
         }
 

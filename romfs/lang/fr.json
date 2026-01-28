@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Aide",
-                "desc": "Les fichiers peuvent être installés à distance depuis vos autres périphériques à l'aide d'outils\ntels que NS-USBloader en mode Tinfoil.\n\n Pour envoyer des fichiers à votre Switch, ouvrez l'un de ces logiciels\n sur votre PC ou votre appareil mobile, entrez\nl'adresse IP de votre Switch (indiquée à l'écran), sélectionnez vos fichiers, puis téléchargez-les\nsur votre console ! Si le logiciel que vous utilisez ne vous permet pas de sélectionner des types de fichiers\nspécifiques, essayez de modifier l'extension en quelque chose qu'il accepte.\nMohsaua-Buoh-Installer ne se soucie pas des extensions de fichiers lors des installations via le net !\n\nSi vous ne comprenez pas, copiez simplement vos fichiers sur votre carte SD et essayez\nl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
+                "desc": "Les fichiers peuvent être installés à distance depuis vos autres périphériques à l'aide d'outils\ntels que NS-USBloader en mode Awoo.\n\n Pour envoyer des fichiers à votre Switch, ouvrez l'un de ces logiciels\n sur votre PC ou votre appareil mobile, entrez\nl'adresse IP de votre Switch (indiquée à l'écran), sélectionnez vos fichiers, puis téléchargez-les\nsur votre console ! Si le logiciel que vous utilisez ne vous permet pas de sélectionner des types de fichiers\nspécifiques, essayez de modifier l'extension en quelque chose qu'il accepte.\nMohsaua-Buoh-Installer ne se soucie pas des extensions de fichiers lors des installations via le net !\n\nSi vous ne comprenez pas, copiez simplement vos fichiers sur votre carte SD et essayez\nl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
             },
             "url": {
                 "warn": "Avertissement!",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "Aide",
-                "desc": "Les fichiers peuvent être installés à partir du port USB depuis vos autres périphériques à l'aide d'outils tels que\nNS-USBloader en mode Tinfoil. Pour envoyer des fichiers à votre Switch, ouvrez un\nde ces logiciels sur votre PC, sélectionnez vos fichiers, puis téléchargez-les\nsur votre console !\n\nMalheureusement, les installations USB nécessitent une configuration spécifique sur certaines\nplates-formes, et peuvent parfois être assez buggées. Si vous n'arrivez pas à comprendre,\nessayez les installations LAN/internet, ou copiez vos fichiers sur votre carte SD et\nessayezl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
+                "desc": "Les fichiers peuvent être installés à partir du port USB depuis vos autres périphériques à l'aide d'outils tels que\nNS-USBloader en mode Awoo. Pour envoyer des fichiers à votre Switch, ouvrez un\nde ces logiciels sur votre PC, sélectionnez vos fichiers, puis téléchargez-les\nsur votre console !\n\nMalheureusement, les installations USB nécessitent une configuration spécifique sur certaines\nplates-formes, et peuvent parfois être assez buggées. Si vous n'arrivez pas à comprendre,\nessayez les installations LAN/internet, ou copiez vos fichiers sur votre carte SD et\nessayezl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
             },
             "top_info": "Connexion USB réussie ! En attente de l'envoi de la liste des fichiers...",
             "top_info2": "Sélectionnez les fichiers que vous voulez installer par USB, puis appuyez sur le bouton Plus !",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "Merci aux personnes suivantes !",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Sélectionnez la langue de Mohsaua-Buoh-Installer",

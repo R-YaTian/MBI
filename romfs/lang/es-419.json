@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "Ayuda",
-                "desc": "Se pueden instalar archivos de forma remota desde otros dispositivos utilizando herrmaientas\ncomo NS-USBloader en modo Tinfoil. Para enviar archivos a tu Switch, abre uno\nde estos programas en tu ordenador o teléfono móvil, introduce la\ndirección IP de tu Switch (se muestra en pantalla), selecciona tus archivos, ¡y súbelos a tu consola! Si el programa que estés usando no te deja seleccionar\ntipos de archivo específicos, prueba a cambiar el nombre de la extensión del archivo por otra que sí acepte.\n¡Mohsaua-Buoh-Installer no se fija en las extensiones de los archivos en las instalaciones de red!\n\nSi no puedes hacer que funcione, simplemente copia los archivos a tu tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
+                "desc": "Se pueden instalar archivos de forma remota desde otros dispositivos utilizando herrmaientas\ncomo NS-USBloader en modo Awoo. Para enviar archivos a tu Switch, abre uno\nde estos programas en tu ordenador o teléfono móvil, introduce la\ndirección IP de tu Switch (se muestra en pantalla), selecciona tus archivos, ¡y súbelos a tu consola! Si el programa que estés usando no te deja seleccionar\ntipos de archivo específicos, prueba a cambiar el nombre de la extensión del archivo por otra que sí acepte.\n¡Mohsaua-Buoh-Installer no se fija en las extensiones de los archivos en las instalaciones de red!\n\nSi no puedes hacer que funcione, simplemente copia los archivos a tu tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
             },
             "url": {
                 "warn": "¡Advertencia!",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "Ayuda",
-                "desc": "Se pueden instalar archivos por USB de otros dispositivos utilizando herramientas como\nNS-USBloader en modo Tinfoil. Para enviar archivos a tu Switch, abre uno de\nestos programas en tu ordenador, selecciona tus archivos, ¡y súbelos a\ntu consola!\n\nPor desgracia, las instalaciones por USB necesitan una configuración especial en algunas\nplataformas, y puede ser bastante problemática a veces. Si no consigues hacer que funcione,\nprueba las instalaciones por red local/Internet, o copia tus archivos a la tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
+                "desc": "Se pueden instalar archivos por USB de otros dispositivos utilizando herramientas como\nNS-USBloader en modo Awoo. Para enviar archivos a tu Switch, abre uno de\nestos programas en tu ordenador, selecciona tus archivos, ¡y súbelos a\ntu consola!\n\nPor desgracia, las instalaciones por USB necesitan una configuración especial en algunas\nplataformas, y puede ser bastante problemática a veces. Si no consigues hacer que funcione,\nprueba las instalaciones por red local/Internet, o copia tus archivos a la tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
             },
             "top_info": "¡Conexión USB exitosa! Esperando que se envíe la lista de archivos...",
             "top_info2": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón +!",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "Gracias a las siguientes personas:",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Selecciona el idioma de Mohsaua-Buoh-Installer",

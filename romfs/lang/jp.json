@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "ヘルプ",
-                "desc": "TinfoilモードのNS-USBloaderなどのツールを使用して、他のデバイスからファイルをリモートでインストールできます。\nスイッチにファイルを送信するには、PCまたはモバイルデバイスでこれらのソフトウェアのいずれかを開き、\nスイッチのIPアドレス（画面に表示）を入力し、ファイルを選択して、コンソールにアップロードします！\n使用しているソフトウェアで特定のファイルタイプを選択できない場合は、\n拡張子の名前を受け入れ可能なものに変更してください。\nMohsaua-Buoh-Installerはネット経由のインストール中にファイル拡張子を気にしません！\n\n分からない場合は、ファイルをSDカードにコピーして\nメインメニューの[SDカードからインストール]オプションを試してください。"
+                "desc": "AwooモードのNS-USBloaderなどのツールを使用して、他のデバイスからファイルをリモートでインストールできます。\nスイッチにファイルを送信するには、PCまたはモバイルデバイスでこれらのソフトウェアのいずれかを開き、\nスイッチのIPアドレス（画面に表示）を入力し、ファイルを選択して、コンソールにアップロードします！\n使用しているソフトウェアで特定のファイルタイプを選択できない場合は、\n拡張子の名前を受け入れ可能なものに変更してください。\nMohsaua-Buoh-Installerはネット経由のインストール中にファイル拡張子を気にしません！\n\n分からない場合は、ファイルをSDカードにコピーして\nメインメニューの[SDカードからインストール]オプションを試してください。"
             },
             "url": {
                 "warn": "警告!",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "ヘルプ",
-                "desc": "TinfoilモードのNS-USBloaderなどのツールを使用して、\n他のデバイスからUSB経由でファイルをインストールできます。 スイッチにファイルを送信するには、PCでこれらのソフトウェアのいずれかを開き、\nファイルを選択して、コンソールにアップロードします！\n\n残念ながら、一部のプラットフォームではUSBのインストールに特定のセットアップが必要であり、\nかなりバグが多い場合があります。わからない場合は、\nLAN /インターネットインストールを試してみるか、ファイルをSDカードにコピーして、\nメインメニューの[SDカードからインストール]オプションを試してください!"
+                "desc": "AwooモードのNS-USBloaderなどのツールを使用して、\n他のデバイスからUSB経由でファイルをインストールできます。 スイッチにファイルを送信するには、PCでこれらのソフトウェアのいずれかを開き、\nファイルを選択して、コンソールにアップロードします！\n\n残念ながら、一部のプラットフォームではUSBのインストールに特定のセットアップが必要であり、\nかなりバグが多い場合があります。わからない場合は、\nLAN /インターネットインストールを試してみるか、ファイルをSDカードにコピーして、\nメインメニューの[SDカードからインストール]オプションを試してください!"
             },
             "top_info": "USB接続に成功しました！ファイルのリストが送信されるのを待っています...",
             "top_info2": "USB経由でインストールするファイルを選択し、＋ボタンを押します！",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "以下の方々に感謝します!",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "Mohsaua-Buoh-Installerの言語を選択",

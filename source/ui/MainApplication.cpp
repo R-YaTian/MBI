@@ -5,17 +5,22 @@
 #include "nx/udisk.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/OptionsPage.hpp"
-#include "ui/NetInstallPage.hpp"
 #include "ui/UsbInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
 #include "ui/LocalInstallPage.hpp"
 #include "ui/MainPage.hpp"
 
+#ifdef ENABLE_NET
+#include "ui/NetInstallPage.hpp"
+#endif
+
 namespace app::ui
 {
     MainApplication *mainApp;
     OptionsPage::Ref optionspage;
+#ifdef ENABLE_NET
     NetInstallPage::Ref netinstPage;
+#endif
     UsbInstallPage::Ref usbinstPage;
     InstallerPage::Ref installerPage;
     LocalInstallPage::Ref localinstPage;
@@ -106,22 +111,25 @@ namespace app::ui
         this->UpdateStats();
 
         mainPage = MainPage::New();
-        netinstPage = NetInstallPage::New();
         localinstPage = LocalInstallPage::New();
         usbinstPage = UsbInstallPage::New();
         installerPage = InstallerPage::New();
         optionspage = OptionsPage::New();
         mainPage->SetOnInput(std::bind(&MainPage::onInput, mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         localinstPage->SetOnInput(std::bind(&LocalInstallPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
         _UI_MAINAPP_MENU_SET_BASE(installerPage);
-        _UI_MAINAPP_MENU_SET_BASE(netinstPage);
         _UI_MAINAPP_MENU_SET_BASE(localinstPage);
         _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
+
+#ifdef ENABLE_NET
+        netinstPage = NetInstallPage::New();
+        netinstPage->SetOnInput(std::bind(&NetInstallPage::onInput, netinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        _UI_MAINAPP_MENU_SET_BASE(netinstPage);
+#endif
 
         this->AddRenderCallback(std::bind(&MainApplication::UpdateStats, this));
         SceneJump(Scene::Main);
@@ -145,10 +153,12 @@ namespace app::ui
             mainApp->LoadLayout(optionspage);
             break;
         case Scene::NetworkInstll:
+#ifdef ENABLE_NET
             mainApp->ShowPageInfo();
             mainApp->SetBottomText("inst.net.buttons"_lang);
             mainApp->LoadLayout(netinstPage);
             netinstPage->startNetwork();
+#endif
             break;
         case Scene::UsbInstll:
             mainApp->ShowPageInfo();

@@ -62,9 +62,12 @@ ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE -flto=auto
 
 CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
-CFLAGS	+=	 `curl-config --cflags`
-CFLAGS	+=	 `sdl2-config --cflags`
-CFLAGS	+=	 `$(PREFIX)pkg-config --cflags freetype2`
+CFLAGS	+=	`sdl2-config --cflags`
+CFLAGS	+=	`$(PREFIX)pkg-config --cflags freetype2`
+
+ifneq ($(WITH_NETWORK),)
+	CFLAGS	+=	`curl-config --cflags`
+endif
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS) $(NETFLAG)
 
@@ -73,10 +76,13 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  `curl-config --libs` # Networking
-LIBS	+=	-lSDL2 -lc -lSDL2_ttf -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -logg # Audio
+LIBS	:=	-lSDL2 -lc -lSDL2_ttf -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -logg # Audio
 LIBS	+=	-lpu -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `$(PREFIX)pkg-config --libs freetype2` # Graphics
 LIBS	+=	-lz -lssh2 -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lnx -lstdc++fs -lzstd -lnx-ipcext -ljtjson # Misc
+
+ifneq ($(WITH_NETWORK),)
+	LIBS	+=	`curl-config --libs`
+endif
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -103,6 +109,10 @@ CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+ifeq ($(WITH_NETWORK),)
+	CPPFILES := $(filter-out network.cpp NetInstallPage.cpp HttpWorker.cpp, $(CPPFILES))
+endif
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

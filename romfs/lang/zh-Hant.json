@@ -37,7 +37,7 @@
         "net": {
             "help": {
                 "title": "說明",
-                "desc": "在Tinfoil模式下，檔案可透過NS-USBloader這類工具來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，Mohsaua-Buoh-Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
+                "desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，Mohsaua-Buoh-Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
             },
             "url": {
                 "warn": "注意！",
@@ -70,7 +70,7 @@
         "usb": {
             "help": {
                 "title": "說明",
-                "desc": "在Tinfoil模式下，檔案也可透過NS-USBloader這類工具來進行USB安裝。\n要將檔案上傳到你的Switch，在電腦或手機上選定要傳輸的檔案，點擊等待完成即可。\n\n然而透過USB安裝時，在某些平台上需要特定的設備，可能衍生更多的問題。\n如果不確定如何使用USB安裝，可以改為嘗試透過區網或網路遠端安裝，\n或者將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
+                "desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行USB安裝。\n要將檔案上傳到你的Switch，在電腦或手機上選定要傳輸的檔案，點擊等待完成即可。\n\n然而透過USB安裝時，在某些平台上需要特定的設備，可能衍生更多的問題。\n如果不確定如何使用USB安裝，可以改為嘗試透過區網或網路遠端安裝，\n或者將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
             },
             "top_info": "USB連接成功！正在接收檔案列表...",
             "top_info2": "選定要從USB安裝的檔案後，請按+鈕",
@@ -143,7 +143,7 @@
         },
         "credits": {
             "title": "感謝所有幫助過我們的人",
-            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
+            "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"
         },
         "language": {
             "title": "設定Mohsaua-Buoh-Installer的介面語系",
