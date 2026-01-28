@@ -113,7 +113,6 @@ namespace app::install
                 u64 downloadSizeMB = bufferedPlaceholderWriter.GetSizeBuffered() / 1000000;
                 LOG_DEBUG("> Download Progress: %lu/%lu MB (%i%s) (%.2f MB/s)\r", downloadSizeMB, totalSizeMB, downloadProgress, "%", speed);
 #endif
-
                 app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
                 app::facade::SendInstallProgress((double)downloadProgress);
             }

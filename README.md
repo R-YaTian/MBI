@@ -1,5 +1,5 @@
 # MBI
-`MBI` or `Mohsaua-Buoh-Installer` is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer for Nintendo Switch.  
+`MBI` or `Mohsaua-Buoh-Installer` is a No-Bullshit NSP, NSZ, XCI, and XCZ Installer for personal game dumps.  
 `Mohsaua Buoh`, the YngPing romanization of `莫価話 卜`, comes from Eastern Min patois and means `No bullshit, will do something`.  
 `MBI` therefore stands for `No bullshit just install` in English.
 And in Chinese, it is also known as `别多话, 就安装`
