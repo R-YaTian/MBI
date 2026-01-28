@@ -34,7 +34,11 @@ void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
     memcpy(buffer.data() + offset, ptr, sz);
 }
 
-NcaBodyWriter::NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage) : m_contentStorage(contentStorage), m_ncaId(ncaId), m_offset(offset)
+NcaBodyWriter::NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx) :
+    m_contentStorage(contentStorage),
+    m_ncaId(ncaId),
+    m_offset(offset),
+    m_sha256ctx(sha256ctx)
 {
 }
 
@@ -44,9 +48,10 @@ NcaBodyWriter::~NcaBodyWriter()
 
 u64 NcaBodyWriter::write(const  u8* ptr, u64 sz)
 {
-    if(isOpen())
+    if (isOpen())
     {
         m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, m_offset, (void*)ptr, sz);
+        sha256ContextUpdate(m_sha256ctx, ptr, sz);
         m_offset += sz;
         return sz;
     }
@@ -147,7 +152,8 @@ protected:
 class NczBodyWriter : public NcaBodyWriter
 {
 public:
-    NczBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage) : NcaBodyWriter(ncaId, offset, contentStorage)
+    NczBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr)
+        : NcaBodyWriter(ncaId, offset, contentStorage, sha256ctx)
     {
         buffIn = malloc(buffInSize);
         buffOut = malloc(buffOutSize);
@@ -198,6 +204,7 @@ public:
         if (m_deflateBuffer.size())
         {
             m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, m_offset, m_deflateBuffer.data(), m_deflateBuffer.size());
+            sha256ContextUpdate(m_sha256ctx, m_deflateBuffer.data(), m_deflateBuffer.size());
             m_offset += m_deflateBuffer.size();
             m_deflateBuffer.resize(0);
         }
@@ -367,6 +374,7 @@ public:
 
 NcaWriter::NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage) : m_ncaId(ncaId), m_contentStorage(contentStorage), m_writer(NULL)
 {
+    sha256ContextCreate(&m_sha256ctx);
 }
 
 NcaWriter::~NcaWriter()
@@ -382,7 +390,7 @@ bool NcaWriter::close()
     }
     else if(m_buffer.size())
     {
-        if(isOpen())
+        if (isOpen())
         {
             flushHeader();
         }
@@ -390,7 +398,13 @@ bool NcaWriter::close()
         m_buffer.resize(0);
     }
     m_contentStorage = NULL;
+    m_sha256ctx.finalized = true;
     return true;
+}
+
+void NcaWriter::getSha256Hash(void *dst)
+{
+    sha256ContextGetHash(&m_sha256ctx, dst);
 }
 
 bool NcaWriter::isOpen() const
@@ -420,6 +434,7 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
         if (m_buffer.size() == NCA_HEADER_SIZE)
         {
             flushHeader();
+            sha256ContextUpdate(&m_sha256ctx, m_buffer.data(), m_buffer.size());
         }
     }
 
@@ -431,11 +446,11 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
             {
                 if (*(u64*)ptr == NczHeader::MAGIC)
                 {
-                    m_writer = std::shared_ptr<NcaBodyWriter>(new NczBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage));
+                    m_writer = std::shared_ptr<NcaBodyWriter>(new NczBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage, &m_sha256ctx));
                 }
                 else
                 {
-                    m_writer = std::shared_ptr<NcaBodyWriter>(new NcaBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage));
+                    m_writer = std::shared_ptr<NcaBodyWriter>(new NcaBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage, &m_sha256ctx));
                 }
             }
             else
@@ -444,7 +459,7 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
             }
         }
 
-        if(m_writer)
+        if (m_writer)
         {
             m_writer->write(ptr, sz);
         }

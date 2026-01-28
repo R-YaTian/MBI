@@ -32,7 +32,7 @@ SOFTWARE.
 class NcaBodyWriter
 {
 public:
-	NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
+	NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr);
 	virtual ~NcaBodyWriter();
 	virtual u64 write(const  u8* ptr, u64 sz);
 
@@ -43,6 +43,7 @@ protected:
 	NcmContentId m_ncaId;
 
 	u64 m_offset;
+	Sha256Context* m_sha256ctx;
 };
 
 class NcaWriter
@@ -55,10 +56,12 @@ public:
 	bool close();
 	u64 write(const  u8* ptr, u64 sz);
 	void flushHeader();
+	void getSha256Hash(void *dst);
 
 protected:
 	NcmContentId m_ncaId;
 	std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
 	std::vector<u8> m_buffer;
 	std::shared_ptr<NcaBodyWriter> m_writer;
+	Sha256Context m_sha256ctx;
 };

@@ -62,7 +62,7 @@ namespace app
     {
         nx::data::ByteBuffer cnmtBuf;
 
-        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadCNMT();
+        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadContentMeta();
 
         for (size_t i = 0; i < tupelList.size(); i++)
         {
@@ -75,7 +75,7 @@ namespace app
             if (!contentStorage.Has(cnmtContentRecord.content_id))
             {
                 LOG_DEBUG("Installing CNMT NCA...\n");
-                this->InstallNCA(cnmtContentRecord.content_id);
+                this->InstallNCA(cnmtContentRecord.content_id, true);
             }
             else
             {
@@ -89,6 +89,7 @@ namespace app
             }
 
             nx::data::ByteBuffer installContentMetaBuf;
+            m_contentMeta[i].SetupPackagedContentMeta();
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
             this->InstallContentMetaRecords(installContentMetaBuf, i);
@@ -132,9 +133,9 @@ namespace app
         return static_cast<NcmContentMetaType>(m_contentMeta[i].GetContentMetaKey().type);
     }
 
-    std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> InstallTask::ReadCNMT()
+    std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> InstallTask::ReadContentMeta()
     {
-        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> CNMTList;
+        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> contentMetaList;
 
         for (const void* fileEntry : m_worker->GetContent()->GetFileEntriesByExtension("cnmt.nca"))
         {
@@ -147,7 +148,7 @@ namespace app
             LOG_DEBUG("CNMT Name: %s\n", cnmtNcaName.c_str());
 
             // We install the cnmt nca early to read from it later
-            this->InstallNCA(cnmtContentId);
+            this->InstallNCA(cnmtContentId, true);
             std::string cnmtNCAFullPath = contentStorage.GetPath(cnmtContentId);
 
             NcmContentInfo cnmtContentInfo;
@@ -155,13 +156,13 @@ namespace app
             ncmU64ToContentInfoSize(cnmtNcaSize & 0xFFFFFFFFFFFF, &cnmtContentInfo);
             cnmtContentInfo.content_type = NcmContentType_Meta;
 
-            CNMTList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
+            contentMetaList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
         }
 
-        return CNMTList;
+        return contentMetaList;
     }
 
-    void InstallTask::InstallNCA(const NcmContentId& ncaId)
+    void InstallTask::InstallNCA(const NcmContentId& ncaId, bool isContentMeta)
     {
         const void* fileEntry = m_worker->GetContent()->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_worker->GetContent()->GetFileEntryName(fileEntry);

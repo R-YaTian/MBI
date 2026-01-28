@@ -4,6 +4,21 @@
 #include "nx/error.hpp"
 #include "facade.hpp"
 
+std::string toHexString(const u8* data, size_t len)
+{
+    static const char hex[] = "0123456789abcdef";
+    std::string out;
+    out.resize(len * 2);
+
+    for (size_t i = 0; i < len; ++i)
+    {
+        out[2*i]     = hex[data[i] >> 4];
+        out[2*i + 1] = hex[data[i] & 0x0F];
+    }
+
+    return out;
+}
+
 namespace app::install
 {
     LocalWorker::LocalWorker(std::unique_ptr<nx::Content> content, const std::string &path)
@@ -88,7 +103,11 @@ namespace app::install
             LOG_DEBUG("something went wrong: %s\n", e.what());
         }
 
+        u8 hash[SHA256_HASH_SIZE];
+        writer.getSha256Hash(hash);
         writer.close();
+        std::string hashStr = toHexString(hash, SHA256_HASH_SIZE);
+        app::facade::ShowDialog("inst.nca_verify.title"_lang, hashStr, {"common.ok"_lang}, false);
     }
 
     void LocalWorker::BufferData(void* buf, off_t offset, size_t size)

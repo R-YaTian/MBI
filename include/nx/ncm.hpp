@@ -56,6 +56,8 @@ namespace nx::ncm
     {
         private:
             nx::data::ByteBuffer m_bytes;
+            std::vector<NcmPackagedContentInfo> m_packagedContentInfos;
+            NcmContentId m_contentId;
 
         public:
             ContentMeta();
@@ -65,6 +67,17 @@ namespace nx::ncm
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
 
+            void SetContentId(const NcmContentId &contentId)
+            {
+                m_contentId = contentId;
+            }
+
+            NcmContentId GetContentId() const
+            {
+                return m_contentId;
+            }
+
+            void SetupPackagedContentMeta();
             void GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
 

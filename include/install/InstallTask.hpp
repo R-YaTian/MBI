@@ -29,9 +29,9 @@ namespace app
 
             u64 GetTitleId(int i = 0);
             NcmContentMetaType GetContentMetaType(int i = 0);
-            std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT();
+            std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadContentMeta();
             void ParseTicketCert();
-            void InstallNCA(const NcmContentId &ncaId);
+            void InstallNCA(const NcmContentId &ncaId, bool isContentMeta = false);
             void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             void InstallApplicationRecord(int i);
     };
