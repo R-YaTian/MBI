@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include "nx/nca.hpp"
 #include "nx/ncm.hpp"
 #include "nx/error.hpp"
 #include "nx/fs.hpp"
@@ -122,7 +123,7 @@ namespace nx::ncm
             NcmPackagedContentInfo packagedContentInfo = packagedContentInfos[i];
 
             // Don't install delta fragments. Even patches don't seem to install them.
-            if (static_cast<u8>(packagedContentInfo.info.content_type) <= 5)
+            if (packagedContentInfo.info.content_type <= 5)
             {
                 m_packagedContentInfos.push_back(packagedContentInfo);
             }
@@ -215,6 +216,46 @@ namespace nx::ncm
         cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
 
         return ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
+    }
+
+    void RebuildContentMeta(const NcmStorageId& destStorageId, const NcmContentId &contentId, const std::map<std::string, std::vector<u8>>& hashMap)
+    {
+        nx::ncm::ContentStorage contentStorage(destStorageId);
+        std::string cnmtNCAFullPath = contentStorage.GetPath(contentId);
+
+        nx::fs::IFileSystem cnmtNCAFileSystem;
+        cnmtNCAFileSystem.OpenFileSystemWithId(cnmtNCAFullPath, FsFileSystemType_ContentMeta, 0);
+        nx::fs::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", cnmtNCAFullPath + "/");
+
+        // Find and read the cnmt file
+        auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
+        auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName, FsOpenMode_Read | FsOpenMode_Write);
+        u64 cnmtSize = cnmtFile.GetSize();
+
+        nx::data::ByteBuffer cnmtBuffer;
+        cnmtBuffer.Resize(cnmtSize);
+        cnmtFile.Read(0x0, cnmtBuffer.GetData(), cnmtSize);
+
+        NcmExtPackagedContentMetaHeader contentMetaHeader = cnmtBuffer.Read<NcmExtPackagedContentMetaHeader>(0);
+        NcmPackagedContentInfo* packagedContentInfos = (NcmPackagedContentInfo*)(cnmtBuffer.GetData() + sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size);
+
+        for (u16 i = 0; i < contentMetaHeader.content_count; i++)
+        {
+            NcmPackagedContentInfo packagedContentInfo = packagedContentInfos[i];
+            if (packagedContentInfo.info.content_type > 5)
+            {
+                continue;
+            }
+            std::string ncaIdStr = nx::nca::GetNcaIdString(packagedContentInfo.info.content_id);
+            auto it = hashMap.find(ncaIdStr);
+            if (it != hashMap.end())
+            {
+                memcpy(packagedContentInfo.hash, it->second.data(), SHA256_HASH_SIZE);
+                cnmtFile.Write(sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size + i * sizeof(NcmPackagedContentInfo),
+                               &packagedContentInfo,
+                               sizeof(NcmPackagedContentInfo));
+            }
+        }
     }
 
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType)

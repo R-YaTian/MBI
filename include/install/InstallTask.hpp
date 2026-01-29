@@ -13,7 +13,6 @@ namespace app
         protected:
             const NcmStorageId m_destStorageId;
             bool m_ignoreReqFirmVersion = false;
-            bool m_declinedValidation = false;
             std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
         public:
