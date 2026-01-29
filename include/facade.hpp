@@ -13,6 +13,7 @@ namespace app::facade
     void SendPageInfoTextAndRender(std::string text);
     bool SendRenderRequest();
     void SendInstallInfoText(std::string text);
+    void SendInstallWarningText(std::string text);
     void SendInstallProgress(double percent);
     void SendInstallFinished();
     void ShowInstaller();

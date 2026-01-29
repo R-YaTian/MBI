@@ -82,7 +82,7 @@ namespace app::ui
 
     void MainPage::SdInstallMenuItem_Click()
     {
-        SceneJump(Scene::SdInstll);
+        SceneJump(Scene::SdInstall);
     }
 
 #ifdef ENABLE_NET
@@ -93,7 +93,7 @@ namespace app::ui
             app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;
         }
-        SceneJump(Scene::NetworkInstll);
+        SceneJump(Scene::NetworkInstall);
     }
 #endif
 
@@ -109,7 +109,7 @@ namespace app::ui
         }
         if (nx::usb::usbDeviceIsConnected())
         {
-            SceneJump(Scene::UsbInstll);
+            SceneJump(Scene::UsbInstall);
         }
         else
         {
@@ -119,7 +119,7 @@ namespace app::ui
 
     void MainPage::UdiskInstallMenuItem_Click()
     {
-        SceneJump(Scene::UdiskInstll);
+        SceneJump(Scene::UdiskInstall);
     }
 
     void MainPage::SettingsMenuItem_Click()

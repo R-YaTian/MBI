@@ -152,7 +152,7 @@ namespace app::ui
             mainApp->SetBottomText("options.buttons"_lang);
             mainApp->LoadLayout(optionspage);
             break;
-        case Scene::NetworkInstll:
+        case Scene::NetworkInstall:
 #ifdef ENABLE_NET
             mainApp->ShowPageInfo();
             mainApp->SetBottomText("inst.net.buttons"_lang);
@@ -160,14 +160,14 @@ namespace app::ui
             netinstPage->startNetwork();
 #endif
             break;
-        case Scene::UsbInstll:
+        case Scene::UsbInstall:
             mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
             usbinstPage->startUsb();
             break;
-        case Scene::SdInstll:
+        case Scene::SdInstall:
             mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.sd.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
@@ -176,7 +176,7 @@ namespace app::ui
             localinstPage->setStorageSourceToSdmc();
             mainApp->LoadLayout(localinstPage);
             break;
-        case Scene::UdiskInstll:
+        case Scene::UdiskInstall:
             deviceCount = nx::udisk::getDeviceCount();
             if(deviceCount > 1)
             {
@@ -208,7 +208,7 @@ namespace app::ui
             localinstPage->setStorageSourceToUdisk();
             mainApp->LoadLayout(localinstPage);
             break;
-        case Scene::MtpInstll:
+        case Scene::MtpInstall:
             break;
         case Scene::Installer:
             mainApp->ShowPageInfo();

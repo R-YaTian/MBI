@@ -11,11 +11,11 @@ namespace app::ui
     {
         Main,
         Options,
-        NetworkInstll,
-        UsbInstll,
-        SdInstll,
-        UdiskInstll,
-        MtpInstll,
+        NetworkInstall,
+        UsbInstall,
+        SdInstall,
+        UdiskInstall,
+        MtpInstall,
         Installer,
     };
 
