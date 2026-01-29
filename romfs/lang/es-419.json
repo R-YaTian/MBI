@@ -114,8 +114,7 @@
             "title": "¡Se detectó una firma NCA inválida!",
             "desc": "Las aplicaciones que no han sido firmados correctamente sólo deberían instalarse de fuentes\nde confianza. Los archivos que contienen recompresiones de cartuchos y desbloqueadores de DLCs siempre\nmostrarán esta advertencia. Puedes deshabilitar esta comprobación en los ajustes de Mohsaua-Buoh-Installer.\n\n¡Estás seguro de que quieres continuar con la instalación?",
             "opt1": "Si, entiendo el riesgo",
-            "error": "El archivo NCA solicitado no está firmado correctamente:",
-            "ticket_missing": "No se ha encontrado ningún ticket.\n\nSi el juego no se inicia después de la instalación, intenta descargarlo nuevamente con un ticket válido."
+            "error": "El archivo NCA solicitado no está firmado correctamente:"
         },
         "finished": [
             "¡Disfruta de tus «copias legales»!",

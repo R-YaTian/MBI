@@ -114,8 +114,7 @@
             "title": "Ungültige NCA-Signatur erkannt!",
             "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von gepackten Spiele Modulen und DLC-Freischaltung enthalten,\nwerden immer diese Warnung anzeigen. Du kannst diese Prüfung in den Einstellungen des Mohsaua-Buoh-Installer deaktivieren.\nBist du sicher, dass du die Installation fortsetzen möchten?",
             "opt1": "Ja, ich verstehe die Risiken",
-            "error": "Die gewünschte NCA ist nicht richtig signiert: ",
-            "ticket_missing": "Es wurde kein Ticket gefunden.\n\nWenn das Spiel nach der Installation nicht startet, versuchen Sie es erneut mit einem gültigen Ticket."
+            "error": "Die gewünschte NCA ist nicht richtig signiert: "
         },
         "finished": [
             "Genieße deine \"legalen Sicherheitskopien\"!",

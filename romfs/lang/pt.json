@@ -114,8 +114,7 @@
             "title": "Detetada assinatura NCA inválida!",
             "desc": "O software não assinado corretamente deverá ser instalado apenas de fontes\nconfiáveis. Ficheiros que contiverem repaks de cartuchos ou desbloqueadores de DLC mostrarão\nsempre esta mensagem. Esta verificação pode ser desligada nas definições do Mohsaua-Buoh-Installer.\n\nTem a certeza que deseja continuar a instalação?",
             "opt1": "Sim, eu compreendo os riscos",
-            "error": "O NCA solicitado não está corretamente assinado: ",
-            "ticket_missing": "Ticket não encontrado.\n\nSe o jogo não iniciar após a instalação, tente exportar novamente com um ticket válido."
+            "error": "O NCA solicitado não está corretamente assinado: "
         },
         "finished": [
             "Disfrute da \"cópia legal\"!",

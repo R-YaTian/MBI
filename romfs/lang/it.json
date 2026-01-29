@@ -114,8 +114,7 @@
             "title": "Rilevata firma NCA non valida!",
             "desc": "Software firmati impropriamente dovrebbero essere installati solo da fonti\nsicure. I file che contengono repack di cartucce e DLC mostreranno sempre\nquesto avviso. Puoi disabilitarlo dalle impostazioni di Mohsaua-Buoh-Installer.\n\nSei sicuro di voler continuare l'installazione?",
             "opt1": "Sì, comprendo il rischio",
-            "error": "Il file NCA seguente non è firmato correttamente: ",
-            "ticket_missing": "Nessun ticket è stato trovato.\n\nSe il gioco non si avvia dopo l'installazione, prova a scaricarlo di nuovo con un ticket valido."
+            "error": "Il file NCA seguente non è firmato correttamente: "
         },
         "finished": [
             "Goditi i tuoi \"backup legali\"!",

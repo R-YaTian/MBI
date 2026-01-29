@@ -114,8 +114,7 @@
             "title": "Signature NCA invalide détectée!",
             "desc": "Les logiciels incorrectement signés ne doivent être installés qu'à partir de\nsources dignes de confiance. Les fichiers contenant des repacks de cartouches et des DLC\nafficheront toujours cet avertissement. Vous pouvez désactiver cette vérification dans les paramètres de Mohsaua-Buoh-Installer.\n\nEtes-vous sûr de vouloir continuer l'installation ?",
             "opt1": "Oui, je comprends les risques",
-            "error": "Le NCA demandé n'est pas correctement signé: ",
-            "ticket_missing": "Aucun ticket n'a été trouvé.\n\nSi le jeu ne démarre pas après l'installation, essayez de le vider à nouveau avec un ticket valide."
+            "error": "Le NCA demandé n'est pas correctement signé: "
         },
         "finished": [
             "Profitez bien de vos \"backups légaux\"!",
