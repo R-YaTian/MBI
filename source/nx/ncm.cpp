@@ -186,6 +186,18 @@ namespace nx::ncm
         }
     }
 
+    const u8* ContentMeta::GetHashByContentId(const NcmContentId& ncaId) const
+    {
+        for (const auto& packagedContentInfo : m_packagedContentInfos)
+        {
+            if (memcmp(&packagedContentInfo.info.content_id, &ncaId, sizeof(NcmContentId)) == 0)
+            {
+                return packagedContentInfo.hash;
+            }
+        }
+        return nullptr;
+    }
+
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath)
     {
         // Create the cnmt filesystem

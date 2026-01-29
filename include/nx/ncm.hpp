@@ -22,6 +22,7 @@ SOFTWARE.
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
 #include <switch-ipcext.h>
@@ -66,22 +67,16 @@ namespace nx::ncm
             NcmExtPackagedContentMetaHeader GetPackagedContentMetaHeader();
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
+            const u8* GetHashByContentId(const NcmContentId& ncaId) const;
+            const NcmContentId& GetContentId() const { return m_contentId; }
 
-            void SetContentId(const NcmContentId &contentId)
-            {
-                m_contentId = contentId;
-            }
-
-            NcmContentId GetContentId() const
-            {
-                return m_contentId;
-            }
-
+            void SetContentId(const NcmContentId &contentId) { m_contentId = contentId; }
             void SetupPackagedContentMeta();
             void GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
     };
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
+    void RebuildContentMeta(const NcmStorageId& destStorageId, const NcmContentId &contentId, const std::map<std::string, std::vector<u8>>& hashMap);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
     std::vector<std::pair<u64, u32>> ListInstalledTitles();
 }

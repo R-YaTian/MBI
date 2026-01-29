@@ -6,7 +6,7 @@ namespace app::ui
 {
     InstallerPage::InstallerPage() : Layout::Layout()
     {
-        this->installWarningText = pu::ui::elm::TextBlock::New(15, 156, "");
+        this->installWarningText = pu::ui::elm::TextBlock::New(15, 158, "");
         this->installWarningText->SetFont("DefaultFont@30");
         this->installWarningText->SetColor(COLOR(app::config::InstallerInfoTextColor));
         this->installInfoText = pu::ui::elm::TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");
@@ -22,6 +22,10 @@ namespace app::ui
     void InstallerPage::AppendInstallWarningText(std::string newText)
     {
         std::string previousText = this->installWarningText->GetText();
+        if (this->installWarningText->GetHeight() >= 690)
+        {
+            previousText = "";
+        }
         if (previousText != "")
         {
             previousText += "\n";

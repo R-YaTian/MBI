@@ -46,6 +46,7 @@ namespace nx::fs
             ~IFile();
 
             void Read(u64 offset, void* buf, size_t size);
+            void Write(u64 offset, const void* buf, size_t size);
             s64 GetSize();
     };
 
@@ -86,7 +87,7 @@ namespace nx::fs
             void OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId);
             void CloseFileSystem();
 
-            IFile OpenFile(std::string path);
+            IFile OpenFile(std::string path, u32 openMode = FsOpenMode_Read);
             IDirectory OpenDirectory(std::string path, int flags);
     };
 
@@ -104,7 +105,7 @@ namespace nx::fs
             SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath);
             ~SimpleFileSystem();
 
-            IFile OpenFile(std::string path);
+            IFile OpenFile(std::string path, u32 openMode = FsOpenMode_Read);
             std::string GetFileNameFromExtension(std::string path, std::string extension);
     };
 }

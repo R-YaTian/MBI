@@ -53,6 +53,18 @@ namespace nx::fs
         }
     }
 
+    void IFile::Write(u64 offset, const void* buf, size_t size)
+    {
+        u64 sizeWritten;
+        ASSERT_OK(fsFileWrite(&m_file, offset, buf, size, FsWriteOption_Flush), "Failed to write file");
+
+        if (sizeWritten != size)
+        {
+            std::string msg = "Size written " + std::string("" + sizeWritten) + " doesn't match expected size " + std::string("" + size);
+            THROW_FORMAT(msg.c_str());
+        }
+    }
+
     s64 IFile::GetSize()
     {
         s64 sizeOut;
@@ -113,7 +125,7 @@ namespace nx::fs
         if (rc == 0x236e02)
             errorMsg = "File " + path + " is unreadable! You may have a bad dump, fs_mitm may need to be removed, or your firmware version may be too low to decrypt it.";
         else if (rc == 0x234c02)
-            errorMsg = "Failed to open filesystem. Make sure your signature patches are up to date and set up properly!";
+            errorMsg = "Failed to open filesystem!";
 
         ASSERT_OK(rc, errorMsg.c_str());
     }
@@ -123,7 +135,7 @@ namespace nx::fs
         fsFsClose(&m_fileSystem);
     }
 
-    IFile IFileSystem::OpenFile(std::string path)
+    IFile IFileSystem::OpenFile(std::string path, u32 openMode)
     {
         if (path.length() >= FS_MAX_PATH)
             THROW_FORMAT("Directory path is too long!");
@@ -132,7 +144,7 @@ namespace nx::fs
         path.reserve(FS_MAX_PATH);
 
         FsFile file;
-        ASSERT_OK(fsFsOpenFile(&m_fileSystem, path.c_str(), FsOpenMode_Read, &file), ("Failed to open file " + path).c_str());
+        ASSERT_OK(fsFsOpenFile(&m_fileSystem, path.c_str(), openMode, &file), ("Failed to open file " + path).c_str());
         return IFile(file);
     }
 
@@ -212,9 +224,9 @@ namespace nx::fs
 
     SimpleFileSystem::~SimpleFileSystem() {}
 
-    IFile SimpleFileSystem::OpenFile(std::string path)
+    IFile SimpleFileSystem::OpenFile(std::string path, u32 openMode)
     {
-        return m_fileSystem->OpenFile(m_rootPath + path);
+        return m_fileSystem->OpenFile(m_rootPath + path, openMode);
     }
 
     std::string SimpleFileSystem::GetFileNameFromExtension(std::string path, std::string extension)

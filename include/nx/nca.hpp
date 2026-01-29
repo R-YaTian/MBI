@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+#include <cstring>
 #include <switch.h>
 
 #define NCA_HEADER_SIZE 0x4000
