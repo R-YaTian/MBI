@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
-#include <cstring>
+#include <vector>
 #include <switch.h>
+
+#include "nx/ByteBuffer.hpp"
 
 #define NCA_HEADER_SIZE 0x4000
 #define MAGIC_NCA3 0x3341434E /* "NCA3" */
@@ -27,20 +29,65 @@ namespace nx::nca
 
     static_assert(sizeof(NcaSparseInfo) == 0x30, "NcaSparseInfo must be 0x30");
 
+    struct LayerRegion {
+        u64 offset;
+        u64 size;
+    };
+
+    struct HierarchicalSha256Data {
+        u8 master_hash[0x20];
+        u32 block_size;
+        u32 layer_count;
+        LayerRegion hash_layer;
+        LayerRegion pfs0_layer;
+        LayerRegion unused_layers[3];
+        u8 _0x78[0x80];
+    };
+
+    #pragma pack(push, 1)
+    struct HierarchicalIntegrityVerificationLevelInformation {
+        u64 logical_offset;
+        u64 hash_data_size;
+        u32 block_size; // log2
+        u32 _0x14; // reserved
+    };
+    #pragma pack(pop)
+
+    struct InfoLevelHash {
+        u32 max_layers;
+        HierarchicalIntegrityVerificationLevelInformation levels[6];
+        u8 signature_salt[0x20];
+    };
+
+    struct IntegrityMetaInfo {
+        u32 magic; // IVFC
+        u32 version;
+        u32 master_hash_size;
+        InfoLevelHash info_level_hash;
+        u8 master_hash[0x20];
+        u8 _0xE0[0x18];
+    };
+
+    static_assert(sizeof(HierarchicalSha256Data) == 0xF8);
+    static_assert(sizeof(IntegrityMetaInfo) == 0xF8);
+    static_assert(sizeof(HierarchicalSha256Data) == sizeof(IntegrityMetaInfo));
+
     struct NcaFsHeader
     {
-        u16 version;
-        u8 partition_type;
+        u16 version;           // always 2.
         u8 fs_type;
-        u8 crypt_type;
-        u8 _0x5[0x3];
-        u8 superblock_data[0x138];
-        /*union {
-            pfs0_superblock_t pfs0_superblock;
-            romfs_superblock_t romfs_superblock;
-            //nca0_romfs_superblock_t nca0_romfs_superblock;
-            bktr_superblock_t bktr_superblock;
-        };*/
+        u8 hash_type;
+        u8 encryption_type;
+        u8 metadata_hash_type;
+        u8 _0x6[0x2];          // empty.
+
+        union {
+            HierarchicalSha256Data hierarchical_sha256_data;
+            IntegrityMetaInfo integrity_meta_info; // used for romfs
+        } hash_data;
+
+        u8 patch_Info[0x40];
+
         union {
             u64 section_ctr;
             struct {
@@ -48,11 +95,13 @@ namespace nx::nca
                 u32 section_ctr_high;
             };
         };
+
         NcaSparseInfo sparse_info; /* only used in sections with sparse storage. */
         u8 _0x178[0x88]; /* Padding. */
     } NX_PACKED;
 
     static_assert(sizeof(NcaFsHeader) == 0x200, "NcaFsHeader must be 0x200");
+    static_assert(sizeof(NcaFsHeader::hash_data) == 0xF8);
 
     struct NcaSectionEntry
     {
@@ -62,6 +111,11 @@ namespace nx::nca
     } NX_PACKED;
 
     static_assert(sizeof(NcaSectionEntry) == 0x10, "NcaSectionEntry must be 0x10");
+
+    struct SectionHeaderHash
+    {
+        u8 sha256[0x20];
+    };
 
     struct NcaHeader
     {
@@ -87,36 +141,23 @@ namespace nx::nca
         u8 m_cryptoType2; /* Which keyblob (field 2) */
         u8 m_cryptoType3;
         u8 _0x222[0xE]; /* Padding. */
-        u64 m_rightsId[2]; /* Rights ID (for titlekey crypto). */
-        NcaSectionEntry section_entries[4]; /* Section entry metadata. */
-        u8 section_hashes[4 * 0x20]; /* SHA-256 hashes for each section header. */
+        FsRightsId m_rightsId; /* Rights ID (for titlekey crypto). */
+        NcaSectionEntry fs_table[4]; /* Section entry metadata. */
+        SectionHeaderHash fs_header_hash[4]; /* SHA-256 hashes for each section header. */
         u8 m_keys[4 * 0x10]; /* Encrypted key area. */
         u8 _0x340[0xC0]; /* Padding. */
-        NcaFsHeader fs_headers[4]; /* FS section headers. */
+        NcaFsHeader fs_header[4]; /* FS section headers. */
     } NX_PACKED;
 
     static_assert(sizeof(NcaHeader) == 0xc00, "NcaHeader must be 0xc00");
 
-    NX_INLINE std::string GetNcaIdString(const NcmContentId& ncaId)
+    struct FileEntry
     {
-        char ncaIdStr[FS_MAX_PATH] = {0};
-        u64 ncaIdLower = __bswap64(*(u64 *)ncaId.c);
-        u64 ncaIdUpper = __bswap64(*(u64 *)(ncaId.c + 0x8));
-        std::snprintf(ncaIdStr, FS_MAX_PATH, "%016lx%016lx", ncaIdLower, ncaIdUpper);
-        return std::string(ncaIdStr);
-    }
+        std::string name;
+        std::vector<u8> data;
+    };
 
-    NX_INLINE NcmContentId GetNcaIdFromString(std::string ncaIdStr)
-    {
-        NcmContentId ncaId = {0};
-        char lowerU64[17] = {0};
-        char upperU64[17] = {0};
-        memcpy(lowerU64, ncaIdStr.c_str(), 16);
-        memcpy(upperU64, ncaIdStr.c_str() + 16, 16);
-
-        *(u64 *)ncaId.c = __bswap64(strtoul(lowerU64, NULL, 16));
-        *(u64 *)(ncaId.c + 8) = __bswap64(strtoul(upperU64, NULL, 16));
-
-        return ncaId;
-    }
+    std::string GetNcaIdString(const NcmContentId& ncaId);
+    NcmContentId GetNcaIdFromString(std::string ncaIdStr);
+    void WriteNcaPfs0(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, nx::data::ByteIOBuffer& buf);
 }

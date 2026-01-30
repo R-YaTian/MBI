@@ -30,7 +30,7 @@ namespace app
             NcmContentMetaType GetContentMetaType(int i = 0);
             std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadContentMeta();
             void ParseTicketCert();
-            void InstallNCA(const NcmContentId &ncaId);
+            void InstallNCA(const NcmContentId &ncaId, nx::nca::NcaHeader* outHeader = nullptr);
             void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             void InstallApplicationRecord(int i);
     };

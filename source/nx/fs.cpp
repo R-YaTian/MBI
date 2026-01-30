@@ -56,7 +56,7 @@ namespace nx::fs
     void IFile::Write(u64 offset, const void* buf, size_t size)
     {
         u64 sizeWritten;
-        ASSERT_OK(fsFileWrite(&m_file, offset, buf, size, FsWriteOption_None), "Failed to write file");
+        ASSERT_OK(fsFileWrite(&m_file, offset, buf, size, FsWriteOption_Flush), "Failed to write file");
 
         if (sizeWritten != size)
         {
@@ -132,7 +132,6 @@ namespace nx::fs
 
     void IFileSystem::CloseFileSystem()
     {
-        fsFsCommit(&m_fileSystem);
         fsFsClose(&m_fileSystem);
     }
 

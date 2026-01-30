@@ -27,7 +27,7 @@ SOFTWARE.
 #include <vector>
 #include <switch-ipcext.h>
 
-#include "ByteBuffer.hpp"
+#include "nx/nca.hpp"
 
 namespace nx::ncm
 {
@@ -59,6 +59,7 @@ namespace nx::ncm
             nx::data::ByteBuffer m_bytes;
             std::vector<NcmPackagedContentInfo> m_packagedContentInfos;
             NcmContentId m_contentId;
+            nx::nca::NcaHeader m_ncaHeader;
 
         public:
             ContentMeta();
@@ -68,15 +69,15 @@ namespace nx::ncm
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
             const u8* GetHashByContentId(const NcmContentId& ncaId) const;
-            const NcmContentId& GetContentId() const { return m_contentId; }
 
             void SetContentId(const NcmContentId &contentId) { m_contentId = contentId; }
+            void SetNcaHeader(const nx::nca::NcaHeader& ncaHeader) { m_ncaHeader = ncaHeader; }
             void SetupPackagedContentMeta();
             void GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
+            void RebuildNcaForInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap);
     };
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
-    void RebuildContentMeta(const NcmStorageId& destStorageId, const NcmContentId &contentId, const std::map<std::string, std::vector<u8>>& hashMap);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
     std::vector<std::pair<u64, u32>> ListInstalledTitles();
 }

@@ -24,8 +24,11 @@ SOFTWARE.
 #include "nx/ncm.hpp"
 #include "nx/error.hpp"
 #include "nx/fs.hpp"
+#include "nx/Crypto.hpp"
 
 #include <string.h>
+
+#include "facade.hpp"
 
 namespace nx::ncm
 {
@@ -199,6 +202,80 @@ namespace nx::ncm
         return nullptr;
     }
 
+    void ContentMeta::RebuildNcaForInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap)
+    {
+        NcmExtPackagedContentMetaHeader contentMetaHeader = m_bytes.Read<NcmExtPackagedContentMetaHeader>(0);
+        nx::data::ByteBuffer cnmtBuffer;
+        cnmtBuffer.Resize(m_bytes.GetSize());
+        std::memcpy(cnmtBuffer.GetData(), m_bytes.GetData(), m_bytes.GetSize());
+        NcmPackagedContentInfo* packagedContentInfos = (NcmPackagedContentInfo*)(cnmtBuffer.GetData() + sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size);
+
+        for (u16 i = 0; i < contentMetaHeader.content_count; i++)
+        {
+            if (packagedContentInfos[i].info.content_type > 5)
+            {
+                continue;
+            }
+            std::string ncaIdStr = nx::nca::GetNcaIdString(packagedContentInfos[i].info.content_id);
+            auto it = hashMap.find(ncaIdStr);
+            if (it != hashMap.end())
+            {
+                std::memcpy(packagedContentInfos[i].hash, it->second.data(), SHA256_HASH_SIZE);
+            }
+        }
+
+        FILE *fpOut = fopen("sdmc:/config/meta.bin", "wb");
+        fwrite(cnmtBuffer.GetData(), 1, cnmtBuffer.GetSize(), fpOut);
+        fclose(fpOut);
+        app::facade::ShowDialog("Installing...", "元数据拷贝完毕", { "OK" }, false);
+
+        std::vector<nca::FileEntry> entries;
+        nca::FileEntry entry;
+        char cnmt_name[34];
+        std::snprintf(cnmt_name, sizeof(cnmt_name), "Application_%016lx.cnmt", contentMetaHeader.id);
+        entry.name = std::string(cnmt_name);
+        entry.data.resize(cnmtBuffer.GetSize());
+        std::memcpy(entry.data.data(), cnmtBuffer.GetData(), cnmtBuffer.GetSize());
+        entries.emplace_back(entry);
+
+        nx::nca::NcaHeader ncaHeader = m_ncaHeader;
+        data::ByteIOBuffer ncaBuf;
+        ncaBuf.write(&ncaHeader, sizeof(nca::NcaHeader));
+
+        FILE *fp = fopen("sdmc:/config/header.bin", "wb");
+        fwrite(ncaBuf.buf.data(), 1, ncaBuf.buf.size(), fp);
+        fclose(fp);
+        app::facade::ShowDialog("Installing...", "文件头拷贝完毕", { "OK" }, false);
+
+        nca::WriteNcaPfs0(ncaHeader, 0, entries, 0x1000, ncaBuf);
+        ncaHeader.distribution = 0;
+
+        FILE *fpn = fopen("sdmc:/config/meta.nca", "wb");
+        fwrite(ncaBuf.buf.data(), 1, ncaBuf.buf.size(), fpn);
+        fclose(fpn);
+        app::facade::ShowDialog("Installing...", "NCA构造完毕", { "OK" }, false);
+
+        std::vector<u8> tmpBuffer;
+        nx::Crypto::AesXtr encryptor(nx::Crypto::Keys().headerKey, true);
+        encryptor.encrypt(tmpBuffer.data(), &ncaHeader, sizeof(ncaHeader), 0, 0x200);
+
+        ncaBuf.seek(0);
+        ncaBuf.write(tmpBuffer.data(), sizeof(ncaHeader));
+
+        FILE *fpe = fopen("sdmc:/config/metaen.nca", "wb");
+        fwrite(ncaBuf.buf.data(), 1, ncaBuf.buf.size(), fpe);
+        fclose(fpe);
+        app::facade::ShowDialog("Installing...", "NCA加密完毕", { "OK" }, false);
+
+        nx::ncm::ContentStorage contentStorage(destStorageId);
+        try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&m_contentId); } catch (...) {}
+        contentStorage.CreatePlaceholder(m_contentId, *(NcmPlaceHolderId*)&m_contentId, ncaBuf.buf.size());
+        contentStorage.WritePlaceholder(*(NcmPlaceHolderId*)&m_contentId, 0, ncaBuf.buf.data(), ncaBuf.buf.size());
+        contentStorage.Delete(*(NcmContentId*)&m_contentId);
+        contentStorage.Register(*(NcmPlaceHolderId*)&m_contentId, m_contentId);
+        try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&m_contentId); } catch (...) {}
+    }
+
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath)
     {
         // Create the cnmt filesystem
@@ -216,46 +293,6 @@ namespace nx::ncm
         cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
 
         return ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
-    }
-
-    void RebuildContentMeta(const NcmStorageId& destStorageId, const NcmContentId &contentId, const std::map<std::string, std::vector<u8>>& hashMap)
-    {
-        nx::ncm::ContentStorage contentStorage(destStorageId);
-        std::string cnmtNCAFullPath = contentStorage.GetPath(contentId);
-
-        nx::fs::IFileSystem cnmtNCAFileSystem;
-        cnmtNCAFileSystem.OpenFileSystemWithId(cnmtNCAFullPath, FsFileSystemType_ContentMeta, 0);
-        nx::fs::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", cnmtNCAFullPath + "/");
-
-        // Find and read the cnmt file
-        auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
-        auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName, FsOpenMode_Read | FsOpenMode_Write);
-        u64 cnmtSize = cnmtFile.GetSize();
-
-        nx::data::ByteBuffer cnmtBuffer;
-        cnmtBuffer.Resize(cnmtSize);
-        cnmtFile.Read(0x0, cnmtBuffer.GetData(), cnmtSize);
-
-        NcmExtPackagedContentMetaHeader contentMetaHeader = cnmtBuffer.Read<NcmExtPackagedContentMetaHeader>(0);
-        NcmPackagedContentInfo* packagedContentInfos = (NcmPackagedContentInfo*)(cnmtBuffer.GetData() + sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size);
-
-        for (u16 i = 0; i < contentMetaHeader.content_count; i++)
-        {
-            NcmPackagedContentInfo packagedContentInfo = packagedContentInfos[i];
-            if (packagedContentInfo.info.content_type > 5)
-            {
-                continue;
-            }
-            std::string ncaIdStr = nx::nca::GetNcaIdString(packagedContentInfo.info.content_id);
-            auto it = hashMap.find(ncaIdStr);
-            if (it != hashMap.end())
-            {
-                memcpy(packagedContentInfo.hash, it->second.data(), SHA256_HASH_SIZE);
-                cnmtFile.Write(sizeof(NcmExtPackagedContentMetaHeader) + contentMetaHeader.extended_header_size + i * sizeof(NcmPackagedContentInfo),
-                               &packagedContentInfo,
-                               sizeof(NcmPackagedContentInfo));
-            }
-        }
     }
 
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType)

@@ -68,4 +68,33 @@ namespace nx::data
                 this->Write(data, this->GetSize());
             }
     };
+
+    struct ByteIOBuffer
+    {
+        ByteIOBuffer() = default;
+
+        void write(const void* data, u64 size)
+        {
+            if (offset + size >= buf.size())
+            {
+                buf.resize(offset + size);
+            }
+            std::memcpy(buf.data() + offset, data, size);
+            offset += size;
+        }
+
+        void seek(u64 where_to)
+        {
+            offset = where_to;
+        }
+
+        [[nodiscard]]
+        auto tell() const
+        {
+            return offset;
+        }
+
+        std::vector<u8> buf;
+        u64 offset{};
+    };
 }

@@ -59,13 +59,11 @@ namespace app
     // Validate and obtain all data needed for install
     void InstallTask::Prepare()
     {
-        nx::data::ByteBuffer cnmtBuf;
+        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupleList = this->ReadContentMeta();
 
-        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadContentMeta();
-
-        for (size_t i = 0; i < tupelList.size(); i++)
+        for (size_t i = 0; i < tupleList.size(); i++)
         {
-            std::tuple<nx::ncm::ContentMeta, NcmContentInfo> cnmtTuple = tupelList[i];
+            std::tuple<nx::ncm::ContentMeta, NcmContentInfo> cnmtTuple = tupleList[i];
 
             m_contentMeta.push_back(std::get<0>(cnmtTuple));
             NcmContentInfo cnmtContentRecord = std::get<1>(cnmtTuple);
@@ -73,20 +71,10 @@ namespace app
             nx::ncm::ContentStorage contentStorage(m_destStorageId);
             if (!contentStorage.Has(cnmtContentRecord.content_id))
             {
-                LOG_DEBUG("Installing CNMT NCA...\n");
-                this->InstallNCA(cnmtContentRecord.content_id);
-            }
-            else
-            {
-                LOG_DEBUG("CNMT NCA already installed. Proceeding...\n");
+                THROW_FORMAT("CNMT NCA not found after installation!");
             }
 
             // Parse data and create install content meta
-            if (m_ignoreReqFirmVersion)
-            {
-                LOG_DEBUG("WARNING: Required system firmware version is being IGNORED!\n");
-            }
-
             nx::data::ByteBuffer installContentMetaBuf;
             m_contentMeta[i].SetContentId(cnmtContentRecord.content_id);
             m_contentMeta[i].SetupPackagedContentMeta();
@@ -124,7 +112,7 @@ namespace app
             {
                 app::facade::SendInstallWarningText("inst.nca_verify.desc"_lang);
                 std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();
-                nx::ncm::RebuildContentMeta(m_destStorageId, contentMeta.GetContentId(), hashMap);
+                contentMeta.RebuildNcaForInstall(m_destStorageId, hashMap);
             }
         }
     }
@@ -167,7 +155,8 @@ namespace app
             LOG_DEBUG("CNMT Name: %s\n", cnmtNcaName.c_str());
 
             // We install the cnmt nca early to read from it later
-            this->InstallNCA(cnmtContentId);
+            nx::nca::NcaHeader ncaHeader;
+            this->InstallNCA(cnmtContentId, &ncaHeader);
             std::string cnmtNCAFullPath = contentStorage.GetPath(cnmtContentId);
 
             NcmContentInfo cnmtContentInfo;
@@ -176,12 +165,13 @@ namespace app
             cnmtContentInfo.content_type = NcmContentType_Meta;
 
             contentMetaList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
+            std::get<0>(contentMetaList.back()).SetNcaHeader(ncaHeader);
         }
 
         return contentMetaList;
     }
 
-    void InstallTask::InstallNCA(const NcmContentId& ncaId)
+    void InstallTask::InstallNCA(const NcmContentId& ncaId, nx::nca::NcaHeader* outHeader)
     {
         const void* fileEntry = m_worker->GetContent()->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_worker->GetContent()->GetFileEntryName(fileEntry);
@@ -197,26 +187,28 @@ namespace app
         // Attempt to delete any leftover placeholders
         try { contentStorage->DeletePlaceholder(*(NcmPlaceHolderId*)&ncaId); } catch (...) {}
 
-        if (app::config::validateNCAs)
+        nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
+        m_worker->BufferData(header, m_worker->GetContent()->GetFileEntryOffset(fileEntry), sizeof(nx::nca::NcaHeader));
+
+        nx::Crypto::AesXtr crypto(nx::Crypto::Keys().headerKey, false);
+        crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
+
+        if (header->magic != MAGIC_NCA3)
         {
-            nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
-            m_worker->BufferData(header, m_worker->GetContent()->GetFileEntryOffset(fileEntry), sizeof(nx::nca::NcaHeader));
-
-            nx::Crypto::AesXtr crypto(nx::Crypto::Keys().headerKey, false);
-            crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
-
-            if (header->magic != MAGIC_NCA3)
-            {
-                THROW_FORMAT("Invalid NCA magic");
-            }
-
-            if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
-            {
-                app::facade::SendInstallWarningText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
-            }
-            delete header;
+            THROW_FORMAT("Invalid NCA magic");
         }
 
+        if (app::config::validateNCAs && !nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
+        {
+            app::facade::SendInstallWarningText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
+        }
+
+        if (outHeader != nullptr)
+        {
+            memcpy(outHeader, header, sizeof(nx::nca::NcaHeader));
+        }
+
+        delete header;
         m_worker->StreamToPlaceholder(contentStorage, ncaId);
 
         LOG_DEBUG("Registering placeholder...\n");
