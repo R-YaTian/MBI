@@ -57,13 +57,14 @@ namespace nx::ncm
     {
         private:
             nx::data::ByteBuffer m_bytes;
+            std::string m_cnmtFileName;
             std::vector<NcmPackagedContentInfo> m_packagedContentInfos;
             NcmContentId m_contentId;
-            nx::nca::NcaHeader m_ncaHeader;
+            nca::NcaHeader m_ncaHeader;
 
         public:
             ContentMeta();
-            ContentMeta(u8* data, size_t size);
+            ContentMeta(u8* data, size_t size, std::string cnmtFileName);
 
             NcmExtPackagedContentMetaHeader GetPackagedContentMetaHeader();
             NcmContentMetaKey GetContentMetaKey();
@@ -71,10 +72,10 @@ namespace nx::ncm
             const u8* GetHashByContentId(const NcmContentId& ncaId) const;
 
             void SetContentId(const NcmContentId &contentId) { m_contentId = contentId; }
-            void SetNcaHeader(const nx::nca::NcaHeader& ncaHeader) { m_ncaHeader = ncaHeader; }
+            void SetNcaHeader(const nca::NcaHeader& ncaHeader) { m_ncaHeader = ncaHeader; }
             void SetupPackagedContentMeta();
             void GetInstallContentMeta(nx::data::ByteBuffer& installContentMetaBuffer, NcmContentInfo& cnmtContentInfo, bool ignoreReqFirmVersion);
-            void RebuildNcaForInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap);
+            void RebuildNcaToInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap);
     };
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);

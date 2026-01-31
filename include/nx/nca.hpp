@@ -159,5 +159,5 @@ namespace nx::nca
 
     std::string GetNcaIdString(const NcmContentId& ncaId);
     NcmContentId GetNcaIdFromString(std::string ncaIdStr);
-    void WriteNcaPfs0(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, nx::data::ByteIOBuffer& buf);
+    void BuildNcaByHeader(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, data::ByteIO& buf);
 }

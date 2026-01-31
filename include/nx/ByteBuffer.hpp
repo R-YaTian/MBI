@@ -69,9 +69,9 @@ namespace nx::data
             }
     };
 
-    struct ByteIOBuffer
+    struct ByteIO
     {
-        ByteIOBuffer() = default;
+        ByteIO() = default;
 
         void write(const void* data, u64 size)
         {

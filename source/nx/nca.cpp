@@ -1,13 +1,11 @@
 #include "nx/nca.hpp"
 #include "nx/xfs0.hpp"
+#include "nx/Crypto.hpp"
 #include "nx/ByteBuffer.hpp"
-#include <cstring>
-
-#include "facade.hpp"
 
 namespace nx::nca
 {
-    auto write_padding(nx::data::ByteIOBuffer& buf, u64 off, u64 block) -> u64
+    auto write_padding(data::ByteIO& buf, u64 off, u64 block) -> u64
     {
         const u64 size = block - (off % block);
         if (size)
@@ -18,7 +16,7 @@ namespace nx::nca
         return size;
     }
 
-    void write_nca_padding(nx::data::ByteIOBuffer& buf)
+    void write_nca_padding(data::ByteIO& buf)
     {
         write_padding(buf, buf.tell(), 0x200);
     }
@@ -70,7 +68,7 @@ namespace nx::nca
 
     auto build_pfs0(const std::vector<FileEntry>& entries) -> std::vector<u8>
     {
-        nx::data::ByteIOBuffer buf;
+        data::ByteIO buf;
 
         XFS0BaseHeader header{};
         std::vector<PFS0FileEntry> file_table(entries.size());
@@ -108,6 +106,10 @@ namespace nx::nca
 
         buf.write(string_table.data(), string_table.size());
 
+        // Update string table size in header
+        u32 string_table_size = string_table.size();
+        std::memcpy(buf.buf.data() + 0x8, &string_table_size, sizeof(u32));
+
         for (const auto&e : entries)
         {
             buf.write(e.data.data(), e.data.size());
@@ -118,7 +120,7 @@ namespace nx::nca
 
     auto build_pfs0_hash_table(const std::vector<u8>& pfs0, u32 block_size) -> std::vector<u8>
     {
-        nx::data::ByteIOBuffer buf;
+        data::ByteIO buf;
         u8 hash[SHA256_HASH_SIZE];
         u32 read_size = block_size;
 
@@ -141,14 +143,11 @@ namespace nx::nca
         return hash;
     }
 
-    void WriteNcaPfs0(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, nx::data::ByteIOBuffer& buf)
+    void BuildNcaByHeader(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, data::ByteIO& buf)
     {
         const auto pfs0 = build_pfs0(entries);
-        app::facade::ShowDialog("Installing...", "PFS0构造完毕", { "OK" }, false);
         const auto pfs0_hash_table = build_pfs0_hash_table(pfs0, block_size);
-        app::facade::ShowDialog("Installing...", "PFS0HASH完毕", { "OK" }, false);
         const auto pfs0_master_hash = build_pfs0_master_hash(pfs0_hash_table);
-        app::facade::ShowDialog("Installing...", "PFS0 MASTER HASH完毕", { "OK" }, false);
 
         buf.write(pfs0_hash_table.data(), pfs0_hash_table.size());
 
@@ -161,5 +160,14 @@ namespace nx::nca
         const auto section_start = index == 0 ? sizeof(nca_header) : nca_header.fs_table[index-1].media_end_offset * 0x200;
         write_nca_section(nca_header, index, section_start, buf.tell());
         write_nca_fs_header_pfs0(nca_header, index, pfs0_master_hash, pfs0_hash_table.size(), block_size);
+
+        // Change distribution to 0 (system), then re-encrypt header
+        nca_header.distribution = 0;
+        std::vector<u8> encHeader;
+        encHeader.resize(sizeof(nca::NcaHeader));
+        Crypto::AesXtr encryptor(Crypto::Keys().headerKey, true);
+        encryptor.encrypt(encHeader.data(), &nca_header, sizeof(nca::NcaHeader), 0, 0x200);
+        buf.seek(0);
+        buf.write(encHeader.data(), sizeof(nca::NcaHeader));
     }
 }

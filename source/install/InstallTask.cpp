@@ -96,7 +96,7 @@ namespace app
                 std::string ncaIdStr = nx::nca::GetNcaIdString(record.content_id);
                 LOG_DEBUG("Installing from %s\n", ncaIdStr.c_str());
                 this->InstallNCA(record.content_id);
-                if (app::config::validateNCAs && m_worker->GetContent()->GetType() == nx::Content::Type::NSP)
+                if (m_worker->GetContent()->GetType() == nx::Content::Type::NSP)
                 {
                     const u8* metaHash = contentMeta.GetHashByContentId(record.content_id);
                     const u8* workerHash = m_worker->GetHashByContentIdString(ncaIdStr);
@@ -112,7 +112,7 @@ namespace app
             {
                 app::facade::SendInstallWarningText("inst.nca_verify.desc"_lang);
                 std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();
-                contentMeta.RebuildNcaForInstall(m_destStorageId, hashMap);
+                contentMeta.RebuildNcaToInstall(m_destStorageId, hashMap);
             }
         }
     }
@@ -198,7 +198,7 @@ namespace app
             THROW_FORMAT("Invalid NCA magic");
         }
 
-        if (app::config::validateNCAs && !nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
+        if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
         {
             app::facade::SendInstallWarningText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
         }
