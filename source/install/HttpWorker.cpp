@@ -121,6 +121,8 @@ namespace app::install
             x << (int)(installProgress);
             app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
         }
+        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
+        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.ExportSha256Hash();
         app::facade::SendInstallProgress(100);
 
         if (curlThread.joinable())

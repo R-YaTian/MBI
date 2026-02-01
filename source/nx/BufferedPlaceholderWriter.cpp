@@ -194,4 +194,11 @@ namespace nx::data
     {
         return m_sizeWrittenToPlaceholder;
     }
+
+    std::vector<u8> BufferedPlaceholderWriter::ExportSha256Hash()
+    {
+        std::vector<u8> hash(SHA256_HASH_SIZE);
+        m_writer.getSha256Hash(hash.data());
+        return hash;
+    }
 }
