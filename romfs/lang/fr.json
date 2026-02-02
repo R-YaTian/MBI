@@ -111,9 +111,8 @@
             "at": " à "
         },
         "nca_verify": {
-            "title": "Signature NCA invalide détectée!",
-            "desc": "Les logiciels incorrectement signés ne doivent être installés qu'à partir de\nsources dignes de confiance. Les fichiers contenant des repacks de cartouches et des DLC\nafficheront toujours cet avertissement. Vous pouvez désactiver cette vérification dans les paramètres de Mohsaua-Buoh-Installer.\n\nEtes-vous sûr de vouloir continuer l'installation ?",
-            "opt1": "Oui, je comprends les risques",
+            "missing_digital": "Hash numérique manquant, tentative de reconstruction des métadonnées...",
+            "hash_failed": "Échec de la vérification du hash NCA: ",
             "error": "Le NCA demandé n'est pas correctement signé: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "Ignorez la version minimale de firmware requise par les jeux",
-            "nca_verify": "Vérifier les signatures des NCA avant l'installation",
             "boost_mode": "Activer le  \"boost mode\" pendant l'installation",
             "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
             "enableSound": "Info audio à la fin",

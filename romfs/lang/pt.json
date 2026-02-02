@@ -111,9 +111,8 @@
             "at": " às "
         },
         "nca_verify": {
-            "title": "Detetada assinatura NCA inválida!",
-            "desc": "O software não assinado corretamente deverá ser instalado apenas de fontes\nconfiáveis. Ficheiros que contiverem repaks de cartuchos ou desbloqueadores de DLC mostrarão\nsempre esta mensagem. Esta verificação pode ser desligada nas definições do Mohsaua-Buoh-Installer.\n\nTem a certeza que deseja continuar a instalação?",
-            "opt1": "Sim, eu compreendo os riscos",
+            "missing_digital": "Hash digital ausente, tentando reconstruir os metadados...",
+            "hash_failed": "Falha na verificação do hash NCA: ",
             "error": "O NCA solicitado não está corretamente assinado: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "Ignorar o requisito de firmeware mínimo imposto pelo título",
-            "nca_verify": "Verificar a assinatura NCA antes da instalação",
             "boost_mode": "Ativar \"boost mode\" durante as instalações",
             "enableSound": "Áudio informativo no final",
             "enableLightning": "Luzes de informações piscam no final",

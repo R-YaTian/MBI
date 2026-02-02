@@ -111,9 +111,8 @@
             "at": " in "
         },
         "nca_verify": {
-            "title": "Rilevata firma NCA non valida!",
-            "desc": "Software firmati impropriamente dovrebbero essere installati solo da fonti\nsicure. I file che contengono repack di cartucce e DLC mostreranno sempre\nquesto avviso. Puoi disabilitarlo dalle impostazioni di Mohsaua-Buoh-Installer.\n\nSei sicuro di voler continuare l'installazione?",
-            "opt1": "Sì, comprendo il rischio",
+            "missing_digital": "Hash digitale mancante, tentativo di ricostruzione dei metadati...",
+            "hash_failed": "Verifica dell'hash NCA non riuscita: ",
             "error": "Il file NCA seguente non è firmato correttamente: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "Ignora la versione minima del firmware richiesta dai titoli",
-            "nca_verify": "Verifica le firme NCA prima dell'installazione",
             "boost_mode": "Abilita la \"boost mode\" durante le installazioni",
             "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
             "enableSound": "Info audio alla fine",

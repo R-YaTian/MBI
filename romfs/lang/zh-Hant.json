@@ -111,9 +111,8 @@
             "at": " 約 "
         },
         "nca_verify": {
-            "title": "偵測到無效的NCA簽名！",
-            "desc": "要安裝簽名驗證失敗的遊戲，檔案來源必須為可信任的。\n經過重新封裝或有合併更新檔與DLC的檔案，程序會顯示此訊息提醒。\n如需隱藏此提醒通知，可從Mohsaua-Buoh-Installer設定內取消勾選檢查。\n\n是否確認要繼續安裝？",
-            "opt1": "好，我已瞭解可能的風險",
+            "missing_digital": "缺少數位雜湊，正在嘗試重建中繼資料...",
+            "hash_failed": "NCA 雜湊驗證失敗: ",
             "error": "必要的NCA簽名驗證失敗: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "略過檢查遊戲最低系統版本要求",
-            "nca_verify": "進行安裝前驗證NCA簽名",
             "boost_mode": "在進行安裝時啟用\"超頻\"模式",
             "ask_delete": "在安裝完成後，詢問是否刪除原始檔案",
             "enableSound": "安裝完成時播放通知音效",

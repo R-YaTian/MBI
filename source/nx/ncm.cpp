@@ -184,6 +184,11 @@ namespace nx::ncm
             NcmPatchMetaExtendedHeader* patchMetaExtendedHeader = (NcmPatchMetaExtendedHeader*)extendedHeaderSourceBytes;
             installContentMetaBuffer.Resize(installContentMetaBuffer.GetSize() + patchMetaExtendedHeader->extended_data_size);
         }
+        else if (packagedContentMetaHeader.type == NcmContentMetaType_Delta)
+        {
+            NcmExtDeltaMetaExtendedHeader* deltaMetaExtendedHeader = (NcmExtDeltaMetaExtendedHeader*)extendedHeaderSourceBytes;
+            installContentMetaBuffer.Resize(installContentMetaBuffer.GetSize() + deltaMetaExtendedHeader->extended_data_size);
+        }
     }
 
     const u8* ContentMeta::GetHashByContentId(const NcmContentId& ncaId) const

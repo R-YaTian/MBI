@@ -6,23 +6,23 @@ namespace app::ui
 {
     InstallerPage::InstallerPage() : Layout::Layout()
     {
-        this->installWarningText = pu::ui::elm::TextBlock::New(15, 158, "");
-        this->installWarningText->SetFont("DefaultFont@30");
-        this->installWarningText->SetColor(COLOR(app::config::InstallerInfoTextColor));
-        this->installInfoText = pu::ui::elm::TextBlock::New(15, 568 * pu::ui::render::ScreenFactor, "");
+        this->installInfoText = pu::ui::elm::TextBlock::New(15, 160, "");
         this->installInfoText->SetFont("DefaultFont@30");
         this->installInfoText->SetColor(COLOR(app::config::InstallerInfoTextColor));
+        this->installBarText = pu::ui::elm::TextBlock::New(1295, 908, "");
+        this->installBarText->SetFont("DefaultFont@30");
+        this->installBarText->SetColor(COLOR(app::config::InstallerInfoTextColor));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
-        this->Add(this->installWarningText);
+        this->Add(this->installBarText);
         this->Add(this->installInfoText);
         this->Add(this->installBar);
     }
 
-    void InstallerPage::AppendInstallWarningText(std::string newText)
+    void InstallerPage::AppendInstallInfoText(std::string newText)
     {
-        std::string previousText = this->installWarningText->GetText();
-        if (this->installWarningText->GetHeight() >= 690)
+        std::string previousText = this->installInfoText->GetText();
+        if (this->installInfoText->GetHeight() >= 720 || newText == "")
         {
             previousText = "";
         }
@@ -30,12 +30,12 @@ namespace app::ui
         {
             previousText += "\n";
         }
-        this->installWarningText->SetText(previousText + newText);
+        this->installInfoText->SetText(previousText + newText);
     }
 
-    void InstallerPage::SetInstallInfoText(std::string text)
+    void InstallerPage::SetInstallBarText(std::string text)
     {
-        this->installInfoText->SetText(text);
+        this->installBarText->SetText(text);
     }
 
     void InstallerPage::SetProgressBar(double percent)
@@ -49,7 +49,7 @@ namespace app::ui
 
     void InstallerPage::Prepare()
     {
-        this->installWarningText->SetText("");
+        this->installBarText->SetText("");
         this->installInfoText->SetText("");
         this->installBar->SetProgress(0);
         this->installBar->SetVisible(false);

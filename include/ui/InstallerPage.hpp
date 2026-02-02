@@ -9,13 +9,13 @@ namespace app::ui
         public:
             InstallerPage();
             PU_SMART_CTOR(InstallerPage)
-            void SetInstallInfoText(std::string text);
+            void SetInstallBarText(std::string text);
             void SetProgressBar(double percent);
-            void AppendInstallWarningText(std::string newText);
+            void AppendInstallInfoText(std::string newText);
             void Prepare();
         private:
             pu::ui::elm::TextBlock::Ref installInfoText;
-            pu::ui::elm::TextBlock::Ref installWarningText;
+            pu::ui::elm::TextBlock::Ref installBarText;
             pu::ui::elm::ProgressBar::Ref installBar;
     };
 }

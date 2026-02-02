@@ -36,15 +36,15 @@ namespace app::facade
         SendRenderRequest();
     }
 
-    void SendInstallWarningText(std::string text)
+    void SendInstallInfoText(std::string text)
     {
-        app::ui::installerPage->AppendInstallWarningText(text);
+        app::ui::installerPage->AppendInstallInfoText(text);
         SendRenderRequest();
     }
 
-    void SendInstallInfoText(std::string text)
+    void SendInstallBarText(std::string text)
     {
-        app::ui::installerPage->SetInstallInfoText(text);
+        app::ui::installerPage->SetInstallBarText(text);
         SendRenderRequest();
     }
 

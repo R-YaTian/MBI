@@ -104,13 +104,13 @@ namespace app
                         workerHash != nullptr &&
                         memcmp(metaHash, workerHash, SHA256_HASH_SIZE) != 0)
                     {
-                        app::facade::SendInstallWarningText("inst.nca_verify.opt1"_lang + ncaIdStr);
+                        app::facade::SendInstallInfoText("inst.nca_verify.hash_failed"_lang + ncaIdStr);
                     }
                 }
             }
             if (m_worker->GetContent()->GetType() == nx::Content::Type::XCI)
             {
-                app::facade::SendInstallWarningText("inst.nca_verify.desc"_lang);
+                app::facade::SendInstallInfoText("inst.nca_verify.missing_digital"_lang);
                 std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();
                 contentMeta.RebuildNcaToInstall(m_destStorageId, hashMap);
             }
@@ -200,7 +200,7 @@ namespace app
 
         if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
         {
-            app::facade::SendInstallWarningText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
+            app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
         }
 
         if (outHeader != nullptr)

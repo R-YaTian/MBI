@@ -111,9 +111,8 @@
             "at": " 以 "
         },
         "nca_verify": {
-            "title": "检测到无效的 NCA 签名！",
-            "desc": "缺失数字哈希, 尝试重建元数据...",
-            "opt1": "NCA 哈希校验不通过：",
+            "missing_digital": "缺失数字哈希, 尝试重建元数据...",
+            "hash_failed": "NCA 哈希校验不通过：",
             "error": "请求的 NCA 签名不正确："
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "忽略软件的最低固件版本要求",
-            "nca_verify": "安装前验证 NCA 签名",
             "boost_mode": "安装时启用“增速模式”(解锁 CPU 频率)",
             "ask_delete": "安装完成后询问是否删除原始文件",
             "enableSound": "安装完成后播放提示音",

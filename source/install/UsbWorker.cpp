@@ -93,6 +93,7 @@ namespace app::install
         size_t startSizeBuffered = 0;
         double speed = 0.0;
 
+        app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "...");
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreads)
         {
@@ -113,7 +114,9 @@ namespace app::install
                 u64 downloadSizeMB = bufferedPlaceholderWriter.GetSizeBuffered() / 1000000;
                 LOG_DEBUG("> Download Progress: %lu/%lu MB (%i%s) (%.2f MB/s)\r", downloadSizeMB, totalSizeMB, downloadProgress, "%", speed);
 #endif
-                app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
+                std::stringstream x;
+                x << downloadProgress;
+                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
                 app::facade::SendInstallProgress((double)downloadProgress);
             }
         }
@@ -135,7 +138,7 @@ namespace app::install
             app::facade::SendInstallProgress((double)installProgress);
             std::stringstream x;
             x << (int)(installProgress);
-            app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
+            app::facade::SendInstallBarText(x.str() + "%");
         }
         std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
         m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.ExportSha256Hash();

@@ -111,9 +111,8 @@
             "at": " at "
         },
         "nca_verify": {
-            "title": "Invalid NCA signature detected!",
-            "desc": "Improperly signed software should only be installed from trustworthy\nsources. Files containing cartridge repacks and DLC unlockers will always\nshow this warning. You can disable this check in Mohsaua-Buoh-Installer's settings.\n\nAre you sure you want to continue the installation?",
-            "opt1": "Yes, I understand the risks",
+            "missing_digital": "Missing digital hash, attempting to rebuild metadata...",
+            "hash_failed": "NCA hash verification failed: ",
             "error": "The requested NCA is not properly signed: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "Ignore minimum firmware version required by titles",
-            "nca_verify": "Verify NCA signatures before installation",
             "boost_mode": "Enable \"boost mode\" during installations",
             "ask_delete": "Ask to delete original files after installation",
             "enableSound": "Info audio at the end",

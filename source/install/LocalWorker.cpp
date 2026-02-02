@@ -68,7 +68,7 @@ namespace app::install
                     app::facade::SendInstallProgress((double)(progress * 100.0));
                     std::stringstream x;
                     x << (int)(progress * 100.0);
-                    app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
+                    app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
                 }
 
                 if (fileOff + readSize >= ncaSize)

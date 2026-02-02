@@ -111,9 +111,8 @@
             "at": " mit "
         },
         "nca_verify": {
-            "title": "Ungültige NCA-Signatur erkannt!",
-            "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von gepackten Spiele Modulen und DLC-Freischaltung enthalten,\nwerden immer diese Warnung anzeigen. Du kannst diese Prüfung in den Einstellungen des Mohsaua-Buoh-Installer deaktivieren.\nBist du sicher, dass du die Installation fortsetzen möchten?",
-            "opt1": "Ja, ich verstehe die Risiken",
+            "missing_digital": "Digitaler Hash fehlt, Metadaten werden neu erstellt...",
+            "hash_failed": "NCA-Hash-Überprüfung fehlgeschlagen: ",
             "error": "Die gewünschte NCA ist nicht richtig signiert: "
         },
         "finished": [
@@ -126,7 +125,6 @@
     "options": {
         "menu_items": {
             "ignore_firm": "Ignoriere minimale Firmware Version des Titels",
-            "nca_verify": "Verifiziere NCA Signatur vor der Installation",
             "boost_mode": "Aktiviere \"Boost-Modus\" während der Installation",
             "ask_delete": "Frage ob installierte Titel gelöscht werden sollen",
             "enableSound": "Info Audio bei Ende",

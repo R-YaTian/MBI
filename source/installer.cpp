@@ -47,7 +47,7 @@ namespace app::installer
 
     NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
     {
-        app::facade::SendInstallInfoText("inst.info_page.complete"_lang);
+        app::facade::SendInstallBarText("inst.info_page.complete"_lang);
         app::facade::SendInstallProgress(100);
         if (app::config::enableLightning)
         {
@@ -82,6 +82,7 @@ namespace app::installer
             previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
         }
 
+        app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
         return previousClockValues;
     }
 
@@ -139,8 +140,6 @@ namespace app::installer
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
                     std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
-                    LOG_DEBUG("%s\n", "Preparing installation");
-                    app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
                     installTask->InstallTicketCert();
@@ -307,8 +306,6 @@ namespace app::installer
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
                     std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
-                    LOG_DEBUG("%s\n", "Preparing installation");
-                    app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
                     installTask->InstallTicketCert();
@@ -654,8 +651,6 @@ back_to_loop:
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::HttpWorker>(std::move(content), ourUrlList[urlItr]);
                     std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
 
-                    LOG_DEBUG("%s\n", "Preparing installation");
-                    app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
                     installTask->InstallTicketCert();
