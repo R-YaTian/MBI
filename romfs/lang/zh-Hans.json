@@ -135,11 +135,6 @@
             "language": "显示语言：",
             "credits": "致谢"
         },
-        "nca_warn": {
-            "title": "警告！",
-            "desc": "某些安装文件可能包含使主机变砖的恶意代码！\n只有在您确信安装文件绝对可靠的情况下\n才可以禁用此功能！\n\n是否仍然禁用 NCA 签名验证？",
-            "opt1": "是的，我不怕变砖"
-        },
         "credits": {
             "title": "感谢以下人员!",
             "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供原始 Tinfoil\n- XorTroll 提供 Plutonium 以及 Goldleaf\n- nicoboss 提供 NSZ 支持\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs"

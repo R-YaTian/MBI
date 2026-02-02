@@ -135,11 +135,6 @@
             "language": "Язык: ",
             "credits": "Благодарности"
         },
-        "nca_warn": {
-            "title": "Внимание!",
-            "desc": "Некоторые устанавливаемые приложения могут содержать вредоносный код!\nОтключайте эту опцию только если вы совершенно точно уверены в качестве\nустанавливаемых приложений и доверяете их источникам!\n\n\nВсё ещё хотите отключить проверку проверку NCA подписей?",
-            "opt1": "Да, я хочу получить кирпич"
-        },
         "credits": {
             "title": "Выражаем благодарность следующим людям:",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

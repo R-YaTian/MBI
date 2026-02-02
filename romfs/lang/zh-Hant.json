@@ -135,11 +135,6 @@
             "language": "介面語系： ",
             "credits": "感謝名單"
         },
-        "nca_warn": {
-            "title": "注意！",
-            "desc": "雖然是極少數的情況，但檔案還是有可能會被加入損害主機的惡意代碼！\n除非確保所有檔案都從可信任的來源下載，否則不建議關閉簽名驗證。\n\n是否確認要關閉NCA簽名驗證？",
-            "opt1": "好，我已瞭解可能的風險"
-        },
         "credits": {
             "title": "感謝所有幫助過我們的人",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

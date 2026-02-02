@@ -20,10 +20,12 @@ namespace app::manager
         app::config::ParseSettings();
         app::config::ParseThemeColor();
 
+#ifdef ENABLE_NET
         socketInitializeDefault();
 
 #ifdef __DEBUG__
         nxlinkStdio();
+#endif
 #endif
 
         if (nx::usb::usbDeviceIsInitialized())
@@ -41,7 +43,9 @@ namespace app::manager
 
         nx::udisk::exit();
 
+#ifdef ENABLE_NET
         socketExit();
+#endif
 
         nx::usb::usbDeviceExit();
     }

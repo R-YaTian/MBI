@@ -8,13 +8,58 @@ namespace app::ui
 {
     OptionsPage::OptionsPage() : Layout::Layout()
     {
+        languageStrings.push_back("options.language.system_language"_lang);
+        languageStrings.push_back("common.cancel"_lang);
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
-        this->setMenuText();
+
+        ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
+        ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));
+        ignoreFirmOption->AddOnKey(std::bind(&OptionsPage::IgnoreFirmOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
+        overclockOption->SetColor(COLOR(app::config::MenuTextColor));
+        overclockOption->AddOnKey(std::bind(&OptionsPage::OverclockOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
+        deletePromptOption->SetColor(COLOR(app::config::MenuTextColor));
+        deletePromptOption->AddOnKey(std::bind(&OptionsPage::DeletePromptOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        enableSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.enableSound"_lang);
+        enableSoundOption->SetColor(COLOR(app::config::MenuTextColor));
+        enableSoundOption->AddOnKey(std::bind(&OptionsPage::EnableSoundOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        enableLightningOption = pu::ui::elm::MenuItem::New("options.menu_items.enableLightning"_lang);
+        enableLightningOption->SetColor(COLOR(app::config::MenuTextColor));
+        enableLightningOption->AddOnKey(std::bind(&OptionsPage::EnableLightningOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
+        fixTicketOption->SetColor(COLOR(app::config::MenuTextColor));
+        fixTicketOption->AddOnKey(std::bind(&OptionsPage::FixTicketOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
+        languageOption->SetColor(COLOR(app::config::MenuTextColor));
+        creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
+        creditsOption->SetColor(COLOR(app::config::MenuTextColor));
+        creditsOption->AddOnKey(std::bind(&OptionsPage::CreditsOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+
+        this->MenuAddItem(this->menu, ignoreFirmOption);
+        this->MenuAddItem(this->menu, overclockOption);
+        this->MenuAddItem(this->menu, deletePromptOption);
+        this->MenuAddItem(this->menu, enableSoundOption);
+        this->MenuAddItem(this->menu, enableLightningOption);
+        this->MenuAddItem(this->menu, fixTicketOption);
+        this->MenuAddItem(this->menu, languageOption);
+        this->MenuAddItem(this->menu, creditsOption);
+        ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
+        overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
+        deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
+        enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
+        enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
+        fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
+
         this->Add(this->menu);
-        languageStrings.push_back("options.language.system_language"_lang);
-        languageStrings.push_back("common.cancel"_lang);
+    }
+
+    void OptionsPage::MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item)
+    {
+        menu->AddItem(Item);
+        menuItemCount++;
     }
 
     pu::sdl2::TextureHandle::Ref OptionsPage::getMenuOptionIcon(bool ourBool)
@@ -62,43 +107,73 @@ namespace app::ui
         }
     }
 
-    void OptionsPage::setMenuText()
+    void OptionsPage::IgnoreFirmOption_Click()
     {
-        this->menu->ClearItems();
-        auto ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
-        ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::ignoreReqVers = !app::config::ignoreReqVers;
         ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
-        this->menu->AddItem(ignoreFirmOption);
-        auto validateOption = pu::ui::elm::MenuItem::New("options.menu_items.nca_verify"_lang);
-        validateOption->SetColor(COLOR(app::config::MenuTextColor));
-        validateOption->SetIcon(this->getMenuOptionIcon(app::config::validateNCAs));
-        this->menu->AddItem(validateOption);
-        auto overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
-        overclockOption->SetColor(COLOR(app::config::MenuTextColor));
+    }
+
+    void OptionsPage::OverclockOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::overClock = !app::config::overClock;
         overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
-        this->menu->AddItem(overclockOption);
-        auto deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
-        deletePromptOption->SetColor(COLOR(app::config::MenuTextColor));
+    }
+
+    void OptionsPage::DeletePromptOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::deletePrompt = !app::config::deletePrompt;
         deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
-        this->menu->AddItem(deletePromptOption);
-        auto enableSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.enableSound"_lang);
-        enableSoundOption->SetColor(COLOR(app::config::MenuTextColor));
+    }
+
+    void OptionsPage::EnableSoundOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::enableSound = !app::config::enableSound;
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
-        this->menu->AddItem(enableSoundOption);
-        auto enableLightningOption = pu::ui::elm::MenuItem::New("options.menu_items.enableLightning"_lang);
-        enableLightningOption->SetColor(COLOR(app::config::MenuTextColor));
+    }
+
+    void OptionsPage::EnableLightningOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::enableLightning = !app::config::enableLightning;
         enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
-        this->menu->AddItem(enableLightningOption);
-        auto fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
-        fixTicketOption->SetColor(COLOR(app::config::MenuTextColor));
+    }
+
+    void OptionsPage::FixTicketOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::config::fixTicket = !app::config::fixTicket;
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
-        this->menu->AddItem(fixTicketOption);
-        auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
-        languageOption->SetColor(COLOR(app::config::MenuTextColor));
-        this->menu->AddItem(languageOption);
-        auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
-        creditsOption->SetColor(COLOR(app::config::MenuTextColor));
-        this->menu->AddItem(creditsOption);
+    }
+
+    void OptionsPage::CreditsOption_Click()
+    {
+        if (touchGuard)
+        {
+            return;
+        }
+        app::facade::ShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
     }
 
     void OptionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
@@ -111,69 +186,11 @@ namespace app::ui
         if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1 && !touchGuard))
         {
             previousTouchCount = 0;
-            int rc;
-            switch (this->menu->GetSelectedIndex())
+            if (this->menu->GetSelectedIndex() == menuItemCount - 2)
             {
-                case 0:
-                    app::config::ignoreReqVers = !app::config::ignoreReqVers;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(0);
-                    break;
-                case 1:
-                    if (app::config::validateNCAs)
-                    {
-                        if (app::facade::ShowDialog("options.nca_warn.title"_lang,
-                                                "options.nca_warn.desc"_lang, {"common.cancel"_lang,
-                                                "options.nca_warn.opt1"_lang}, false) == 1)
-                        {
-                            app::config::validateNCAs = false;
-                        }
-                    }
-                    else
-                    {
-                        app::config::validateNCAs = true;
-                    }
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(1);
-                    break;
-                case 2:
-                    app::config::overClock = !app::config::overClock;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(2);
-                    break;
-                case 3:
-                    app::config::deletePrompt = !app::config::deletePrompt;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(3);
-                    break;
-                case 4:
-                    app::config::enableSound = !app::config::enableSound;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(4);
-                    break;
-                case 5:
-                    app::config::enableLightning = !app::config::enableLightning;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(5);
-                    break;
-                case 6:
-                    app::config::fixTicket = !app::config::fixTicket;
-                    app::config::SaveSettings();
-                    this->setMenuText();
-                    this->menu->SetSelectedIndex(6);
-                    break;
-                case 7:
-                    rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, true);
-                    if (rc < 0)
-                    {
-                        break;
-                    }
+                int rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, true);
+                if (rc >= 0)
+                {
                     switch (rc)
                     {
                         case 0:
@@ -213,15 +230,9 @@ namespace app::ui
                             app::config::languageSetting = -1;
                             break;
                     }
-                    app::config::SaveSettings();
                     touchGuard = true;
                     CloseWithFadeOut();
-                    break;
-                case 8:
-                    app::facade::ShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
-                    break;
-                default:
-                    break;
+                }
             }
         }
 

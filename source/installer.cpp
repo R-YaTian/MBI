@@ -481,7 +481,6 @@ namespace app::installer
                         else
                         {
                             app::config::httpIndexUrl = url;
-                            app::config::SaveSettings();
                             if (url[url.size() - 1] != '/')
                             {
                                 url += '/';

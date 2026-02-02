@@ -135,11 +135,6 @@
             "language": "Language: ",
             "credits": "Credits"
         },
-        "nca_warn": {
-            "title": "Warning!",
-            "desc": "Some installable files may contain malicious contents! Only disable this\nfeature if you are absolutely certain the software you will be installing\nis trustworthy!\n\nDo you still want to disable NCA signature verification?",
-            "opt1": "Yes, I want a brick"
-        },
         "credits": {
             "title": "Thanks to the following people!",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

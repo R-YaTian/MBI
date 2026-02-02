@@ -12,6 +12,7 @@ And in Chinese, it is also known as `别多话, 就安装`
 - Installs NSP/NSZ/XCI/XCZ files and split NSP/XCI files over LAN or USB from tools such as [NS-USBloader](https://github.com/developersu/ns-usbloader)
 - Installs NSP/NSZ/XCI/XCZ files over HTTP Directory Indexing like nginx or Apache
 - Verifies NCAs by header signature before they're installed
+- Verifies NCA hashes during installation
 - Supports USB hard drives with multiple partitions and/or multiple USB storage devices
 
 ## Coloring support

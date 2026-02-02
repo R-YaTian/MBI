@@ -19,7 +19,6 @@ namespace app::config
     bool ignoreReqVers;
     bool overClock;
     bool usbAck;
-    bool validateNCAs;
 
     void SaveSettings()
     {
@@ -32,7 +31,6 @@ namespace app::config
         j["languageSetting"] = languageSetting;
         j["overClock"] = overClock;
         j["usbAck"] = usbAck;
-        j["validateNCAs"] = validateNCAs;
         j["lastNetUrl"] = lastNetUrl;
         j["httpIndexUrl"] = httpIndexUrl;
         auto json_str = j.dump(2);
@@ -62,7 +60,6 @@ namespace app::config
         languageSetting = j.value("languageSetting", -1);
         overClock = j.value("overClock", false);
         usbAck = j.value("usbAck", false);
-        validateNCAs = j.value("validateNCAs", true);
         lastNetUrl = j.value("lastNetUrl", std::string("https://"));
         httpIndexUrl = j.value("httpIndexUrl", std::string("http://"));
 

@@ -103,7 +103,6 @@ namespace app::ui
                     return;
                 }
                 app::config::lastNetUrl = keyboardResult;
-                app::config::SaveSettings();
                 sourceString = "inst.net.url.source_string"_lang;
                 this->selectedUrls = {keyboardResult};
                 this->startInstall(true);

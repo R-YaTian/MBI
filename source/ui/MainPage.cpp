@@ -104,7 +104,6 @@ namespace app::ui
             if (app::facade::ShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1)
             {
                 app::config::usbAck = true;
-                app::config::SaveSettings();
             }
         }
         if (nx::usb::usbDeviceIsConnected())

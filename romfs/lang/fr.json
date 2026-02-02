@@ -135,11 +135,6 @@
             "language": "Langage: ",
             "credits": "Crédits"
         },
-        "nca_warn": {
-            "title": "Avertissement!",
-            "desc": "Certains fichiers installables peuvent contenir des contenus malveillants ! Ne désactivez cette fonction\nque si vous êtes absolument certain que le logiciel que vous allez installer est digne de confiance !\n\nVoulez-vous toujours désactiver la vérification de la signature des NCA ?",
-            "opt1": "Oui, je suis inconscient et je veux brick ma Switch"
-        },
         "credits": {
             "title": "Merci aux personnes suivantes !",
             "desc": "- dezem and other contributors for original AtmoXL-Titel-Installer\n- Huntereb for Awoo Installer\n- Adubbz and other contributors for original Tinfoil\n- XorTroll for Plutonium and Goldleaf\n- nicoboss for NSZ support\n- DarkMatterCore, XorTroll and Rhys Koedijk for libusbhsfs"

@@ -21,13 +21,12 @@ namespace app::config
     extern std::string InstallerInfoTextColor;
     extern int languageSetting;
     extern bool ignoreReqVers;
-    extern bool validateNCAs;
     extern bool overClock;
     extern bool deletePrompt;
     extern bool enableSound;
     extern bool enableLightning;
-    extern bool usbAck;
     extern bool fixTicket;
+    extern bool usbAck;
 
     void SaveSettings();
     void ParseSettings();

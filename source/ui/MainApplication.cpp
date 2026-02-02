@@ -239,6 +239,7 @@ namespace app::ui
 
     void CloseWithFadeOut()
     {
+        app::config::SaveSettings();
         mainApp->FadeOut();
         mainApp->Close();
     }
