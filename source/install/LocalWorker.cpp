@@ -3,6 +3,7 @@
 #include "nx/NcaWriter.hpp"
 #include "nx/error.hpp"
 #include "facade.hpp"
+#include <sstream>
 
 namespace app::install
 {

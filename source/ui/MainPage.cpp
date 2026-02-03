@@ -82,12 +82,20 @@ namespace app::ui
 
     void MainPage::SdInstallMenuItem_Click()
     {
+        if (inputGuard)
+        {
+            return;
+        }
         SceneJump(Scene::SdInstall);
     }
 
 #ifdef ENABLE_NET
     void MainPage::NetInstallMenuItem_Click()
     {
+        if (inputGuard)
+        {
+            return;
+        }
         if (nx::network::getIPAddress() == "1.0.0.127")
         {
             app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
@@ -99,6 +107,10 @@ namespace app::ui
 
     void MainPage::UsbInstallMenuItem_Click()
     {
+        if (inputGuard)
+        {
+            return;
+        }
         if (!app::config::usbAck)
         {
             if (app::facade::ShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false) == 1)
@@ -118,19 +130,34 @@ namespace app::ui
 
     void MainPage::UdiskInstallMenuItem_Click()
     {
+        if (inputGuard)
+        {
+            return;
+        }
         SceneJump(Scene::UdiskInstall);
     }
 
     void MainPage::SettingsMenuItem_Click()
     {
+        if (inputGuard)
+        {
+            return;
+        }
         SceneJump(Scene::Options);
     }
 
     void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
     {
+        if (inputGuard)
+        {
+            return;
+        }
+
         if ((Down & HidNpadButton_Plus) && IsShown())
         {
+            inputGuard = true;
             CloseWithFadeOut();
+            return;
         }
 
         if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
@@ -138,6 +165,7 @@ namespace app::ui
             previousTouchCount = 0;
             if (this->optionMenu->GetSelectedIndex() == menuItemCount - 1)
             {
+                inputGuard = true;
                 CloseWithFadeOut();
             }
         }

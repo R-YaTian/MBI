@@ -4,6 +4,7 @@
 #include "nx/usb.hpp"
 #include "facade.hpp"
 #include <malloc.h>
+#include <sstream>
 #include <thread>
 
 namespace app::install
@@ -137,7 +138,7 @@ namespace app::install
 #endif
             app::facade::SendInstallProgress((double)installProgress);
             std::stringstream x;
-            x << (int)(installProgress);
+            x << installProgress;
             app::facade::SendInstallBarText(x.str() + "%");
         }
         std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);

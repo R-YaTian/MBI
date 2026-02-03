@@ -1,3 +1,5 @@
+#include <sstream>
+#include <jtjson.h>
 #include <switch.h>
 
 #include "nx/error.hpp"
@@ -75,6 +77,20 @@ namespace app::i18n
         }
         lang = jt::Json::parse(fp);
         fclose(fp);
+    }
+
+    jt::Json GetRelativeJson(const jt::Json& j, std::string key)
+    {
+        std::istringstream ss(key);
+        std::string token;
+        jt::Json ret = j;
+
+        while (std::getline(ss, token, '.') && !ret.empty())
+        {
+            ret = ret[token];
+        }
+
+        return ret;
     }
 
     std::string LanguageEntry(std::string key)

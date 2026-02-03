@@ -96,7 +96,7 @@ namespace app
                 std::string ncaIdStr = nx::nca::GetNcaIdString(record.content_id);
                 LOG_DEBUG("Installing from %s\n", ncaIdStr.c_str());
                 this->InstallNCA(record.content_id);
-                if (m_worker->GetContent()->GetType() == nx::Content::Type::NSP)
+                if (contentMeta.GetDistributionType() == 0)
                 {
                     const u8* metaHash = contentMeta.GetHashByContentId(record.content_id);
                     const u8* workerHash = m_worker->GetHashByContentIdString(ncaIdStr);
@@ -108,7 +108,7 @@ namespace app
                     }
                 }
             }
-            if (m_worker->GetContent()->GetType() == nx::Content::Type::XCI)
+            if (contentMeta.GetDistributionType() == 1)
             {
                 app::facade::SendInstallInfoText("inst.nca_verify.missing_digital"_lang);
                 std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();

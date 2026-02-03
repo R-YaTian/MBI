@@ -19,6 +19,7 @@
 
 #ifdef ENABLE_NET
 #include <fcntl.h>
+#include <jtjson.h>
 #include <curl/curl.h>
 #include "nx/network.hpp"
 #include "install/HttpWorker.hpp"

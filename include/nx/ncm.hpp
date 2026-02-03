@@ -70,6 +70,7 @@ namespace nx::ncm
             NcmContentMetaKey GetContentMetaKey();
             std::vector<NcmContentInfo> GetContentInfos();
             const u8* GetHashByContentId(const NcmContentId& ncaId) const;
+            const u8 GetDistributionType() const { return m_ncaHeader.distribution; }
 
             void SetContentId(const NcmContentId &contentId) { m_contentId = contentId; }
             void SetNcaHeader(const nca::NcaHeader& ncaHeader) { m_ncaHeader = ncaHeader; }

@@ -12,6 +12,7 @@ namespace app::ui
             void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
             s32 menuItemCount = 0;
+            bool inputGuard = false;
             bool appletFinished;
             pu::ui::elm::Menu::Ref optionMenu;
             pu::ui::elm::MenuItem::Ref sdInstallMenuItem;

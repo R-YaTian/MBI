@@ -109,7 +109,7 @@ namespace app::ui
 
     void OptionsPage::IgnoreFirmOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -119,7 +119,7 @@ namespace app::ui
 
     void OptionsPage::OverclockOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -129,7 +129,7 @@ namespace app::ui
 
     void OptionsPage::DeletePromptOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -139,7 +139,7 @@ namespace app::ui
 
     void OptionsPage::EnableSoundOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -149,7 +149,7 @@ namespace app::ui
 
     void OptionsPage::EnableLightningOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -159,7 +159,7 @@ namespace app::ui
 
     void OptionsPage::FixTicketOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -169,7 +169,7 @@ namespace app::ui
 
     void OptionsPage::CreditsOption_Click()
     {
-        if (touchGuard)
+        if (inputGuard)
         {
             return;
         }
@@ -178,12 +178,18 @@ namespace app::ui
 
     void OptionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
     {
+        if (inputGuard)
+        {
+            return;
+        }
+
         if (Down & HidNpadButton_B)
         {
+            app::config::SaveSettings();
             SceneJump(Scene::Main);
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1 && !touchGuard))
+        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
         {
             previousTouchCount = 0;
             if (this->menu->GetSelectedIndex() == menuItemCount - 2)
@@ -230,7 +236,8 @@ namespace app::ui
                             app::config::languageSetting = -1;
                             break;
                     }
-                    touchGuard = true;
+                    inputGuard = true;
+                    app::config::SaveSettings();
                     CloseWithFadeOut();
                 }
             }
