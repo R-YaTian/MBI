@@ -138,7 +138,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, std::move(worker));
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
@@ -304,7 +304,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, std::move(worker));
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
@@ -649,7 +649,7 @@ back_to_loop:
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::HttpWorker>(std::move(content), ourUrlList[urlItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, std::move(worker));
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, std::move(worker));
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();

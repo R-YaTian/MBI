@@ -2,16 +2,16 @@
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
 #include "nx/Crypto.hpp"
-#include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include <thread>
 
 namespace app
 {
-    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, std::unique_ptr<app::install::Worker> worker) :
+    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, std::unique_ptr<app::install::Worker> worker) :
         m_destStorageId(destStorageId),
         m_ignoreReqFirmVersion(ignoreReqFirmVersion),
+        m_fixTicket(fixTicket),
         m_contentMeta(),
         m_worker(std::move(worker))
     {
@@ -254,54 +254,29 @@ namespace app
             m_worker->BufferData(certBuf.get(), m_worker->GetContent()->GetFileEntryOffset(certFileEntries[i]), certSize);
 
             // try to fix a temp ticket and change it to a permanent one
-            if (app::config::fixTicket)
+            if (m_fixTicket)
             {
-                u16 ECDSA = 0;
-                u16 RSA_2048 = 0;
-                u16 RSA_4096 = 0;
-
                 // https://switchbrew.org/wiki/Ticket#Certificate_chain
-                ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
-                RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
-                RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
+                u16 ECDSA = 0x4 + 0x3C + 0x40 + 0x146;
+                u16 RSA_2048 = 0x4 + 0x100 + 0x3C + 0x146;
+                u16 RSA_4096 = 0x4 + 0x200 + 0x3C + 0x146;
 
-                // ECDSA SHA256
-                if (tikBuf.get()[0x0] == 0x5 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
+                // ECDSA SHA256 & SHA1
+                if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
                 {
                     tikBuf.get()[ECDSA] = 0x0;
                     tikBuf.get()[ECDSA - 1] = 0x10; // fix broken Master key revision
                 }
 
-                // RSA_2048 SHA256
-                else if (tikBuf.get()[0x0] == 0x4 && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30))
+                // RSA_2048 SHA256 & SHA1
+                else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30))
                 {
                     tikBuf.get()[RSA_2048] = 0x0;
                     tikBuf.get()[RSA_2048 - 1] = 0x10;
                 }
 
-                // RSA_4096 SHA256
-                else if (tikBuf.get()[0x0] == 0x3 && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30))
-                {
-                    tikBuf.get()[RSA_4096] = 0x0;
-                    tikBuf.get()[RSA_4096 - 1] = 0x10;
-                }
-
-                // ECDSA SHA1
-                else if (tikBuf.get()[0x0] == 0x2 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
-                {
-                    tikBuf.get()[ECDSA] = 0x0;
-                    tikBuf.get()[ECDSA - 1] = 0x10;
-                }
-
-                // RSA_2048 SHA1
-                else if (tikBuf.get()[0x0] == 0x1 && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30))
-                {
-                    tikBuf.get()[RSA_2048] = 0x0;
-                    tikBuf.get()[RSA_2048 - 1] = 0x10;
-                }
-
-                // RSA_4096 SHA1
-                else if (tikBuf.get()[0x0] == 0x0 && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30))
+                // RSA_4096 SHA256 & SHA1
+                else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30))
                 {
                     tikBuf.get()[RSA_4096] = 0x0;
                     tikBuf.get()[RSA_4096 - 1] = 0x10;

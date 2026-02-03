@@ -13,10 +13,11 @@ namespace app
         protected:
             const NcmStorageId m_destStorageId;
             bool m_ignoreReqFirmVersion = false;
+            bool m_fixTicket = false;
             std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
         public:
-            InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, std::unique_ptr<app::install::Worker> worker);
+            InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, std::unique_ptr<app::install::Worker> worker);
             ~InstallTask();
 
             void Prepare();
