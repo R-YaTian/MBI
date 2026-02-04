@@ -34,7 +34,7 @@ namespace app::ui
     MainPage::MainPage() : Layout::Layout()
     {
         appletFinished = false;
-        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (894 / app::config::mainMenuItemSize));
+        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (896 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
@@ -55,6 +55,10 @@ namespace app::ui
         this->udiskInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->udiskInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/disk.png"));
         this->udiskInstallMenuItem->AddOnKey(std::bind(&MainPage::UdiskInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        this->mtpInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.mtp"_lang);
+        this->mtpInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
+        this->mtpInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-mtp.png"));
+        this->mtpInstallMenuItem->AddOnKey(std::bind(&MainPage::MtpInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.png"));
@@ -68,6 +72,7 @@ namespace app::ui
 #endif
         MenuAddItem(this->optionMenu, this->usbInstallMenuItem);
         MenuAddItem(this->optionMenu, this->udiskInstallMenuItem);
+        MenuAddItem(this->optionMenu, this->mtpInstallMenuItem);
         MenuAddItem(this->optionMenu, this->settingsMenuItem);
         MenuAddItem(this->optionMenu, this->exitMenuItem);
         this->Add(this->optionMenu);
@@ -135,6 +140,15 @@ namespace app::ui
             return;
         }
         SceneJump(Scene::UdiskInstall);
+    }
+
+    void MainPage::MtpInstallMenuItem_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        SceneJump(Scene::MtpInstall);
     }
 
     void MainPage::SettingsMenuItem_Click()

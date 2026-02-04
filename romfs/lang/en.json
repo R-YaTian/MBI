@@ -5,6 +5,7 @@
             "net": "Install over LAN or internet",
             "usb": "Install over USB",
             "hdd": "Install over USB HDD",
+            "mtp": "Install via USB MTP",
             "set": "Settings",
             "exit": "Exit"
         },

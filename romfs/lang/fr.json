@@ -5,6 +5,7 @@
             "net": "Installer à partir d'un LAN ou d'internet",
             "usb": "Installer à partir d'un périphèrique USB",
             "hdd": "Installer sur un disque dur USB",
+            "mtp": "Installer via USB MTP",
             "set": " Paramètres",
             "exit": " Quitter"
         },

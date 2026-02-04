@@ -41,6 +41,10 @@ jobs:
       run: |
         git clone https://github.com/R-YaTian/libjtjson.git
 
+    - name: Checkout latest libhaze commit
+      run: |
+        git clone https://github.com/R-YaTian/libhaze.git -b catnip
+
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
 
@@ -67,6 +71,11 @@ jobs:
     - name: Build libjtjson dependencies
       run: |
         cd libjtjson
+        catnip -S . -B build install
+
+    - name: Build libhaze dependencies
+      run: |
+        cd libhaze
         catnip -T switch -S . -B build install
 
     - name: Build MBI

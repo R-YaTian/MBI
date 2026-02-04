@@ -5,6 +5,7 @@
             "net": "Instalar a través de red local o Internet",
             "usb": "Instalar por USB",
             "hdd": "Instalar a través de USB HDD",
+            "mtp": "Instalar mediante USB MTP",
             "set": "Ajustes",
             "exit": "Salir"
         },

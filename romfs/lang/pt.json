@@ -5,6 +5,7 @@
             "net": "Instalar através da LAN ou da Internet",
             "usb": "Instalar atráves do USB",
             "hdd": "Instalar via USB HDD",
+            "mtp": "Instalar via USB MTP",
             "set": "Definições",
             "exit": "Sair"
         },

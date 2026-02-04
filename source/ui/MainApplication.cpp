@@ -3,6 +3,7 @@
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
 #include "nx/udisk.hpp"
+#include "nx/mtp.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/OptionsPage.hpp"
 #include "ui/UsbInstallPage.hpp"
@@ -209,6 +210,7 @@ namespace app::ui
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstall:
+            nx::mtp::Setup();
             break;
         case Scene::Installer:
             mainApp->ShowPageInfo();

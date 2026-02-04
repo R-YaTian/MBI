@@ -8,7 +8,7 @@ namespace app::config
     inline const std::string settingsFile = storagePath + "/config.json";
     inline const std::string themecolorFile = storagePath + "/color.json";
     inline const std::string appVersion = APPVER;
-    inline constexpr auto mainMenuItemSize = 149;
+    inline constexpr auto mainMenuItemSize = 128;
     inline constexpr auto subMenuItemSize = 76;
 
     extern std::string lastNetUrl;

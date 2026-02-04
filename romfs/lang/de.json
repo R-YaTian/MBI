@@ -5,6 +5,7 @@
             "net": "Über LAN oder Internet installieren",
             "usb": "Über USB installieren",
             "hdd": "Über USB HDD installieren",
+            "mtp": "Über USB MTP installieren",
             "set": "Einstellungen",
             "exit": "Beenden"
         },

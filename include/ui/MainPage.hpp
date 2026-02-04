@@ -22,11 +22,13 @@ namespace app::ui
 #endif
             pu::ui::elm::MenuItem::Ref usbInstallMenuItem;
             pu::ui::elm::MenuItem::Ref udiskInstallMenuItem;
+            pu::ui::elm::MenuItem::Ref mtpInstallMenuItem;
             pu::ui::elm::MenuItem::Ref settingsMenuItem;
             pu::ui::elm::MenuItem::Ref exitMenuItem;
             void SdInstallMenuItem_Click();
             void UsbInstallMenuItem_Click();
             void UdiskInstallMenuItem_Click();
+            void MtpInstallMenuItem_Click();
             void SettingsMenuItem_Click();
             void mainMenuThread();
             void MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item);
