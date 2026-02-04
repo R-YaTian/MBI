@@ -52,7 +52,7 @@ namespace app::ui
                 return LoadTexture(path);
             }
         }
-        return LoadTexture("romfs:/images/background.jpg");
+        return LoadTexture("romfs:/images/background.png");
     }
 
     void MainApplication::UpdateStats()
