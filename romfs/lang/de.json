@@ -43,7 +43,7 @@
                 "warn": "Warnung!",
                 "hint": "Gib eine URL zu einer Datei ein",
                 "invalid": "Die eingegebene URL ist ungültig",
-                "source_string": " per URL"
+                "source_string": "Über einen Link (URL) installieren"
             },
             "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0b3 !",
             "top_info1": "Warte auf eine Verbindung... Die IP Adresse deiner Switch ist: ",
@@ -51,7 +51,7 @@
             "index_error": "Dateiliste konnte nicht abgerufen werden",
             "index_error_info": "Stellen Sie sicher, dass die URL auf einen gültigen Webverzeichnisindex oder JSON im Tinfoil-Stil verweist.",
             "transfer_interput": "Bei der Dateiübertragung ist ein Fehler aufgetreten.",
-            "source_string": " über das lokale Netzwerk",
+            "source_string": "Über das Netzwerk installieren",
             "buttons": "\ue0e3 Installation über das Internet    \ue0e2 Aus dem HTTP-Verzeichnis installieren    \ue0f0 Hilfe    \ue0e1 Abbrechen",
             "buttons1": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen"
         },
@@ -61,7 +61,7 @@
                 "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine SD Karte,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0b3."
             },
             "top_info": "Wähle Dateien zur Installation von der SD-Karte aus und drücke dann \ue0b3!",
-            "source_string": " von der SD Karte",
+            "source_string": "Von SD-Kartendatei installieren",
             "delete_info": " installiert! Soll es von der SD-Karte gelöscht werden?",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der SD-Karte gelöscht werden?",
             "delete_desc": "Die originalen Dateien werden nach der Installation nicht mehr benötigt",
@@ -75,7 +75,7 @@
             "top_info": "USB verbunden! Warte auf die Dateiliste...",
             "top_info2": "Wähle Dateien zur Installation aus und drücke dann \ue0b3 !",
             "error": "USB Übertragung ist zeitlich abgelaufen oder fehlgeschlagen",
-            "source_string": " über USB",
+            "source_string": "Über USB installieren",
             "buttons": "\ue0e2 (Halten) Hilfe    \ue0e1 (Halte) Abbrechen",
             "buttons2": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen"
         },
@@ -85,7 +85,7 @@
                 "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine USB HDD,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0b3."
             },
             "top_info": "Wähle Dateien zur Installation von der USB HDD aus und drücke dann \ue0b3!",
-            "source_string": " von der USB HDD",
+            "source_string": "Von USB-Speichergerät installieren",
             "delete_info": " installiert! Soll es von der USB HDD gelöscht werden?",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der USB HDD gelöscht werden?",
             "multi_device_desc": "Bitte wählen Sie ein USB-Gerät oder eine Partition",

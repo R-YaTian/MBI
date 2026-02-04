@@ -43,7 +43,7 @@
                 "warn": "¡Advertencia!",
                 "hint": "Introduce la dirección de Internet de un archivo",
                 "invalid": "¡La URL especificada no es válida!",
-                "source_string": " desde una URL"
+                "source_string": "Instalar mediante enlace (URL)"
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde el servidor, luego pulsa el botón +!",
             "top_info1": "Esperando una conexión... La dirección IP de tu Switch es: ",
@@ -51,7 +51,7 @@
             "index_error": "Error al recuperar la lista de archivos",
             "index_error_info": "Asegúrese de que la URL apunte a un índice de directorio web válido o JSON de estilo Tinfoil.",
             "transfer_interput": "Ha ocurrido un error al transmitir los datos. Comprueba tu conexión de red.",
-            "source_string": " a través de red local",
+            "source_string": "Instalar a través de la red",
             "buttons": "\ue0e3 Instalar Usando la Internet    \ue0e2 Instalar desde el directorio HTTP    \ue0f0 Ayuda    \ue0e1 Cancelar",
             "buttons1": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todos    \ue0ef Instalar Archivo(s)    \ue0e1 Cancelar"
         },
@@ -61,7 +61,7 @@
                 "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu tarjeta SD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón +."
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde la tarjeta SD, y pulsa el botón +!",
-            "source_string": " desde la tarjeta SD",
+            "source_string": "Instalar desde archivo de tarjeta SD",
             "delete_info": " instalado. ¿Borrarlo de la tarjeta SD?",
             "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la tarjeta SD?",
             "delete_desc": "Los archivos originales no hacen falta después de ser instalados",
@@ -75,7 +75,7 @@
             "top_info": "¡Conexión USB exitosa! Esperando que se envíe la lista de archivos...",
             "top_info2": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón +!",
             "error": "Tiempo de espera agotado o error de transferencia USB",
-            "source_string": " por USB",
+            "source_string": "Instalar mediante USB",
             "buttons": "\ue0e2 (Mantener) Ayuda    \ue0e1 (Mantener) Cancelar",
             "buttons2": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e1 Cancelar"
         },
@@ -85,7 +85,7 @@
                 "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu USB HDD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón +."
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde la USB HDD, y pulsa el botón +!",
-            "source_string": " desde la USB HDD",
+            "source_string": "Instalar desde dispositivo de almacenamiento USB",
             "delete_info": " instalado. ¿Borrarlo de la USB HDD?",
             "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la USB HDD?",
             "multi_device_desc": "Seleccione un dispositivo USB o una partición",

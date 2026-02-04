@@ -43,7 +43,7 @@
                 "warn": "Attenzione!",
                 "hint": "Inserisci l'URL del file",
                 "invalid": "L'URL specificato non è valido!",
-                "source_string": " da URL"
+                "source_string": "Installa tramite link (URL)"
             },
             "top_info": "Seleziona quali file vuoi installare dal server, poi premi il tasto Più!",
             "top_info1": "Aspettando una connessione... L'indirizzo IP è: ",
@@ -51,7 +51,7 @@
             "index_error": "Impossibile recuperare l'elenco dei file",
             "index_error_info": "Assicurati che l'URL punti a un indice di directory Web valido o a un JSON in stile Tinfoil.",
             "transfer_interput": "Si è verificato un errore durante il trasferimento dei dati. Controlla la tua connessione.",
-            "source_string": " via rete locale",
+            "source_string": "Installa tramite rete",
             "buttons": "\ue0e3 Installa via internet    \ue0e2 Installa da directory HTTP    \ue0f0 Aiuto    \ue0e1 Annulla",
             "buttons1": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla"
         },
@@ -61,7 +61,7 @@
                 "desc": "Copia i tuoi file NSP, NSZ, XCI, o XCZ nella SD, cercali e\nseleziona quelli che vuoi installare, poi premi Il tasto Più."
             },
             "top_info": "Seleziona quali file vuoi installare dalla SD, poi premi Il tasto Più!",
-            "source_string": " dalla SD",
+            "source_string": "Installa da file su scheda SD",
             "delete_info": " installato! Cancellarlo dalla SD?",
             "delete_info_multi": " file installati correttamente! Cancellarli dalla SD?",
             "delete_desc": "I file originali non sono più necessari dopo averli installati",
@@ -75,7 +75,7 @@
             "top_info": "Connessione USB avvenuta correttamete! Aspetto che la lista dei file venga inviata...",
             "top_info2": "Seleziona quali file vuoi installare via USB, poi premi il tasto Più!",
             "error": "Trasferimento USB scaduto o fallito",
-            "source_string": " via USB",
+            "source_string": "Installa tramite USB",
             "buttons": "\ue0e2 (Tieni premuto) Aiuto    \ue0e1 (Tieni premuto) Annulla",
             "buttons2": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla"
         },
@@ -85,7 +85,7 @@
                 "desc": "Copia i tuoi file NSP, NSZ, XCI, o XCZ nella USB HDD, cercali e\nseleziona quelli che vuoi installare, poi premi Il tasto Più."
             },
             "top_info": "Seleziona quali file vuoi installare dalla USB HDD, poi premi Il tasto Più!",
-            "source_string": " dalla USB HDD",
+            "source_string": "Installa da dispositivo di archiviazione USB",
             "delete_info": " installato! Cancellarlo dalla USB HDD?",
             "delete_info_multi": " file installati correttamente! Cancellarli dalla USB HDD?",
             "multi_device_desc": "Seleziona un dispositivo USB o una partizione",

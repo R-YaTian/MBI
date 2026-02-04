@@ -70,10 +70,11 @@ namespace app::installer
         }
     }
 
-    NX_INLINE std::vector<uint32_t> OnStart()
+    NX_INLINE std::vector<uint32_t> OnStart(std::string sourceString)
     {
         app::manager::initInstallServices();
         app::facade::ShowInstaller();
+        app::facade::SendBottomText(sourceString);
 
         std::vector<uint32_t> previousClockValues;
         if (app::config::overClock)
@@ -105,7 +106,7 @@ namespace app::installer
     {
         void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
         {
-            std::vector<uint32_t> previousClockValues = OnStart();
+            std::vector<uint32_t> previousClockValues = OnStart(storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
 
             bool fileInstalled = true;
             unsigned int titleItr;
@@ -118,13 +119,11 @@ namespace app::installer
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
                                                                "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true) +
-                                                               (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
+                                                               ") " + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true));
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true) +
-                                                               (storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang));
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true));
                     }
 
                     std::string ext = ourTitleList[titleItr].extension().string();
@@ -266,7 +265,7 @@ namespace app::installer
 
         void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
         {
-            std::vector<uint32_t> previousClockValues = OnStart();
+            std::vector<uint32_t> previousClockValues = OnStart("inst.usb.source_string"_lang);
 
             std::vector<std::string> fileNames;
             for (long unsigned int i = 0; i < ourTitleList.size(); i++)
@@ -284,13 +283,12 @@ namespace app::installer
                     if (titleCount > 1)
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
-                                                               "(" + std::to_string(fileItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + fileNames[fileItr] + "inst.usb.source_string"_lang);
+                                                               "(" + std::to_string(fileItr + 1) + "/"  + std::to_string(titleCount) +
+                                                               ") " + fileNames[fileItr]);
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + fileNames[fileItr] +
-                                                               "inst.usb.source_string"_lang);
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + fileNames[fileItr]);
                     }
 
                     std::string extPart = ourTitleList[fileItr].substr(ourTitleList[fileItr].size() - 3, 2);
@@ -613,7 +611,7 @@ back_to_loop:
 
         void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource)
         {
-            std::vector<uint32_t> previousClockValues = OnStart();
+            std::vector<uint32_t> previousClockValues = OnStart(ourSource);
 
             std::vector<std::string> urlNames;
             for (long unsigned int i = 0; i < ourUrlList.size(); i++)
@@ -632,12 +630,12 @@ back_to_loop:
                     if (urlCount > 1)
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
-                                                               "(" + std::to_string(urlItr+1) + "/"  + std::to_string(urlCount) +
-                                                               ") " + urlNames[urlItr] + ourSource);
+                                                               "(" + std::to_string(urlItr + 1) + "/"  + std::to_string(urlCount) +
+                                                               ") " + urlNames[urlItr]);
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + urlNames[urlItr]);
                     }
 
                     std::unique_ptr<nx::Content> content;

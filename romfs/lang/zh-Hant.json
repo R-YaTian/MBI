@@ -43,7 +43,7 @@
                 "warn": "注意！",
                 "hint": "請輸入檔案的URL網路位址",
                 "invalid": "URL網路位址無效！",
-                "source_string": "來源為URL"
+                "source_string": "透過連結 (URL) 安裝"
             },
             "top_info": "選定要從伺服器安裝的檔案後，請按+鈕",
             "top_info1": "正在等待連線中... 你的Switch主機IP是: ",
@@ -51,7 +51,7 @@
             "index_error": "無法從伺服器擷取資料夾列表",
             "index_error_info": "請確認URL指向有效的伺服器資料夾索引或Tinfoil來源的JSON",
             "transfer_interput": "檔案傳輸時發生錯誤，請檢查網路連線狀態是否正常",
-            "source_string": " 透過區網進行安裝",
+            "source_string": "透過網路安裝",
             "buttons": "\ue0e3 透過網路安裝    \ue0e2 透過HTTP資料夾安裝    \ue0f0 說明    \ue0e1 取消",
             "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
         },
@@ -61,7 +61,7 @@
                 "desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到SD記憶卡，\n選定要進行安裝的檔案後，請按+鈕"
             },
             "top_info": "從記憶卡內選定要進行安裝的檔案後，請按+鈕",
-            "source_string": " 從SD記憶卡",
+            "source_string": "從 SD 卡檔案安裝",
             "delete_info": " 安裝完成！是否將檔案從SD記憶卡刪除？",
             "delete_info_multi": " 所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
             "delete_desc": "安裝完成後，不會再使用到原始檔案",
@@ -75,7 +75,7 @@
             "top_info": "USB連接成功！正在接收檔案列表...",
             "top_info2": "選定要從USB安裝的檔案後，請按+鈕",
             "error": "USB傳輸逾時或失敗",
-            "source_string": " 透過USB",
+            "source_string": "透過 USB 安裝",
             "buttons": "\ue0e2 (長按) 說明    \ue0e1 (長按) 取消",
             "buttons2": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
         },
@@ -85,7 +85,7 @@
                 "desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到USB HDD行動硬碟，\n選定要進行安裝的檔案後，請按+鈕"
             },
             "top_info": "從USB HDD行動硬碟內選定要進行安裝的檔案後，請按+鈕",
-            "source_string": " 從USB HDD行動硬碟",
+            "source_string": "從 USB 儲存裝置安裝",
             "delete_info": " 安裝完成！\n是否將檔案從行動硬碟刪除？",
             "delete_info_multi": " 所選的檔案均安裝完成！\n是否將所選的檔案從行動硬碟刪除？",
             "multi_device_desc": "請選擇一個 USB 裝置或分割區",

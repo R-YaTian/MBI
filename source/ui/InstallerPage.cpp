@@ -9,10 +9,11 @@ namespace app::ui
         this->installInfoText = pu::ui::elm::TextBlock::New(15, 160, "");
         this->installInfoText->SetFont("DefaultFont@30");
         this->installInfoText->SetColor(COLOR(app::config::InstallerInfoTextColor));
-        this->installBarText = pu::ui::elm::TextBlock::New(1295, 908, "");
+        this->installBarText = pu::ui::elm::TextBlock::New(1300, 908, "");
         this->installBarText->SetFont("DefaultFont@30");
         this->installBarText->SetColor(COLOR(app::config::InstallerInfoTextColor));
         this->installBar = pu::ui::elm::ProgressBar::New(10, 600 * pu::ui::render::ScreenFactor, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
+        this->installBar->SetRadius(30);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->installBarText);
         this->Add(this->installInfoText);
@@ -44,7 +45,7 @@ namespace app::ui
         {
             this->installBar->SetVisible(true);
         }
-        this->installBar->SetProgress(percent < 2.0f ? 2.0f : percent);
+        this->installBar->SetProgress(percent);
     }
 
     void InstallerPage::Prepare()

@@ -43,7 +43,7 @@
                 "warn": "경고!",
                 "hint": "파일의 URL을 입력하세요.",
                 "invalid": "URL 주소가 잘못되었습니다!",
-                "source_string": " URL에서"
+                "source_string": "링크(URL)로 설치"
             },
             "top_info": "서버에서 설치할 파일을 선택한 후 + 버튼을 누릅니다.",
             "top_info1": "연결 대기 중... 스위치 호스트 IP: ",
@@ -51,7 +51,7 @@
             "index_error": "파일 목록을 검색하지 못했습니다.",
             "index_error_info": "URL이 유효한 웹 디렉토리 인덱스 또는 Tinfoil 스타일 JSON을 가리키는지 확인하십시오.",
             "transfer_interput": "파일 전송 중 오류가 발생했습니다. 네트워크 연결이 정상인지 확인하세요.",
-            "source_string": " 근거리 통신망을 통해 설치",
+            "source_string": "네트워크를 통해 설치",
             "buttons": "\ue0e3 네트워크를 통해 설치    \ue0e2 HTTP 디렉토리에서 설치    \ue0f0 도움말    \ue0e1 취소",
             "buttons1": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0e1 취소"
         },
@@ -61,7 +61,7 @@
                 "desc": "먼저 NSP, NSZ, XCI 또는 XCZ 파일을 SD 메모리 카드에 복사하고,\n설치할 파일을 선택한 후 + 버튼을 누릅니다."
             },
             "top_info": "메모리 카드에서 설치할 파일을 선택한 후 + 버튼을 누릅니다.",
-            "source_string": " SD 메모리 카드에서",
+            "source_string": "SD 카드 파일로 설치",
             "delete_info": " 설치가 완료되었습니다! SD 메모리 카드에서 파일을 삭제하시겠습니까?",
             "delete_info_multi": " 선택한 파일이 모두 설치되었습니다! SD 메모리 카드에서 선택한 파일을 삭제하시겠습니까?",
             "delete_desc": "설치가 완료되면 원본 파일은 더 이상 사용되지 않습니다.",
@@ -75,7 +75,7 @@
             "top_info": "USB 연결 성공! 파일 목록 수신 중...",
             "top_info2": "USB에서 설치할 파일을 선택한 후 + 버튼을 누릅니다.",
             "error": "USB 전송 시간 초과 또는 실패",
-            "source_string": " USB를 통해",
+            "source_string": "USB를 통해 설치",
             "buttons": "\ue0e2 (길게) 설명    \ue0e1 (길게) 취소",
             "buttons2": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0e1 취소"
         },
@@ -85,7 +85,7 @@
                 "desc": "먼저 NSP, NSZ, XCI 또는 XCZ 파일을 USB HDD 모바일 하드 드라이브에 복사하고,\n설치할 파일을 선택한 후 + 버튼을 누릅니다."
             },
             "top_info": "USB HDD 에서 설치할 파일을 선택하고 + 버튼을 눌러주세요!",
-            "source_string": " USB HDD 하드 드라이브를 통해",
+            "source_string": "USB 저장 장치에서 설치",
             "delete_info": " 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
             "delete_info_multi": " 선택한 파일이 모두 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
             "multi_device_desc": "USB 장치 또는 파티션을 선택하세요",

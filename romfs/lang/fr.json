@@ -43,7 +43,7 @@
                 "warn": "Avertissement!",
                 "hint": "Entrez l'URL d'un fichier",
                 "invalid": "L'URL spécifiée n'est pas valide !",
-                "source_string": " à partir d'un URL"
+                "source_string": "Installer via un lien (URL)"
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton Plus !",
             "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",
@@ -51,7 +51,7 @@
             "index_error": "Impossible de récupérer la liste des fichiers",
             "index_error_info": "Assurez-vous que l'URL pointe vers un index de répertoire Web valide ou un JSON de style Tinfoil.",
             "transfer_interput": "Une erreur s'est produite pendant le transfert des données. Vérifiez votre connexion réseau.",
-            "source_string": " à partir du réseau local",
+            "source_string": "Installer via le réseau",
             "buttons": "\ue0e3 Installer via Internet    \ue0e2 Installer à partir du répertoire HTTP    \ue0f0 Aide    \ue0e1 Annuler",
             "buttons1": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner   \ue0ef Installer un/des fichier(s)    \ue0e1 Annuler"
         },
@@ -61,7 +61,7 @@
                 "desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre carte SD, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton Plus."
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la carte SD, puis appuyez sur le bouton Plus !",
-            "source_string": " à partir de la carte SD",
+            "source_string": "Installer depuis un fichier sur carte SD",
             "delete_info": " Installation réussie! Supprimer de la carte SD?",
             "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la carte SD ?",
             "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois qu'ils ont été installés.",
@@ -75,7 +75,7 @@
             "top_info": "Connexion USB réussie ! En attente de l'envoi de la liste des fichiers...",
             "top_info2": "Sélectionnez les fichiers que vous voulez installer par USB, puis appuyez sur le bouton Plus !",
             "error": "Le transfert USB a été interrompu ou a échoué",
-            "source_string": " à partir d'un périphèrique USB",
+            "source_string": "Installer via USB",
             "buttons": "\ue0e2 (Maintenir) Aide    \ue0e1 (Maintenir) Annuler",
             "buttons2": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner    \ue0ef Installer un/des fichier(s)    \ue0e1 Annuler"
         },
@@ -85,7 +85,7 @@
                 "desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre disque dur USB, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton Plus."
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la disque dur USB, puis appuyez sur le bouton Plus !",
-            "source_string": " à partir de la disque dur USB",
+            "source_string": "Installer depuis un périphérique de stockage USB",
             "delete_info": " Installation réussie! Supprimer de la disque dur USB?",
             "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la disque dur USB ?",
             "multi_device_desc": "Veuillez sélectionner un périphérique USB ou une partition",

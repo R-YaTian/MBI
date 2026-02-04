@@ -43,7 +43,7 @@
                 "warn": "警告！",
                 "hint": "输入文件链接 (URL)",
                 "invalid": "链接 (URL) 无效！",
-                "source_string": "从链接 (URL) 安装文件"
+                "source_string": "通过链接 (URL) 安装"
             },
             "top_info": "在服务器中选择将要安装的文件，然后按 \ue0ef 以安装！",
             "top_info1": "正在等待连接… Switch 的 IP 地址是：",
@@ -51,7 +51,7 @@
             "index_error": "检索文件列表失败",
             "index_error_info": "确保 URL 指向有效的网络目录索引或 Tinfoil 样式的 JSON",
             "transfer_interput": "数据传输发生错误，请检查网络连接状态。",
-            "source_string": " 通过网络安装",
+            "source_string": "通过网络安装",
             "buttons": "\ue0e3 网络安装    \ue0e2 从 HTTP 目录安装    \ue0f0 帮助    \ue0e1 取消",
             "buttons1": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
         },
@@ -61,7 +61,7 @@
                 "desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。"
             },
             "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
-            "source_string": " 从 SD 卡文件安装",
+            "source_string": "通过 SD 卡文件安装",
             "delete_info": " 安装完成！是否要从 SD 卡中删除安装文件？",
             "delete_info_multi": " 批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
@@ -75,7 +75,7 @@
             "top_info": "USB 连接成功！正在等待软件发送文件列表...",
             "top_info2": "选择想要通过 USB 安装的文件，然后按 \ue0ef 进行安装！",
             "error": "USB 传输超时或失败",
-            "source_string": " 通过 USB 安装文件",
+            "source_string": "通过 USB 安装",
             "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消",
             "buttons2": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
         },
@@ -85,7 +85,7 @@
                 "desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。"
             },
             "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
-            "source_string": " 从 USB 设备安装",
+            "source_string": "通过 USB 存储设备安装",
             "delete_info": " 安装完成！是否要从 USB 移动硬盘中删除安装文件？",
             "delete_info_multi": " 批量安装完成！是否要从 USB 移动硬盘中删除本次所有安装文件？",
             "multi_device_desc": "请选择一个 USB 设备或分区",

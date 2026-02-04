@@ -43,7 +43,7 @@
                 "warn": "Aviso!",
                 "hint": "Insira o endereço da Internet para o ficheiro",
                 "invalid": "O URL inserido é inválido!",
-                "source_string": " através do URL"
+                "source_string": "Instalar via link (URL)"
             },
             "top_info": "Selecione os ficheiros que deseja instalar através do servidor, depois pressione o botão Mais!",
             "top_info1": "A aguardar ligação... O endereço de IP da Switch é: ",
@@ -51,7 +51,7 @@
             "index_error": "Falha ao recuperar a lista de arquivos",
             "index_error_info": "Certifique-se de que o URL aponte para um índice de diretório da web válido ou JSON estilo Tinfoil.",
             "transfer_interput": "Ocorreu um erro ao tranferir os dados. Verifique a sua ligação à rede.",
-            "source_string": " através de rede local",
+            "source_string": "Instalar via rede",
             "buttons": "\ue0e3 Instalar através da Internet    \ue0e2 Instalar do diretório HTTP    \ue0f0 Ajuda    \ue0e1 Cancelar",
             "buttons1": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e1 Cancelar"
         },
@@ -61,7 +61,7 @@
                 "desc": "Copie os ficheiros NSP, NSZ, XCI, ou XCZ para o cartão SD, explore e\nselecione os ficheiros que deseja instalar, depois pressione o botão Mais."
             },
             "top_info": "Selecione os ficheiros que deseja instalar através do cartão SD, depois pressione o botão Mais!",
-            "source_string": " através do cartão SD",
+            "source_string": "Instalar a partir de arquivo do cartão SD",
             "delete_info": " instalado! Eliminar do cartão SD?",
             "delete_info_multi": " instalados com sucesso! Eliminar do cartão SD?",
             "delete_desc": "Os ficheiros originais não são necessários depois de instalados",
@@ -75,7 +75,7 @@
             "top_info": "USB connection successful! Waiting for list of files to be sent...",
             "top_info2": "Selecione os ficheiros que deseja instalar através do USB, depois pressione o botão Mais!",
             "error": "A transferência USB expirou ou falhou",
-            "source_string": " através do USB",
+            "source_string": "Instalar via USB",
             "buttons": "\ue0e2 (Manter primido) Ajuda    \ue0e1 (Manter primido) Cancelar",
             "buttons2": "\ue0e0 Selecionar Ficheiro    \ue0e3 Selecionar Todos    \ue0ef Instalar Ficheiro(s)    \ue0e1 Cancelar"
         },
@@ -85,7 +85,7 @@
                 "desc": "Copie os ficheiros NSP, NSZ, XCI, ou XCZ para o USB HDD, explore e\nselecione os ficheiros que deseja instalar, depois pressione o botão Mais."
             },
             "top_info": "Selecione os ficheiros que deseja instalar através do USB HDD, depois pressione o botão Mais!",
-            "source_string": " através do USB HDD",
+            "source_string": "Instalar a partir de dispositivo de armazenamento USB",
             "delete_info": " instalado! Eliminar do USB HDD?",
             "delete_info_multi": " instalados com sucesso! Eliminar do USB HDD?",
             "multi_device_desc": "Selecione um dispositivo USB ou uma partição",
