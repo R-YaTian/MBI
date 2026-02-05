@@ -5,6 +5,7 @@
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/usb.hpp"
+#include "nx/mtp.hpp"
 
 #ifdef ENABLE_NET
 #include "nx/network.hpp"
@@ -148,6 +149,8 @@ namespace app::ui
         {
             return;
         }
+        nx::usb::usbDeviceExit();
+        nx::mtp::Setup();
         SceneJump(Scene::MtpInstall);
     }
 

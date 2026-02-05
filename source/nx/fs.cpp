@@ -162,7 +162,8 @@ namespace nx::fs
         return IDirectory(dir);
     }
 
-    std::string GetFreeStorageSpace() {
+    std::string GetSdmcFreeSpace()
+    {
         s64 size = 0;
         std::string sizeStr = "";
         Result ret = 0;

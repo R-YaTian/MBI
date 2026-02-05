@@ -84,6 +84,27 @@ namespace app::ui
         return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
     }
 
+    inline bool IsLongPress(u64& start, bool held, bool up, double seconds)
+    {
+        if (up || !held)
+        {
+            start = 0;
+            return false;
+        }
+        if (start == 0)
+        {
+            start = armGetSystemTick();
+            return false;
+        }
+        u64 freq = armGetSystemTickFreq();
+        if (armGetSystemTick() - start >= (u64)(seconds * freq))
+        {
+            start = 0;
+            return true;
+        }
+        return false;
+    }
+
     void SceneJump(Scene idx);
     pu::sdl2::TextureHandle::Ref GetResource(Resources idx);
     void CloseWithFadeOut();

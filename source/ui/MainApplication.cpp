@@ -3,10 +3,10 @@
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
 #include "nx/udisk.hpp"
-#include "nx/mtp.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/OptionsPage.hpp"
 #include "ui/UsbInstallPage.hpp"
+#include "ui/MtpInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
 #include "ui/LocalInstallPage.hpp"
 #include "ui/MainPage.hpp"
@@ -23,6 +23,7 @@ namespace app::ui
     NetInstallPage::Ref netinstPage;
 #endif
     UsbInstallPage::Ref usbinstPage;
+    MtpInstallPage::Ref mtpinstPage;
     InstallerPage::Ref installerPage;
     LocalInstallPage::Ref localinstPage;
     MainPage::Ref mainPage;
@@ -57,7 +58,7 @@ namespace app::ui
 
     void MainApplication::UpdateStats()
     {
-        const auto newfreeSpaceText = nx::fs::GetFreeStorageSpace();
+        const auto newfreeSpaceText = nx::fs::GetSdmcFreeSpace();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {
             freeSpaceCurrentText = newfreeSpaceText;
@@ -114,17 +115,20 @@ namespace app::ui
         mainPage = MainPage::New();
         localinstPage = LocalInstallPage::New();
         usbinstPage = UsbInstallPage::New();
+        mtpinstPage = MtpInstallPage::New();
         installerPage = InstallerPage::New();
         optionspage = OptionsPage::New();
         mainPage->SetOnInput(std::bind(&MainPage::onInput, mainPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         localinstPage->SetOnInput(std::bind(&LocalInstallPage::onInput, localinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         usbinstPage->SetOnInput(std::bind(&UsbInstallPage::onInput, usbinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+        mtpinstPage->SetOnInput(std::bind(&MtpInstallPage::onInput, mtpinstPage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         optionspage->SetOnInput(std::bind(&OptionsPage::onInput, optionspage, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
         _UI_MAINAPP_MENU_SET_BASE(installerPage);
         _UI_MAINAPP_MENU_SET_BASE(localinstPage);
         _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
+        _UI_MAINAPP_MENU_SET_BASE(mtpinstPage);
 
 #ifdef ENABLE_NET
         netinstPage = NetInstallPage::New();
@@ -210,7 +214,10 @@ namespace app::ui
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstall:
-            nx::mtp::Setup();
+            mainApp->ShowPageInfo();
+            mainApp->SetPageInfoText("inst.usb.top_info"_lang);
+            mainApp->SetBottomText("inst.usb.buttons"_lang);
+            mainApp->LoadLayout(mtpinstPage);
             break;
         case Scene::Installer:
             mainApp->ShowPageInfo();
