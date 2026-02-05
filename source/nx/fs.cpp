@@ -170,53 +170,40 @@ namespace nx::fs
         {
             return sizeStr;
         }
-        sizeStr = convertSize(size);
+        sizeStr = FormatSizeString(size);
         return sizeStr;
     }
 
-    std::string convertSize(s64 size)
+    std::string FormatSizeString(s64 size)
     {
-        std::string sizeStr = "";
-        double bytes = (double)size;
-        if (bytes < 1000.0) {
-            // Bytes
-            sizeStr = std::to_string(bytes) + " bytes";
-        } else {
-            bytes = bytes / 1024;
-            if (bytes < 1000.0) {
-                // KiB
-                bytes = round( bytes * 100.0 ) / 100.0;
-                sizeStr = std::to_string(bytes);
-                sizeStr.erase(sizeStr.find_last_not_of('0') + 1, std::string::npos);
-                sizeStr = sizeStr + " KiB";
-            } else {
-                bytes = bytes / 1024;
-                if (bytes < 1000.0) {
-                    // MiB
-                    bytes = round( bytes * 100.0 ) / 100.0;
-                    sizeStr = std::to_string(bytes);
-                    sizeStr.erase(sizeStr.find_last_not_of('0') + 1, std::string::npos);
-                    sizeStr = sizeStr + " MiB";
-                } else {
-                    bytes = bytes / 1024;
-                    if (bytes < 1000.0) {
-                        // GiB
-                        bytes = round( bytes * 100.0 ) / 100.0;
-                        sizeStr = std::to_string(bytes);
-                        sizeStr.erase(sizeStr.find_last_not_of('0') + 1, std::string::npos);
-                        sizeStr = sizeStr + " GiB";
-                    } else {
-                        bytes = bytes / 1024;
-                        // TiB
-                        bytes = round( bytes * 100.0 ) / 100.0;
-                        sizeStr = std::to_string(bytes);
-                        sizeStr.erase(sizeStr.find_last_not_of('0') + 1, std::string::npos);
-                        sizeStr = sizeStr + " TiB";
-                    }
-                }
+        static const char* units[] = { " B", " KB", " MB", " GB", " TB" };
+
+        double bytes = static_cast<double>(size);
+        int unitIndex = 0;
+
+        while (bytes >= 1024.0 && unitIndex < 4)
+        {
+            bytes /= 1024.0;
+            ++unitIndex;
+        }
+
+        if (unitIndex > 0)
+        {
+            bytes = round(bytes * 100.0) / 100.0;
+        }
+
+        std::string sizeStr = std::to_string(bytes);
+        auto pos = sizeStr.find('.');
+        if (pos != std::string::npos)
+        {
+            sizeStr.erase(sizeStr.find_last_not_of('0') + 1);
+            if (!sizeStr.empty() && sizeStr.back() == '.')
+            {
+                sizeStr.pop_back();
             }
         }
-        return sizeStr;
+
+        return sizeStr + units[unitIndex];
     }
 
     SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :

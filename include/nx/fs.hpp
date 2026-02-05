@@ -92,7 +92,7 @@ namespace nx::fs
     };
 
     std::string GetFreeStorageSpace();
-    std::string convertSize(s64 size);
+    std::string FormatSizeString(s64 size);
 
     class SimpleFileSystem final
     {

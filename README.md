@@ -24,5 +24,5 @@ Use your wanted HEX RGBA colors -> https://rgbcolorpicker.com
 - Huntereb for [Awoo-Installer](https://github.com/Huntereb/Awoo-Installer)
 - Adubbz and other contributors for original [Tinfoil](https://github.com/matt-teix/Tinfoil)
 - XorTroll for [Plutonium](https://github.com/XorTroll/Plutonium) and [Goldleaf](https://github.com/XorTroll/Goldleaf) and [libnx-ext](https://github.com/XorTroll/libnx-ext)
-- nicoboss for [NSZ/XCZ](https://github.com/nicoboss/nsz) support
+- nicoboss for [NSZ/XCZ](https://github.com/nicoboss/nsz) format
 - DarkMatterCore, XorTroll and Rhys Koedijk for [libusbhsfs](https://github.com/DarkMatterCore/libusbhsfs)
