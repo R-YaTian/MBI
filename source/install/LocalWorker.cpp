@@ -32,7 +32,7 @@ namespace app::install
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
 
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
-        size_t ncaSize = m_content->GetFileEntrySize(fileEntry);
+        u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
 
         NcaWriter writer(ncaId, contentStorage);
 

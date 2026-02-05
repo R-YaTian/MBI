@@ -6,7 +6,7 @@
 
 #include "nx/ByteBuffer.hpp"
 
-#define NCA_HEADER_SIZE 0x4000
+#define NCA_HEADER_SIZE 0xc00
 #define MAGIC_NCA3 0x3341434E /* "NCA3" */
 
 namespace nx::nca
