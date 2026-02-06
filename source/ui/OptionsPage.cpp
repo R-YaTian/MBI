@@ -8,6 +8,7 @@ namespace app::ui
 {
     OptionsPage::OptionsPage() : Layout::Layout()
     {
+        this->SetOnInput(std::bind(&OptionsPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         languageStrings.push_back("options.language.system_language"_lang);
         languageStrings.push_back("common.cancel"_lang);
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -34,32 +35,26 @@ namespace app::ui
         fixTicketOption->AddOnKey(std::bind(&OptionsPage::FixTicketOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
         languageOption->SetColor(COLOR(app::config::MenuTextColor));
+        languageOption->AddOnKey(std::bind(&OptionsPage::LanguageOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
         creditsOption->SetColor(COLOR(app::config::MenuTextColor));
         creditsOption->AddOnKey(std::bind(&OptionsPage::CreditsOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
 
-        this->MenuAddItem(this->menu, ignoreFirmOption);
-        this->MenuAddItem(this->menu, overclockOption);
-        this->MenuAddItem(this->menu, deletePromptOption);
-        this->MenuAddItem(this->menu, enableSoundOption);
-        this->MenuAddItem(this->menu, enableLightningOption);
-        this->MenuAddItem(this->menu, fixTicketOption);
-        this->MenuAddItem(this->menu, languageOption);
-        this->MenuAddItem(this->menu, creditsOption);
+        this->menu->AddItem(ignoreFirmOption);
+        this->menu->AddItem(overclockOption);
+        this->menu->AddItem(deletePromptOption);
+        this->menu->AddItem(enableSoundOption);
+        this->menu->AddItem(enableLightningOption);
+        this->menu->AddItem(fixTicketOption);
+        this->menu->AddItem(languageOption);
+        this->menu->AddItem(creditsOption);
         ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
         overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
         deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
         enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
-
         this->Add(this->menu);
-    }
-
-    void OptionsPage::MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item)
-    {
-        menu->AddItem(Item);
-        menuItemCount++;
     }
 
     pu::sdl2::TextureHandle::Ref OptionsPage::getMenuOptionIcon(bool ourBool)
@@ -176,7 +171,71 @@ namespace app::ui
         app::facade::ShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true);
     }
 
-    void OptionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void OptionsPage::LanguageOption_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        s32 rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, false);
+        if (rc >= 0 && rc < (s32)(languageStrings.size() - 1))
+        {
+            switch (rc)
+            {
+                case 0:
+                    app::config::languageSetting = 1;
+                    break;
+                case 1:
+                    app::config::languageSetting = 0;
+                    break;
+                case 2:
+                    app::config::languageSetting = 2;
+                    break;
+                case 3:
+                    app::config::languageSetting = 3;
+                    break;
+                case 4:
+                    app::config::languageSetting = 4;
+                    break;
+                case 5:
+                    app::config::languageSetting = 14;
+                    break;
+                case 6:
+                    app::config::languageSetting = 7;
+                    break;
+                case 7:
+                    app::config::languageSetting = 9;
+                    break;
+                case 8:
+                    app::config::languageSetting = 10;
+                    break;
+                case 9:
+                    app::config::languageSetting = 6;
+                    break;
+                case 10:
+                    app::config::languageSetting = 11;
+                    break;
+                default:
+                    app::config::languageSetting = -1;
+                    break;
+            }
+            inputGuard = true;
+            app::config::SaveSettings();
+            CloseWithFadeOut();
+        }
+    }
+
+    void OptionsPage::onReturn()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        app::config::SaveSettings();
+        SceneJump(Scene::Main);
+    }
+
+    void OptionsPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (inputGuard)
         {
@@ -185,67 +244,7 @@ namespace app::ui
 
         if (Down & HidNpadButton_B)
         {
-            app::config::SaveSettings();
-            SceneJump(Scene::Main);
-        }
-
-        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
-        {
-            previousTouchCount = 0;
-            if (this->menu->GetSelectedIndex() == menuItemCount - 2)
-            {
-                int rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, true);
-                if (rc >= 0)
-                {
-                    switch (rc)
-                    {
-                        case 0:
-                            app::config::languageSetting = 1;
-                            break;
-                        case 1:
-                            app::config::languageSetting = 0;
-                            break;
-                        case 2:
-                            app::config::languageSetting = 2;
-                            break;
-                        case 3:
-                            app::config::languageSetting = 3;
-                            break;
-                        case 4:
-                            app::config::languageSetting = 4;
-                            break;
-                        case 5:
-                            app::config::languageSetting = 14;
-                            break;
-                        case 6:
-                            app::config::languageSetting = 7;
-                            break;
-                        case 7:
-                            app::config::languageSetting = 9;
-                            break;
-                        case 8:
-                            app::config::languageSetting = 10;
-                            break;
-                        case 9:
-                            app::config::languageSetting = 6;
-                            break;
-                        case 10:
-                            app::config::languageSetting = 11;
-                            break;
-                        default:
-                            app::config::languageSetting = -1;
-                            break;
-                    }
-                    inputGuard = true;
-                    app::config::SaveSettings();
-                    CloseWithFadeOut();
-                }
-            }
-        }
-
-        if (IsTouched())
-        {
-            previousTouchCount = 1;
+            onReturn();
         }
     }
 }

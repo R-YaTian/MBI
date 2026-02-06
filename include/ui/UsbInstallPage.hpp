@@ -10,7 +10,6 @@ namespace app::ui
             UsbInstallPage();
             PU_SMART_CTOR(UsbInstallPage)
             void startUsb();
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
             std::vector<std::string> ourTitles;
             std::vector<std::string> selectedTitles;
@@ -19,5 +18,6 @@ namespace app::ui
             void drawMenuItems(bool clearItems);
             void selectTitle(int selectedIndex, bool redraw = true);
             void startInstall();
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
 }

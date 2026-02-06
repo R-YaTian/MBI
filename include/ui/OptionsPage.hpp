@@ -9,9 +9,8 @@ namespace app::ui
         public:
             OptionsPage();
             PU_SMART_CTOR(OptionsPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
+            void onReturn();
         private:
-            s32 menuItemCount = 0;
             bool inputGuard = false;
             std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국어", "Português", "Русский", "简体中文", "正體中文"};
             pu::ui::elm::Menu::Ref menu;
@@ -23,14 +22,15 @@ namespace app::ui
             pu::ui::elm::MenuItem::Ref fixTicketOption;
             pu::ui::elm::MenuItem::Ref languageOption;
             pu::ui::elm::MenuItem::Ref creditsOption;
-            void MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item);
             void IgnoreFirmOption_Click();
             void OverclockOption_Click();
             void DeletePromptOption_Click();
             void EnableSoundOption_Click();
             void EnableLightningOption_Click();
             void FixTicketOption_Click();
+            void LanguageOption_Click();
             void CreditsOption_Click();
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
             pu::sdl2::TextureHandle::Ref getMenuOptionIcon(bool ourBool);
             std::string getMenuLanguage(int ourLangCode);
     };

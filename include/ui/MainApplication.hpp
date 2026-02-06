@@ -27,8 +27,6 @@ namespace app::ui
         BackToParentImage,
     };
 
-    inline s32 previousTouchCount = 0;
-
     class MainApplication : public pu::ui::Application
     {
         public:
@@ -61,11 +59,18 @@ namespace app::ui
                 this->infoRect->SetVisible(true);
                 this->pageInfoText->SetVisible(true);
             }
+
+            void HideClickableButton();
+            void ShowClickableButton();
+            void SetBackwardButtonCallback(std::function<void()> cb);
+            void SetConfirmButtonCallback(std::function<void()> cb);
         private:
             std::string freeSpaceCurrentText;
             u32 batteryCurrentValue;
             pu::sdl2::TextureHandle::Ref bgImg;
             pu::sdl2::TextureHandle::Ref logoImg;
+            pu::sdl2::TextureHandle::Ref backImg;
+            pu::sdl2::TextureHandle::Ref confirmImg;
             pu::ui::elm::Image::Ref titleImage;
             pu::ui::elm::TextBlock::Ref appVersionText;
             pu::ui::elm::TextBlock::Ref freeSpaceText;
@@ -109,5 +114,6 @@ namespace app::ui
     pu::sdl2::TextureHandle::Ref GetResource(Resources idx);
     void CloseWithFadeOut();
     bool IsShown();
-    bool IsTouched();
+    bool IsTouchUp();
+    void UpdateTouchState(const pu::ui::TouchPoint pos, const s32 region_x, const s32 region_y, const s32 region_w, const s32 region_h);
 }

@@ -35,6 +35,7 @@ namespace app::ui
     MainPage::MainPage() : Layout::Layout()
     {
         appletFinished = false;
+        this->SetOnInput(std::bind(&MainPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (896 / app::config::mainMenuItemSize));
         this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
         this->optionMenu->SetShadowBaseAlpha(0);
@@ -67,23 +68,18 @@ namespace app::ui
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
-        MenuAddItem(this->optionMenu, this->sdInstallMenuItem);
+        this->exitMenuItem->AddOnKey(std::bind(&MainPage::ExitMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        this->optionMenu->AddItem(this->sdInstallMenuItem);
 #ifdef ENABLE_NET
-        MenuAddItem(this->optionMenu, this->netInstallMenuItem);
+        this->optionMenu->AddItem(this->netInstallMenuItem);
 #endif
-        MenuAddItem(this->optionMenu, this->usbInstallMenuItem);
-        MenuAddItem(this->optionMenu, this->udiskInstallMenuItem);
-        MenuAddItem(this->optionMenu, this->mtpInstallMenuItem);
-        MenuAddItem(this->optionMenu, this->settingsMenuItem);
-        MenuAddItem(this->optionMenu, this->exitMenuItem);
+        this->optionMenu->AddItem(this->usbInstallMenuItem);
+        this->optionMenu->AddItem(this->udiskInstallMenuItem);
+        this->optionMenu->AddItem(this->mtpInstallMenuItem);
+        this->optionMenu->AddItem(this->settingsMenuItem);
+        this->optionMenu->AddItem(this->exitMenuItem);
         this->Add(this->optionMenu);
         this->AddRenderCallback(std::bind(&MainPage::mainMenuThread, this));
-    }
-
-    void MainPage::MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item)
-    {
-        menu->AddItem(Item);
-        menuItemCount++;
     }
 
     void MainPage::SdInstallMenuItem_Click()
@@ -163,7 +159,17 @@ namespace app::ui
         SceneJump(Scene::Options);
     }
 
-    void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void MainPage::ExitMenuItem_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        inputGuard = true;
+        CloseWithFadeOut();
+    }
+
+    void MainPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (inputGuard)
         {
@@ -172,24 +178,7 @@ namespace app::ui
 
         if ((Down & HidNpadButton_Plus) && IsShown())
         {
-            inputGuard = true;
-            CloseWithFadeOut();
-            return;
-        }
-
-        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
-        {
-            previousTouchCount = 0;
-            if (this->optionMenu->GetSelectedIndex() == menuItemCount - 1)
-            {
-                inputGuard = true;
-                CloseWithFadeOut();
-            }
-        }
-
-        if (IsTouched())
-        {
-            previousTouchCount = 1;
+            ExitMenuItem_Click();
         }
     }
 }

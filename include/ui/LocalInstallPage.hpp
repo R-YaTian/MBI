@@ -13,11 +13,12 @@ namespace app::ui
             LocalInstallPage();
             ~LocalInstallPage();
             PU_SMART_CTOR(LocalInstallPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
             void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
             void setMenuIndex(int index);
             void setStorageSourceToSdmc();
             void setStorageSourceToUdisk();
+            void onCancel();
+            void onConfirm();
         private:
             std::vector<std::filesystem::path> ourDirectories;
             std::vector<std::filesystem::path> ourFiles;
@@ -31,5 +32,6 @@ namespace app::ui
             void followDirectory();
             void selectFile(int selectedIndex, bool redraw = true);
             void startInstall();
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
 }

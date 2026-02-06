@@ -9,9 +9,7 @@ namespace app::ui
         public:
             MainPage();
             PU_SMART_CTOR(MainPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
-            s32 menuItemCount = 0;
             bool inputGuard = false;
             bool appletFinished;
             pu::ui::elm::Menu::Ref optionMenu;
@@ -30,7 +28,8 @@ namespace app::ui
             void UdiskInstallMenuItem_Click();
             void MtpInstallMenuItem_Click();
             void SettingsMenuItem_Click();
+            void ExitMenuItem_Click();
             void mainMenuThread();
-            void MenuAddItem(pu::ui::elm::Menu::Ref& menu, pu::ui::elm::MenuItem::Ref& Item);
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
 }

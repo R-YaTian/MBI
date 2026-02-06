@@ -12,6 +12,7 @@ namespace app::ui
 {
     NetInstallPage::NetInstallPage() : Layout::Layout()
     {
+        this->SetOnInput(std::bind(&NetInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
@@ -79,17 +80,15 @@ namespace app::ui
         }
     }
 
-    void NetInstallPage::startNetwork()
+    bool NetInstallPage::startNetwork()
     {
-        netListRevceived = false;
         this->menu->SetVisible(false);
         this->menu->ClearItems();
         this->infoImage->SetVisible(true);
         this->ourUrls = app::installer::Network::WaitingForNetworkData();
         if (!this->ourUrls.size())
         {
-            SceneJump(Scene::Main);
-            return;
+            return false;
         }
         else if (this->ourUrls[0] == "supplyUrl")
         {
@@ -99,22 +98,19 @@ namespace app::ui
                 if (nx::network::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://")
                 {
                     app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
-                    this->startNetwork();
-                    return;
+                    return startNetwork();
                 }
                 app::config::lastNetUrl = keyboardResult;
                 sourceString = "inst.net.url.source_string"_lang;
                 this->selectedUrls = {keyboardResult};
                 this->startInstall(true);
-                return;
+                return false;
             }
-            this->startNetwork();
-            return;
+            return startNetwork();
         }
         else
         {
             sourceString = "inst.net.source_string"_lang;
-            netListRevceived = true;
             app::facade::SendPageInfoText("inst.net.top_info"_lang);
             app::facade::SendBottomText("inst.net.buttons1"_lang);
             this->drawMenuItems(true);
@@ -122,7 +118,7 @@ namespace app::ui
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);
         }
-        return;
+        return true;
     }
 
     void NetInstallPage::startInstall(bool urlMode)
@@ -148,40 +144,58 @@ namespace app::ui
         }
         else if (dialogResult == -1 && urlMode)
         {
-            this->startNetwork();
+            onCancel();
             return;
         }
         app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);
     }
 
-    void NetInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void NetInstallPage::onCancel()
+    {
+        if (this->menu->GetItems().size() > 0)
+        {
+            if (this->selectedUrls.size() == 0)
+            {
+                this->selectTitle(this->menu->GetSelectedIndex());
+            }
+            app::installer::Network::PushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
+        }
+        app::installer::Network::Cleanup();
+        SceneJump(Scene::Main);
+    }
+
+    void NetInstallPage::onConfirm()
+    {
+        if (this->menu->GetItems().size() > 0)
+        {
+            if (this->selectedUrls.size() == 0)
+            {
+                this->selectTitle(this->menu->GetSelectedIndex());
+            }
+            this->startInstall();
+        }
+    }
+
+    void NetInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {
-            if (this->menu->GetItems().size() > 0)
-            {
-                if (this->selectedUrls.size() == 0)
-                {
-                    this->selectTitle(this->menu->GetSelectedIndex());
-                }
-                app::installer::Network::PushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
-            }
-            app::installer::Network::Cleanup();
-            SceneJump(Scene::Main);
+            onCancel();
         }
-        if (netListRevceived)
+
+        if (this->menu->GetItems().size() > 0)
         {
-            if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
+            if ((Down & HidNpadButton_A) || IsTouchUp())
             {
-                previousTouchCount = 0;
                 this->selectTitle(this->menu->GetSelectedIndex());
-                if (this->menu->GetItems().size() == 1 && this->selectedUrls.size() == 1) {
-                    this->startInstall(false);
+                if (this->menu->GetItems().size() == 1 && this->selectedUrls.size() == 1)
+                {
+                    this->startInstall();
                 }
             }
             if ((Down & HidNpadButton_Y))
             {
-                if (this->selectedUrls.size() == this->menu->GetItems().size()) 
+                if (this->selectedUrls.size() == this->menu->GetItems().size())
                 {
                     this->drawMenuItems(true);
                 }
@@ -193,7 +207,7 @@ namespace app::ui
                         {
                             continue;
                         }
-                        else 
+                        else
                         {
                             this->selectTitle(i, false);
                         }
@@ -204,26 +218,18 @@ namespace app::ui
 
             if (Down & HidNpadButton_ZL)
             {
-                this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
+                this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 11));
             }
             if (Down & HidNpadButton_ZR)
             {
-                this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
+                this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 11));
             }
 
             if (Down & HidNpadButton_Plus)
             {
-                if (this->selectedUrls.size() == 0)
-                {
-                    this->selectTitle(this->menu->GetSelectedIndex());
-                }
-                this->startInstall(false);
+                onConfirm();
             }
-        }
-
-        if (IsTouched())
-        {
-            previousTouchCount = 1;
+            UpdateTouchState(Pos, 0, 154, 1920, this->menu->GetItems().size() * app::config::subMenuItemSize);
         }
     }
 }

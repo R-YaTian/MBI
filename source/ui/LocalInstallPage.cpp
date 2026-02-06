@@ -19,6 +19,7 @@ namespace app::ui
 
     LocalInstallPage::LocalInstallPage() : Layout::Layout()
     {
+        this->SetOnInput(std::bind(&LocalInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
@@ -207,24 +208,40 @@ namespace app::ui
         pageData->lastIndex.clear();
     }
 
-    void LocalInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void LocalInstallPage::onCancel()
+    {
+        if (pageData->subPathCounter > 0)
+        {
+            this->menu->SetSelectedIndex(0);
+            this->followDirectory();
+        }
+        else
+        {
+            SceneJump(Scene::Main);
+        }
+    }
+
+    void LocalInstallPage::onConfirm()
+    {
+        if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == GetResource(Resources::UncheckedImage))
+        {
+            this->selectFile(this->menu->GetSelectedIndex());
+        }
+        if (this->selectedTitles.size() > 0)
+        {
+            this->startInstall();
+        }
+    }
+
+    void LocalInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {
-            if (pageData->subPathCounter > 0)
-            {
-                this->menu->SetSelectedIndex(0);
-                this->followDirectory();
-            }
-            else
-            {
-                SceneJump(Scene::Main);
-            }
+            onCancel();
         }
 
-        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
+        if ((Down & HidNpadButton_A) || IsTouchUp())
         {
-            previousTouchCount = 0;
             this->selectFile(this->menu->GetSelectedIndex());
             if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1)
             {
@@ -269,29 +286,19 @@ namespace app::ui
 
         if (Down & HidNpadButton_ZL)
         {
-            this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
+            this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 11));
         }
         if (Down & HidNpadButton_ZR)
         {
-            this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
+            this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 11));
         }
 
         if (Down & HidNpadButton_Plus)
         {
-            if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == GetResource(Resources::UncheckedImage))
-            {
-                this->selectFile(this->menu->GetSelectedIndex());
-            }
-            if (this->selectedTitles.size() > 0)
-            {
-                this->startInstall();
-            }
+            onConfirm();
         }
 
-        if (IsTouched())
-        {
-            previousTouchCount = 1;
-        }
+        UpdateTouchState(Pos, 0, 154, 1920, this->menu->GetItems().size() * app::config::subMenuItemSize);
     }
 
     void LocalInstallPage::setMenuIndex(int index)

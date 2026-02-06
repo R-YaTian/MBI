@@ -9,8 +9,8 @@ namespace app::ui
         public:
             MtpInstallPage();
             PU_SMART_CTOR(MtpInstallPage)
-            void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos);
         private:
             pu::ui::elm::Image::Ref infoImage;
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
 }

@@ -11,6 +11,7 @@ namespace app::ui
 {
     UsbInstallPage::UsbInstallPage() : Layout::Layout()
     {
+        this->SetOnInput(std::bind(&UsbInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
@@ -58,7 +59,7 @@ namespace app::ui
                 }
             }
         }
-        else 
+        else
         {
             this->selectedTitles.push_back(this->ourTitles[selectedIndex]);
         }
@@ -109,7 +110,7 @@ namespace app::ui
         app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
-    void UsbInstallPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint Pos)
+    void UsbInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {
@@ -117,9 +118,8 @@ namespace app::ui
             SceneJump(Scene::Main);
             nx::usb::usbDeviceReset();
         }
-        if ((Down & HidNpadButton_A) || (!IsTouched() && previousTouchCount == 1))
+        if ((Down & HidNpadButton_A) || IsTouchUp())
         {
-            previousTouchCount = 0;
             this->selectTitle(this->menu->GetSelectedIndex());
             if (this->menu->GetItems().size() == 1 && this->selectedTitles.size() == 1)
             {
@@ -159,9 +159,6 @@ namespace app::ui
             this->startInstall();
         }
 
-        if (IsTouched())
-        {
-            previousTouchCount = 1;
-        }
+        UpdateTouchState(Pos, 0, 154, 1920, 836);
     }
 }
