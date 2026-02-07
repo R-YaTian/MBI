@@ -248,7 +248,12 @@ namespace app::ui
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
-            usbinstPage->startUsb();
+            if (usbinstPage->startUsb())
+            {
+                mainApp->SetBackwardButtonCallback(std::bind(&UsbInstallPage::onCancel, usbinstPage));
+                mainApp->SetConfirmButtonCallback(std::bind(&UsbInstallPage::onConfirm, usbinstPage));
+                mainApp->ShowClickableButton();
+            }
             break;
         case Scene::SdInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);

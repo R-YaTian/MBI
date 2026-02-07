@@ -37,7 +37,7 @@ namespace app::ui
         appletFinished = false;
         this->SetOnInput(std::bind(&MainPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#00000033"), app::config::mainMenuItemSize, (896 / app::config::mainMenuItemSize));
-        this->optionMenu->SetScrollbarColor(COLOR("#170909FF"));
+        this->optionMenu->SetScrollbarColor(COLOR("#17090980"));
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));

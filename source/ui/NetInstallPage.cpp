@@ -237,7 +237,7 @@ namespace app::ui
                 onConfirm();
             }
 
-            UpdateTouchState(Pos, 0, 154, 1920, this->menu->GetItems().size() * app::config::subMenuItemSize);
+            UpdateTouchState(Pos, 0, 154, 1920, std::min(this->menu->GetItems().size() * app::config::subMenuItemSize, (size_t)836));
         }
     }
 }

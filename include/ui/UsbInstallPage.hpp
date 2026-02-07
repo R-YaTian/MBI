@@ -9,7 +9,9 @@ namespace app::ui
         public:
             UsbInstallPage();
             PU_SMART_CTOR(UsbInstallPage)
-            void startUsb();
+            bool startUsb();
+            void onCancel();
+            void onConfirm();
         private:
             std::vector<std::string> ourTitles;
             std::vector<std::string> selectedTitles;

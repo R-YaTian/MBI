@@ -69,7 +69,7 @@ namespace app::ui
         }
     }
 
-    void UsbInstallPage::startUsb()
+    bool UsbInstallPage::startUsb()
     {
         this->menu->SetVisible(false);
         this->menu->ClearItems();
@@ -78,8 +78,7 @@ namespace app::ui
         this->ourTitles = app::installer::Usb::WaitingForFileList();
         if (!this->ourTitles.size())
         {
-            SceneJump(Scene::Main);
-            return;
+            return false;
         }
         else
         {
@@ -90,7 +89,7 @@ namespace app::ui
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);
         }
-        return;
+        return true;
     }
 
     void UsbInstallPage::startInstall()
@@ -111,14 +110,37 @@ namespace app::ui
         app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
+    void UsbInstallPage::onCancel()
+    {
+        nx::usb::USBCommandManager::SendExitCommand();
+        SceneJump(Scene::Main);
+        nx::usb::usbDeviceReset();
+    }
+
+    void UsbInstallPage::onConfirm()
+    {
+        if (this->menu->GetItems().size() > 0)
+        {
+            if (this->selectedTitles.size() == 0)
+            {
+                this->selectTitle(this->menu->GetSelectedIndex());
+            }
+            this->startInstall();
+        }
+    }
+
     void UsbInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
         {
-            nx::usb::USBCommandManager::SendExitCommand();
-            SceneJump(Scene::Main);
-            nx::usb::usbDeviceReset();
+            onCancel();
         }
+
+        if (this->menu->GetItems().size() == 0)
+        {
+            return;
+        }
+
         if ((Down & HidNpadButton_A) || IsTouchUp())
         {
             this->selectTitle(this->menu->GetSelectedIndex());
@@ -151,15 +173,9 @@ namespace app::ui
         }
         if (Down & HidNpadButton_Plus)
         {
-            if (this->selectedTitles.size() == 0)
-            {
-                this->selectTitle(this->menu->GetSelectedIndex());
-                this->startInstall();
-                return;
-            }
-            this->startInstall();
+            onConfirm();
         }
 
-        UpdateTouchState(Pos, 0, 154, 1920, 836);
+        UpdateTouchState(Pos, 0, 154, 1920, std::min(this->menu->GetItems().size() * app::config::subMenuItemSize, (size_t)836));
     }
 }
