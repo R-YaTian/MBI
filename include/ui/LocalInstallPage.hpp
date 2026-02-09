@@ -3,32 +3,29 @@
 #include <filesystem>
 #include <vector>
 #include <memory>
-#include <pu/Plutonium>
+
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class LocalInstallPage : public pu::ui::Layout
+    class LocalInstallPage : public BaseMenuPage
     {
         public:
             LocalInstallPage();
             ~LocalInstallPage();
             PU_SMART_CTOR(LocalInstallPage)
             void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
-            void setMenuIndex(int index);
             void setStorageSourceToSdmc();
             void setStorageSourceToUdisk();
-            void onCancel();
-            void onConfirm();
+            void onCancel() override;
+            void onConfirm() override;
+            void onSelectAll() override;
         private:
-            std::vector<std::filesystem::path> ourDirectories;
-            std::vector<std::filesystem::path> ourFiles;
-            std::vector<std::filesystem::path> selectedTitles;
-            std::vector<long unsigned int> menuIndices;
-            std::filesystem::path currentDir;
-            bool isRootDirectory = true;
             pu::ui::elm::Menu::Ref menu;
+            pu::ui::elm::Menu::Ref GetMenu() override { return this->menu; }
             struct InternalData;
             std::unique_ptr<InternalData> pageData;
+
             void followDirectory();
             void selectFile(int selectedIndex, bool redraw = true);
             void startInstall();

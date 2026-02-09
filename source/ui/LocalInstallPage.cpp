@@ -10,14 +10,20 @@ namespace app::ui
 {
     struct LocalInstallPage::InternalData
     {
-        std::vector<int> lastIndex;
         int subPathCounter = 0;
+        bool isRootDirectory = true;
         installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
+        std::filesystem::path currentDir;
+        std::vector<std::filesystem::path> menuDirectories;
+        std::vector<std::filesystem::path> menuFiles;
+        std::vector<std::filesystem::path> selectedTitles;
+        std::vector<size_t> menuIndices;
+        std::vector<int> lastIndex;
     };
 
     LocalInstallPage::~LocalInstallPage() = default;
 
-    LocalInstallPage::LocalInstallPage() : Layout::Layout()
+    LocalInstallPage::LocalInstallPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&LocalInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -32,40 +38,41 @@ namespace app::ui
         s32 menuIndex = this->menu->GetSelectedIndex();
         if (clearItems)
         {
-            this->selectedTitles = {};
+            pageData->selectedTitles = {};
         }
 
-        this->currentDir = ourPath;
+        pageData->currentDir = ourPath;
 
-		auto pathStr = this->currentDir.string();
-		if(pathStr.length())
-		{
-			if(pathStr[pathStr.length() - 1] == ':')
-			{
-				this->currentDir = std::filesystem::path(pathStr + "/");
-                isRootDirectory = true;
-			}
+        auto pathStr = pageData->currentDir.string();
+        if(pathStr.length())
+        {
+            if(pathStr[pathStr.length() - 1] == ':' || pathStr.substr(pathStr.length() - 2, pathStr.length() - 1) == ":/")
+            {
+                std::string rootDir = pathStr.substr(0, pathStr.find_last_of(':') + 1);
+                pageData->currentDir = std::filesystem::path(rootDir + "/");
+                pageData->isRootDirectory = true;
+            }
             else
             {
-                isRootDirectory = false;
+                pageData->isRootDirectory = false;
             }
-		}
+        }
 
         this->menu->ClearItems();
-        this->menuIndices = {};
+        pageData->menuIndices = {};
 
         try
         {
-            this->ourDirectories = util::getDirsAtPath(this->currentDir);
-            this->ourFiles = util::getDirectoryFiles(this->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
+            pageData->menuDirectories = util::getDirsAtPath(pageData->currentDir);
+            pageData->menuFiles = util::getDirectoryFiles(pageData->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
         }
         catch (std::exception& e)
         {
-            this->drawMenuItems(false, this->currentDir.parent_path());
+            this->drawMenuItems(false, pageData->currentDir.parent_path());
             return;
         }
 
-        if (!isRootDirectory)
+        if (!pageData->isRootDirectory)
         {
             std::string itm = "..";
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
@@ -74,7 +81,7 @@ namespace app::ui
             this->menu->AddItem(ourEntry);
         }
 
-        for (auto& file: this->ourDirectories)
+        for (auto& file : pageData->menuDirectories)
         {
             if (file == "..")
             {
@@ -87,33 +94,33 @@ namespace app::ui
             this->menu->AddItem(ourEntry);
         }
 
-        for (long unsigned int i = 0; i < this->ourFiles.size(); i++)
+        for (size_t i = 0; i < pageData->menuFiles.size(); i++)
         {
-            auto& file = this->ourFiles[i];
+            auto& file = pageData->menuFiles[i];
 
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
-            for (long unsigned int j = 0; j < this->selectedTitles.size(); j++)
+            for (size_t j = 0; j < pageData->selectedTitles.size(); j++)
             {
-                if (this->selectedTitles[j] == file)
+                if (pageData->selectedTitles[j] == file)
                 {
                     ourEntry->SetIcon(GetResource(Resources::CheckedImage));
                 }
             }
             this->menu->AddItem(ourEntry);
             this->menu->SetSelectedIndex(menuIndex);
-            this->menuIndices.push_back(i);
+            pageData->menuIndices.push_back(i);
         }
     }
 
     void LocalInstallPage::followDirectory()
     {
         int selectedIndex = this->menu->GetSelectedIndex();
-        int dirListSize = this->ourDirectories.size();
+        int dirListSize = pageData->menuDirectories.size();
         int selectNewIndex = 0;
-        if (!isRootDirectory)
+        if (!pageData->isRootDirectory)
         {
             dirListSize++;
             selectedIndex--;
@@ -123,7 +130,7 @@ namespace app::ui
         {
             if (this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == ".." && this->menu->GetSelectedIndex() == 0)
             {
-                this->drawMenuItems(true, this->currentDir.parent_path());
+                this->drawMenuItems(true, pageData->currentDir.parent_path());
                 if (pageData->subPathCounter > 0)
                 {
                     pageData->subPathCounter--;
@@ -133,7 +140,7 @@ namespace app::ui
             }
             else
             {
-                this->drawMenuItems(true, this->ourDirectories[selectedIndex]);
+                this->drawMenuItems(true, pageData->menuDirectories[selectedIndex]);
                 if (pageData->subPathCounter > 0)
                 {
                     pageData->lastIndex.push_back(selectedIndex + 1);
@@ -150,32 +157,32 @@ namespace app::ui
 
     void LocalInstallPage::selectFile(int selectedIndex, bool redraw)
     {
-        int dirListSize = this->ourDirectories.size();
-        if (!isRootDirectory)
+        int dirListSize = pageData->menuDirectories.size();
+        if (!pageData->isRootDirectory)
         {
             dirListSize++;
         }
 
-        long unsigned int fileIdx = 0;
-        if (this->menuIndices.size() > 0)
+        size_t fileIdx = 0;
+        if (pageData->menuIndices.size() > 0)
         {
-            fileIdx = this->menuIndices[selectedIndex - dirListSize];
+            fileIdx = pageData->menuIndices[selectedIndex - dirListSize];
         }
 
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
-            for (long unsigned int i = 0; i < this->selectedTitles.size(); i++)
+            for (size_t i = 0; i < pageData->selectedTitles.size(); i++)
             {
-                if (this->selectedTitles[i] == this->ourFiles[fileIdx])
+                if (pageData->selectedTitles[i] == pageData->menuFiles[fileIdx])
                 {
-                    this->selectedTitles.erase(this->selectedTitles.begin() + i);
+                    pageData->selectedTitles.erase(pageData->selectedTitles.begin() + i);
                     break;
                 }
             }
         }
         else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::UncheckedImage))
         {
-            this->selectedTitles.push_back(this->ourFiles[fileIdx]);
+            pageData->selectedTitles.push_back(pageData->menuFiles[fileIdx]);
         }
         else
         {
@@ -184,26 +191,34 @@ namespace app::ui
         }
         if (redraw)
         {
-            this->drawMenuItems(false, currentDir);
+            this->drawMenuItems(false, pageData->currentDir);
         }
     }
 
     void LocalInstallPage::startInstall()
     {
         int dialogResult = -1;
-        if (this->selectedTitles.size() == 1)
+        if (pageData->selectedTitles.size() == 1)
         {
-            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + app::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang +
+                                                   app::util::shortenString(std::filesystem::path(pageData->selectedTitles[0]).filename().string(), 32, true) +
+                                                   "inst.target.desc1"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
         else
         {
-            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang +
+                                                   std::to_string(pageData->selectedTitles.size()) +
+                                                   "inst.target.desc01"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
-        if (dialogResult == -1)
+        if (dialogResult < 0)
         {
             return;
         }
-        app::installer::Local::InstallFromFile(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
+        app::installer::Local::InstallFromFile(pageData->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
         pageData->subPathCounter = 0;
         pageData->lastIndex.clear();
     }
@@ -223,13 +238,41 @@ namespace app::ui
 
     void LocalInstallPage::onConfirm()
     {
-        if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == GetResource(Resources::UncheckedImage))
+        if (pageData->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == GetResource(Resources::UncheckedImage))
         {
             this->selectFile(this->menu->GetSelectedIndex());
         }
-        if (this->selectedTitles.size() > 0)
+        if (pageData->selectedTitles.size() > 0)
         {
             this->startInstall();
+        }
+    }
+
+    void LocalInstallPage::onSelectAll()
+    {
+        if (pageData->selectedTitles.size() == pageData->menuFiles.size())
+        {
+            this->drawMenuItems(true, pageData->currentDir);
+        }
+        else
+        {
+            int topDir = 0;
+            if (!pageData->isRootDirectory)
+            {
+                topDir++;
+            }
+            for (size_t i = pageData->menuDirectories.size() + topDir; i < this->menu->GetItems().size(); i++)
+            {
+                if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
+                {
+                    continue;
+                }
+                else
+                {
+                    this->selectFile(i, false);
+                }
+            }
+            this->drawMenuItems(false, pageData->currentDir);
         }
     }
 
@@ -243,7 +286,7 @@ namespace app::ui
         if ((Down & HidNpadButton_A) || IsTouchUp())
         {
             this->selectFile(this->menu->GetSelectedIndex());
-            if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1)
+            if (pageData->menuFiles.size() == 1 && pageData->selectedTitles.size() == 1)
             {
                 this->startInstall();
             }
@@ -251,30 +294,7 @@ namespace app::ui
 
         if ((Down & HidNpadButton_Y))
         {
-            if (this->selectedTitles.size() == this->ourFiles.size())
-            {
-                this->drawMenuItems(true, currentDir);
-            }
-            else
-            {
-                int topDir = 0;
-                if (!isRootDirectory)
-                {
-                    topDir++;
-                }
-                for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++)
-                {
-                    if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        this->selectFile(i, false);
-                    }
-                }
-                this->drawMenuItems(false, currentDir);
-            }
+            onSelectAll();
         }
 
         if ((Down & HidNpadButton_Minus))
@@ -286,11 +306,12 @@ namespace app::ui
 
         if (Down & HidNpadButton_ZL)
         {
-            this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 11));
+            onPageUp();
         }
+
         if (Down & HidNpadButton_ZR)
         {
-            this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 11));
+            onPageDown();
         }
 
         if (Down & HidNpadButton_Plus)
@@ -301,18 +322,15 @@ namespace app::ui
         UpdateTouchState(Pos, 0, 154, 1920, this->menu->GetItems().size() * app::config::subMenuItemSize);
     }
 
-    void LocalInstallPage::setMenuIndex(int index)
-    {
-        this->menu->SetSelectedIndex(index);
-    }
-
     void LocalInstallPage::setStorageSourceToSdmc()
     {
+        this->menu->SetSelectedIndex(0);
         pageData->storageSrc = installer::Local::StorageSource::SD;
     }
 
     void LocalInstallPage::setStorageSourceToUdisk()
     {
+        this->menu->SetSelectedIndex(0);
         pageData->storageSrc = installer::Local::StorageSource::UDISK;
     }
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <pu/Plutonium>
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class MtpInstallPage : public pu::ui::Layout
+    class MtpInstallPage : public BaseMenuPage
     {
         public:
             MtpInstallPage();

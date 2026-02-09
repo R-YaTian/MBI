@@ -215,7 +215,7 @@ namespace app::installer
 
             while (true)
             {
-                app::facade::SendRenderRequest();
+                // app::facade::SendRenderRequest();
                 if (transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
                 {
                     break;
@@ -268,7 +268,7 @@ namespace app::installer
             std::vector<uint32_t> previousClockValues = OnStart("inst.usb.source_string"_lang);
 
             std::vector<std::string> fileNames;
-            for (long unsigned int i = 0; i < ourTitleList.size(); i++)
+            for (size_t i = 0; i < ourTitleList.size(); i++)
             {
                 fileNames.push_back(app::util::shortenString(ourTitleList[i], 30, true));
             }
@@ -614,7 +614,7 @@ back_to_loop:
             std::vector<uint32_t> previousClockValues = OnStart(ourSource);
 
             std::vector<std::string> urlNames;
-            for (long unsigned int i = 0; i < ourUrlList.size(); i++)
+            for (size_t i = 0; i < ourUrlList.size(); i++)
             {
                 urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 28, true));
             }

@@ -27,6 +27,13 @@ namespace app::ui
         BackToParentImage,
     };
 
+    enum class TouchButtonAreaType
+    {
+        Hide,
+        Base,
+        Full
+    };
+
     class MainApplication : public pu::ui::Application
     {
         public:
@@ -48,22 +55,7 @@ namespace app::ui
                 this->pageInfoText->SetText(text);
             }
 
-            inline void HidePageInfo()
-            {
-                this->infoRect->SetVisible(false);
-                this->pageInfoText->SetVisible(false);
-            }
-
-            inline void ShowPageInfo()
-            {
-                this->infoRect->SetVisible(true);
-                this->pageInfoText->SetVisible(true);
-            }
-
-            void HideClickableButton();
-            void ShowClickableButton();
-            void SetBackwardButtonCallback(std::function<void()> cb);
-            void SetConfirmButtonCallback(std::function<void()> cb);
+            void SetTouchButtonAreaType(TouchButtonAreaType type);
         private:
             std::string freeSpaceCurrentText;
             u32 batteryCurrentValue;
@@ -71,6 +63,9 @@ namespace app::ui
             pu::sdl2::TextureHandle::Ref logoImg;
             pu::sdl2::TextureHandle::Ref backImg;
             pu::sdl2::TextureHandle::Ref confirmImg;
+            pu::sdl2::TextureHandle::Ref selectAllImg;
+            pu::sdl2::TextureHandle::Ref pageUpImg;
+            pu::sdl2::TextureHandle::Ref pageDownImg;
             pu::ui::elm::Image::Ref titleImage;
             pu::ui::elm::TextBlock::Ref appVersionText;
             pu::ui::elm::TextBlock::Ref freeSpaceText;

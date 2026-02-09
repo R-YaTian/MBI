@@ -1,22 +1,24 @@
 #pragma once
 
-#include <pu/Plutonium>
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class NetInstallPage : public pu::ui::Layout
+    class NetInstallPage : public BaseMenuPage
     {
         public:
             NetInstallPage();
             PU_SMART_CTOR(NetInstallPage)
             bool startNetwork();
-            void onCancel();
-            void onConfirm();
+            void onCancel() override;
+            void onConfirm() override;
+            void onSelectAll() override;
         private:
             std::vector<std::string> ourUrls;
             std::vector<std::string> selectedUrls;
-            std::vector<long unsigned int> menuIndices;
+            std::vector<size_t> menuIndices;
             pu::ui::elm::Menu::Ref menu;
+            pu::ui::elm::Menu::Ref GetMenu() override { return this->menu; }
             pu::ui::elm::Image::Ref infoImage;
             std::string sourceString = "";
             void drawMenuItems(bool clearItems);

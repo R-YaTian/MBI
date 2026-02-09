@@ -1,15 +1,15 @@
 #pragma once
 
-#include <pu/Plutonium>
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class OptionsPage : public pu::ui::Layout
+    class OptionsPage : public BaseMenuPage
     {
         public:
             OptionsPage();
             PU_SMART_CTOR(OptionsPage)
-            void onReturn();
+            void onCancel() override;
         private:
             bool inputGuard = false;
             std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국어", "Português", "Русский", "简体中文", "正體中文"};

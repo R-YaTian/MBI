@@ -4,13 +4,14 @@
 #include "nx/misc.hpp"
 #include "nx/udisk.hpp"
 #include "ui/MainApplication.hpp"
+#include "ui/ClickableImage.hpp"
+#include "ui/BaseMenuPage.hpp"
 #include "ui/OptionsPage.hpp"
 #include "ui/UsbInstallPage.hpp"
 #include "ui/MtpInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
 #include "ui/LocalInstallPage.hpp"
 #include "ui/MainPage.hpp"
-#include "ui/ClickableImage.hpp"
 
 #ifdef ENABLE_NET
 #include "ui/NetInstallPage.hpp"
@@ -30,23 +31,31 @@ namespace app::ui
     MainPage::Ref mainPage;
     ClickableImage::Ref backButton;
     ClickableImage::Ref confirmButton;
+    ClickableImage::Ref pageUpButton;
+    ClickableImage::Ref pageDownButton;
+    ClickableImage::Ref selectAllButton;
 
     static s32 previousTouchCount = 0;
 
     #define _UI_MAINAPP_MENU_SET_BASE(layout) { \
-        layout->SetBackgroundColor(COLOR("#670000FF")); \
         layout->SetBackgroundImage(this->bgImg); \
         layout->Add(this->topRect); \
         layout->Add(this->botRect); \
         layout->Add(this->botText); \
-        layout->Add(this->infoRect); \
-        layout->Add(this->pageInfoText); \
         layout->Add(this->titleImage); \
         layout->Add(this->appVersionText); \
         layout->Add(this->batteryValueText); \
         layout->Add(this->freeSpaceText); \
+    }
+
+    #define _UI_MAINAPP_MENU_SET_EXTRA(layout) { \
+        layout->Add(this->infoRect); \
+        layout->Add(this->pageInfoText); \
         layout->Add(backButton); \
         layout->Add(confirmButton); \
+        layout->Add(pageUpButton); \
+        layout->Add(pageDownButton); \
+        layout->Add(selectAllButton); \
     }
 
     pu::sdl2::TextureHandle::Ref MainApplication::LoadBackground(std::string bgDir)
@@ -97,6 +106,9 @@ namespace app::ui
         this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
         this->backImg = LoadTexture("romfs:/images/icons/backward.png");
         this->confirmImg = LoadTexture("romfs:/images/icons/confirm.png");
+        this->selectAllImg = LoadTexture("romfs:/images/icons/select-all.png");
+        this->pageUpImg = LoadTexture("romfs:/images/icons/page-up.png");
+        this->pageDownImg = LoadTexture("romfs:/images/icons/page-down.png");
 
         batteryCurrentValue = 255;
 
@@ -121,8 +133,33 @@ namespace app::ui
 
         this->UpdateStats();
 
-        backButton = ClickableImage::New(1830, 990, this->backImg);
-        confirmButton = ClickableImage::New(1720, 990, this->confirmImg);
+        // Setup clickable buttons
+        backButton = ClickableImage::New(1820, 990, this->backImg);
+        confirmButton = ClickableImage::New(1710, 990, this->confirmImg);
+        selectAllButton = ClickableImage::New(1600, 990, this->selectAllImg);
+        pageDownButton = ClickableImage::New(1490, 990, this->pageDownImg);
+        pageUpButton = ClickableImage::New(1380, 990, this->pageUpImg);
+        backButton->SetOnClick([this]() {
+            auto lyt = this->GetLayout<BaseMenuPage>();
+            lyt->onCancel();
+        });
+        confirmButton->SetOnClick([this]() {
+            auto lyt = this->GetLayout<BaseMenuPage>();
+            lyt->onConfirm();
+        });
+        selectAllButton->SetOnClick([this]() {
+            auto lyt = this->GetLayout<BaseMenuPage>();
+            lyt->onSelectAll();
+        });
+        pageDownButton->SetOnClick([this]() {
+            auto lyt = this->GetLayout<BaseMenuPage>();
+            lyt->onPageDown();
+        });
+        pageUpButton->SetOnClick([this]() {
+            auto lyt = this->GetLayout<BaseMenuPage>();
+            lyt->onPageUp();
+        });
+
         mainPage = MainPage::New();
         localinstPage = LocalInstallPage::New();
         usbinstPage = UsbInstallPage::New();
@@ -131,14 +168,20 @@ namespace app::ui
         optionspage = OptionsPage::New();
         _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
+        _UI_MAINAPP_MENU_SET_EXTRA(optionspage);
         _UI_MAINAPP_MENU_SET_BASE(installerPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(installerPage);
         _UI_MAINAPP_MENU_SET_BASE(localinstPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(localinstPage);
         _UI_MAINAPP_MENU_SET_BASE(usbinstPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(usbinstPage);
         _UI_MAINAPP_MENU_SET_BASE(mtpinstPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(mtpinstPage);
 
 #ifdef ENABLE_NET
         netinstPage = NetInstallPage::New();
         _UI_MAINAPP_MENU_SET_BASE(netinstPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(netinstPage);
 #endif
 
         this->AddRenderCallback(std::bind(&MainApplication::UpdateStats, this));
@@ -146,28 +189,32 @@ namespace app::ui
         SceneJump(Scene::Main);
     }
 
-    void MainApplication::HideClickableButton()
+    void MainApplication::SetTouchButtonAreaType(TouchButtonAreaType type)
     {
-        backButton->SetVisible(false);
-        backButton->SetOnClick(nullptr);
-        confirmButton->SetVisible(false);
-        confirmButton->SetOnClick(nullptr);
-    }
-
-    void MainApplication::ShowClickableButton()
-    {
-        backButton->SetVisible(true);
-        confirmButton->SetVisible(true);
-    }
-
-    void MainApplication::SetBackwardButtonCallback(std::function<void()> cb)
-    {
-        backButton->SetOnClick(cb);
-    }
-
-    void MainApplication::SetConfirmButtonCallback(std::function<void()> cb)
-    {
-        confirmButton->SetOnClick(cb);
+        switch (type)
+        {
+        case TouchButtonAreaType::Hide:
+            backButton->SetVisible(false);
+            confirmButton->SetVisible(false);
+            selectAllButton->SetVisible(false);
+            pageDownButton->SetVisible(false);
+            pageUpButton->SetVisible(false);
+            break;
+        case TouchButtonAreaType::Base: 
+            backButton->SetVisible(true);
+            confirmButton->SetVisible(false);
+            selectAllButton->SetVisible(false);
+            pageDownButton->SetVisible(false);
+            pageUpButton->SetVisible(false);
+            break;
+        case TouchButtonAreaType::Full: 
+            backButton->SetVisible(true);
+            confirmButton->SetVisible(true);
+            selectAllButton->SetVisible(true);
+            pageDownButton->SetVisible(true);
+            pageUpButton->SetVisible(true);
+            break;
+        }
     }
 
     void SceneJump(Scene idx)
@@ -177,50 +224,38 @@ namespace app::ui
         switch (idx)
         {
         case Scene::Main:
-            mainApp->HideClickableButton();
-            mainApp->HidePageInfo();
             mainApp->SetBottomText("main.buttons"_lang);
             mainApp->LoadLayout(mainPage);
             break;
         case Scene::Options:
-            mainApp->ShowClickableButton();
-            mainApp->SetBackwardButtonCallback(std::bind(&OptionsPage::onReturn, optionspage));
-            mainApp->SetConfirmButtonCallback(std::bind(&OptionsPage::onReturn, optionspage));
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Base);
             mainApp->SetPageInfoText("options.title"_lang);
             mainApp->SetBottomText("options.buttons"_lang);
             mainApp->LoadLayout(optionspage);
             break;
         case Scene::NetworkInstall:
 #ifdef ENABLE_NET
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetBottomText("inst.net.buttons"_lang);
             mainApp->LoadLayout(netinstPage);
             if (netinstPage->startNetwork())
             {
-                mainApp->SetBackwardButtonCallback(std::bind(&NetInstallPage::onCancel, netinstPage));
-                mainApp->SetConfirmButtonCallback(std::bind(&NetInstallPage::onConfirm, netinstPage));
-                mainApp->ShowClickableButton();
+                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
             }
 #endif
             break;
         case Scene::UsbInstall:
-            mainApp->ShowPageInfo();
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
             usbinstPage->startUsb();
             break;
         case Scene::SdInstall:
-            mainApp->ShowClickableButton();
-            mainApp->SetBackwardButtonCallback(std::bind(&LocalInstallPage::onCancel, localinstPage));
-            mainApp->SetConfirmButtonCallback(std::bind(&LocalInstallPage::onConfirm, localinstPage));
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
             mainApp->SetPageInfoText("inst.sd.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
-            localinstPage->drawMenuItems(true, "sdmc:");
-            localinstPage->setMenuIndex(0);
             localinstPage->setStorageSourceToSdmc();
+            localinstPage->drawMenuItems(true, "sdmc:");
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::UdiskInstall:
@@ -247,27 +282,21 @@ namespace app::ui
                 mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true);
                 return;
             }
-            mainApp->ShowClickableButton();
-            mainApp->SetBackwardButtonCallback(std::bind(&LocalInstallPage::onCancel, localinstPage));
-            mainApp->SetConfirmButtonCallback(std::bind(&LocalInstallPage::onConfirm, localinstPage));
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
             mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
             mainApp->SetBottomText("inst.hdd.buttons"_lang);
-            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName(ret));
-            localinstPage->setMenuIndex(0);
             localinstPage->setStorageSourceToUdisk();
+            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName(ret));
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstall:
-            mainApp->HideClickableButton();
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Base);
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
             break;
         case Scene::Installer:
-            mainApp->HideClickableButton();
-            mainApp->ShowPageInfo();
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("");
             installerPage->Prepare();
             mainApp->LoadLayout(installerPage);

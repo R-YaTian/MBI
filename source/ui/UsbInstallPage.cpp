@@ -74,6 +74,7 @@ namespace app::ui
         this->menu->SetVisible(false);
         this->menu->ClearItems();
         this->infoImage->SetVisible(true);
+        app::facade::SendRenderRequest();
         this->ourTitles = app::installer::Usb::WaitingForFileList();
         if (!this->ourTitles.size())
         {

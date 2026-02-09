@@ -6,7 +6,7 @@
 
 namespace app::ui
 {
-    OptionsPage::OptionsPage() : Layout::Layout()
+    OptionsPage::OptionsPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&OptionsPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         languageStrings.push_back("options.language.system_language"_lang);
@@ -225,7 +225,7 @@ namespace app::ui
         }
     }
 
-    void OptionsPage::onReturn()
+    void OptionsPage::onCancel()
     {
         if (inputGuard)
         {
@@ -244,7 +244,7 @@ namespace app::ui
 
         if (Down & HidNpadButton_B)
         {
-            onReturn();
+            onCancel();
         }
     }
 }

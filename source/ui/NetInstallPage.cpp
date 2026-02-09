@@ -10,7 +10,7 @@
 
 namespace app::ui
 {
-    NetInstallPage::NetInstallPage() : Layout::Layout()
+    NetInstallPage::NetInstallPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&NetInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -28,7 +28,7 @@ namespace app::ui
         this->menu->ClearItems();
         this->menuIndices = {};
 
-        for (long unsigned int i = 0; i < this->ourUrls.size(); i++)
+        for (size_t i = 0; i < this->ourUrls.size(); i++)
         {
             auto& url = this->ourUrls[i];
 
@@ -37,7 +37,7 @@ namespace app::ui
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(app::ui::Resources::UncheckedImage));
-            for (long unsigned int j = 0; j < this->selectedUrls.size(); j++)
+            for (size_t j = 0; j < this->selectedUrls.size(); j++)
             {
                 if (this->selectedUrls[j] == url)
                 {
@@ -52,7 +52,7 @@ namespace app::ui
 
     void NetInstallPage::selectTitle(int selectedIndex, bool redraw)
     {
-        long unsigned int urlIndex = 0;
+        size_t urlIndex = 0;
         if (this->menuIndices.size() > 0)
         {
             urlIndex = this->menuIndices[selectedIndex];
@@ -60,7 +60,7 @@ namespace app::ui
 
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(app::ui::Resources::CheckedImage))
         {
-            for (long unsigned int i = 0; i < this->selectedUrls.size(); i++)
+            for (size_t i = 0; i < this->selectedUrls.size(); i++)
             {
                 if (this->selectedUrls[i] == this->ourUrls[urlIndex])
                 {
@@ -176,6 +176,29 @@ namespace app::ui
         }
     }
 
+    void NetInstallPage::onSelectAll()
+    {
+        if (this->selectedUrls.size() == this->menu->GetItems().size())
+        {
+            this->drawMenuItems(true);
+        }
+        else
+        {
+            for (size_t i = 0; i < this->menu->GetItems().size(); i++)
+            {
+                if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(app::ui::Resources::CheckedImage))
+                {
+                    continue;
+                }
+                else
+                {
+                    this->selectTitle(i, false);
+                }
+            }
+            this->drawMenuItems(false);
+        }
+    }
+
     void NetInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
@@ -193,42 +216,27 @@ namespace app::ui
                     this->startInstall();
                 }
             }
+
             if ((Down & HidNpadButton_Y))
             {
-                if (this->selectedUrls.size() == this->menu->GetItems().size())
-                {
-                    this->drawMenuItems(true);
-                }
-                else
-                {
-                    for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++)
-                    {
-                        if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(app::ui::Resources::CheckedImage))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            this->selectTitle(i, false);
-                        }
-                    }
-                    this->drawMenuItems(false);
-                }
+                onSelectAll();
             }
 
             if (Down & HidNpadButton_ZL)
             {
-                this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 11));
+                onPageUp();
             }
+
             if (Down & HidNpadButton_ZR)
             {
-                this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 11));
+                onPageDown();
             }
 
             if (Down & HidNpadButton_Plus)
             {
                 onConfirm();
             }
+
             UpdateTouchState(Pos, 0, 154, 1920, this->menu->GetItems().size() * app::config::subMenuItemSize);
         }
     }

@@ -4,7 +4,7 @@
 
 namespace app::ui
 {
-    InstallerPage::InstallerPage() : Layout::Layout()
+    InstallerPage::InstallerPage() : BaseMenuPage()
     {
         this->installInfoText = pu::ui::elm::TextBlock::New(15, 160, "");
         this->installInfoText->SetFont("DefaultFont@30");
@@ -18,6 +18,7 @@ namespace app::ui
         this->Add(this->installBarText);
         this->Add(this->installInfoText);
         this->Add(this->installBar);
+        this->SetOnInput(std::bind(&InstallerPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     }
 
     void InstallerPage::AppendInstallInfoText(std::string newText)
@@ -54,5 +55,10 @@ namespace app::ui
         this->installInfoText->SetText("");
         this->installBar->SetProgress(0);
         this->installBar->SetVisible(false);
+    }
+
+    void InstallerPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
+    {
+        return;
     }
 }

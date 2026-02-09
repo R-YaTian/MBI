@@ -1,10 +1,10 @@
 #pragma once
 
-#include <pu/Plutonium>
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class InstallerPage : public pu::ui::Layout
+    class InstallerPage : public BaseMenuPage
     {
         public:
             InstallerPage();
@@ -17,5 +17,6 @@ namespace app::ui
             pu::ui::elm::TextBlock::Ref installInfoText;
             pu::ui::elm::TextBlock::Ref installBarText;
             pu::ui::elm::ProgressBar::Ref installBar;
+            void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
 }
