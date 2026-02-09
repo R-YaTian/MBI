@@ -18,7 +18,6 @@ namespace app::ui
             pu::ui::elm::MenuItem::Ref overclockOption;
             pu::ui::elm::MenuItem::Ref deletePromptOption;
             pu::ui::elm::MenuItem::Ref enableSoundOption;
-            pu::ui::elm::MenuItem::Ref enableLightningOption;
             pu::ui::elm::MenuItem::Ref fixTicketOption;
             pu::ui::elm::MenuItem::Ref languageOption;
             pu::ui::elm::MenuItem::Ref creditsOption;
@@ -26,7 +25,6 @@ namespace app::ui
             void OverclockOption_Click();
             void DeletePromptOption_Click();
             void EnableSoundOption_Click();
-            void EnableLightningOption_Click();
             void FixTicketOption_Click();
             void LanguageOption_Click();
             void CreditsOption_Click();

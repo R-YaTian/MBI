@@ -15,7 +15,6 @@ namespace app::config
     bool fixTicket;
     bool deletePrompt;
     bool enableSound;
-    bool enableLightning;
     bool ignoreReqVers;
     bool overClock;
     bool usbAck;
@@ -26,7 +25,6 @@ namespace app::config
         j["fixTicket"] = fixTicket;
         j["deletePrompt"] = deletePrompt;
         j["enableSound"] = enableSound;
-        j["enableLightning"] = enableLightning;
         j["ignoreReqVers"] = ignoreReqVers;
         j["languageSetting"] = languageSetting;
         j["overClock"] = overClock;
@@ -55,7 +53,6 @@ namespace app::config
         fixTicket = j.value("fixTicket", false);
         deletePrompt = j.value("deletePrompt", false);
         enableSound = j.value("enableSound", true);
-        enableLightning = j.value("enableLightning", true);
         ignoreReqVers = j.value("ignoreReqVers", false);
         languageSetting = j.value("languageSetting", -1);
         overClock = j.value("overClock", false);

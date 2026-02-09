@@ -33,27 +33,15 @@ namespace app::installer
         LOG_DEBUG("%s", e.what());
         app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg);
         app::facade::SendInstallProgress(0);
-        if (app::config::enableLightning)
-        {
-            app::manager::lightningStart();
-        }
         std::thread audioThread(app::manager::playAudio, "/fail.wav");
         app::facade::ShowDialog("inst.info_page.failed"_lang + msg + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
         audioThread.join();
-        if (app::config::enableLightning)
-        {
-            app::manager::lightningStop();
-        }
     }
 
     NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
     {
         app::facade::SendInstallBarText("inst.info_page.complete"_lang);
         app::facade::SendInstallProgress(100);
-        if (app::config::enableLightning)
-        {
-            app::manager::lightningStart();
-        }
         std::thread audioThread(app::manager::playAudio, "/success.wav");
         if (count > 1)
         {
@@ -64,10 +52,6 @@ namespace app::installer
             app::facade::ShowDialog(msg + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
         }
         audioThread.join();
-        if (app::config::enableLightning)
-        {
-            app::manager::lightningStop();
-        }
     }
 
     NX_INLINE std::vector<uint32_t> OnStart(std::string sourceString)

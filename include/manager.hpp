@@ -9,6 +9,4 @@ namespace app::manager
     void initInstallServices();
     void deinitInstallServices();
     void playAudio(std::string audioPath);
-    void lightningStart();
-    void lightningStop();
 }

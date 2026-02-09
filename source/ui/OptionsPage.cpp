@@ -27,9 +27,6 @@ namespace app::ui
         enableSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.enableSound"_lang);
         enableSoundOption->SetColor(COLOR(app::config::MenuTextColor));
         enableSoundOption->AddOnKey(std::bind(&OptionsPage::EnableSoundOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
-        enableLightningOption = pu::ui::elm::MenuItem::New("options.menu_items.enableLightning"_lang);
-        enableLightningOption->SetColor(COLOR(app::config::MenuTextColor));
-        enableLightningOption->AddOnKey(std::bind(&OptionsPage::EnableLightningOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
         fixTicketOption->SetColor(COLOR(app::config::MenuTextColor));
         fixTicketOption->AddOnKey(std::bind(&OptionsPage::FixTicketOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
@@ -44,7 +41,6 @@ namespace app::ui
         this->menu->AddItem(overclockOption);
         this->menu->AddItem(deletePromptOption);
         this->menu->AddItem(enableSoundOption);
-        this->menu->AddItem(enableLightningOption);
         this->menu->AddItem(fixTicketOption);
         this->menu->AddItem(languageOption);
         this->menu->AddItem(creditsOption);
@@ -52,7 +48,6 @@ namespace app::ui
         overclockOption->SetIcon(this->getMenuOptionIcon(app::config::overClock));
         deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
-        enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
         this->Add(this->menu);
     }
@@ -140,16 +135,6 @@ namespace app::ui
         }
         app::config::enableSound = !app::config::enableSound;
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
-    }
-
-    void OptionsPage::EnableLightningOption_Click()
-    {
-        if (inputGuard)
-        {
-            return;
-        }
-        app::config::enableLightning = !app::config::enableLightning;
-        enableLightningOption->SetIcon(this->getMenuOptionIcon(app::config::enableLightning));
     }
 
     void OptionsPage::FixTicketOption_Click()

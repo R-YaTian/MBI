@@ -24,7 +24,6 @@ namespace app::config
     extern bool overClock;
     extern bool deletePrompt;
     extern bool enableSound;
-    extern bool enableLightning;
     extern bool fixTicket;
     extern bool usbAck;
 

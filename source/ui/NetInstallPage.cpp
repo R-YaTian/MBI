@@ -128,23 +128,24 @@ namespace app::ui
         {
             std::string ourUrlString;
             ourUrlString = app::util::shortenString(nx::network::formatUrlString(this->selectedUrls[0]), 32, true);
-            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + ourUrlString + "inst.target.desc1"_lang,
-                                                   "common.cancel_desc"_lang, {"inst.target.opt0"_lang,
-                                                   "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + ourUrlString +
+                                                   "inst.target.desc1"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
         else
         {
-            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang,
-                                                   "common.cancel_desc"_lang, {"inst.target.opt0"_lang,
-                                                   "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) +
+                                                   "inst.target.desc01"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
-        if (dialogResult == -1 && !urlMode)
+        if (dialogResult < 0)
         {
-            return;
-        }
-        else if (dialogResult == -1 && urlMode)
-        {
-            onCancel();
+            if (urlMode)
+            {
+                onCancel();
+            }
             return;
         }
         app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);

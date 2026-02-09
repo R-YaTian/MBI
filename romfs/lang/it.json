@@ -129,7 +129,6 @@
             "boost_mode": "Abilita la \"boost mode\" durante le installazioni",
             "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
             "enableSound": "Info audio alla fine",
-            "enableLightning": "Le spie informative lampeggiano alla fine",
             "fix_ticket": "Converti i biglietti temporanei in permanenti",
             "language": "Lingua: ",
             "credits": "Crediti"

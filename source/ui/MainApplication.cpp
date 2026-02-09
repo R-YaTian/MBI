@@ -245,14 +245,13 @@ namespace app::ui
 #endif
             break;
         case Scene::UsbInstall:
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
             if (usbinstPage->startUsb())
             {
-                mainApp->SetBackwardButtonCallback(std::bind(&UsbInstallPage::onCancel, usbinstPage));
-                mainApp->SetConfirmButtonCallback(std::bind(&UsbInstallPage::onConfirm, usbinstPage));
-                mainApp->ShowClickableButton();
+                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
             }
             break;
         case Scene::SdInstall:
@@ -272,8 +271,9 @@ namespace app::ui
                 {
                     mountPointList.push_back(nx::udisk::getMountPointName(i));
                 }
-                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, false);
-                if (ret == -1)
+                mountPointList.push_back("common.cancel"_lang);
+                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, true);
+                if (ret < 0)
                 {
                     return;
                 }

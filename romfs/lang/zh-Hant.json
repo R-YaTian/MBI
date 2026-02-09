@@ -129,7 +129,6 @@
             "boost_mode": "在進行安裝時啟用\"超頻\"模式",
             "ask_delete": "在安裝完成後，詢問是否刪除原始檔案",
             "enableSound": "安裝完成時播放通知音效",
-            "enableLightning": "安裝完成時閃爍Home鍵LED",
             "fix_ticket": "將臨時門票轉換為永久門票",
             "language": "介面語系： ",
             "credits": "感謝名單"

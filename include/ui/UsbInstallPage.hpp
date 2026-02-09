@@ -1,21 +1,23 @@
 #pragma once
 
-#include <pu/Plutonium>
+#include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
 {
-    class UsbInstallPage : public pu::ui::Layout
+    class UsbInstallPage : public BaseMenuPage
     {
         public:
             UsbInstallPage();
             PU_SMART_CTOR(UsbInstallPage)
             bool startUsb();
-            void onCancel();
-            void onConfirm();
+            void onCancel() override;
+            void onConfirm() override;
+            void onSelectAll() override;
         private:
             std::vector<std::string> ourTitles;
             std::vector<std::string> selectedTitles;
             pu::ui::elm::Menu::Ref menu;
+            pu::ui::elm::Menu::Ref GetMenu() override { return this->menu; }
             pu::ui::elm::Image::Ref infoImage;
             void drawMenuItems(bool clearItems);
             void selectTitle(int selectedIndex, bool redraw = true);

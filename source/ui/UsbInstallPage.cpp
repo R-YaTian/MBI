@@ -9,7 +9,7 @@
 
 namespace app::ui
 {
-    UsbInstallPage::UsbInstallPage() : Layout::Layout()
+    UsbInstallPage::UsbInstallPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&UsbInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
@@ -34,7 +34,7 @@ namespace app::ui
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
-            for (long unsigned int i = 0; i < this->selectedTitles.size(); i++)
+            for (size_t i = 0; i < this->selectedTitles.size(); i++)
             {
                 if (this->selectedTitles[i] == url)
                 {
@@ -50,7 +50,7 @@ namespace app::ui
     {
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
-            for (long unsigned int i = 0; i < this->selectedTitles.size(); i++)
+            for (size_t i = 0; i < this->selectedTitles.size(); i++)
             {
                 if (this->selectedTitles[i] == this->ourTitles[selectedIndex])
                 {
@@ -97,13 +97,21 @@ namespace app::ui
         int dialogResult = -1;
         if (this->selectedTitles.size() == 1)
         {
-            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + app::util::shortenString(this->selectedTitles[0], 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang +
+                                                   app::util::shortenString(this->selectedTitles[0], 32, true) +
+                                                   "inst.target.desc1"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
         else
         {
-            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false);
+            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang +
+                                                   std::to_string(this->selectedTitles.size()) +
+                                                   "inst.target.desc01"_lang,
+                                                   "common.cancel_desc"_lang,
+                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
         }
-        if (dialogResult == -1)
+        if (dialogResult < 0)
         {
             return;
         }
@@ -129,6 +137,29 @@ namespace app::ui
         }
     }
 
+    void UsbInstallPage::onSelectAll()
+    {
+        if (this->selectedTitles.size() == this->menu->GetItems().size())
+        {
+            this->drawMenuItems(true);
+        }
+        else
+        {
+            for (size_t i = 0; i < this->menu->GetItems().size(); i++)
+            {
+                if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
+                {
+                    continue;
+                }
+                else
+                {
+                    this->selectTitle(i, false);
+                }
+            }
+            this->drawMenuItems(false);
+        }
+    }
+
     void UsbInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         if (Down & HidNpadButton_B)
@@ -149,28 +180,12 @@ namespace app::ui
                 this->startInstall();
             }
         }
+
         if ((Down & HidNpadButton_Y))
         {
-            if (this->selectedTitles.size() == this->menu->GetItems().size())
-            {
-                this->drawMenuItems(true);
-            }
-            else
-            {
-                for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++)
-                {
-                    if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        this->selectTitle(i, false);
-                    }
-                }
-                this->drawMenuItems(false);
-            }
+            onSelectAll();
         }
+
         if (Down & HidNpadButton_Plus)
         {
             onConfirm();
