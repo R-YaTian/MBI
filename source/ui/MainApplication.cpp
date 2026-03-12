@@ -295,7 +295,7 @@ namespace app::ui
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstall:
-            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Base);
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);

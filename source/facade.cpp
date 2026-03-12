@@ -56,7 +56,8 @@ namespace app::facade
 
     void SendInstallFinished()
     {
-        app::ui::SceneJump(app::ui::Scene::Main);
+        app::ui::installerPage->SetFinished();
+        app::ui::mainApp->SetTouchButtonAreaType(app::ui::TouchButtonAreaType::Base);
     }
 
     void ShowInstaller()

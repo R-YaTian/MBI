@@ -51,14 +51,28 @@ namespace app::ui
 
     void InstallerPage::Prepare()
     {
+        this->isFinished = false;
         this->installBarText->SetText("");
         this->installInfoText->SetText("");
         this->installBar->SetProgress(0);
         this->installBar->SetVisible(false);
     }
 
+    void InstallerPage::onCancel()
+    {
+        SceneJump(Scene::Main);
+    }
+
     void InstallerPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
-        return;
+        if (!isFinished)
+        {
+            return;
+        }
+
+        if (Down & HidNpadButton_B)
+        {
+            onCancel();
+        }
     }
 }

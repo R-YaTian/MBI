@@ -31,26 +31,23 @@ namespace app::installer
     {
         LOG_DEBUG("Failed to install");
         LOG_DEBUG("%s", e.what());
-        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg);
+        app::facade::SendInstallBarText("inst.info_page.failed"_lang);
+        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg + "! " + "inst.info_page.failed_desc"_lang);
         app::facade::SendInstallProgress(0);
+        app::facade::SendInstallInfoText((std::string)e.what());
         std::thread audioThread(app::manager::playAudio, "/fail.wav");
-        app::facade::ShowDialog("inst.info_page.failed"_lang + msg + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true);
         audioThread.join();
     }
 
     NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
     {
         app::facade::SendInstallBarText("inst.info_page.complete"_lang);
+        app::facade::SendInstallInfoText(count > 1 ?
+                                         std::to_string(count) + "inst.info_page.desc0"_lang :
+                                         msg + "inst.info_page.desc1"_lang);
         app::facade::SendInstallProgress(100);
+        app::facade::SendInstallInfoText(app::i18n::GetRandomMsg());
         std::thread audioThread(app::manager::playAudio, "/success.wav");
-        if (count > 1)
-        {
-            app::facade::ShowDialog(std::to_string(count) + "inst.info_page.desc0"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-        }
-        else
-        {
-            app::facade::ShowDialog(msg + "inst.info_page.desc1"_lang, app::i18n::GetRandomMsg(), {"common.ok"_lang}, true);
-        }
         audioThread.join();
     }
 

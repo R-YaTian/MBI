@@ -11,9 +11,12 @@ namespace app::ui
             PU_SMART_CTOR(InstallerPage)
             void SetInstallBarText(std::string text);
             void SetProgressBar(double percent);
+            void SetFinished() { this->isFinished = true; }
             void AppendInstallInfoText(std::string newText);
             void Prepare();
+            void onCancel() override;
         private:
+            bool isFinished = false;
             pu::ui::elm::TextBlock::Ref installInfoText;
             pu::ui::elm::TextBlock::Ref installBarText;
             pu::ui::elm::ProgressBar::Ref installBar;
