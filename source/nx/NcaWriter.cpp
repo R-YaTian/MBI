@@ -24,31 +24,31 @@ SOFTWARE.
 #include "nx/Crypto.hpp"
 #include "nx/error.hpp"
 
-#include <zstd.h>
 #include <string.h>
+#include <zstd.h>
 
-void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
+static void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
     u64 offset = buffer.size();
     buffer.resize(offset + sz);
     memcpy(buffer.data() + offset, ptr, sz);
 }
 
-NcaBodyWriter::NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx) :
-    m_contentStorage(contentStorage),
-    m_ncaId(ncaId),
-    m_offset(offset),
-    m_sha256ctx(sha256ctx)
+class NcaBodyWriter
 {
-}
+public:
+    NcaBodyWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr) :
+        m_contentStorage(contentStorage),
+        m_ncaId(ncaId),
+        m_sha256ctx(sha256ctx)
+    {
+    }
 
-NcaBodyWriter::~NcaBodyWriter()
-{
-}
+    virtual ~NcaBodyWriter() = default;
 
-u64 NcaBodyWriter::write(const  u8* ptr, u64 sz)
-{
-    if (isOpen())
+    virtual void close() {};
+
+    virtual u64 write(const u8* ptr, u64 sz)
     {
         m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, m_offset, (void*)ptr, sz);
         sha256ContextUpdate(m_sha256ctx, ptr, sz);
@@ -56,26 +56,22 @@ u64 NcaBodyWriter::write(const  u8* ptr, u64 sz)
         return sz;
     }
 
-    return 0;
-}
-
-bool NcaBodyWriter::isOpen() const
-{
-    return m_contentStorage != NULL;
-}
+protected:
+    std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+    NcmContentId m_ncaId;
+    u64 m_offset = NCA_HEADER_SIZE;
+    Sha256Context* m_sha256ctx;
+};
 
 // code - https://github.com/nicoboss/nsz
 // https://github.com/nicoboss/nsz/blob/master/nsz/NszDecompressor.py
-// https://www.w3schools.com/cpp/cpp_classes.asp
-// https://github.com/minetest/minetestmapper/blob/master/ZstdDecompressor.cpp
 // https://github.com/nicoboss/nsz/blob/master/nsz/BlockDecompressorReader.py
-// https://switchbrew.org/wiki/NCA
 
 class NczHeader
 {
 public:
-    static const u64 MAGIC = 0x4E544345535A434E;
-    static const u64 BLOCK = 0x4E435A424C4F434B; //NCZBLOCK at 0x40D0
+    static const u64 MAGIC = 0x4E544345535A434E; // NTCESZCN
+    static const u64 BLOCK = 0x4B434F4C425A434E; //NCZBLOCK at 0x40D0
 
     class Section
     {
@@ -96,19 +92,7 @@ public:
         {
         }
 
-        virtual ~SectionContext()
-        {
-        }
-
-        void decrypt(void* p, u64 sz, u64 offset)
-        {
-            if (this->cryptoType == 3 || this->cryptoType == 4)
-            {
-                crypto.seek(offset);
-                crypto.decrypt(p, p, sz);
-            } else
-                return;
-        }
+        ~SectionContext() {}
 
         void encrypt(void* p, u64 sz, u64 offset)
         {
@@ -116,17 +100,11 @@ public:
             {
                 crypto.seek(offset);
                 crypto.encrypt(p, p, sz);
-            } else
-                return;
+            }
         }
 
         nx::Crypto::Aes128Ctr crypto;
     };
-
-    const bool isValid()
-    {
-        return m_magic == MAGIC && m_sectionCount < 0xFFFF;
-    }
 
     const u64 size() const
     {
@@ -149,58 +127,106 @@ protected:
     Section m_sections[1];
 } NX_PACKED;
 
+struct BlockHeader {
+    u64 magic;
+    u8 version;
+    u8 type;
+    u8 unused;
+    u8 blockSizeExponent;
+    u32 numberOfBlocks;
+    u64 decompressedSize;
+};
+
+struct BlockInfo {
+    void init(const u8 *buffer)
+    {
+        header = *(BlockHeader*)buffer;
+        assert(header.blockSizeExponent >= 14 && header.blockSizeExponent < 32);
+        blockSize = size_t(1) << header.blockSizeExponent;
+        for (u32 i = 0; i < header.numberOfBlocks; i++)
+        {
+            compressedBlockSizeList.push_back(*(u32 *)(buffer + sizeof(BlockHeader) + i * sizeof(u32)));
+        }
+    }
+
+    u32 getCurBlockSize() { return compressedBlockSizeList[curBlockId]; }
+
+    size_t decompressBlock(const std::vector<u8> &buffer, std::vector<u8> &dest)
+    {
+        auto curBlockSize = getCurBlockSize();
+        assert(buffer.size() >= curBlockSize);
+        size_t outSize;
+        if (curBlockSize < blockSize)
+        {
+            outSize = ZSTD_getFrameContentSize(buffer.data(), curBlockSize);
+            if (outSize == ZSTD_CONTENTSIZE_UNKNOWN || outSize == ZSTD_CONTENTSIZE_ERROR)
+            {
+                THROW_FORMAT("ZSTD_getFrameContentSize error");
+            }
+            dest.resize(outSize);
+            auto ret = ZSTD_decompress(dest.data(), outSize, buffer.data(), curBlockSize);
+            if (ZSTD_isError(ret))
+            {
+                THROW_FORMAT("ZSTD_decompress error");
+            }
+        }
+        else
+        {
+            outSize = curBlockSize;
+            dest.resize(outSize);
+            memcpy(dest.data(), buffer.data(), curBlockSize);
+        }
+        curBlockId += 1;
+        return outSize;
+    }
+
+    BlockHeader header;
+    size_t blockSize = 0;
+    size_t curBlockId = 0;
+    std::vector<u32> compressedBlockSizeList;
+};
+
 class NczBodyWriter : public NcaBodyWriter
 {
 public:
-    NczBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr)
-        : NcaBodyWriter(ncaId, offset, contentStorage, sha256ctx)
+    NczBodyWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr)
+        : NcaBodyWriter(ncaId, contentStorage, sha256ctx)
     {
-        buffIn = malloc(buffInSize);
         buffOut = malloc(buffOutSize);
-
         dctx = ZSTD_createDCtx();
     }
 
-    virtual ~NczBodyWriter()
+    ~NczBodyWriter() override
     {
         close();
+        free(buffOut);
+        ZSTD_freeDCtx(dctx);
+    }
 
-        for (auto& i : sections)
+    void close() override
+    {
+        if (!m_isBlockCompression)
         {
-            if (i)
+            if (this->m_buffer.size())
             {
-                delete i;
-                i = NULL;
+                processChunk(m_buffer.data(), m_buffer.size());
+                m_buffer.resize(0);
+            }
+
+            encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
+            flush();
+        }
+        else
+        {
+            if (m_buffer.size())
+            {
+                throw std::runtime_error("block decompress error");
             }
         }
-
-        if (dctx)
-        {
-            ZSTD_freeDCtx(dctx);
-            dctx = NULL;
-        }
     }
 
-    bool close()
+    void flush()
     {
-        if (this->m_buffer.size())
-        {
-            processChunk(m_buffer.data(), m_buffer.size());
-        }
-
-        encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
-        flush();
-
-        return true;
-    }
-
-    bool flush()
-    {
-        if(!isOpen())
-        {
-            return false;
-        }
-
         if (m_deflateBuffer.size())
         {
             m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, m_offset, m_deflateBuffer.data(), m_deflateBuffer.size());
@@ -208,22 +234,21 @@ public:
             m_offset += m_deflateBuffer.size();
             m_deflateBuffer.resize(0);
         }
-        return true;
     }
 
     NczHeader::SectionContext& section(u64 offset)
     {
         for (u64 i = 0; i < sections.size(); i++)
         {
-            if (offset >= sections[i]->offset && offset < sections[i]->offset + sections[i]->size)
+            if (offset >= sections[i].offset && offset < sections[i].offset + sections[i].size)
             {
-                return *sections[i];
+                return sections[i];
             }
         }
-        return *sections[0];
+        return sections[0];
     }
 
-    bool encrypt(const void* ptr, u64 sz, u64 offset)
+    void encrypt(const void* ptr, u64 sz, u64 offset)
     {
         const u8* start = (u8*)ptr;
         const u8* end = start + sz;
@@ -231,26 +256,20 @@ public:
         while (start < end)
         {
             auto& s = section(offset);
-
             u64 sectionEnd = s.offset + s.size;
-
             u64 chunk = offset + sz > sectionEnd ? sectionEnd - offset : sz;
-
             s.encrypt((void*)start, chunk, offset);
-
             offset += chunk;
             start += chunk;
             sz -= chunk;
         }
-
-        return true;
     }
 
-    u64 processChunk(const u8* ptr, u64 sz)
+    void processChunk(const u8* ptr, u64 sz)
     {
         while(sz > 0)
         {
-            const size_t readChunkSz = std::min(sz, buffInSize);
+            const size_t readChunkSz = std::min(sz, (u64)buffInSize);
             ZSTD_inBuffer input = { ptr, readChunkSz, 0 };
 
             while(input.pos < input.size)
@@ -260,8 +279,7 @@ public:
 
                 if (ZSTD_isError(ret))
                 {
-                    LOG_DEBUG("%s\n", ZSTD_getErrorName(ret));
-                    return 0;
+                    THROW_FORMAT("ZSTD_decompressStream error: %s", ZSTD_getErrorName(ret));
                 }
 
                 size_t len = output.pos;
@@ -287,8 +305,6 @@ public:
             sz -= readChunkSz;
             ptr += readChunkSz;
         }
-
-        return 1;
     }
 
     u64 write(const  u8* ptr, u64 sz) override
@@ -304,19 +320,10 @@ public:
 
             auto header = (NczHeader*)m_buffer.data();
 
-            if (m_buffer.size() + sz > header->size())
-            {
-                u64 remainder = header->size() - m_buffer.size();
-                append(m_buffer, ptr, remainder);
-                ptr += remainder;
-                sz -= remainder;
-            }
-            else
-            {
-                append(m_buffer, ptr, sz);
-                ptr += sz;
-                sz = 0;
-            }
+            u64 chunk = std::min(sz, header->size() - m_buffer.size());
+            append(m_buffer, ptr, chunk);
+            ptr += chunk;
+            sz -= chunk;
 
             header = (NczHeader*)m_buffer.data();
 
@@ -324,7 +331,7 @@ public:
             {
                 for (u64 i = 0; i < header->sectionCount(); i++)
                 {
-                    sections.push_back(new NczHeader::SectionContext(header->section(i)));
+                    sections.emplace_back(header->section(i));
                 }
 
                 m_sectionsInitialized = true;
@@ -332,25 +339,61 @@ public:
             }
         }
 
-        while (sz)
+        if (!m_blockInitialized)
         {
-            if (m_buffer.size() + sz >= 0x800000)
+            u64 chunk = std::min((size_t)sz, sizeof(BlockHeader));
+            append(m_buffer, ptr, chunk);
+            ptr += chunk;
+            sz -= chunk;
+
+            if (m_buffer.size() == sizeof(BlockHeader))
             {
-                u64 chunk = 0x800000 - m_buffer.size();
+                m_blockInitialized = true;
+                auto block = (BlockHeader*)m_buffer.data();
+                if (block->magic != NczHeader::BLOCK)
+                {
+                    m_isBlockCompression = false;
+                }
+                else
+                {
+                    m_isBlockCompression = true;
+                    auto listSize = block->numberOfBlocks * sizeof(u32);
+                    u64 chunk = std::min((size_t)sz, sizeof(BlockHeader) + listSize - m_buffer.size());
+                    append(m_buffer, ptr, chunk);
+                    ptr += chunk;
+                    sz -= chunk;
+                    if (m_buffer.size() == sizeof(BlockHeader) + listSize)
+                    {
+                        blockInfo.init(m_buffer.data());
+                        m_buffer.resize(0);
+                    }
+                }
+            }
+        }
+
+        if (m_isBlockCompression)
+        {
+            while (sz)
+            {
+                size_t curBlockSize = blockInfo.getCurBlockSize();
+                auto chunk = m_buffer.size() < curBlockSize ? std::min((size_t)sz, curBlockSize - m_buffer.size()) : 0;
                 append(m_buffer, ptr, chunk);
-
-                processChunk(m_buffer.data(), m_buffer.size());
-                m_buffer.resize(0);
-
                 sz -= chunk;
                 ptr += chunk;
+                if (m_buffer.size() >= curBlockSize)
+                {
+                    blockInfo.decompressBlock(m_buffer, m_deflateBuffer);
+                    encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
+                    flush();
+                    m_buffer.erase(m_buffer.begin(), m_buffer.begin() + curBlockSize);
+                }
             }
-            else
-            {
-                append(m_buffer, ptr, sz);
-                sz = 0;
-            }
-
+        }
+        else
+        {
+            append(m_buffer, ptr, sz);
+            processChunk(m_buffer.data(), m_buffer.size());
+            m_buffer.resize(0);
         }
 
         return sz;
@@ -359,20 +402,21 @@ public:
     size_t const buffInSize = ZSTD_DStreamInSize();
     size_t const buffOutSize = ZSTD_DStreamOutSize();
 
-    void* buffIn = NULL;
-    void* buffOut = NULL;
-
-    ZSTD_DCtx* dctx = NULL;
+    void* buffOut = nullptr;
+    ZSTD_DCtx* dctx = nullptr;
 
     std::vector<u8> m_buffer;
     std::vector<u8> m_deflateBuffer;
 
     bool m_sectionsInitialized = false;
+    bool m_blockInitialized = false;
+    bool m_isBlockCompression = false;
 
-    std::vector<NczHeader::SectionContext*> sections;
+    std::vector<NczHeader::SectionContext> sections;
+    BlockInfo blockInfo;
 };
 
-NcaWriter::NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage) : m_ncaId(ncaId), m_contentStorage(contentStorage), m_writer(NULL)
+NcaWriter::NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage) : m_ncaId(ncaId), m_contentStorage(contentStorage)
 {
     sha256ContextCreate(&m_sha256ctx);
 }
@@ -382,24 +426,17 @@ NcaWriter::~NcaWriter()
     close();
 }
 
-bool NcaWriter::close()
+void NcaWriter::close()
 {
     if (m_writer)
     {
-        m_writer = NULL;
+        m_writer->close();
+        m_writer = nullptr;
     }
-    else if(m_buffer.size())
-    {
-        if (isOpen())
-        {
-            flushHeader();
-        }
 
-        m_buffer.resize(0);
-    }
-    m_contentStorage = NULL;
+    m_buffer.resize(0);
+    m_contentStorage = nullptr;
     m_sha256ctx.finalized = true;
-    return true;
 }
 
 void NcaWriter::getSha256Hash(void *dst)
@@ -407,29 +444,13 @@ void NcaWriter::getSha256Hash(void *dst)
     sha256ContextGetHash(&m_sha256ctx, dst);
 }
 
-bool NcaWriter::isOpen() const
-{
-    return (bool)m_contentStorage;
-}
-
 u64 NcaWriter::write(const u8* ptr, u64 sz)
 {
     if (m_buffer.size() < NCA_HEADER_SIZE)
     {
-        if (m_buffer.size() + sz > NCA_HEADER_SIZE)
-        {
-            u64 remainder = NCA_HEADER_SIZE - m_buffer.size();
-            append(m_buffer, ptr, remainder);
-
-            ptr += remainder;
-            sz -= remainder;
-        }
-        else
-        {
-            append(m_buffer, ptr, sz);
-            ptr += sz;
-            sz = 0;
-        }
+        append(m_buffer, ptr, NCA_HEADER_SIZE);
+        ptr += NCA_HEADER_SIZE;
+        sz -= NCA_HEADER_SIZE;
 
         if (m_buffer.size() == NCA_HEADER_SIZE)
         {
@@ -446,11 +467,11 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
             {
                 if (*(u64*)ptr == NczHeader::MAGIC)
                 {
-                    m_writer = std::shared_ptr<NcaBodyWriter>(new NczBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage, &m_sha256ctx));
+                    m_writer = std::make_unique<NczBodyWriter>(m_ncaId, m_contentStorage, &m_sha256ctx);
                 }
                 else
                 {
-                    m_writer = std::shared_ptr<NcaBodyWriter>(new NcaBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage, &m_sha256ctx));
+                    m_writer = std::make_unique<NcaBodyWriter>(m_ncaId, m_contentStorage, &m_sha256ctx);
                 }
             }
             else
@@ -459,14 +480,7 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
             }
         }
 
-        if (m_writer)
-        {
-            m_writer->write(ptr, sz);
-        }
-        else
-        {
-            THROW_FORMAT("null writer");
-        }
+        m_writer->write(ptr, sz);
     }
 
     return sz;
@@ -482,10 +496,7 @@ void NcaWriter::flushHeader()
 
     if (header.magic == MAGIC_NCA3)
     {
-        if(isOpen())
-        {
-            m_contentStorage->CreatePlaceholder(m_ncaId, *(NcmPlaceHolderId*)&m_ncaId, header.nca_size);
-        }
+        m_contentStorage->CreatePlaceholder(m_ncaId, *(NcmPlaceHolderId*)&m_ncaId, header.nca_size);
     }
     else
     {
@@ -498,8 +509,5 @@ void NcaWriter::flushHeader()
     }
     encryptor.encrypt(m_buffer.data(), &header, sizeof(header), 0, 0x200);
 
-    if(isOpen())
-    {
-        m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, 0, m_buffer.data(), m_buffer.size());
-    }
+    m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId*)&m_ncaId, 0, m_buffer.data(), m_buffer.size());
 }

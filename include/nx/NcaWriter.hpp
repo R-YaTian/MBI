@@ -27,41 +27,26 @@ SOFTWARE.
 #include <memory>
 
 #include "nx/ncm.hpp"
-#include "nx/nca.hpp"
 
-class NcaBodyWriter
-{
-public:
-	NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr);
-	virtual ~NcaBodyWriter();
-	virtual u64 write(const  u8* ptr, u64 sz);
-
-	bool isOpen() const;
-
-protected:
-	std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
-	NcmContentId m_ncaId;
-
-	u64 m_offset;
-	Sha256Context* m_sha256ctx;
-};
+class NcaBodyWriter;
 
 class NcaWriter
 {
 public:
-	NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
-	virtual ~NcaWriter();
+    NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
+    ~NcaWriter();
 
-	bool isOpen() const;
-	bool close();
-	u64 write(const  u8* ptr, u64 sz);
-	void flushHeader();
-	void getSha256Hash(void *dst);
+    u64 write(const  u8* ptr, u64 sz);
+    void close();
+    void getSha256Hash(void *dst);
+
+private:
+    void flushHeader();
 
 protected:
-	NcmContentId m_ncaId;
-	std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
-	std::vector<u8> m_buffer;
-	std::shared_ptr<NcaBodyWriter> m_writer;
-	Sha256Context m_sha256ctx;
+    NcmContentId m_ncaId;
+    std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+    std::vector<u8> m_buffer;
+    std::unique_ptr<NcaBodyWriter> m_writer;
+    Sha256Context m_sha256ctx;
 };
