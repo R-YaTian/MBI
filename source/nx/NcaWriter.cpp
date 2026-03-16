@@ -27,6 +27,8 @@ SOFTWARE.
 #include <string.h>
 #include <zstd.h>
 
+constexpr auto NCZ_HEADER_OFFSET = 0x4000;
+
 static void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
     u64 offset = buffer.size();
@@ -59,7 +61,7 @@ public:
 protected:
     std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
     NcmContentId m_ncaId;
-    u64 m_offset = NCA_HEADER_SIZE;
+    u64 m_offset = NCZ_HEADER_OFFSET;
     Sha256Context* m_sha256ctx;
 };
 
@@ -71,7 +73,7 @@ class NczHeader
 {
 public:
     static const u64 MAGIC = 0x4E544345535A434E; // NTCESZCN
-    static const u64 BLOCK = 0x4B434F4C425A434E; //NCZBLOCK at 0x40D0
+    static const u64 BLOCK = 0x4B434F4C425A434E; // NCZBLOCK at 0x40D0
 
     class Section
     {
@@ -446,13 +448,14 @@ void NcaWriter::getSha256Hash(void *dst)
 
 u64 NcaWriter::write(const u8* ptr, u64 sz)
 {
-    if (m_buffer.size() < NCA_HEADER_SIZE)
+    if (m_buffer.size() < NCZ_HEADER_OFFSET)
     {
-        append(m_buffer, ptr, NCA_HEADER_SIZE);
-        ptr += NCA_HEADER_SIZE;
-        sz -= NCA_HEADER_SIZE;
+        u64 remainder = std::min(sz, (u64)NCZ_HEADER_OFFSET);
+        append(m_buffer, ptr, remainder);
+        ptr += remainder;
+        sz -= remainder;
 
-        if (m_buffer.size() == NCA_HEADER_SIZE)
+        if (m_buffer.size() >= sizeof(nx::nca::NcaHeader))
         {
             flushHeader();
             sha256ContextUpdate(&m_sha256ctx, m_buffer.data(), m_buffer.size());
