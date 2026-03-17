@@ -261,25 +261,29 @@ namespace app
                 u16 RSA_2048 = 0x4 + 0x100 + 0x3C + 0x146;
                 u16 RSA_4096 = 0x4 + 0x200 + 0x3C + 0x146;
 
+                u16 ECDSA_RightsId = 0x4 + 0x3C + 0x40 + 0x160;
+                u16 RSA_2048_RightsId = 0x4 + 0x100 + 0x3C + 0x160;
+                u16 RSA_4096_RightsId = 0x4 + 0x200 + 0x3C + 0x160;
+
                 // ECDSA SHA256 & SHA1
                 if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
                 {
                     tikBuf.get()[ECDSA] = 0x0;
-                    tikBuf.get()[ECDSA - 1] = 0x10; // fix broken Master key revision
+                    tikBuf.get()[ECDSA - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // fix broken Master key revision
                 }
 
                 // RSA_2048 SHA256 & SHA1
                 else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30))
                 {
                     tikBuf.get()[RSA_2048] = 0x0;
-                    tikBuf.get()[RSA_2048 - 1] = 0x10;
+                    tikBuf.get()[RSA_2048 - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
                 }
 
                 // RSA_4096 SHA256 & SHA1
                 else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30))
                 {
                     tikBuf.get()[RSA_4096] = 0x0;
-                    tikBuf.get()[RSA_4096 - 1] = 0x10;
+                    tikBuf.get()[RSA_4096 - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
                 }
             }
 
