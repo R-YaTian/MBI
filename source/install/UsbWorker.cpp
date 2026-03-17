@@ -142,7 +142,7 @@ namespace app::install
             app::facade::SendInstallBarText(x.str() + "%");
         }
         std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
-        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.ExportSha256Hash();
+        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.Finalize();
         app::facade::SendInstallProgress(100);
 
         if (usbThread.joinable())

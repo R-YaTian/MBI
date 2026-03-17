@@ -37,8 +37,7 @@ public:
     ~NcaWriter();
 
     u64 write(const  u8* ptr, u64 sz);
-    void close();
-    void getSha256Hash(void *dst);
+    void close(void* hash_dest = nullptr);
 
 private:
     void flushHeader();

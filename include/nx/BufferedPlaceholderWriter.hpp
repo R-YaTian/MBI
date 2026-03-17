@@ -85,6 +85,6 @@ namespace nx::data
             size_t GetSizeBuffered();
             size_t GetSizeWrittenToPlaceholder();
 
-            std::vector<u8> ExportSha256Hash();
+            std::vector<u8> Finalize();
     };
 }

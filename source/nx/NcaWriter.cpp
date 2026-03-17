@@ -269,7 +269,7 @@ public:
 
     void processChunk(const u8* ptr, u64 sz)
     {
-        while(sz > 0)
+        while(sz)
         {
             const size_t readChunkSz = std::min(sz, (u64)buffInSize);
             ZSTD_inBuffer input = { ptr, readChunkSz, 0 };
@@ -352,11 +352,7 @@ public:
             {
                 m_blockInitialized = true;
                 auto block = (BlockHeader*)m_buffer.data();
-                if (block->magic != NczHeader::BLOCK)
-                {
-                    m_isBlockCompression = false;
-                }
-                else
+                if (block->magic == NczHeader::BLOCK)
                 {
                     m_isBlockCompression = true;
                     auto listSize = block->numberOfBlocks * sizeof(u32);
@@ -428,7 +424,7 @@ NcaWriter::~NcaWriter()
     close();
 }
 
-void NcaWriter::close()
+void NcaWriter::close(void* hash_dest)
 {
     if (m_writer)
     {
@@ -438,12 +434,15 @@ void NcaWriter::close()
 
     m_buffer.resize(0);
     m_contentStorage = nullptr;
-    m_sha256ctx.finalized = true;
-}
 
-void NcaWriter::getSha256Hash(void *dst)
-{
-    sha256ContextGetHash(&m_sha256ctx, dst);
+    if (hash_dest)
+    {
+        sha256ContextGetHash(&m_sha256ctx, hash_dest);
+    }
+    else
+    {
+        m_sha256ctx.finalized = true;
+    }
 }
 
 u64 NcaWriter::write(const u8* ptr, u64 sz)
