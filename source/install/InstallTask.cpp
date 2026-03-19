@@ -56,6 +56,86 @@ namespace app
         ASSERT_OK(nsextPushApplicationRecord(baseTitleId, NsExtApplicationEvent_Present, &storageRecord, 1), "Failed to push application record");
     }
 
+    void InstallTask::RemoveInstalledNcas(int idx)
+    {
+        NcmContentMetaKey contentMetaKey = m_contentMeta[idx].GetContentMetaKey();
+        NcmContentMetaType contentMetaType = static_cast<NcmContentMetaType>(contentMetaKey.type);
+        const auto app_id = nx::ncm::GetBaseTitleId(contentMetaKey.id, contentMetaType);
+        auto records = m_contentMeta[idx].GetContentInfos();
+
+        // remove current entries (if any).
+        s32 db_list_total;
+        s32 db_list_count;
+        u64 id_min = contentMetaKey.id;
+        u64 id_max = contentMetaKey.id;
+
+        // if installing a patch, remove all previously installed patches.
+        if (contentMetaType == NcmContentMetaType_Patch)
+        {
+            id_min = 0;
+            id_max = UINT64_MAX;
+        }
+
+        const NcmStorageId storageIDs[] { NcmStorageId_SdCard, NcmStorageId_BuiltInUser };
+        for (size_t i = 0; i < std::size(storageIDs); i++)
+        {
+            NcmContentMetaDatabase db = {};
+            ASSERT_OK(ncmOpenContentMetaDatabase(std::addressof(db), storageIDs[i]), "Failed to open content meta database");
+            nx::ncm::ContentStorage contentStorage(storageIDs[i]);
+
+            std::vector<NcmContentMetaKey> keys(1);
+            ASSERT_OK(ncmContentMetaDatabaseList(std::addressof(db), std::addressof(db_list_total), std::addressof(db_list_count), keys.data(), keys.size(), contentMetaType, app_id, id_min, id_max, NcmContentInstallType_Full), "Failed to list content meta database");
+
+            if (db_list_total != keys.size())
+            {
+                keys.resize(db_list_total);
+                if (keys.size())
+                {
+                    ASSERT_OK(ncmContentMetaDatabaseList(std::addressof(db), std::addressof(db_list_total), std::addressof(db_list_count), keys.data(), keys.size(), contentMetaType, app_id, id_min, id_max, NcmContentInstallType_Full), "Failed to list content meta database");
+                }
+            }
+
+            for (const auto& key : keys)
+            {
+                LOG_DEBUG("found key: 0x%016lX type: %u version: %u\n", key.id, key.type, key.version);
+                NcmContentMetaHeader header;
+                u64 out_size;
+                ASSERT_OK(ncmContentMetaDatabaseGet(std::addressof(db), std::addressof(key), std::addressof(out_size), std::addressof(header), sizeof(header)), "Unable to fetch header from ncm database");
+                if (out_size != sizeof(header))
+                {
+                    THROW_FORMAT("Unable to fetch header from ncm database");
+                }
+
+                std::vector<NcmContentInfo> infos(header.content_count);
+                s32 content_info_out;
+                ASSERT_OK(ncmContentMetaDatabaseListContentInfo(std::addressof(db), std::addressof(content_info_out), infos.data(), infos.size(), std::addressof(key), 0), "Unable to get infos from ncm database");
+                if (content_info_out != infos.size())
+                {
+                    THROW_FORMAT("Unable to get infos from ncm database");
+                }
+
+                for (const auto& info : infos)
+                {
+                    const auto it = std::ranges::find_if(records, [&info](auto& e) {
+                        return !std::memcmp(&e.content_id, &info.content_id, sizeof(e.content_id));
+                    });
+
+                    // Skip deletion if not found in records or if it's the meta nca
+                    if (it == records.cend() || !std::memcmp(&info.content_id, &m_contentMeta[idx].GetContentId(), sizeof(info.content_id)))
+                    {
+                        continue;
+                    }
+
+                    contentStorage.Delete(info.content_id);
+                }
+
+                ASSERT_OK(ncmContentMetaDatabaseRemove(std::addressof(db), std::addressof(key)), "Failed to remove content records");
+                ASSERT_OK(ncmContentMetaDatabaseCommit(std::addressof(db)), "Failed to commit content records");
+            }
+            ncmContentMetaDatabaseClose(std::addressof(db));
+        }
+    }
+
     // Validate and obtain all data needed for install
     void InstallTask::Prepare()
     {
@@ -80,6 +160,7 @@ namespace app
             m_contentMeta[i].SetupPackagedContentMeta();
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
+            this->RemoveInstalledNcas(i);
             this->InstallContentMetaRecords(installContentMetaBuf, i);
             this->InstallApplicationRecord(i);
         }
@@ -203,9 +284,12 @@ namespace app
             app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
         }
 
+        // outHeader not nullptr means we are installing a CNMT NCA
         if (outHeader != nullptr)
         {
             memcpy(outHeader, header, sizeof(nx::nca::NcaHeader));
+            // Delete CNMT NCA from ContentStorage if already exists
+            contentStorage->Delete(ncaId);
         }
 
         delete header;

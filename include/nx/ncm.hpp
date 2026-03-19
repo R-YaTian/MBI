@@ -71,6 +71,7 @@ namespace nx::ncm
             std::vector<NcmContentInfo> GetContentInfos();
             const u8* GetHashByContentId(const NcmContentId& ncaId) const;
             const u8 GetDistributionType() const { return m_ncaHeader.distribution; }
+            const NcmContentId& GetContentId() const { return m_contentId; }
 
             void SetContentId(const NcmContentId &contentId) { m_contentId = contentId; }
             void SetNcaHeader(const nca::NcaHeader& ncaHeader) { m_ncaHeader = ncaHeader; }
@@ -81,5 +82,4 @@ namespace nx::ncm
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
-    std::vector<std::pair<u64, u32>> ListInstalledTitles();
 }
