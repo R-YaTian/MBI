@@ -86,7 +86,7 @@ namespace app
             std::vector<NcmContentMetaKey> keys(1);
             ASSERT_OK(ncmContentMetaDatabaseList(std::addressof(db), std::addressof(db_list_total), std::addressof(db_list_count), keys.data(), keys.size(), contentMetaType, app_id, id_min, id_max, NcmContentInstallType_Full), "Failed to list content meta database");
 
-            if (db_list_total != keys.size())
+            if ((size_t)db_list_total != keys.size())
             {
                 keys.resize(db_list_total);
                 if (keys.size())
@@ -109,7 +109,7 @@ namespace app
                 std::vector<NcmContentInfo> infos(header.content_count);
                 s32 content_info_out;
                 ASSERT_OK(ncmContentMetaDatabaseListContentInfo(std::addressof(db), std::addressof(content_info_out), infos.data(), infos.size(), std::addressof(key), 0), "Unable to get infos from ncm database");
-                if (content_info_out != infos.size())
+                if ((size_t)content_info_out != infos.size())
                 {
                     THROW_FORMAT("Unable to get infos from ncm database");
                 }
