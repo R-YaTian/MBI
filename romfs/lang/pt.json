@@ -129,7 +129,7 @@
             "boost_mode": "Ativar \"boost mode\" durante as instalações",
             "enableSound": "Áudio informativo no final",
             "ask_delete": "Questionar a eliminação dos ficheiros orginais depois da instalação",
-            "fix_ticket": "Converter bilhetes temporários em permanentes",
+            "fix_ticket": "Tentativa de corrigir despejo de ticket incorreto",
             "language": "Idioma: ",
             "credits": "Créditos"
         },

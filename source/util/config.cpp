@@ -50,7 +50,7 @@ namespace app::config
             j = jt::Json::parse(fp);
         }
 
-        fixTicket = j.value("fixTicket", false);
+        fixTicket = j.value("fixTicket", true);
         deletePrompt = j.value("deletePrompt", false);
         enableSound = j.value("enableSound", true);
         ignoreReqVers = j.value("ignoreReqVers", false);

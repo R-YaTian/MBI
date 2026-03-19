@@ -129,7 +129,7 @@
             "boost_mode": "Enable \"boost mode\" during installations",
             "ask_delete": "Ask to delete original files after installation",
             "enableSound": "Info audio at the end",
-            "fix_ticket": "Convert temporary tickets to permanent",
+            "fix_ticket": "Try to fix bad ticket dump",
             "language": "Language: ",
             "credits": "Credits"
         },

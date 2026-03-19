@@ -129,7 +129,7 @@
             "boost_mode": "Abilita la \"boost mode\" durante le installazioni",
             "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
             "enableSound": "Info audio alla fine",
-            "fix_ticket": "Converti i biglietti temporanei in permanenti",
+            "fix_ticket": "Tentativo di correggere dump ticket errato",
             "language": "Lingua: ",
             "credits": "Crediti"
         },

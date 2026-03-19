@@ -129,7 +129,7 @@
             "boost_mode": "Habilitar el «modo Turbo» durante las instalaciones",
             "ask_delete": "Preguntar si borrar los archivos originales, luego de una instalación satisfactoria",
             "enableSound": "Audio de información al final",
-            "fix_ticket": "Convertir tiquetes temporales en permanentes",
+            "fix_ticket": "Intento de corregir volcado de ticket incorrecto",
             "language": "Idioma: ",
             "credits": "Créditos"
         },

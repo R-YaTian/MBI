@@ -253,37 +253,37 @@ namespace app
             LOG_DEBUG("> Reading cert\n");
             m_worker->BufferData(certBuf.get(), m_worker->GetContent()->GetFileEntryOffset(certFileEntries[i]), certSize);
 
-            // try to fix a temp ticket and change it to a permanent one
+            // Try to fix a bad ticket dump
             if (m_fixTicket)
             {
                 // https://switchbrew.org/wiki/Ticket#Certificate_chain
-                u16 ECDSA = 0x4 + 0x3C + 0x40 + 0x146;
-                u16 RSA_2048 = 0x4 + 0x100 + 0x3C + 0x146;
-                u16 RSA_4096 = 0x4 + 0x200 + 0x3C + 0x146;
+                u16 ECDSA_Properties = 0x4 + 0x3C + 0x40 + 0x146;
+                u16 RSA_2048_Properties = 0x4 + 0x100 + 0x3C + 0x146;
+                u16 RSA_4096_Properties = 0x4 + 0x200 + 0x3C + 0x146;
 
                 u16 ECDSA_RightsId = 0x4 + 0x3C + 0x40 + 0x160;
                 u16 RSA_2048_RightsId = 0x4 + 0x100 + 0x3C + 0x160;
                 u16 RSA_4096_RightsId = 0x4 + 0x200 + 0x3C + 0x160;
 
                 // ECDSA SHA256 & SHA1
-                if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
+                if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && tikBuf.get()[ECDSA_Properties - 1] != tikBuf.get()[ECDSA_RightsId + 0x0F])
                 {
-                    tikBuf.get()[ECDSA] = 0x0;
-                    tikBuf.get()[ECDSA - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // fix broken Master key revision
+                    tikBuf.get()[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
+                    tikBuf.get()[ECDSA_Properties - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
                 }
 
                 // RSA_2048 SHA256 & SHA1
-                else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30))
+                else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048_Properties - 1] != tikBuf.get()[RSA_2048_RightsId + 0x0F]))
                 {
-                    tikBuf.get()[RSA_2048] = 0x0;
-                    tikBuf.get()[RSA_2048 - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
+                    tikBuf.get()[RSA_2048_Properties] = 0x0;
+                    tikBuf.get()[RSA_2048_Properties - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
                 }
 
                 // RSA_4096 SHA256 & SHA1
-                else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30))
+                else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096_Properties - 1] != tikBuf.get()[RSA_4096_RightsId + 0x0F]))
                 {
-                    tikBuf.get()[RSA_4096] = 0x0;
-                    tikBuf.get()[RSA_4096 - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
+                    tikBuf.get()[RSA_4096_Properties] = 0x0;
+                    tikBuf.get()[RSA_4096_Properties - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
                 }
             }
 
