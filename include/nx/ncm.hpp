@@ -48,7 +48,7 @@ namespace nx::ncm
             void DeletePlaceholder(const NcmPlaceHolderId &placeholderId);
             void WritePlaceholder(const NcmPlaceHolderId &placeholderId, u64 offset, void *buffer, size_t bufSize);
             void Register(const NcmPlaceHolderId &placeholderId, const NcmContentId &registeredId);
-            void Delete(const NcmContentId &registeredId);
+            bool Delete(const NcmContentId &registeredId);
             bool Has(const NcmContentId &registeredId);
             std::string GetPath(const NcmContentId &registeredId);
     };

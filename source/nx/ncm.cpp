@@ -59,13 +59,14 @@ namespace nx::ncm
         ASSERT_OK(ncmContentStorageRegister(&m_contentStorage, &registeredId, &placeholderId), "Failed to register placeholder NCA");
     }
 
-    void ContentStorage::Delete(const NcmContentId &registeredId)
+    bool ContentStorage::Delete(const NcmContentId &registeredId)
     {
         if (!this->Has(registeredId))
         {
-            return;
+            return false;
         }
         ASSERT_OK(ncmContentStorageDelete(&m_contentStorage, &registeredId), "Failed to delete registered NCA");
+        return true;
     }
 
     bool ContentStorage::Has(const NcmContentId &registeredId)

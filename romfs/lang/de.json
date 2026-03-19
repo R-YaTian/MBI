@@ -109,7 +109,8 @@
             "desc0": " Dateien erfolgreich installiert!",
             "desc1": " installiert!",
             "downloading": "Übertrage ",
-            "at": " mit "
+            "at": " mit ",
+            "removing": "Entferne bereits installierte NCA: "
         },
         "nca_verify": {
             "missing_digital": "Digitaler Hash fehlt, Metadaten werden neu erstellt...",

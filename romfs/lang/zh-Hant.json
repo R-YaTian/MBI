@@ -109,7 +109,8 @@
             "desc0": " 個所選的檔案已全部安裝！",
             "desc1": " 已安裝！",
             "downloading": "正在安裝 ",
-            "at": " 約 "
+            "at": " 約 ",
+            "removing": "正在移除已安裝的NCA: "
         },
         "nca_verify": {
             "missing_digital": "缺少數位雜湊，正在嘗試重建中繼資料...",

@@ -109,7 +109,8 @@
             "desc0": " archivos fueron instalados satisfactoriamente.",
             "desc1": " instalado.",
             "downloading": "Descargando ",
-            "at": " en "
+            "at": " en ",
+            "removing": "Eliminando NCA ya instalada: "
         },
         "nca_verify": {
             "missing_digital": "Falta el hash digital, intentando reconstruir los metadatos...",

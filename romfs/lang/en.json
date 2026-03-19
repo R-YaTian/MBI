@@ -109,7 +109,8 @@
             "desc0": " files installed successfully!",
             "desc1": " installed!",
             "downloading": "Downloading ",
-            "at": " at "
+            "at": " at ",
+            "removing": "Removing already installed nca: "
         },
         "nca_verify": {
             "missing_digital": "Missing digital hash, attempting to rebuild metadata...",

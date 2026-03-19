@@ -61,7 +61,6 @@ namespace app
         NcmContentMetaKey contentMetaKey = m_contentMeta[idx].GetContentMetaKey();
         NcmContentMetaType contentMetaType = static_cast<NcmContentMetaType>(contentMetaKey.type);
         const auto app_id = nx::ncm::GetBaseTitleId(contentMetaKey.id, contentMetaType);
-        auto records = m_contentMeta[idx].GetContentInfos();
 
         // remove current entries (if any).
         s32 db_list_total;
@@ -116,17 +115,16 @@ namespace app
 
                 for (const auto& info : infos)
                 {
-                    const auto it = std::ranges::find_if(records, [&info](auto& e) {
-                        return !std::memcmp(&e.content_id, &info.content_id, sizeof(e.content_id));
-                    });
-
-                    // Skip deletion if not found in records or if it's the meta nca
-                    if (it == records.cend() || !std::memcmp(&info.content_id, &m_contentMeta[idx].GetContentId(), sizeof(info.content_id)))
+                    // Skip delete current meta nca
+                    if (!std::memcmp(&info.content_id, &m_contentMeta[idx].GetContentId(), sizeof(info.content_id)))
                     {
                         continue;
                     }
 
-                    contentStorage.Delete(info.content_id);
+                    if (contentStorage.Delete(info.content_id))
+                    {
+                        app::facade::SendInstallInfoText("inst.info_page.removing"_lang + nx::nca::GetNcaIdString(info.content_id));
+                    }
                 }
 
                 ASSERT_OK(ncmContentMetaDatabaseRemove(std::addressof(db), std::addressof(key)), "Failed to remove content records");
@@ -312,6 +310,11 @@ namespace app
         // Read the tik files and put it into a buffer
         std::vector<const void*> tikFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("tik");
         std::vector<const void*> certFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("cert");
+
+        if (tikFileEntries.size() != certFileEntries.size())
+        {
+            THROW_FORMAT("Number of tik files does not match number of cert files!");
+        }
 
         for (size_t i = 0; i < tikFileEntries.size(); i++)
         {

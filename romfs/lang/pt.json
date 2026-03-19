@@ -109,7 +109,8 @@
             "desc0": " ficheiros instalados com sucesso!",
             "desc1": " instalado!",
             "downloading": "A transferir ",
-            "at": " às "
+            "at": " às ",
+            "removing": "Removendo NCA já instalado: "
         },
         "nca_verify": {
             "missing_digital": "Hash digital ausente, tentando reconstruir os metadados...",
