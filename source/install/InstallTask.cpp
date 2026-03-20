@@ -54,6 +54,13 @@ namespace app
 
         LOG_DEBUG("Pushing application record...\n");
         ASSERT_OK(nsextPushApplicationRecord(baseTitleId, NsExtApplicationEvent_Present, &storageRecord, 1), "Failed to push application record");
+        if (hosversionAtLeast(6,0,0))
+        {
+            ASSERT_OK(avmInitialize(), "Failed to initialize avm");
+            ASSERT_OK(avmPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "Failed to push launch version");
+            ASSERT_OK(avmUpgradeLaunchRequiredVersion(baseTitleId, storageRecord.meta_key.version), "Failed to upgrade launch required version");
+            avmExit();
+        }
     }
 
     void InstallTask::RemoveInstalledNcas(int idx)

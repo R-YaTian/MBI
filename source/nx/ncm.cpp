@@ -27,8 +27,6 @@ SOFTWARE.
 
 namespace nx::ncm
 {
-    constexpr auto ContentMetaKeyMax = 64000;
-
     ContentStorage::ContentStorage(NcmStorageId storageId)
     {
         ASSERT_OK(ncmOpenContentStorage(&m_contentStorage, storageId), "Failed to open NCM ContentStorage");
