@@ -110,7 +110,8 @@
             "desc1": " 安装完成！",
             "downloading": "传输中...",
             "at": " 以 ",
-            "removing": "正在移除已安装的 nca 文件: "
+            "removing": "正在移除已安装的 nca 文件: ",
+            "no_space": "剩余空间不足以安装:"
         },
         "nca_verify": {
             "missing_digital": "缺失数字哈希, 尝试重建元数据...",

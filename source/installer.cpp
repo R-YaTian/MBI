@@ -32,7 +32,7 @@ namespace app::installer
         LOG_DEBUG("Failed to install");
         LOG_DEBUG("%s", e.what());
         app::facade::SendInstallBarText("inst.info_page.failed"_lang);
-        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg + "! " + "inst.info_page.failed_desc"_lang);
+        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg + "!\n" + "inst.info_page.failed_desc"_lang);
         app::facade::SendInstallProgress(0);
         app::facade::SendInstallInfoText((std::string)e.what());
         std::thread audioThread(app::manager::playAudio, "/fail.wav");

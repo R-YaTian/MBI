@@ -35,6 +35,7 @@ namespace nx::ncm
     {
         private:
             NcmContentStorage m_contentStorage;
+            NcmStorageId m_storageId;
 
         public:
             // Don't allow copying, or garbage may be closed by the destructor
@@ -51,6 +52,7 @@ namespace nx::ncm
             bool Delete(const NcmContentId &registeredId);
             bool Has(const NcmContentId &registeredId);
             std::string GetPath(const NcmContentId &registeredId);
+            const NcmStorageId& GetStorageId() const { return m_storageId; }
     };
 
     class ContentMeta final

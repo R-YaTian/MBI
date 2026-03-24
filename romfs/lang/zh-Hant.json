@@ -110,7 +110,8 @@
             "desc1": " 已安裝！",
             "downloading": "正在安裝 ",
             "at": " 約 ",
-            "removing": "正在移除已安裝的NCA: "
+            "removing": "正在移除已安裝的NCA: ",
+            "no_space": "沒有足夠的空間進行安裝:"
         },
         "nca_verify": {
             "missing_digital": "缺少數位雜湊，正在嘗試重建中繼資料...",

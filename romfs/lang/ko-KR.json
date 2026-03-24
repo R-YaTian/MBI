@@ -110,7 +110,8 @@
             "desc1": " 설치됨!",
             "downloading": "다운로드중 ",
             "at": " 에서 ",
-            "removing": "이미 설치된 NCA 제거 중: "
+            "removing": "이미 설치된 NCA 제거 중: ",
+            "no_space": "설치할 여유 공간이 부족합니다:"
         },
         "nca_verify": {
             "missing_digital": "디지털 해시가 누락되었습니다. 메타데이터 재구성을 시도 중입니다...",

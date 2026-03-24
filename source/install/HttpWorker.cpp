@@ -1,6 +1,7 @@
 #include "install/HttpWorker.hpp"
 #include "util/i18n.hpp"
 #include "nx/error.hpp"
+#include "nx/fs.hpp"
 #include "facade.hpp"
 #include <sstream>
 #include <thread>
@@ -59,6 +60,10 @@ namespace app::install
 
         LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         size_t ncaSize = m_content->GetFileEntrySize(fileEntry);
+        if (ncaSize > (size_t)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
+        {
+            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
+        }
 
         nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
         StreamArgs args;

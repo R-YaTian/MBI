@@ -110,7 +110,8 @@
             "desc1": " installiert!",
             "downloading": "Übertrage ",
             "at": " mit ",
-            "removing": "Entferne bereits installierte NCA: "
+            "removing": "Entferne bereits installierte NCA: ",
+            "no_space": "Zu wenig Speicherplatz zum Installieren:"
         },
         "nca_verify": {
             "missing_digital": "Digitaler Hash fehlt, Metadaten werden neu erstellt...",

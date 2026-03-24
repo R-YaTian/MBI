@@ -110,7 +110,8 @@
             "desc1": " instalado.",
             "downloading": "Descargando ",
             "at": " en ",
-            "removing": "Eliminando NCA ya instalada: "
+            "removing": "Eliminando NCA ya instalada: ",
+            "no_space": "Espacio insuficiente para instalar:"
         },
         "nca_verify": {
             "missing_digital": "Falta el hash digital, intentando reconstruir los metadatos...",

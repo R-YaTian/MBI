@@ -27,7 +27,7 @@ SOFTWARE.
 
 namespace nx::ncm
 {
-    ContentStorage::ContentStorage(NcmStorageId storageId)
+    ContentStorage::ContentStorage(NcmStorageId storageId) : m_storageId(storageId)
     {
         ASSERT_OK(ncmOpenContentStorage(&m_contentStorage, storageId), "Failed to open NCM ContentStorage");
     }

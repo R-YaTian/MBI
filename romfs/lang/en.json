@@ -110,7 +110,8 @@
             "desc1": " installed!",
             "downloading": "Downloading ",
             "at": " at ",
-            "removing": "Removing already installed nca: "
+            "removing": "Removing already installed nca: ",
+            "no_space": "Not enough free space to install:"
         },
         "nca_verify": {
             "missing_digital": "Missing digital hash, attempting to rebuild metadata...",
