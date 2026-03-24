@@ -1,4 +1,5 @@
 #include "nx/misc.hpp"
+#include <time.h>
 #include <switch.h>
 
 namespace nx::misc
@@ -131,5 +132,44 @@ namespace nx::misc
         {
             return "#00FF00FF"; // green
         }
+    }
+
+    std::string GetCurrentDate()
+    {
+        const auto posix_time = time(nullptr);
+        const auto local_time = localtime(&posix_time);
+
+        char date_str[0x20] = {};
+        snprintf(date_str, sizeof(date_str), "%04d/%02d/%02d", local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday);
+        return date_str;
+    }
+
+    std::string GetCurrentTime(const bool use_12h_time)
+    {
+        const auto posix_time = time(nullptr);
+        const auto local_time = localtime(&posix_time);
+
+        char time_str[0x20] = {};
+        if (use_12h_time)
+        {
+            auto hour = local_time->tm_hour;
+            if (hour > 12)
+            {
+                hour -= 12;
+            }
+            else if (hour == 0)
+            {
+                hour = 12;
+            }
+
+            const auto ampm_str = (local_time->tm_hour >= 12) ? "PM" : "AM";
+            snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d %s", hour, local_time->tm_min, local_time->tm_sec, ampm_str);
+        }
+        else
+        {
+            snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d", local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
+        }
+
+        return time_str;
     }
 }

@@ -131,6 +131,7 @@
             "ask_delete": "安装完成后询问是否删除原始文件",
             "enableSound": "安装完成后播放提示音",
             "fix_ticket": "尝试修复错误的票据转储",
+            "use_12h_time": "使用12小时制时间",
             "language": "显示语言：",
             "credits": "致谢"
         },

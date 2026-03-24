@@ -18,6 +18,7 @@ namespace app::config
     bool ignoreReqVers;
     bool overClock;
     bool usbAck;
+    bool use12hTime;
 
     void SaveSettings()
     {
@@ -31,6 +32,7 @@ namespace app::config
         j["usbAck"] = usbAck;
         j["lastNetUrl"] = lastNetUrl;
         j["httpIndexUrl"] = httpIndexUrl;
+        j["use12hTime"] = use12hTime;
         auto json_str = j.dump(2);
 
         FILE *fpOut = fopen(settingsFile.c_str(), "w");
@@ -59,6 +61,7 @@ namespace app::config
         usbAck = j.value("usbAck", false);
         lastNetUrl = j.value("lastNetUrl", std::string("https://"));
         httpIndexUrl = j.value("httpIndexUrl", std::string("http://"));
+        use12hTime = j.value("use12hTime", false);
 
         if (!fp)
         {

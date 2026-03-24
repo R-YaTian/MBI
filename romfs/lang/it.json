@@ -131,6 +131,7 @@
             "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
             "enableSound": "Info audio alla fine",
             "fix_ticket": "Tentativo di correggere dump ticket errato",
+            "use_12h_time": "Usa il formato ora 12h",
             "language": "Lingua: ",
             "credits": "Crediti"
         },

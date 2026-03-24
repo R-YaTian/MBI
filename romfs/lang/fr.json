@@ -131,6 +131,7 @@
             "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
             "enableSound": "Info audio à la fin",
             "fix_ticket": "Tentative de correction du mauvais vidage de ticket",
+            "use_12h_time": "Utiliser le format d'heure 12h",
             "language": "Langage: ",
             "credits": "Crédits"
         },

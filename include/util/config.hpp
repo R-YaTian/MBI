@@ -26,6 +26,7 @@ namespace app::config
     extern bool enableSound;
     extern bool fixTicket;
     extern bool usbAck;
+    extern bool use12hTime;
 
     void SaveSettings();
     void ParseSettings();

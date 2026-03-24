@@ -58,6 +58,8 @@ namespace app::ui
             void SetTouchButtonAreaType(TouchButtonAreaType type);
         private:
             std::string freeSpaceCurrentText;
+            std::string timeCurrentText;
+            std::string dateCurrentText;
             u32 batteryCurrentValue;
             pu::sdl2::TextureHandle::Ref bgImg;
             pu::sdl2::TextureHandle::Ref logoImg;
@@ -70,6 +72,8 @@ namespace app::ui
             pu::ui::elm::TextBlock::Ref appVersionText;
             pu::ui::elm::TextBlock::Ref freeSpaceText;
             pu::ui::elm::TextBlock::Ref batteryValueText;
+            pu::ui::elm::TextBlock::Ref timeText;
+            pu::ui::elm::TextBlock::Ref dateText;
             pu::ui::elm::Rectangle::Ref topRect;
             pu::ui::elm::Rectangle::Ref botRect;
             pu::ui::elm::Rectangle::Ref infoRect;

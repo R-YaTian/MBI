@@ -131,6 +131,7 @@
             "ask_delete": "Ask to delete original files after installation",
             "enableSound": "Info audio at the end",
             "fix_ticket": "Try to fix bad ticket dump",
+            "use_12h_time": "Use 12h time format",
             "language": "Language: ",
             "credits": "Credits"
         },

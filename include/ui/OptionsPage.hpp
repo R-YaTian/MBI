@@ -19,6 +19,7 @@ namespace app::ui
             pu::ui::elm::MenuItem::Ref deletePromptOption;
             pu::ui::elm::MenuItem::Ref enableSoundOption;
             pu::ui::elm::MenuItem::Ref fixTicketOption;
+            pu::ui::elm::MenuItem::Ref use12hTimeOption;
             pu::ui::elm::MenuItem::Ref languageOption;
             pu::ui::elm::MenuItem::Ref creditsOption;
             void IgnoreFirmOption_Click();
@@ -26,6 +27,7 @@ namespace app::ui
             void DeletePromptOption_Click();
             void EnableSoundOption_Click();
             void FixTicketOption_Click();
+            void Use12hTimeOption_Click();
             void LanguageOption_Click();
             void CreditsOption_Click();
             void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);

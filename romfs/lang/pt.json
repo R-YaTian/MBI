@@ -131,6 +131,7 @@
             "enableSound": "Áudio informativo no final",
             "ask_delete": "Questionar a eliminação dos ficheiros orginais depois da instalação",
             "fix_ticket": "Tentativa de corrigir despejo de ticket incorreto",
+            "use_12h_time": "Use formato de hora de 12h",
             "language": "Idioma: ",
             "credits": "Créditos"
         },

@@ -30,6 +30,9 @@ namespace app::ui
         fixTicketOption = pu::ui::elm::MenuItem::New("options.menu_items.fix_ticket"_lang);
         fixTicketOption->SetColor(COLOR(app::config::MenuTextColor));
         fixTicketOption->AddOnKey(std::bind(&OptionsPage::FixTicketOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        use12hTimeOption = pu::ui::elm::MenuItem::New("options.menu_items.use_12h_time"_lang);
+        use12hTimeOption->SetColor(COLOR(app::config::MenuTextColor));
+        use12hTimeOption->AddOnKey(std::bind(&OptionsPage::Use12hTimeOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
         languageOption->SetColor(COLOR(app::config::MenuTextColor));
         languageOption->AddOnKey(std::bind(&OptionsPage::LanguageOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
@@ -42,6 +45,7 @@ namespace app::ui
         this->menu->AddItem(deletePromptOption);
         this->menu->AddItem(enableSoundOption);
         this->menu->AddItem(fixTicketOption);
+        this->menu->AddItem(use12hTimeOption);
         this->menu->AddItem(languageOption);
         this->menu->AddItem(creditsOption);
         ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
@@ -49,6 +53,7 @@ namespace app::ui
         deletePromptOption->SetIcon(this->getMenuOptionIcon(app::config::deletePrompt));
         enableSoundOption->SetIcon(this->getMenuOptionIcon(app::config::enableSound));
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
+        use12hTimeOption->SetIcon(this->getMenuOptionIcon(app::config::use12hTime));
         this->Add(this->menu);
     }
 
@@ -145,6 +150,16 @@ namespace app::ui
         }
         app::config::fixTicket = !app::config::fixTicket;
         fixTicketOption->SetIcon(this->getMenuOptionIcon(app::config::fixTicket));
+    }
+
+    void OptionsPage::Use12hTimeOption_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        app::config::use12hTime = !app::config::use12hTime;
+        use12hTimeOption->SetIcon(this->getMenuOptionIcon(app::config::use12hTime));
     }
 
     void OptionsPage::CreditsOption_Click()

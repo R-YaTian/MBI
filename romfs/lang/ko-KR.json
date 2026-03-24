@@ -131,6 +131,7 @@
             "ask_delete": "설치 완료 후 원본파일 삭제 요청",
             "enableSound": "끝에 정보 오디오",
             "fix_ticket": "잘못된 티켓 덤프를 수정하려고 시도합니다",
+            "use_12h_time": "12시간 형식 사용",
             "language": "언어: ",
             "credits": "크레딧"
         },

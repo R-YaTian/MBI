@@ -46,6 +46,8 @@ namespace app::ui
         layout->Add(this->appVersionText); \
         layout->Add(this->batteryValueText); \
         layout->Add(this->freeSpaceText); \
+        layout->Add(this->dateText); \
+        layout->Add(this->timeText); \
     }
 
     #define _UI_MAINAPP_MENU_SET_EXTRA(layout) { \
@@ -90,6 +92,20 @@ namespace app::ui
             this->batteryValueText->SetColor(COLOR(batteryColor));
             this->batteryValueText->SetText("misc.battery_charge"_lang + ": " + batteryText);
         }
+
+        const auto newDateText = nx::misc::GetCurrentDate();
+        if (dateCurrentText != newDateText)
+        {
+            dateCurrentText = newDateText;
+            this->dateText->SetText(dateCurrentText);
+        }
+
+        const auto newTimeText = nx::misc::GetCurrentTime(app::config::use12hTime);
+        if (timeCurrentText != newTimeText)
+        {
+            timeCurrentText = newTimeText;
+            this->timeText->SetText(timeCurrentText);
+        }
     }
 
     void MainApplication::OnLoad()
@@ -130,6 +146,12 @@ namespace app::ui
         this->freeSpaceText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang + ": " + freeSpaceCurrentText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
+        this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);
+        this->dateText->SetFont("DefaultFont@32");
+        this->dateText->SetColor(COLOR("#FFFFFFFF"));
+        this->timeText = pu::ui::elm::TextBlock::New(1700, 49, timeCurrentText);
+        this->timeText->SetFont("DefaultFont@32");
+        this->timeText->SetColor(COLOR("#FFFFFFFF"));
 
         this->UpdateStats();
 

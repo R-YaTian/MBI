@@ -131,6 +131,7 @@
             "ask_delete": "Preguntar si borrar los archivos originales, luego de una instalación satisfactoria",
             "enableSound": "Audio de información al final",
             "fix_ticket": "Intento de corregir volcado de ticket incorrecto",
+            "use_12h_time": "Usar formato de hora de 12 horas",
             "language": "Idioma: ",
             "credits": "Créditos"
         },
