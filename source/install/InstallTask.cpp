@@ -1,6 +1,7 @@
 #include "install/InstallTask.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
+#include "nx/misc.hpp"
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
@@ -57,10 +58,11 @@ namespace app
         if (hosversionAtLeast(6,0,0))
         {
             ASSERT_OK(avmInitialize(), "Failed to initialize avm");
-            ASSERT_OK(avmPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "Failed to push launch version");
-            ASSERT_OK(avmUpgradeLaunchRequiredVersion(baseTitleId, storageRecord.meta_key.version), "Failed to upgrade launch required version");
+            ASSERT_OK(avmPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to push launch version");
+            ASSERT_OK(avmUpgradeLaunchRequiredVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to upgrade launch required version");
             avmExit();
         }
+        ASSERT_OK(nsextPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "Failed to push launch version");
     }
 
     void InstallTask::RemoveInstalledNcas(int idx)
@@ -316,36 +318,44 @@ namespace app
     {
         // Read the tik files and put it into a buffer
         std::vector<const void*> tikFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("tik");
-        std::vector<const void*> certFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("cert");
-
-        if (tikFileEntries.size() != certFileEntries.size())
+        if (tikFileEntries.size() == 0)
         {
-            THROW_FORMAT("Number of tik files does not match number of cert files!");
+            THROW_FORMAT("No tik file found in the content!");
+        }
+
+        std::vector<const void*> tmpFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("cert");
+        std::vector<const void*> certFileEntries(tikFileEntries.size(), nullptr);
+        for (size_t i = 0; i < tmpFileEntries.size(); i++)
+        {
+            if (i >= tikFileEntries.size())
+            {
+                break;
+            }
+            certFileEntries[i] = tmpFileEntries[i];
         }
 
         for (size_t i = 0; i < tikFileEntries.size(); i++)
         {
-            if (tikFileEntries[i] == nullptr)
-            {
-                LOG_DEBUG("Remote tik file is missing.\n");
-                THROW_FORMAT("Remote tik file is not present!");
-            }
-
             u64 tikSize = m_worker->GetContent()->GetFileEntrySize(tikFileEntries[i]);
             auto tikBuf = std::make_unique<u8[]>(tikSize);
             LOG_DEBUG("> Reading tik\n");
             m_worker->BufferData(tikBuf.get(), m_worker->GetContent()->GetFileEntryOffset(tikFileEntries[i]), tikSize);
 
+            u64 certSize;
+            std::unique_ptr<u8[]> certBuf;
             if (certFileEntries[i] == nullptr)
             {
-                LOG_DEBUG("Remote cert file is missing.\n");
-                THROW_FORMAT("Remote cert file is not present!");
+                certSize = nx::misc::CommonCertificateSize;
+                certBuf = std::make_unique<u8[]>(certSize);
+                memcpy(certBuf.get(), nx::misc::CommonCertificateData, certSize);
             }
-
-            u64 certSize = m_worker->GetContent()->GetFileEntrySize(certFileEntries[i]);
-            auto certBuf = std::make_unique<u8[]>(certSize);
-            LOG_DEBUG("> Reading cert\n");
-            m_worker->BufferData(certBuf.get(), m_worker->GetContent()->GetFileEntryOffset(certFileEntries[i]), certSize);
+            else
+            {
+                certSize = m_worker->GetContent()->GetFileEntrySize(certFileEntries[i]);
+                certBuf = std::make_unique<u8[]>(certSize);
+                LOG_DEBUG("> Reading cert\n");
+                m_worker->BufferData(certBuf.get(), m_worker->GetContent()->GetFileEntryOffset(certFileEntries[i]), certSize);
+            }
 
             // Try to fix a bad ticket dump
             if (m_fixTicket)
