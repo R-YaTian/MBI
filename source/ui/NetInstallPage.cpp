@@ -33,7 +33,7 @@ namespace app::ui
             auto& url = this->ourUrls[i];
 
             std::string formattedURL = nx::network::formatUrlString(url);
-            std::string itm = app::util::shortenString(formattedURL, 56, true);
+            std::string itm = app::util::shortenString(formattedURL, 80, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(app::ui::Resources::UncheckedImage));

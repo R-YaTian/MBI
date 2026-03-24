@@ -100,11 +100,11 @@ namespace app::installer
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
                                                                "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true));
+                                                               ") " + app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true));
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 30, true));
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true));
                     }
 
                     std::string ext = ourTitleList[titleItr].extension().string();
@@ -129,13 +129,13 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                OnFailed(app::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true), e);
+                OnFailed(app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true), e);
                 fileInstalled = false;
             }
 
             if (fileInstalled)
             {
-                OnSuccess(ourTitleList.size(), app::util::shortenString(ourTitleList[0].filename().string(), 42, true));
+                OnSuccess(ourTitleList.size(), app::util::shortenString(ourTitleList[0].filename().string(), 64, true));
                 if (app::config::deletePrompt)
                 {
                     if (ourTitleList.size() > 1)
@@ -251,7 +251,7 @@ namespace app::installer
             std::vector<std::string> fileNames;
             for (size_t i = 0; i < ourTitleList.size(); i++)
             {
-                fileNames.push_back(app::util::shortenString(ourTitleList[i], 30, true));
+                fileNames.push_back(app::util::shortenString(ourTitleList[i], 64, true));
             }
 
             bool fileInstalled = true;
@@ -597,7 +597,7 @@ back_to_loop:
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
             {
-                urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 28, true));
+                urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 64, true));
             }
 
             bool fileInstalled = true;

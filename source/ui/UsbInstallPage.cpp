@@ -30,7 +30,7 @@ namespace app::ui
         this->menu->ClearItems();
         for (auto& url: this->ourTitles)
         {
-            std::string itm = app::util::shortenString(url, 56, true);
+            std::string itm = app::util::shortenString(url, 80, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
