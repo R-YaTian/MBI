@@ -46,7 +46,7 @@
                 "invalid": "Die eingegebene URL ist ungültig",
                 "source_string": "Über einen Link (URL) installieren"
             },
-            "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0b3 !",
+            "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0ef!",
             "top_info1": "Warte auf eine Verbindung... Die IP Adresse deiner Switch ist: ",
             "failed": "Ferninstallation fehlgeschlagen!",
             "index_error": "Dateiliste konnte nicht abgerufen werden",
@@ -54,19 +54,19 @@
             "transfer_interput": "Bei der Dateiübertragung ist ein Fehler aufgetreten.",
             "source_string": "Über das Netzwerk installieren",
             "buttons": "\ue0e3 Installation über das Internet    \ue0e2 Aus dem HTTP-Verzeichnis installieren    \ue0f0 Hilfe    \ue0e1 Abbrechen",
-            "buttons1": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen"
+            "buttons1": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0e1 Abbrechen"
         },
         "sd": {
             "help": {
                 "title": "Hilfe",
-                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine SD Karte,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0b3."
+                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine SD Karte,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef."
             },
-            "top_info": "Wähle Dateien zur Installation von der SD-Karte aus und drücke dann \ue0b3!",
+            "top_info": "Wähle Dateien zur Installation von der SD-Karte aus und drücke dann \ue0ef!",
             "source_string": "Von SD-Kartendatei installieren",
             "delete_info": " installiert! Soll es von der SD-Karte gelöscht werden?",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der SD-Karte gelöscht werden?",
             "delete_desc": "Die originalen Dateien werden nach der Installation nicht mehr benötigt",
-            "buttons": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0f0 Hilfe    \ue0e1 Abbrechen"
+            "buttons": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0f0 Hilfe   \ue0e1 Abbrechen"
         },
         "usb": {
             "help": {
@@ -74,23 +74,23 @@
                 "desc": "Dateien können mit Tools, wie NS-USBloader im Awoo-Modus\nvon anderen Geräten aus installiert werden.\nUm Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät, wähle die Dateien\naus und übertrage sie dann auf die Konsole!\n\nLeider erfordern USB-Installationen auf einigen Plattformen ein spezielles\nSetup und können manchmal ziemlich fehlerhaft sein. Falls das nicht klappt,\nversuche es mit LAN/Internet Installation oder kopiere deine Dateien auf\ndeine SD-Karte und versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!"
             },
             "top_info": "USB verbunden! Warte auf die Dateiliste...",
-            "top_info2": "Wähle Dateien zur Installation aus und drücke dann \ue0b3 !",
+            "top_info2": "Wähle Dateien zur Installation aus und drücke dann \ue0ef!",
             "error": "USB Übertragung ist zeitlich abgelaufen oder fehlgeschlagen",
             "source_string": "Über USB installieren",
             "buttons": "\ue0e2 (Halten) Hilfe    \ue0e1 (Halte) Abbrechen",
-            "buttons2": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen"
+            "buttons2": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0e1 Abbrechen"
         },
         "hdd": {
             "help": {
                 "title": "Hilfe",
-                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine USB HDD,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0b3."
+                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine USB HDD,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef."
             },
-            "top_info": "Wähle Dateien zur Installation von der USB HDD aus und drücke dann \ue0b3!",
+            "top_info": "Wähle Dateien zur Installation von der USB HDD aus und drücke dann \ue0ef!",
             "source_string": "Von USB-Speichergerät installieren",
             "delete_info": " installiert! Soll es von der USB HDD gelöscht werden?",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der USB HDD gelöscht werden?",
             "multi_device_desc": "Bitte wählen Sie ein USB-Gerät oder eine Partition",
-            "buttons": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0f0 Hilfe    \ue0e1 Abbrechen"
+            "buttons": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0f0 Hilfe   \ue0e1 Abbrechen"
         },
         "target": {
             "desc0": "Wo soll ",
@@ -145,7 +145,7 @@
             "system_language": "System"
         },
         "title": "Ändere Mohsaua-Buoh-Installer Einstellungen!",
-        "buttons": "\ue0e0 Auswählen/Ändern    \ue0e1 Abbrechen "
+        "buttons": "\ue0e0 Auswählen/Ändern    \ue0e1 Abbrechen"
     },
     "common": {
         "ok": "OK",
@@ -156,7 +156,6 @@
         "cancel_desc": "Drücke \ue0e1 zum Abbrechen "
     },
     "misc": {
-        "sd_free": "SD (freier Platz)",
         "battery_charge": "Batterie"
     }
 }

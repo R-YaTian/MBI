@@ -162,17 +162,27 @@ namespace nx::fs
         return IDirectory(dir);
     }
 
-    std::string GetSdmcFreeSpace()
+    s64 GetFreeSpaceSize(FsContentStorageId id)
     {
+        FsFileSystem fs;
         s64 size = 0;
-        std::string sizeStr = "";
         Result ret = 0;
-        if (R_FAILED(ret = fsFsGetFreeSpace(fsdevGetDeviceFileSystem("sdmc:"), "/", &size)))
+        if (id == FsContentStorageId_SdCard)
         {
-            return sizeStr;
+            if (R_SUCCEEDED(ret = fsFsGetFreeSpace(fsdevGetDeviceFileSystem("sdmc:"), "/", &size)))
+            {
+                return size;
+            }
         }
-        sizeStr = FormatSizeString(size);
-        return sizeStr;
+        else if (id == FsContentStorageId_User)
+        {
+            ret = fsOpenContentStorageFileSystem(&fs, id);
+            if (R_SUCCEEDED(ret) && R_SUCCEEDED(ret = fsFsGetFreeSpace(&fs, "/", &size)))
+            {
+                return size;
+            }
+        }
+        return 0;
     }
 
     std::string FormatSizeString(s64 size)

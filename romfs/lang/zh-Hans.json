@@ -156,7 +156,6 @@
         "cancel_desc": "按 \ue0e1 取消"
     },
     "misc": {
-        "sd_free": "SD 卡(可用空间)",
         "battery_charge": "电量"
     }
 }

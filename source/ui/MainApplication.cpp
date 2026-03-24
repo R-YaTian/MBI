@@ -76,11 +76,11 @@ namespace app::ui
 
     void MainApplication::UpdateStats()
     {
-        const auto newfreeSpaceText = nx::fs::GetSdmcFreeSpace();
+        const auto newfreeSpaceText = nx::misc::GetFreeSpaceForDisplay();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {
             freeSpaceCurrentText = newfreeSpaceText;
-            this->freeSpaceText->SetText("misc.sd_free"_lang + ": " + freeSpaceCurrentText);
+            this->freeSpaceText->SetText(freeSpaceCurrentText);
         }
 
         const auto newBatteryValue = nx::misc::GetBatteryValue();
@@ -143,7 +143,7 @@ namespace app::ui
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang + ": ??%");
         this->batteryValueText->SetFont("DefaultFont@32");
-        this->freeSpaceText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, "misc.sd_free"_lang + ": " + freeSpaceCurrentText);
+        this->freeSpaceText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, freeSpaceCurrentText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);

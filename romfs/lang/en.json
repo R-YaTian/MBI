@@ -46,7 +46,7 @@
                 "invalid": "The URL specified is invalid!",
                 "source_string": "Install via link (URL)"
             },
-            "top_info": "Select what files you want to install from the server, then press the Plus button!",
+            "top_info": "Select what files you want to install from the server, then press the \ue0ef button!",
             "top_info1": "Waiting for a connection... Your Switch's IP Address is: ",
             "failed": "Failed to perform remote install!",
             "index_error": "Failed to retrieve file list",
@@ -59,9 +59,9 @@
         "sd": {
             "help": {
                 "title": "Help",
-                "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your SD card, browse to and\nselect the ones you want to install, then press the Plus button."
+                "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your SD card, browse to and\nselect the ones you want to install, then press the \ue0ef button."
             },
-            "top_info": "Select what files you want to install from SD card, then press the Plus button!",
+            "top_info": "Select what files you want to install from SD card, then press the \ue0ef button!",
             "source_string": "Install from SD card file",
             "delete_info": " installed! Delete it from the SD card?",
             "delete_info_multi": " files installed successfully! Delete them from the SD card?",
@@ -74,7 +74,7 @@
                 "desc": "Files can be installed over USB from other devices using tools such as\nNS-USBloader in Awoo mode. To send files to your Switch, open one of\nthese pieces of software on your PC, select your files, then upload to\nyour console!\n\nUnfortunately USB installations require a specific setup on some\nplatforms, and can be rather buggy at times. If you can't figure it out,\ngive LAN/internet installs a try, or copy your files to your SD card and\ntry the \"Install from SD Card\" option on the main menu!"
             },
             "top_info": "USB connection successful! Waiting for list of files to be sent...",
-            "top_info2": "Select what files you want to install over USB, then press the Plus button!",
+            "top_info2": "Select what files you want to install over USB, then press the \ue0ef button!",
             "error": "USB transfer timed out or failed",
             "source_string": "Install via USB",
             "buttons": "\ue0e2 (Hold) Help    \ue0e1 (Hold) Cancel",
@@ -83,9 +83,9 @@
         "hdd": {
             "help": {
                 "title": "Help",
-                "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your USB HDD, browse to and\nselect the ones you want to install, then press the Plus button."
+                "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your USB HDD, browse to and\nselect the ones you want to install, then press the \ue0ef button."
             },
-            "top_info": "Select what files you want to install from USB HDD, then press the Plus button!",
+            "top_info": "Select what files you want to install from USB HDD, then press the \ue0ef button!",
             "source_string": "Install from USB storage device",
             "delete_info": " installed! Delete it from the USB HDD?",
             "delete_info_multi": " files installed successfully! Delete them from the USB HDD?",
@@ -153,10 +153,9 @@
         "close": "Close",
         "yes": "Yes",
         "no": "No",
-        "cancel_desc": "Press B to cancel"
+        "cancel_desc": "Press \ue0e1 to cancel"
     },
     "misc": {
-        "sd_free": "SD (free space)",
         "battery_charge": "Battery"
     }
 }

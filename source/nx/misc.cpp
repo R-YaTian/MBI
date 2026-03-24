@@ -1,4 +1,5 @@
 #include "nx/misc.hpp"
+#include "nx/fs.hpp"
 #include <time.h>
 #include <switch.h>
 
@@ -171,5 +172,13 @@ namespace nx::misc
         }
 
         return time_str;
+    }
+
+    std::string GetFreeSpaceForDisplay()
+    {
+        s64 sizeSd = fs::GetFreeSpaceSize(FsContentStorageId_SdCard);
+        s64 sizeUser = fs::GetFreeSpaceSize(FsContentStorageId_User);
+        std::string sizeStr = "SD: " + fs::FormatSizeString(sizeSd) + " | User: " + fs::FormatSizeString(sizeUser);
+        return sizeStr;
     }
 }

@@ -91,7 +91,7 @@ namespace nx::fs
             IDirectory OpenDirectory(std::string path, int flags);
     };
 
-    std::string GetSdmcFreeSpace();
+    s64 GetFreeSpaceSize(FsContentStorageId id);
     std::string FormatSizeString(s64 size);
 
     class SimpleFileSystem final

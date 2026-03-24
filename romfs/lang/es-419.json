@@ -46,7 +46,7 @@
                 "invalid": "¡La URL especificada no es válida!",
                 "source_string": "Instalar mediante enlace (URL)"
             },
-            "top_info": "¡Selecciona los archivos que quieres instalar desde el servidor, luego pulsa el botón +!",
+            "top_info": "¡Selecciona los archivos que quieres instalar desde el servidor, luego pulsa el botón \ue0ef!",
             "top_info1": "Esperando una conexión... La dirección IP de tu Switch es: ",
             "failed": "¡No se pudo realizar la instalación remota!",
             "index_error": "Error al recuperar la lista de archivos",
@@ -54,19 +54,19 @@
             "transfer_interput": "Ha ocurrido un error al transmitir los datos. Comprueba tu conexión de red.",
             "source_string": "Instalar a través de la red",
             "buttons": "\ue0e3 Instalar Usando la Internet    \ue0e2 Instalar desde el directorio HTTP    \ue0f0 Ayuda    \ue0e1 Cancelar",
-            "buttons1": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todos    \ue0ef Instalar Archivo(s)    \ue0e1 Cancelar"
+            "buttons1": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todos   \ue0ef Instalar   \ue0e1 Cancelar"
         },
         "sd": {
             "help": {
                 "title": "Ayuda",
-                "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu tarjeta SD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón +."
+                "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu tarjeta SD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón \ue0ef."
             },
-            "top_info": "¡Selecciona los archivos que quieres instalar desde la tarjeta SD, y pulsa el botón +!",
+            "top_info": "¡Selecciona los archivos que quieres instalar desde la tarjeta SD, y pulsa el botón \ue0ef!",
             "source_string": "Instalar desde archivo de tarjeta SD",
             "delete_info": " instalado. ¿Borrarlo de la tarjeta SD?",
             "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la tarjeta SD?",
             "delete_desc": "Los archivos originales no hacen falta después de ser instalados",
-            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0f0 Ayuda    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0f0 Ayuda   \ue0e1 Cancelar"
         },
         "usb": {
             "help": {
@@ -74,23 +74,23 @@
                 "desc": "Se pueden instalar archivos por USB de otros dispositivos utilizando herramientas como\nNS-USBloader en modo Awoo. Para enviar archivos a tu Switch, abre uno de\nestos programas en tu ordenador, selecciona tus archivos, ¡y súbelos a\ntu consola!\n\nPor desgracia, las instalaciones por USB necesitan una configuración especial en algunas\nplataformas, y puede ser bastante problemática a veces. Si no consigues hacer que funcione,\nprueba las instalaciones por red local/Internet, o copia tus archivos a la tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
             },
             "top_info": "¡Conexión USB exitosa! Esperando que se envíe la lista de archivos...",
-            "top_info2": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón +!",
+            "top_info2": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón \ue0ef!",
             "error": "Tiempo de espera agotado o error de transferencia USB",
             "source_string": "Instalar mediante USB",
             "buttons": "\ue0e2 (Mantener) Ayuda    \ue0e1 (Mantener) Cancelar",
-            "buttons2": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0e1 Cancelar"
+            "buttons2": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0e1 Cancelar"
         },
         "hdd": {
             "help": {
                 "title": "Ayuda",
-                "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu USB HDD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón +."
+                "desc": "Copia los archivos NSP, NSZ, XCI o XCZ a tu USB HDD, navega hacia ellos,\nselecciona los que quires instalar y luego pulsa el botón \ue0ef."
             },
-            "top_info": "¡Selecciona los archivos que quieres instalar desde la USB HDD, y pulsa el botón +!",
+            "top_info": "¡Selecciona los archivos que quieres instalar desde la USB HDD, y pulsa el botón \ue0ef!",
             "source_string": "Instalar desde dispositivo de almacenamiento USB",
             "delete_info": " instalado. ¿Borrarlo de la USB HDD?",
             "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la USB HDD?",
             "multi_device_desc": "Seleccione un dispositivo USB o una partición",
-            "buttons": "\ue0e0 Selecionar Archivo    \ue0e3 Seleccionar Todo    \ue0ef Instalar Archivo(s)    \ue0f0 Ayuda    \ue0e1 Cancelar"
+            "buttons": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0f0 Ayuda   \ue0e1 Cancelar"
         },
         "target": {
             "desc0": "¿Dónde debería instalarse ",
@@ -153,10 +153,9 @@
         "close": "Cerrar",
         "yes": "Si",
         "no": "No",
-        "cancel_desc": "Pulsa B para cancelar"
+        "cancel_desc": "Pulsa \ue0e1 para cancelar"
     },
     "misc": {
-        "sd_free": "SD (espacio libre)",
         "battery_charge": "Batería"
     }
 }
