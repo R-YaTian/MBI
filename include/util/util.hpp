@@ -10,5 +10,4 @@ namespace app::util
     std::vector<std::filesystem::path> getDirectoryFiles(const std::string & dir, const std::vector<std::string> & extensions);
     std::vector<std::filesystem::path> getDirsAtPath(const std::string & dir);
     std::string getUrlHost(const std::string &url);
-    std::string shortenString(std::string ourString, int ourLength, bool isFile);
 }

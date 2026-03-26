@@ -4,6 +4,7 @@
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "nx/usb.hpp"
+#include "nx/misc.hpp"
 #include "installer.hpp"
 #include "facade.hpp"
 
@@ -28,15 +29,16 @@ namespace app::ui
             this->selectedTitles = {};
         }
         this->menu->ClearItems();
-        for (auto& url: this->ourTitles)
+        for (auto& itm: this->ourTitles)
         {
-            std::string itm = app::util::shortenString(url, 80, true);
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
+            ourEntry->SetPreserveTailLength(4);
+            ourEntry->SetTruncationMarker("(...)");
             for (size_t i = 0; i < this->selectedTitles.size(); i++)
             {
-                if (this->selectedTitles[i] == url)
+                if (this->selectedTitles[i] == itm)
                 {
                     ourEntry->SetIcon(GetResource(Resources::CheckedImage));
                 }
@@ -98,7 +100,7 @@ namespace app::ui
         if (this->selectedTitles.size() == 1)
         {
             dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang +
-                                                   app::util::shortenString(this->selectedTitles[0], 32, true) +
+                                                   nx::misc::ShortenString(this->selectedTitles[0], 32) +
                                                    "inst.target.desc1"_lang,
                                                    "common.cancel_desc"_lang,
                                                   {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);

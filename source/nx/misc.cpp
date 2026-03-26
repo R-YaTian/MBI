@@ -2,6 +2,7 @@
 #include "nx/fs.hpp"
 #include <time.h>
 #include <switch.h>
+#include <filesystem>
 
 namespace nx::misc
 {
@@ -37,7 +38,7 @@ namespace nx::misc
             return 0;
         }
 
-        if(hosversionAtLeast(8,0,0))
+        if (hosversionAtLeast(8,0,0))
         {
             ClkrstSession session = {0};
             PcvModuleId pcvModuleId;
@@ -174,11 +175,66 @@ namespace nx::misc
         return time_str;
     }
 
-    std::string GetFreeSpaceForDisplay()
+    std::string GetFreeSpaceInfo()
     {
         s64 sizeSd = fs::GetFreeSpaceSize(FsContentStorageId_SdCard);
         s64 sizeUser = fs::GetFreeSpaceSize(FsContentStorageId_User);
         std::string sizeStr = "SD: " + fs::FormatSizeString(sizeSd) + " | User: " + fs::FormatSizeString(sizeUser);
         return sizeStr;
+    }
+
+    std::string UTF16toUTF8(const std::u16string& src)
+    {
+        ssize_t units = 0;
+        units = utf16_to_utf8(nullptr, reinterpret_cast<const uint16_t*>(src.c_str()), 0);
+        if (units <= 0)
+        {
+            return "";
+        }
+
+        std::string dst(units, '\0');
+        units = utf16_to_utf8(reinterpret_cast<uint8_t*>(&dst[0]), reinterpret_cast<const uint16_t*>(src.c_str()), dst.size());
+        if (units <= 0)
+        {
+            return "";
+        }
+
+        return dst;
+    }
+
+    std::u16string UTF8toUTF16(const std::string& src)
+    {
+        ssize_t units = 0;
+        units = utf8_to_utf16(nullptr, reinterpret_cast<const uint8_t*>(src.c_str()), 0);
+        if (units <= 0)
+        {
+            return u"";
+        }
+
+        std::u16string dst(units, '\0');
+        units = utf8_to_utf16(reinterpret_cast<uint16_t*>(&dst[0]), reinterpret_cast<const uint8_t*>(src.c_str()), dst.size());
+        if (units <= 0)
+        {
+            return u"";
+        }
+
+        return dst;
+    }
+
+    std::string ShortenString(const std::string& in, size_t maxLength)
+    {
+        std::filesystem::path pathname = in;
+        std::string extension = pathname.extension().string();
+        std::u16string in_utf16 = UTF8toUTF16(in);
+        std::u16string extension_utf16 = UTF8toUTF16(extension);
+        if (in_utf16.size() - extension_utf16.size() > maxLength)
+        {
+            std::u16string shortened = in_utf16.substr(0, maxLength - 5) + u"(...)" + extension_utf16;
+            return UTF16toUTF8(shortened);
+        }
+        else
+        {
+            return in;
+        }
     }
 }

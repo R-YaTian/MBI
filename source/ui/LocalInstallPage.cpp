@@ -5,6 +5,7 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
+#include "nx/misc.hpp"
 
 namespace app::ui
 {
@@ -102,6 +103,8 @@ namespace app::ui
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
+            ourEntry->SetPreserveTailLength(4);
+            ourEntry->SetTruncationMarker("(...)");
             for (size_t j = 0; j < pageData->selectedTitles.size(); j++)
             {
                 if (pageData->selectedTitles[j] == file)
@@ -201,7 +204,7 @@ namespace app::ui
         if (pageData->selectedTitles.size() == 1)
         {
             dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang +
-                                                   app::util::shortenString(std::filesystem::path(pageData->selectedTitles[0]).filename().string(), 32, true) +
+                                                   nx::misc::ShortenString(std::filesystem::path(pageData->selectedTitles[0]).filename().string(), 32) +
                                                    "inst.target.desc1"_lang,
                                                    "common.cancel_desc"_lang,
                                                   {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);

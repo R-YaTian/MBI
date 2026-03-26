@@ -76,7 +76,7 @@ namespace app::ui
 
     void MainApplication::UpdateStats()
     {
-        const auto newfreeSpaceText = nx::misc::GetFreeSpaceForDisplay();
+        const auto newfreeSpaceText = nx::misc::GetFreeSpaceInfo();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {
             freeSpaceCurrentText = newfreeSpaceText;

@@ -100,11 +100,11 @@ namespace app::installer
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
                                                                "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true));
+                                                               ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42));
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true));
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42));
                     }
 
                     std::string ext = ourTitleList[titleItr].extension().string();
@@ -129,13 +129,13 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                OnFailed(app::util::shortenString(ourTitleList[titleItr].filename().string(), 64, true), e);
+                OnFailed(nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42), e);
                 fileInstalled = false;
             }
 
             if (fileInstalled)
             {
-                OnSuccess(ourTitleList.size(), app::util::shortenString(ourTitleList[0].filename().string(), 64, true));
+                OnSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42));
                 if (app::config::deletePrompt)
                 {
                     if (ourTitleList.size() > 1)
@@ -155,7 +155,7 @@ namespace app::installer
                     }
                     else
                     {
-                        if (app::facade::ShowDialog(app::util::shortenString(ourTitleList[0].filename().string(), 32, true) +
+                        if (app::facade::ShowDialog(nx::misc::ShortenString(ourTitleList[0].filename().string(), 32) +
                                                     (storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
                                                     "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false) == 1)
                         {
@@ -196,7 +196,6 @@ namespace app::installer
 
             while (true)
             {
-                // app::facade::SendRenderRequest();
                 if (transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
                 {
                     break;
@@ -251,7 +250,7 @@ namespace app::installer
             std::vector<std::string> fileNames;
             for (size_t i = 0; i < ourTitleList.size(); i++)
             {
-                fileNames.push_back(app::util::shortenString(ourTitleList[i], 64, true));
+                fileNames.push_back(nx::misc::ShortenString(ourTitleList[i], 42));
             }
 
             bool fileInstalled = true;
@@ -597,7 +596,7 @@ back_to_loop:
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
             {
-                urlNames.push_back(app::util::shortenString(nx::network::formatUrlString(ourUrlList[i]), 64, true));
+                urlNames.push_back(nx::misc::ShortenString(nx::network::formatUrlString(ourUrlList[i]), 42));
             }
 
             bool fileInstalled = true;

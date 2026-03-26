@@ -129,5 +129,8 @@ namespace nx::misc
     std::string GetBatteryColor(u32 charge);
     std::string GetCurrentDate();
     std::string GetCurrentTime(const bool use_12h_time);
-    std::string GetFreeSpaceForDisplay();
+    std::string GetFreeSpaceInfo();
+    std::string UTF16toUTF8(const std::u16string& src);
+    std::u16string UTF8toUTF16(const std::string& src);
+    std::string ShortenString(const std::string& in, size_t maxLength);
 }

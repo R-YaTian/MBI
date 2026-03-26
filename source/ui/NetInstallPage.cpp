@@ -33,10 +33,11 @@ namespace app::ui
             auto& url = this->ourUrls[i];
 
             std::string formattedURL = nx::network::formatUrlString(url);
-            std::string itm = app::util::shortenString(formattedURL, 80, true);
-            auto ourEntry = pu::ui::elm::MenuItem::New(itm);
+            auto ourEntry = pu::ui::elm::MenuItem::New(formattedURL);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(app::ui::Resources::UncheckedImage));
+            ourEntry->SetPreserveTailLength(4);
+            ourEntry->SetTruncationMarker("(...)");
             for (size_t j = 0; j < this->selectedUrls.size(); j++)
             {
                 if (this->selectedUrls[j] == url)
@@ -127,7 +128,7 @@ namespace app::ui
         if (this->selectedUrls.size() == 1)
         {
             std::string ourUrlString;
-            ourUrlString = app::util::shortenString(nx::network::formatUrlString(this->selectedUrls[0]), 32, true);
+            ourUrlString = nx::misc::ShortenString(nx::network::formatUrlString(this->selectedUrls[0]), 32);
             dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + ourUrlString +
                                                    "inst.target.desc1"_lang,
                                                    "common.cancel_desc"_lang,
