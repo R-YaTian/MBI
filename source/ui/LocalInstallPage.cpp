@@ -5,7 +5,6 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "nx/misc.hpp"
 
 namespace app::ui
 {
@@ -14,10 +13,10 @@ namespace app::ui
         int subPathCounter = 0;
         bool isRootDirectory = true;
         installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
-        std::filesystem::path currentDir;
-        std::vector<std::filesystem::path> menuDirectories;
-        std::vector<std::filesystem::path> menuFiles;
-        std::vector<std::filesystem::path> selectedTitles;
+        nx::fs::Path currentDir;
+        std::vector<nx::fs::Path> menuDirectories;
+        std::vector<nx::fs::Path> menuFiles;
+        std::vector<nx::fs::Path> selectedTitles;
         std::vector<size_t> menuIndices;
         std::vector<int> lastIndex;
     };
@@ -34,7 +33,7 @@ namespace app::ui
         pageData = std::make_unique<InternalData>();
     }
 
-    void LocalInstallPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath)
+    void LocalInstallPage::drawMenuItems(bool clearItems, nx::fs::Path ourPath)
     {
         s32 menuIndex = this->menu->GetSelectedIndex();
         if (clearItems)
@@ -50,7 +49,7 @@ namespace app::ui
             if(pathStr[pathStr.length() - 1] == ':' || pathStr.substr(pathStr.length() - 2, pathStr.length() - 1) == ":/")
             {
                 std::string rootDir = pathStr.substr(0, pathStr.find_last_of(':') + 1);
-                pageData->currentDir = std::filesystem::path(rootDir + "/");
+                pageData->currentDir = nx::fs::Path(rootDir + "/");
                 pageData->isRootDirectory = true;
             }
             else
@@ -64,8 +63,10 @@ namespace app::ui
 
         try
         {
-            pageData->menuDirectories = util::getDirsAtPath(pageData->currentDir);
-            pageData->menuFiles = util::getDirectoryFiles(pageData->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
+            pageData->menuDirectories = nx::fs::GetDirsAtPath(pageData->currentDir);
+            std::sort(pageData->menuDirectories.begin(), pageData->menuDirectories.end(), app::util::ignoreCaseCompare);
+            pageData->menuFiles = nx::fs::GetDirectoryFiles(pageData->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
+            std::sort(pageData->menuFiles.begin(), pageData->menuFiles.end(), app::util::ignoreCaseCompare);
         }
         catch (std::exception& e)
         {
@@ -201,22 +202,12 @@ namespace app::ui
     void LocalInstallPage::startInstall()
     {
         int dialogResult = -1;
-        if (pageData->selectedTitles.size() == 1)
-        {
-            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang +
-                                                   nx::misc::ShortenString(std::filesystem::path(pageData->selectedTitles[0]).filename().string(), 32) +
-                                                   "inst.target.desc1"_lang,
-                                                   "common.cancel_desc"_lang,
-                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
-        }
-        else
-        {
-            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang +
-                                                   std::to_string(pageData->selectedTitles.size()) +
-                                                   "inst.target.desc01"_lang,
-                                                   "common.cancel_desc"_lang,
-                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
-        }
+        dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang +
+                                               std::to_string(pageData->selectedTitles.size()) +
+                                               "inst.target.desc01"_lang,
+                                               "common.cancel_desc"_lang,
+                                              {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true,
+                                               static_cast<int>(Resources::InstallDiskImage));
         if (dialogResult < 0)
         {
             return;

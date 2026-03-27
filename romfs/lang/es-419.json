@@ -93,10 +93,8 @@
             "buttons": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0f0 Ayuda   \ue0e1 Cancelar"
         },
         "target": {
-            "desc0": "¿Dónde debería instalarse ",
-            "desc1": "?",
             "desc00": "¿Dónde deberían instalarse los ",
-            "desc01": " archivos seleccionados?",
+            "desc01": " archivo(s) seleccionados?",
             "opt0": "Tarjeta SD",
             "opt1": "Almacenamiento Interno"
         },
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Selecciona el idioma de Mohsaua-Buoh-Installer",
-            "desc": "El programa será cerrado después de cambiar el idioma. Pulsa B para cancelar.",
+            "desc": "El programa será cerrado después de cambiar el idioma. Pulsa \ue0e1 para cancelar.",
             "system_language": "Sistema"
         },
         "title": "¡Cambiar los ajustes de Mohsaua-Buoh-Installer!",

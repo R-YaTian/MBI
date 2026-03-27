@@ -66,7 +66,7 @@ namespace app::ui
         for (auto const& ext : exts)
         {
             auto path = bgDir + "/background" + ext;
-            if (std::filesystem::exists(path))
+            if (nx::fs::Exists(path))
             {
                 return LoadTexture(path);
             }
@@ -119,6 +119,7 @@ namespace app::ui
         this->bgImg = LoadBackground(app::config::storagePath);
         this->logoImg = LoadTexture("romfs:/images/logo.png");
         this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.png");
+        this->installDiskImg = LoadTexture("romfs:/images/icons/install-disk.png");
         this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
         this->backImg = LoadTexture("romfs:/images/icons/backward.png");
         this->confirmImg = LoadTexture("romfs:/images/icons/confirm.png");
@@ -344,6 +345,8 @@ namespace app::ui
             return mainApp->dirImg;
         case Resources::BackToParentImage:
             return mainApp->dirbackImg;
+        case Resources::InstallDiskImage:
+            return mainApp->installDiskImg;
         default:
             return nullptr;
         }

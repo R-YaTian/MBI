@@ -1,7 +1,7 @@
-#include <filesystem>
 #include <SDL2/SDL_mixer.h>
 #include <switch-ipcext.h>
 #include "manager.hpp"
+#include "nx/fs.hpp"
 #include "nx/usb.hpp"
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
@@ -13,10 +13,10 @@ namespace app::manager
     {
         nx::usb::usbDeviceInitialize();
 
-        if (!std::filesystem::exists("sdmc:/config"))
-            std::filesystem::create_directory("sdmc:/config");
-        if (!std::filesystem::exists(app::config::storagePath))
-            std::filesystem::create_directory(app::config::storagePath);
+        if (!nx::fs::Exists("sdmc:/config"))
+            nx::fs::MakeDir("sdmc:/config");
+        if (!nx::fs::Exists(app::config::storagePath))
+            nx::fs::MakeDir(app::config::storagePath);
         app::config::ParseSettings();
         app::config::ParseThemeColor();
 
@@ -69,7 +69,7 @@ namespace app::manager
     void playAudio(std::string audioPath)
     {
         std::string finalPath = "romfs:/audio"  + audioPath;
-        if (std::filesystem::exists(app::config::storagePath + audioPath))
+        if (nx::fs::Exists(app::config::storagePath + audioPath))
         {
             finalPath = app::config::storagePath + audioPath;
         }

@@ -93,8 +93,6 @@
             "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0f0 Aiuto    \ue0e1 Annulla"
         },
         "target": {
-            "desc0": "Dove vuoi installare ",
-            "desc1": " ?",
             "desc00": "Dove vuoi installare ",
             "desc01": " file?",
             "opt0": "SD",
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Seleziona la lingua di Mohsaua-Buoh-Installer",
-            "desc": "Il software verrà chiuso dopo aver cambiato la lingua. Premi B per annullare.",
+            "desc": "Il software verrà chiuso dopo aver cambiato la lingua. Premi \ue0e1 per annullare.",
             "system_language": "sistema"
         },
         "title": "Cambia le impostazioni di Mohsaua-Buoh-Installer!",

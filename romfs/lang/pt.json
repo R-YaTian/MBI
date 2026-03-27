@@ -93,10 +93,8 @@
             "buttons": "\ue0e0 Selecionar Ficheiro   \ue0e3 Selecionar Todos   \ue0ef Instalar   \ue0f0 Ajuda   \ue0e1 Cancelar"
         },
         "target": {
-            "desc0": "Onde será o ",
-            "desc1": " instalado?",
             "desc00": "Onde serão os ",
-            "desc01": " ficheiros selecionados instalados?",
+            "desc01": " ficheiro(s) selecionados instalados?",
             "opt0": "Cartão SD",
             "opt1": "Memória Interna"
         },
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Selecione o idioma do Mohsaua-Buoh-Installer",
-            "desc": "O software será encerrado depois de alterar o idioma. Pressione B para cancelar.",
+            "desc": "O software será encerrado depois de alterar o idioma. Pressione \ue0e1 para cancelar.",
             "system_language": "Sistema"
         },
         "title": "Alteração de deifinições do Mohsaua-Buoh-Installer!",

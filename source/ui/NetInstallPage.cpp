@@ -125,22 +125,11 @@ namespace app::ui
     void NetInstallPage::startInstall(bool urlMode)
     {
         int dialogResult = -1;
-        if (this->selectedUrls.size() == 1)
-        {
-            std::string ourUrlString;
-            ourUrlString = nx::misc::ShortenString(nx::network::formatUrlString(this->selectedUrls[0]), 32);
-            dialogResult = app::facade::ShowDialog("inst.target.desc0"_lang + ourUrlString +
-                                                   "inst.target.desc1"_lang,
-                                                   "common.cancel_desc"_lang,
-                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
-        }
-        else
-        {
-            dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) +
-                                                   "inst.target.desc01"_lang,
-                                                   "common.cancel_desc"_lang,
-                                                  {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true);
-        }
+        dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) +
+                                               "inst.target.desc01"_lang,
+                                               "common.cancel_desc"_lang,
+                                              {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true,
+                                               static_cast<int>(Resources::InstallDiskImage));
         if (dialogResult < 0)
         {
             if (urlMode)

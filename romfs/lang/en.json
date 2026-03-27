@@ -93,10 +93,8 @@
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
         },
         "target": {
-            "desc0": "Where should ",
-            "desc1": " be installed to?",
             "desc00": "Where should the selected ",
-            "desc01": " files be installed to?",
+            "desc01": " file(s) be installed to?",
             "opt0": "SD Card",
             "opt1": "Internal Storage"
         },
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Select Mohsaua-Buoh-Installer's language",
-            "desc": "The software will be closed after changing languages. Press B to cancel.",
+            "desc": "The software will be closed after changing languages. Press \ue0e1 to cancel.",
             "system_language": "System"
         },
         "title": "Change Mohsaua-Buoh-Installer's settings!",

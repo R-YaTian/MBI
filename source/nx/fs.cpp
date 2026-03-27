@@ -20,8 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <switch.h>
-
 #include <cmath>
 #include <memory>
 
@@ -212,6 +210,49 @@ namespace nx::fs
         }
 
         return sizeStr + units[unitIndex];
+    }
+
+    std::vector<Path> GetDirectoryFiles(const std::string &dir, const std::vector<std::string> &extensions)
+    {
+        std::vector<Path> files;
+        for (auto &p : std::filesystem::directory_iterator(dir))
+        {
+            try
+            {
+                if (std::filesystem::is_regular_file(p))
+                {
+                    std::string ext = p.path().extension().string();
+                    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+                    if (extensions.empty() || std::find(extensions.begin(), extensions.end(), ext) != extensions.end())
+                    {
+                        files.push_back(p.path());
+                    }
+                }
+            }
+            catch (std::filesystem::filesystem_error &e)
+            {
+            }
+        }
+        return files;
+    }
+
+    std::vector<Path> GetDirsAtPath(const std::string &dir)
+    {
+        std::vector<Path> files;
+        for (auto &p : std::filesystem::directory_iterator(dir))
+        {
+            try
+            {
+                if (std::filesystem::is_directory(p))
+                {
+                    files.push_back(p.path());
+                }
+            }
+            catch (std::filesystem::filesystem_error &e)
+            {
+            }
+        }
+        return files;
     }
 
     SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :

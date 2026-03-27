@@ -1,7 +1,6 @@
 #include "nx/nca.hpp"
 #include "nx/xfs0.hpp"
 #include "nx/Crypto.hpp"
-#include "nx/ByteBuffer.hpp"
 
 namespace nx::nca
 {

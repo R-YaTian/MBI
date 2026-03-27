@@ -64,7 +64,7 @@
             "top_info": "從記憶卡內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 SD 卡檔案安裝",
             "delete_info": " 安裝完成！是否將檔案從SD記憶卡刪除？",
-            "delete_info_multi": " 所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
+            "delete_info_multi": " 個所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
             "delete_desc": "安裝完成後，不會再使用到原始檔案",
             "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
         },
@@ -88,15 +88,13 @@
             "top_info": "從USB HDD行動硬碟內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 USB 儲存裝置安裝",
             "delete_info": " 安裝完成！\n是否將檔案從行動硬碟刪除？",
-            "delete_info_multi": " 所選的檔案均安裝完成！\n是否將所選的檔案從行動硬碟刪除？",
+            "delete_info_multi": " 個所選的檔案均安裝完成！\n是否將所選的檔案從行動硬碟刪除？",
             "multi_device_desc": "請選擇一個 USB 裝置或分割區",
             "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
         },
         "target": {
-            "desc0": "要將遊戲",
-            "desc1": "安裝到哪裡？",
             "desc00": "要將所選的 ",
-            "desc01": "個遊戲安裝到哪裡？",
+            "desc01": " 個遊戲安裝到哪裡？",
             "opt0": "SD記憶卡",
             "opt1": "主機內部儲存空間"
         },
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "設定Mohsaua-Buoh-Installer的介面語系",
-            "desc": "當確認變更介面語系後，程式會結束並退出。按B鈕取消變更。",
+            "desc": "當確認變更介面語系後，程式會結束並退出。按 \ue0e1 鈕取消變更。",
             "system_language": "系統預設"
         },
         "title": "變更Mohsaua-Buoh-Installer的設定！",

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <filesystem>
-#include <vector>
 #include <memory>
 
+#include "nx/fs.hpp"
 #include "ui/BaseMenuPage.hpp"
 
 namespace app::ui
@@ -14,7 +13,7 @@ namespace app::ui
             LocalInstallPage();
             ~LocalInstallPage();
             PU_SMART_CTOR(LocalInstallPage)
-            void drawMenuItems(bool clearItems, std::filesystem::path ourPath);
+            void drawMenuItems(bool clearItems, nx::fs::Path ourPath);
             void setStorageSourceToSdmc();
             void setStorageSourceToUdisk();
             void onCancel() override;

@@ -93,10 +93,8 @@
             "buttons": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0f0 Hilfe   \ue0e1 Abbrechen"
         },
         "target": {
-            "desc0": "Wo soll ",
-            "desc1": " installiert werden?",
             "desc00": "Wo sollen die ",
-            "desc01": " Dateien installiert werden?",
+            "desc01": " Datei(en) installiert werden?",
             "opt0": "SD Karte",
             "opt1": "Interner Speicher"
         },
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Wähle Mohsaua-Buoh-Installer Sprache",
-            "desc": "Die Software wird danach beendet. Drücke B um den Vorgang abzubrechen.",
+            "desc": "Die Software wird danach beendet. Drücke \ue0e1 um den Vorgang abzubrechen.",
             "system_language": "System"
         },
         "title": "Ändere Mohsaua-Buoh-Installer Einstellungen!",

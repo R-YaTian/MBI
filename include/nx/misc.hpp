@@ -132,5 +132,5 @@ namespace nx::misc
     std::string GetFreeSpaceInfo();
     std::string UTF16toUTF8(const std::u16string& src);
     std::u16string UTF8toUTF16(const std::string& src);
-    std::string ShortenString(const std::string& in, size_t maxLength);
+    std::string ShortenString(const std::string& in, size_t maxLength, const std::string& marker = "(...)");
 }

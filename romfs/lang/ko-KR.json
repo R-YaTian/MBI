@@ -93,8 +93,6 @@
             "buttons": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0f0 도움말    \ue0e1 취소"
         },
         "target": {
-            "desc0": " ",
-            "desc1": "어디에 설치할까요?",
             "desc00": "선택한 ",
             "desc01": " 파일을 어디에 설치할까요?",
             "opt0": "SD카드",
@@ -142,7 +140,7 @@
         },
         "language": {
             "title": "Mohsaua-Buoh-Installer 언어 변경",
-            "desc": "언어 변경 후 프로그램이 종료됩니다. 취소하려면 B 버튼을 누르세오.",
+            "desc": "언어 변경 후 프로그램이 종료됩니다. 취소하려면 \ue0e1 버튼을 누르세오.",
             "system_language": "시스템 기본값"
         },
         "title": "Mohsaua-Buoh-Installer설정 변경!",

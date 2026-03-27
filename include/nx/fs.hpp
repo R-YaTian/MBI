@@ -23,10 +23,29 @@ SOFTWARE.
 #pragma once
 
 #include <string>
+#include <vector>
 #include <switch.h>
+#include <filesystem>
 
 namespace nx::fs
 {
+    using Path = std::filesystem::path;
+
+    inline bool Exists(const Path& path)
+    {
+        return std::filesystem::exists(path);
+    }
+
+    inline bool Remove(const Path& path)
+    {
+        return std::filesystem::remove(path);
+    }
+
+    inline bool MakeDir(const Path& path)
+    {
+        return std::filesystem::create_directory(path);
+    }
+
     class IFileSystem;
 
     class IFile
@@ -93,6 +112,8 @@ namespace nx::fs
 
     s64 GetFreeSpaceSize(FsContentStorageId id);
     std::string FormatSizeString(s64 size);
+    std::vector<Path> GetDirectoryFiles(const std::string &dir, const std::vector<std::string> &extensions);
+    std::vector<Path> GetDirsAtPath(const std::string &dir);
 
     class SimpleFileSystem final
     {

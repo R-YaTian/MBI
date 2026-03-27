@@ -25,6 +25,7 @@ namespace app::ui
         CheckedImage,
         DirectoryImage,
         BackToParentImage,
+        InstallDiskImage,
     };
 
     enum class TouchButtonAreaType
@@ -44,6 +45,7 @@ namespace app::ui
             pu::sdl2::TextureHandle::Ref checkboxTick;
             pu::sdl2::TextureHandle::Ref dirImg;
             pu::sdl2::TextureHandle::Ref dirbackImg;
+            pu::sdl2::TextureHandle::Ref installDiskImg;
 
             inline void SetBottomText(std::string text)
             {

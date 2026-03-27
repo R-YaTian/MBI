@@ -85,7 +85,7 @@ namespace app::installer
 
     namespace Local
     {
-        void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
+        void InstallFromFile(std::vector<nx::fs::Path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
         {
             std::vector<uint32_t> previousClockValues = OnStart(storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
 
@@ -146,22 +146,21 @@ namespace app::installer
                         {
                             for (size_t i = 0; i < ourTitleList.size(); i++)
                             {
-                                if (std::filesystem::exists(ourTitleList[i]))
+                                if (nx::fs::Exists(ourTitleList[i]))
                                 {
-                                    try { std::filesystem::remove(ourTitleList[i]); } catch (...) {};
+                                    try { nx::fs::Remove(ourTitleList[i]); } catch (...) {};
                                 }
                             }
                         }
                     }
                     else
                     {
-                        if (app::facade::ShowDialog(nx::misc::ShortenString(ourTitleList[0].filename().string(), 32) +
-                                                    (storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
+                        if (app::facade::ShowDialog((storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
                                                     "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false) == 1)
                         {
-                            if (std::filesystem::exists(ourTitleList[0]))
+                            if (nx::fs::Exists(ourTitleList[0]))
                             {
-                                try { std::filesystem::remove(ourTitleList[0]); } catch (...) {};
+                                try { nx::fs::Remove(ourTitleList[0]); } catch (...) {};
                             }
                         }
                     }

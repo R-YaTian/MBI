@@ -10,9 +10,14 @@ namespace app::ui
 
 namespace app::facade
 {
-    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool use_last_opt_as_cancel)
+    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool use_last_opt_as_cancel, int icon_res_id)
     {
-        return app::ui::mainApp->CreateShowDialog(title, content, opts, use_last_opt_as_cancel);
+        pu::sdl2::TextureHandle::Ref icon = {};
+        if (icon_res_id >= 0)
+        {
+            icon = app::ui::GetResource(static_cast<app::ui::Resources>(icon_res_id));
+        }
+        return app::ui::mainApp->CreateShowDialog(title, content, opts, use_last_opt_as_cancel, icon);
     }
 
     void SendBottomText(std::string text)

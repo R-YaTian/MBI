@@ -2,7 +2,6 @@
 #include "nx/fs.hpp"
 #include <time.h>
 #include <switch.h>
-#include <filesystem>
 
 namespace nx::misc
 {
@@ -221,16 +220,15 @@ namespace nx::misc
         return dst;
     }
 
-    std::string ShortenString(const std::string& in, size_t maxLength)
+    std::string ShortenString(const std::string& in, size_t maxLength, const std::string& marker)
     {
-        std::filesystem::path pathname = in;
+        fs::Path pathname = in;
         std::string extension = pathname.extension().string();
         std::u16string in_utf16 = UTF8toUTF16(in);
-        std::u16string extension_utf16 = UTF8toUTF16(extension);
-        if (in_utf16.size() - extension_utf16.size() > maxLength)
+        if (in_utf16.size() - UTF8toUTF16(extension).size() > maxLength)
         {
-            std::u16string shortened = in_utf16.substr(0, maxLength - 5) + u"(...)" + extension_utf16;
-            return UTF16toUTF8(shortened);
+            std::u16string shortened = in_utf16.substr(0, maxLength - UTF8toUTF16(marker).size());
+            return UTF16toUTF8(shortened) + marker + extension;
         }
         else
         {

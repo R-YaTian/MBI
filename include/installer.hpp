@@ -1,8 +1,8 @@
 #pragma once
 
-#include <filesystem>
 #include <vector>
 #include <string>
+#include "nx/fs.hpp"
 #include "nx/ncm.hpp"
 
 namespace app::installer
@@ -15,7 +15,7 @@ namespace app::installer
             UDISK
         };
 
-        void InstallFromFile(std::vector<std::filesystem::path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc);
+        void InstallFromFile(std::vector<nx::fs::Path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc);
     }
 
     namespace Usb
