@@ -1,6 +1,5 @@
 #include "nx/misc.hpp"
 #include "nx/fs.hpp"
-#include <time.h>
 #include <switch.h>
 
 namespace nx::misc
@@ -135,45 +134,6 @@ namespace nx::misc
         }
     }
 
-    std::string GetCurrentDate()
-    {
-        const auto posix_time = time(nullptr);
-        const auto local_time = localtime(&posix_time);
-
-        char date_str[0x20] = {};
-        snprintf(date_str, sizeof(date_str), "%04d/%02d/%02d", local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday);
-        return date_str;
-    }
-
-    std::string GetCurrentTime(const bool use_12h_time)
-    {
-        const auto posix_time = time(nullptr);
-        const auto local_time = localtime(&posix_time);
-
-        char time_str[0x20] = {};
-        if (use_12h_time)
-        {
-            auto hour = local_time->tm_hour;
-            if (hour > 12)
-            {
-                hour -= 12;
-            }
-            else if (hour == 0)
-            {
-                hour = 12;
-            }
-
-            const auto ampm_str = (local_time->tm_hour >= 12) ? "PM" : "AM";
-            snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d %s", hour, local_time->tm_min, local_time->tm_sec, ampm_str);
-        }
-        else
-        {
-            snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d", local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
-        }
-
-        return time_str;
-    }
-
     std::string GetFreeSpaceInfo()
     {
         s64 sizeSd = fs::GetFreeSpaceSize(FsContentStorageId_SdCard);
@@ -220,15 +180,19 @@ namespace nx::misc
         return dst;
     }
 
-    std::string ShortenString(const std::string& in, size_t maxLength, const std::string& marker)
+    std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length, const std::string& marker)
     {
-        fs::Path pathname = in;
-        std::string extension = pathname.extension().string();
         std::u16string in_utf16 = UTF8toUTF16(in);
-        if (in_utf16.size() - UTF8toUTF16(extension).size() > maxLength)
+        size_t units = in_utf16.size();
+        if (units - preserve_tail_length > maxLength)
         {
             std::u16string shortened = in_utf16.substr(0, maxLength - UTF8toUTF16(marker).size());
-            return UTF16toUTF8(shortened) + marker + extension;
+            if (preserve_tail_length > 0)
+            {
+                std::u16string tail = in_utf16.substr(units - preserve_tail_length);
+                return UTF16toUTF8(shortened) + marker + UTF16toUTF8(tail);
+            }
+            return UTF16toUTF8(shortened) + marker;
         }
         else
         {

@@ -64,9 +64,9 @@ namespace app::ui
         try
         {
             pageData->menuDirectories = nx::fs::GetDirsAtPath(pageData->currentDir);
-            std::sort(pageData->menuDirectories.begin(), pageData->menuDirectories.end(), app::util::ignoreCaseCompare);
+            std::sort(pageData->menuDirectories.begin(), pageData->menuDirectories.end(), app::util::IgnoreCaseCompare);
             pageData->menuFiles = nx::fs::GetDirectoryFiles(pageData->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
-            std::sort(pageData->menuFiles.begin(), pageData->menuFiles.end(), app::util::ignoreCaseCompare);
+            std::sort(pageData->menuFiles.begin(), pageData->menuFiles.end(), app::util::IgnoreCaseCompare);
         }
         catch (std::exception& e)
         {

@@ -100,11 +100,11 @@ namespace app::installer
                     {
                         app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
                                                                "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42));
+                                                               ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42));
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
                     }
 
                     std::string ext = ourTitleList[titleItr].extension().string();
@@ -129,13 +129,13 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                OnFailed(nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42), e);
+                OnFailed(nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4), e);
                 fileInstalled = false;
             }
 
             if (fileInstalled)
             {
-                OnSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42));
+                OnSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42, 4));
                 if (app::config::deletePrompt)
                 {
                     if (ourTitleList.size() > 1)
@@ -237,7 +237,7 @@ namespace app::installer
             }
             free(titleNameBuffer);
 
-            std::sort(titleNames.begin(), titleNames.end(), app::util::ignoreCaseCompare);
+            std::sort(titleNames.begin(), titleNames.end(), app::util::IgnoreCaseCompare);
 
             return titleNames;
         }
@@ -249,7 +249,7 @@ namespace app::installer
             std::vector<std::string> fileNames;
             for (size_t i = 0; i < ourTitleList.size(); i++)
             {
-                fileNames.push_back(nx::misc::ShortenString(ourTitleList[i], 42));
+                fileNames.push_back(nx::misc::ShortenString(ourTitleList[i], 42, 4));
             }
 
             bool fileInstalled = true;
@@ -565,7 +565,7 @@ back_to_loop:
                         {
                             urls.push_back(segment);
                         }
-                        std::sort(urls.begin(), urls.end(), app::util::ignoreCaseCompare);
+                        std::sort(urls.begin(), urls.end(), app::util::IgnoreCaseCompare);
 
                         break;
                     }
@@ -595,7 +595,7 @@ back_to_loop:
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
             {
-                urlNames.push_back(nx::misc::ShortenString(nx::network::formatUrlString(ourUrlList[i]), 42));
+                urlNames.push_back(nx::misc::ShortenString(nx::network::formatUrlString(ourUrlList[i]), 42, 4));
             }
 
             bool fileInstalled = true;
@@ -641,7 +641,7 @@ back_to_loop:
                 fileInstalled = false;
             }
 
-            PushExitCommand(app::util::getUrlHost(ourUrlList[0]));
+            PushExitCommand(app::util::GetUrlHost(ourUrlList[0]));
             Cleanup();
 
             if (fileInstalled)

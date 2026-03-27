@@ -149,7 +149,7 @@ namespace app::ui
             {
                 this->selectTitle(this->menu->GetSelectedIndex());
             }
-            app::installer::Network::PushExitCommand(app::util::getUrlHost(this->selectedUrls[0]));
+            app::installer::Network::PushExitCommand(app::util::GetUrlHost(this->selectedUrls[0]));
         }
         app::installer::Network::Cleanup();
         SceneJump(Scene::Main);

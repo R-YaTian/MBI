@@ -127,10 +127,8 @@ namespace nx::misc
     uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed);
     u32 GetBatteryValue();
     std::string GetBatteryColor(u32 charge);
-    std::string GetCurrentDate();
-    std::string GetCurrentTime(const bool use_12h_time);
     std::string GetFreeSpaceInfo();
     std::string UTF16toUTF8(const std::u16string& src);
     std::u16string UTF8toUTF16(const std::string& src);
-    std::string ShortenString(const std::string& in, size_t maxLength, const std::string& marker = "(...)");
+    std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length = 0, const std::string& marker = "(...)");
 }

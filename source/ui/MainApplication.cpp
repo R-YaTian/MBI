@@ -1,5 +1,6 @@
 #include "util/i18n.hpp"
 #include "util/config.hpp"
+#include "util/util.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
 #include "nx/udisk.hpp"
@@ -93,14 +94,14 @@ namespace app::ui
             this->batteryValueText->SetText("misc.battery_charge"_lang + ": " + batteryText);
         }
 
-        const auto newDateText = nx::misc::GetCurrentDate();
+        const auto newDateText = util::GetCurrentDate();
         if (dateCurrentText != newDateText)
         {
             dateCurrentText = newDateText;
             this->dateText->SetText(dateCurrentText);
         }
 
-        const auto newTimeText = nx::misc::GetCurrentTime(app::config::use12hTime);
+        const auto newTimeText = util::GetCurrentTime(app::config::use12hTime);
         if (timeCurrentText != newTimeText)
         {
             timeCurrentText = newTimeText;

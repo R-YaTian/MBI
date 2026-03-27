@@ -4,6 +4,8 @@
 
 namespace app::util
 {
-    bool ignoreCaseCompare(const std::string &a, const std::string &b);
-    std::string getUrlHost(const std::string &url);
+    bool IgnoreCaseCompare(const std::string &a, const std::string &b);
+    std::string GetUrlHost(const std::string &url);
+    std::string GetCurrentDate();
+    std::string GetCurrentTime(const bool use_12h_time);
 }
