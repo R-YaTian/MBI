@@ -1,5 +1,4 @@
 #include "nx/misc.hpp"
-#include "nx/fs.hpp"
 #include <switch.h>
 
 namespace nx::misc
@@ -112,34 +111,6 @@ namespace nx::misc
         }
 
         return value;
-    }
-
-    std::string GetBatteryColor(u32 batteryValue)
-    {
-        if (batteryValue <= 15)
-        {
-            return "#FF0000FF"; // red
-        }
-        else if (batteryValue <= 30)
-        {
-            return "#FF8000FF"; // orange
-        }
-        else if (batteryValue <= 50)
-        {
-            return "#FFFF00FF"; // yellow
-        }
-        else
-        {
-            return "#00FF00FF"; // green
-        }
-    }
-
-    std::string GetFreeSpaceInfo()
-    {
-        s64 sizeSd = fs::GetFreeSpaceSize(FsContentStorageId_SdCard);
-        s64 sizeUser = fs::GetFreeSpaceSize(FsContentStorageId_User);
-        std::string sizeStr = "SD: " + fs::FormatSizeString(sizeSd) + " | User: " + fs::FormatSizeString(sizeUser);
-        return sizeStr;
     }
 
     std::string UTF16toUTF8(const std::u16string& src)

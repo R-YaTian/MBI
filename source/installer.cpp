@@ -374,8 +374,14 @@ namespace app::installer
             // Send 1 byte ack to close the server, OG tinfoil compatibility
             u8 ack = 0;
             nx::network::WaitSendNetworkData(m_clientSocket, &ack, sizeof(u8));
+            std::string urlHost = url;
+            std::string::size_type pos = url.find('/');
+            if (pos != std::string::npos)
+            {
+                urlHost = url.substr(0, pos);
+            }
             // Send 'DROP' header so ns-usbloader knows we're done
-            nx::network::NSULDrop(url);
+            nx::network::NSULDrop(urlHost);
         }
 
         std::vector<std::string> WaitingForNetworkData()
@@ -641,7 +647,7 @@ back_to_loop:
                 fileInstalled = false;
             }
 
-            PushExitCommand(app::util::GetUrlHost(ourUrlList[0]));
+            PushExitCommand(ourUrlList[0]);
             Cleanup();
 
             if (fileInstalled)

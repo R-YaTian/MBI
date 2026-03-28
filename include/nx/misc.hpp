@@ -126,8 +126,6 @@ namespace nx::misc
     std::string OpenSoftwareKeyboard(std::string guideText, std::string initialText, int LenMax);
     uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed);
     u32 GetBatteryValue();
-    std::string GetBatteryColor(u32 charge);
-    std::string GetFreeSpaceInfo();
     std::string UTF16toUTF8(const std::u16string& src);
     std::u16string UTF8toUTF16(const std::string& src);
     std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length = 0, const std::string& marker = "(...)");

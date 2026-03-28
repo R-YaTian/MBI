@@ -1,10 +1,8 @@
 #include "ui/UsbInstallPage.hpp"
 #include "ui/MainApplication.hpp"
-#include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "nx/usb.hpp"
-#include "nx/misc.hpp"
 #include "installer.hpp"
 #include "facade.hpp"
 

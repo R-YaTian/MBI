@@ -75,9 +75,37 @@ namespace app::ui
         return LoadTexture("romfs:/images/background.png");
     }
 
+    static std::string GetBatteryColor(u32 batteryValue)
+    {
+        if (batteryValue <= 15)
+        {
+            return "#FF0000FF"; // red
+        }
+        else if (batteryValue <= 30)
+        {
+            return "#FF8000FF"; // orange
+        }
+        else if (batteryValue <= 50)
+        {
+            return "#FFFF00FF"; // yellow
+        }
+        else
+        {
+            return "#00FF00FF"; // green
+        }
+    }
+
+    static std::string GetFreeSpaceInfoForDisplay()
+    {
+        s64 sizeSd = nx::fs::GetFreeSpaceSize(FsContentStorageId_SdCard);
+        s64 sizeUser = nx::fs::GetFreeSpaceSize(FsContentStorageId_User);
+        std::string sizeStr = "SD: " + nx::fs::FormatSizeString(sizeSd) + " | User: " + nx::fs::FormatSizeString(sizeUser);
+        return sizeStr;
+    }
+
     void MainApplication::UpdateStats()
     {
-        const auto newfreeSpaceText = nx::misc::GetFreeSpaceInfo();
+        const auto newfreeSpaceText = GetFreeSpaceInfoForDisplay();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {
             freeSpaceCurrentText = newfreeSpaceText;
@@ -88,7 +116,7 @@ namespace app::ui
         if (batteryCurrentValue != newBatteryValue)
         {
             batteryCurrentValue = newBatteryValue;
-            const auto batteryColor = nx::misc::GetBatteryColor(batteryCurrentValue);
+            const auto batteryColor = GetBatteryColor(batteryCurrentValue);
             const auto batteryText = batteryCurrentValue == 255 ? "??%" : std::to_string(batteryCurrentValue) + "%";
             this->batteryValueText->SetColor(COLOR(batteryColor));
             this->batteryValueText->SetText("misc.battery_charge"_lang + ": " + batteryText);

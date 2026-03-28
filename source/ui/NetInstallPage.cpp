@@ -1,6 +1,5 @@
 #include "ui/MainApplication.hpp"
 #include "ui/NetInstallPage.hpp"
-#include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "nx/network.hpp"
@@ -149,7 +148,7 @@ namespace app::ui
             {
                 this->selectTitle(this->menu->GetSelectedIndex());
             }
-            app::installer::Network::PushExitCommand(app::util::GetUrlHost(this->selectedUrls[0]));
+            app::installer::Network::PushExitCommand(this->selectedUrls[0]);
         }
         app::installer::Network::Cleanup();
         SceneJump(Scene::Main);

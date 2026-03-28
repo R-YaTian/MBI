@@ -13,19 +13,6 @@ namespace app::util
         return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), caseInsensitiveLess);
     }
 
-    std::string GetUrlHost(const std::string &url)
-    {
-        std::string::size_type pos = url.find('/');
-        if (pos != std::string::npos)
-        {
-            return url.substr(0, pos);
-        }
-        else
-        {
-            return url;
-        }
-    }
-
     std::string GetCurrentDate()
     {
         const auto posix_time = time(nullptr);
