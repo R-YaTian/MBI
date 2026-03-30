@@ -29,7 +29,7 @@ namespace app::ui
 
         for (size_t i = 0; i < this->ourUrls.size(); i++)
         {
-            auto& url = this->ourUrls[i];
+            const std::string url = this->ourUrls[i];
 
             std::string formattedURL = nx::network::FormatUrlString(url);
             auto ourEntry = pu::ui::elm::MenuItem::New(formattedURL);

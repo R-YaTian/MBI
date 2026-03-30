@@ -331,7 +331,6 @@ namespace nx::network
         result = curl_easy_perform(curl_handle);
 
         curl_easy_cleanup(curl_handle);
-        curl_global_cleanup();
 
         if (result == CURLE_OK)
         {
