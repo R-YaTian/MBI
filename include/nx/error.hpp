@@ -22,6 +22,7 @@ SOFTWARE.
 
 #pragma once
 
+#include <switch/result.h>
 #include <cstring>
 #include <stdexcept>
 

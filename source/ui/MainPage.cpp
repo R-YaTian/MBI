@@ -98,7 +98,7 @@ namespace app::ui
         {
             return;
         }
-        if (nx::network::getIPAddress() == "1.0.0.127")
+        if (nx::network::GetIPAddress() == "1.0.0.127")
         {
             app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true);
             return;

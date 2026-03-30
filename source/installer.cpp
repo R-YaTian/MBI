@@ -18,9 +18,7 @@
 #include "facade.hpp"
 
 #ifdef ENABLE_NET
-#include <fcntl.h>
 #include <jtjson.h>
-#include <curl/curl.h>
 #include "nx/network.hpp"
 #include "install/HttpWorker.hpp"
 #endif
@@ -173,7 +171,7 @@ namespace app::installer
 
     namespace Usb
     {
-        int transferData(void* buf, size_t size, u64 timeout = 5000000000)
+        static int transferData(void* buf, size_t size, u64 timeout = 5000000000)
         {
             u8* tempBuffer = (u8*)memalign(0x1000, size);
             if (nx::usb::USBReadData(tempBuffer, size, timeout) == 0)
@@ -310,80 +308,6 @@ namespace app::installer
 #ifdef ENABLE_NET
     namespace Network
     {
-        constexpr auto MAX_URL_SIZE = 1024;
-        constexpr auto MAX_URLS = 256;
-        constexpr auto REMOTE_INSTALL_PORT = 2000;
-        static int m_serverSocket = 0;
-        static int m_clientSocket = 0;
-
-        void InitializeServerSocket() try
-        {
-            // Create a socket
-            m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-
-            if (m_serverSocket < -1)
-            {
-                THROW_FORMAT("Failed to create a server socket. Error code: %u\n", errno);
-            }
-
-            struct sockaddr_in server;
-            server.sin_family = AF_INET;
-            server.sin_port = htons(REMOTE_INSTALL_PORT);
-            server.sin_addr.s_addr = htonl(INADDR_ANY);
-
-            if (bind(m_serverSocket, (struct sockaddr*) &server, sizeof(server)) < 0)
-            {
-                THROW_FORMAT("Failed to bind server socket. Error code: %u\n", errno);
-            }
-
-            // Set as non-blocking
-            fcntl(m_serverSocket, F_SETFL, fcntl(m_serverSocket, F_GETFL, 0) | O_NONBLOCK);
-
-            if (listen(m_serverSocket, 5) < 0)
-            {
-                THROW_FORMAT("Failed to listen on server socket. Error code: %u\n", errno);
-            }
-        }
-        catch (std::exception& e)
-        {
-            LOG_DEBUG("Failed to initialize server socket!\n");
-
-            if (m_serverSocket != 0)
-            {
-                close(m_serverSocket);
-                m_serverSocket = 0;
-            }
-
-            app::facade::ShowDialog("Failed to initialize server socket!", (std::string)e.what(), {"OK"}, true);
-        }
-
-        void Cleanup()
-        {
-            LOG_DEBUG("Network::Cleanup\n");
-            if (m_clientSocket != 0)
-            {
-                close(m_clientSocket);
-                m_clientSocket = 0;
-            }
-            curl_global_cleanup();
-        }
-
-        void PushExitCommand(std::string url)
-        {
-            LOG_DEBUG("Telling the server we're done installing\n");
-            // Send 1 byte ack to close the server, OG tinfoil compatibility
-            u8 ack = 0;
-            nx::network::WaitSendNetworkData(m_clientSocket, &ack, sizeof(u8));
-            std::string urlHost = url;
-            std::string::size_type pos = url.find('/');
-            if (pos != std::string::npos)
-            {
-                urlHost = url.substr(0, pos);
-            }
-            // Send 'DROP' header so ns-usbloader knows we're done
-            nx::network::NSULDrop(urlHost);
-        }
-
         std::vector<std::string> WaitingForNetworkData()
         {
             u64 freq = armGetSystemTickFreq();
@@ -395,22 +319,9 @@ namespace app::installer
 
             try
             {
-                ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
+                nx::network::Initialize();
 
-                // Initialize the server socket if it hasn't already been
-                if (m_serverSocket == 0)
-                {
-                    InitializeServerSocket();
-
-                    if (m_serverSocket <= 0)
-                    {
-                        THROW_FORMAT("Server socket failed to initialize.\n");
-                        close(m_serverSocket);
-                        m_serverSocket = 0;
-                    }
-                }
-
-                std::string ourIPAddress = nx::network::getIPAddress();
+                std::string ourIPAddress = nx::network::GetIPAddress();
                 app::facade::SendPageInfoText("inst.net.top_info1"_lang + ourIPAddress);
                 app::facade::SendRenderRequest();
                 LOG_DEBUG("%s %s\n", "Switch IP is ", ourIPAddress.c_str());
@@ -453,7 +364,7 @@ namespace app::installer
                         }
 
                         std::string response;
-                        if (nx::network::formatUrlString(url) == "" || url == "https://" || url == "http://")
+                        if (nx::network::FormatUrlString(url) == "" || url == "https://" || url == "http://")
                         {
                             app::facade::ShowDialog("inst.net.url.warn"_lang,
                                                     "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
@@ -466,7 +377,7 @@ namespace app::installer
                             {
                                 url += '/';
                             }
-                            response = nx::network::downloadToBuffer(url);
+                            response = nx::network::DownloadToBuffer(url);
                         }
 
                         if (!response.empty())
@@ -541,31 +452,11 @@ namespace app::installer
                         app::facade::ShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true);
                     }
 back_to_loop:
-                    struct sockaddr_in client;
-                    socklen_t clientLen = sizeof(client);
-
-                    m_clientSocket = accept(m_serverSocket, (struct sockaddr*)&client, &clientLen);
-                    if (m_clientSocket >= 0)
+                    std::string remoteData = nx::network::ReceiveRemoteString();
+                    if (remoteData != "")
                     {
-                        LOG_DEBUG("%s\n", "Server accepted");
-                        u32 size = 0;
-                        nx::network::WaitReceiveNetworkData(m_clientSocket, &size, sizeof(u32));
-                        size = ntohl(size);
-
-                        LOG_DEBUG("Received url buf size: 0x%x\n", size);
-                        if (size > MAX_URL_SIZE * MAX_URLS)
-                        {
-                            THROW_FORMAT("URL size %x is too large!\n", size);
-                        }
-
-                        // Make sure the last string is null terminated
-                        auto urlBuf = std::make_unique<char[]>(size + 1);
-                        memset(urlBuf.get(), 0, size + 1);
-
-                        nx::network::WaitReceiveNetworkData(m_clientSocket, urlBuf.get(), size);
-
                         // Split the string up into individual URLs
-                        std::stringstream urlStream(urlBuf.get());
+                        std::stringstream urlStream(remoteData);
                         std::string segment;
                         while (std::getline(urlStream, segment, '\n'))
                         {
@@ -575,21 +466,14 @@ back_to_loop:
 
                         break;
                     }
-                    else if (errno != EAGAIN)
-                    {
-                        THROW_FORMAT("Failed to open client socket with code %u\n", errno);
-                    }
                 }
 
                 return urls;
             }
             catch (std::runtime_error& e)
             {
-                close(m_serverSocket);
-                m_serverSocket = 0;
-                LOG_DEBUG("Failed to perform remote install!\n");
                 LOG_DEBUG("%s", e.what());
-                app::facade::ShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true);
+                app::facade::ShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true, 5);
                 return {};
             }
         }
@@ -601,7 +485,7 @@ back_to_loop:
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
             {
-                urlNames.push_back(nx::misc::ShortenString(nx::network::formatUrlString(ourUrlList[i]), 42, 4));
+                urlNames.push_back(nx::misc::ShortenString(nx::network::FormatUrlString(ourUrlList[i]), 42, 4));
             }
 
             bool fileInstalled = true;
@@ -624,7 +508,7 @@ back_to_loop:
                     }
 
                     std::unique_ptr<nx::Content> content;
-                    if (nx::network::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD")
+                    if (nx::network::DownloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD")
                     {
                         content = std::make_unique<nx::XCI>();
                     }
@@ -647,8 +531,8 @@ back_to_loop:
                 fileInstalled = false;
             }
 
-            PushExitCommand(ourUrlList[0]);
-            Cleanup();
+            nx::network::PushExitCommand(ourUrlList[0]);
+            nx::network::Finalize();
 
             if (fileInstalled)
             {

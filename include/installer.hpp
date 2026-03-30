@@ -27,8 +27,6 @@ namespace app::installer
     namespace Network
     {
         std::vector<std::string> WaitingForNetworkData();
-        void PushExitCommand(std::string url);
-        void Cleanup();
         void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource);
     }
 }

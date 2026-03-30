@@ -26,6 +26,7 @@ namespace app::ui
         DirectoryImage,
         BackToParentImage,
         InstallDiskImage,
+        ErrorImage,
     };
 
     enum class TouchButtonAreaType
@@ -46,6 +47,7 @@ namespace app::ui
             pu::sdl2::TextureHandle::Ref dirImg;
             pu::sdl2::TextureHandle::Ref dirbackImg;
             pu::sdl2::TextureHandle::Ref installDiskImg;
+            pu::sdl2::TextureHandle::Ref errorImg;
 
             inline void SetBottomText(std::string text)
             {
@@ -81,7 +83,7 @@ namespace app::ui
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::TextBlock::Ref pageInfoText;
-            pu::sdl2::TextureHandle::Ref LoadBackground(std::string bgDir);
+            pu::sdl2::TextureHandle::Ref LoadBackground(const std::string& bgDir);
             void UpdateStats();
     };
 

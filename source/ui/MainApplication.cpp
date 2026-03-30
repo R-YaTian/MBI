@@ -61,7 +61,7 @@ namespace app::ui
         layout->Add(selectAllButton); \
     }
 
-    pu::sdl2::TextureHandle::Ref MainApplication::LoadBackground(std::string bgDir)
+    pu::sdl2::TextureHandle::Ref MainApplication::LoadBackground(const std::string& bgDir)
     {
         static const std::vector<std::string> exts = {".png", ".jpg", ".bmp"};
         for (auto const& ext : exts)
@@ -149,6 +149,7 @@ namespace app::ui
         this->logoImg = LoadTexture("romfs:/images/logo.png");
         this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.png");
         this->installDiskImg = LoadTexture("romfs:/images/icons/install-disk.png");
+        this->errorImg = LoadTexture("romfs:/images/icons/error.png");
         this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
         this->backImg = LoadTexture("romfs:/images/icons/backward.png");
         this->confirmImg = LoadTexture("romfs:/images/icons/confirm.png");
@@ -376,6 +377,8 @@ namespace app::ui
             return mainApp->dirbackImg;
         case Resources::InstallDiskImage:
             return mainApp->installDiskImg;
+        case Resources::ErrorImage:
+            return mainApp->errorImg;
         default:
             return nullptr;
         }

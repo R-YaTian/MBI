@@ -24,11 +24,22 @@ SOFTWARE.
 #include "nx/error.hpp"
 
 #include <curl/curl.h>
+#include <arpa/inet.h>
+#include <sys/errno.h>
+#include <sys/socket.h>
+#include <fcntl.h>
+#include <memory>
 #include <sstream>
 #include <cstring>
 
 namespace nx::network
 {
+    constexpr auto MAX_URL_SIZE = 1024;
+    constexpr auto MAX_URL_COUNT = 256;
+    constexpr auto REMOTE_PORT = 2000;
+    static int g_serverSocket = 0;
+    static int g_clientSocket = 0;
+
     // HTTPHeader
     HTTPHeader::HTTPHeader(std::string url) :
         m_url(url)
@@ -225,7 +236,7 @@ namespace nx::network
     }
     // End HTTPDownload
 
-    size_t WaitReceiveNetworkData(int sockfd, void* buf, size_t len)
+    static size_t WaitReceiveNetworkData(int sockfd, void* buf, size_t len)
     {
         int ret = 0;
         size_t read = 0;
@@ -238,7 +249,7 @@ namespace nx::network
         return read;
     }
 
-    size_t WaitSendNetworkData(int sockfd, void* buf, size_t len)
+    static size_t WaitSendNetworkData(int sockfd, void* buf, size_t len)
     {
         int ret = 0;
         size_t written = 0;
@@ -265,7 +276,15 @@ namespace nx::network
         return written;
     }
 
-    void NSULDrop(std::string url)
+    static size_t WriteDataBuffer(char *ptr, size_t size, size_t nmemb, void *userdata)
+    {
+        std::ostringstream *stream = (std::ostringstream*)userdata;
+        size_t count = size * nmemb;
+        stream->write(ptr, count);
+        return count;
+    }
+
+    static void NSULDrop(const std::string& url)
     {
         CURL* curl = curl_easy_init();
 
@@ -285,23 +304,15 @@ namespace nx::network
         curl_easy_cleanup(curl);
     }
 
-    static size_t writeDataBuffer(char *ptr, size_t size, size_t nmemb, void *userdata) {
-        std::ostringstream *stream = (std::ostringstream*)userdata;
-        size_t count = size * nmemb;
-        stream->write(ptr, count);
-        return count;
-    }
-
-    std::string downloadToBuffer(const std::string ourUrl, int firstRange, int secondRange, long timeout)
+    std::string DownloadToBuffer(const std::string& url, int firstRange, int secondRange, long timeout)
     {
         CURL *curl_handle;
         CURLcode result;
         std::ostringstream stream;
 
-        curl_global_init(CURL_GLOBAL_ALL);
         curl_handle = curl_easy_init();
 
-        curl_easy_setopt(curl_handle, CURLOPT_URL, ourUrl.c_str());
+        curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
         curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0L);
         curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mohsaua-Buoh-Installer");
@@ -309,8 +320,9 @@ namespace nx::network
         curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
         curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT_MS, timeout);
         curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout);
-        curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeDataBuffer);
-        if (firstRange && secondRange) {
+        curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, WriteDataBuffer);
+        if (firstRange && secondRange)
+        {
             const char * ourRange = (std::to_string(firstRange) + "-" + std::to_string(secondRange)).c_str();
             curl_easy_setopt(curl_handle, CURLOPT_RANGE, ourRange);
         }
@@ -322,7 +334,9 @@ namespace nx::network
         curl_global_cleanup();
 
         if (result == CURLE_OK)
+        {
             return stream.str();
+        }
         else
         {
             LOG_DEBUG(curl_easy_strerror(result));
@@ -330,9 +344,9 @@ namespace nx::network
         }
     }
 
-    std::string formatUrlString(std::string ourString)
+    std::string FormatUrlString(const std::string& url)
     {
-        std::stringstream ourStream(ourString);
+        std::stringstream ourStream(url);
         std::string segment;
         std::vector<std::string> seglist;
 
@@ -349,9 +363,121 @@ namespace nx::network
         return finalString;
     }
 
-    std::string getIPAddress()
+    std::string GetIPAddress()
     {
         struct in_addr addr = {(in_addr_t) gethostid()};
         return inet_ntoa(addr);
+    }
+
+    static void InitializeServerSocket() try
+    {
+        // Create a socket
+        g_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
+        if (g_serverSocket < -1)
+        {
+            THROW_FORMAT("Failed to create a server socket. Error code: %u\n", errno);
+        }
+
+        struct sockaddr_in server;
+        server.sin_family = AF_INET;
+        server.sin_port = htons(REMOTE_PORT);
+        server.sin_addr.s_addr = htonl(INADDR_ANY);
+
+        if (bind(g_serverSocket, (struct sockaddr*) &server, sizeof(server)) < 0)
+        {
+            THROW_FORMAT("Failed to bind server socket. Error code: %u\n", errno);
+        }
+
+        // Set as non-blocking
+        fcntl(g_serverSocket, F_SETFL, fcntl(g_serverSocket, F_GETFL, 0) | O_NONBLOCK);
+
+        if (listen(g_serverSocket, 5) < 0)
+        {
+            THROW_FORMAT("Failed to listen on server socket. Error code: %u\n", errno);
+        }
+    }
+    catch (std::exception& e)
+    {
+        LOG_DEBUG("Failed to initialize server socket!\n");
+        THROW_FORMAT("Failed to initialize server socket:\n%s", e.what());
+    }
+
+    void Initialize()
+    {
+        ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
+
+        // Initialize the server socket if it hasn't already been
+        if (g_serverSocket == 0)
+        {
+            InitializeServerSocket();
+        }
+    }
+
+    void Finalize()
+    {
+        LOG_DEBUG("nx::network::Finalize\n");
+        if (g_clientSocket != 0)
+        {
+            close(g_clientSocket);
+            g_clientSocket = 0;
+        }
+        if (g_serverSocket != 0)
+        {
+            close(g_serverSocket);
+            g_serverSocket = 0;
+        }
+        curl_global_cleanup();
+    }
+
+    std::string ReceiveRemoteString()
+    {
+        struct sockaddr_in client;
+        socklen_t clientLen = sizeof(client);
+
+        g_clientSocket = accept(g_serverSocket, (struct sockaddr*)&client, &clientLen);
+        if (g_clientSocket >= 0)
+        {
+            LOG_DEBUG("%s\n", "Server accepted");
+            u32 size = 0;
+            WaitReceiveNetworkData(g_clientSocket, &size, sizeof(u32));
+            size = ntohl(size);
+
+            LOG_DEBUG("Received url buf size: 0x%x\n", size);
+            if (size > MAX_URL_SIZE * MAX_URL_COUNT)
+            {
+                THROW_FORMAT("URL size %x is too large!\n", size);
+            }
+
+            // Make sure the last string is null terminated
+            auto urlBuf = std::make_unique<char[]>(size + 1);
+            memset(urlBuf.get(), 0, size + 1);
+            WaitReceiveNetworkData(g_clientSocket, urlBuf.get(), size);
+
+            return std::string(urlBuf.get());
+        }
+        else if (errno != EAGAIN)
+        {
+            THROW_FORMAT("Failed to open client socket with code %u\n", errno);
+        }
+    
+        return "";
+    }
+
+    void PushExitCommand(const std::string& url)
+    {
+        LOG_DEBUG("Telling the server we're done\n");
+        // Send 1 byte ack to close the server, OG tinfoil compatibility
+        u8 ack = 0;
+        WaitSendNetworkData(g_clientSocket, &ack, sizeof(u8));
+
+        std::string urlHost = url;
+        std::string::size_type pos = urlHost.find('/');
+        if (pos != std::string::npos)
+        {
+            urlHost = urlHost.substr(0, pos);
+        }
+        // Send 'DROP' header so ns-usbloader knows we're done
+        NSULDrop(urlHost);
     }
 }

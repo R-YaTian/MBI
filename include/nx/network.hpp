@@ -23,9 +23,6 @@ SOFTWARE.
 #pragma once
 
 #include <switch/types.h>
-#include <sys/socket.h>
-#include <sys/errno.h>
-#include <arpa/inet.h>
 
 #include <functional>
 #include <map>
@@ -66,12 +63,12 @@ namespace nx::network
             int StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc);
     };
 
-    void NSULDrop(std::string url);
+    std::string DownloadToBuffer(const std::string& url, int firstRange = -1, int secondRange = -1, long timeout = 5000);
+    std::string FormatUrlString(const std::string& url);
+    std::string GetIPAddress();
 
-    size_t WaitReceiveNetworkData(int sockfd, void* buf, size_t len);
-    size_t WaitSendNetworkData(int sockfd, void* buf, size_t len);
-
-    std::string downloadToBuffer(const std::string ourUrl, int firstRange = -1, int secondRange = -1, long timeout = 5000);
-    std::string formatUrlString(std::string ourString);
-    std::string getIPAddress();
+    void Initialize();
+    void Finalize();
+    std::string ReceiveRemoteString();
+    void PushExitCommand(const std::string& url);
 }

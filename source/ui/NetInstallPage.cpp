@@ -31,7 +31,7 @@ namespace app::ui
         {
             auto& url = this->ourUrls[i];
 
-            std::string formattedURL = nx::network::formatUrlString(url);
+            std::string formattedURL = nx::network::FormatUrlString(url);
             auto ourEntry = pu::ui::elm::MenuItem::New(formattedURL);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(app::ui::Resources::UncheckedImage));
@@ -88,6 +88,7 @@ namespace app::ui
         this->ourUrls = app::installer::Network::WaitingForNetworkData();
         if (!this->ourUrls.size())
         {
+            onCancel();
             return false;
         }
         else if (this->ourUrls[0] == "supplyUrl")
@@ -95,7 +96,7 @@ namespace app::ui
             std::string keyboardResult = nx::misc::OpenSoftwareKeyboard("inst.net.url.hint"_lang, app::config::lastNetUrl, 500);
             if (keyboardResult.size() > 0)
             {
-                if (nx::network::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://")
+                if (nx::network::FormatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://")
                 {
                     app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
                     return startNetwork();
@@ -148,9 +149,9 @@ namespace app::ui
             {
                 this->selectTitle(this->menu->GetSelectedIndex());
             }
-            app::installer::Network::PushExitCommand(this->selectedUrls[0]);
+            nx::network::PushExitCommand(this->selectedUrls[0]);
         }
-        app::installer::Network::Cleanup();
+        nx::network::Finalize();
         SceneJump(Scene::Main);
     }
 
