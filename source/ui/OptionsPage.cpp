@@ -177,7 +177,7 @@ namespace app::ui
         {
             return;
         }
-        s32 rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, false);
+        s32 rc = app::facade::CreateDialogSimple("options.language.title"_lang, "options.language.desc"_lang, languageStrings, false, static_cast<int>(Resources::LanguageImage));
         if (rc >= 0 && rc < (s32)(languageStrings.size() - 1))
         {
             switch (rc)

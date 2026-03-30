@@ -27,6 +27,10 @@ namespace app::ui
         BackToParentImage,
         InstallDiskImage,
         ErrorImage,
+        WarningImage,
+        InformationImage,
+        LanguageImage,
+        DeleteImage,
     };
 
     enum class TouchButtonAreaType
@@ -48,6 +52,10 @@ namespace app::ui
             pu::sdl2::TextureHandle::Ref dirbackImg;
             pu::sdl2::TextureHandle::Ref installDiskImg;
             pu::sdl2::TextureHandle::Ref errorImg;
+            pu::sdl2::TextureHandle::Ref warningImg;
+            pu::sdl2::TextureHandle::Ref informationImg;
+            pu::sdl2::TextureHandle::Ref languageImg;
+            pu::sdl2::TextureHandle::Ref deleteImg;
 
             inline void SetBottomText(std::string text)
             {

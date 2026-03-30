@@ -295,7 +295,7 @@ namespace app::ui
         {
             app::facade::ShowDialog(pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.title"_lang : "inst.hdd.help.title"_lang,
                                     pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.desc"_lang : "inst.hdd.help.desc"_lang,
-                                    {"common.ok"_lang}, true);
+                                    {"common.ok"_lang}, true, static_cast<int>(Resources::InformationImage));
         }
 
         if (Down & HidNpadButton_ZL)

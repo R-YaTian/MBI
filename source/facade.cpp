@@ -70,11 +70,15 @@ namespace app::facade
         app::ui::SceneJump(app::ui::Scene::Installer);
     }
 
-    s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel)
+    s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, int icon_res_id)
     {
         auto dialog = pu::ui::Dialog::New(title, content);
         dialog->SetSpaceBetweenOptions(35);
         dialog->SetOptionHorizontalMargin(40);
+        if (icon_res_id >= 0)
+        {
+            dialog->SetIcon(app::ui::GetResource(static_cast<app::ui::Resources>(icon_res_id)));
+        }
 
         for (u32 i = 0; i < opts.size(); i++)
         {

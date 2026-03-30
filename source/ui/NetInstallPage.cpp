@@ -98,7 +98,7 @@ namespace app::ui
             {
                 if (nx::network::FormatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://")
                 {
-                    app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false);
+                    app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, static_cast<int>(Resources::WarningImage));
                     return startNetwork();
                 }
                 app::config::lastNetUrl = keyboardResult;
