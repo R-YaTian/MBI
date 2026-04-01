@@ -1,5 +1,8 @@
 #include "nx/misc.hpp"
+#include "nx/error.hpp"
 #include <switch.h>
+#include <sstream>
+#include <iomanip>
 
 namespace nx::misc
 {
@@ -169,5 +172,67 @@ namespace nx::misc
         {
             return in;
         }
+    }
+
+    std::string Ticket::ToString() const
+    {
+        u64 app_id = esGetRightsIdApplicationId(&this->rights_id);
+        std::stringstream strm;
+        strm << std::uppercase << std::setfill('0') << std::setw(16) << std::hex << app_id;
+        std::string str = strm.str();
+        if (this->type == TicketType::Common)
+        {
+            str += " (Common)";
+        }
+        return str;
+    }
+
+    std::vector<Ticket> ScanTickets()
+    {
+        esInitialize();
+        std::vector<Ticket> tickets;
+
+        const auto common_count = esCountCommonTicket();
+        if(common_count > 0)
+        {
+            const auto ids_size = common_count * sizeof(EsRightsId);
+            auto ids = new EsRightsId[common_count]();
+            u32 written = 0;
+            if(R_SUCCEEDED(esListCommonTicket(&written, ids, ids_size)))
+            {
+                for(u32 i = 0; i < written; i++)
+                {
+                    const Ticket common_tik = {
+                        .rights_id = ids[i],
+                        .type = TicketType::Common
+                    };
+                    tickets.push_back(common_tik);
+                }
+            }
+            delete[] ids;
+        }
+
+        const auto personalized_count = esCountPersonalizedTicket();
+        if(personalized_count > 0)
+        {
+            const auto ids_size = personalized_count * sizeof(EsRightsId);
+            auto ids = new EsRightsId[personalized_count]();
+            u32 written = 0;
+            if(R_SUCCEEDED(esListPersonalizedTicket(&written, ids, ids_size)))
+            {
+                for(u32 i = 0; i < written; i++)
+                {
+                    const Ticket personalized_tik = {
+                        .rights_id = ids[i],
+                        .type = TicketType::Personalized
+                    };
+                    tickets.push_back(personalized_tik);
+                }
+            }
+            delete[] ids;
+        }
+
+        esExit();
+        return tickets;
     }
 }

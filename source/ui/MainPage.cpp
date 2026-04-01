@@ -61,6 +61,10 @@ namespace app::ui
         this->mtpInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->mtpInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-mtp.png"));
         this->mtpInstallMenuItem->AddOnKey(std::bind(&MainPage::MtpInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        this->ticketManagerMenuItem = pu::ui::elm::MenuItem::New("main.menu.tickets"_lang);
+        this->ticketManagerMenuItem->SetColor(COLOR(app::config::MenuTextColor));
+        this->ticketManagerMenuItem->SetIcon(LoadTexture("romfs:/images/icons/ticket.png"));
+        this->ticketManagerMenuItem->AddOnKey(std::bind(&MainPage::TicketManagerMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.png"));
@@ -76,6 +80,7 @@ namespace app::ui
         this->optionMenu->AddItem(this->usbInstallMenuItem);
         this->optionMenu->AddItem(this->udiskInstallMenuItem);
         this->optionMenu->AddItem(this->mtpInstallMenuItem);
+        this->optionMenu->AddItem(this->ticketManagerMenuItem);
         this->optionMenu->AddItem(this->settingsMenuItem);
         this->optionMenu->AddItem(this->exitMenuItem);
         this->Add(this->optionMenu);
@@ -154,6 +159,15 @@ namespace app::ui
         nx::usb::usbDeviceExit();
         nx::mtp::Setup();
         SceneJump(Scene::MtpInstall);
+    }
+
+    void MainPage::TicketManagerMenuItem_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        SceneJump(Scene::TicketManager);
     }
 
     void MainPage::SettingsMenuItem_Click()

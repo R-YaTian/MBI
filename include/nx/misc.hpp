@@ -1,5 +1,6 @@
 #pragma once
 
+#include <switch-ipcext.h>
 #include <switch/types.h>
 #include <vector>
 #include <string>
@@ -123,10 +124,23 @@ namespace nx::misc
 
     constexpr size_t CommonCertificateSize = sizeof(CommonCertificateData);
 
+    enum class TicketType {
+        Common,
+        Personalized,
+    };
+
+    struct Ticket {
+        EsRightsId rights_id;
+        TicketType type;
+
+        std::string ToString() const;
+    };
+
     std::string OpenSoftwareKeyboard(std::string guideText, std::string initialText, int LenMax);
     uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed);
     u32 GetBatteryValue();
     std::string UTF16toUTF8(const std::u16string& src);
     std::u16string UTF8toUTF16(const std::string& src);
     std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length = 0, const std::string& marker = "(...)");
+    std::vector<Ticket> ScanTickets();
 }

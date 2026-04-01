@@ -7,6 +7,10 @@
 #include "nx/error.hpp"
 #include "util/config.hpp"
 
+#ifdef ENABLE_NET
+#include <curl/curl.h>
+#endif
+
 namespace app::manager
 {
     void initApp()
@@ -22,6 +26,8 @@ namespace app::manager
 
 #ifdef ENABLE_NET
         socketInitializeDefault();
+        // Initialize libcurl globally on main thread before any threads use it
+        curl_global_init(CURL_GLOBAL_ALL);
 
 #ifdef __DEBUG__
         nxlinkStdio();
@@ -44,6 +50,8 @@ namespace app::manager
         nx::udisk::exit();
 
 #ifdef ENABLE_NET
+        // Clean up libcurl globally when exit
+        curl_global_cleanup();
         socketExit();
 #endif
 

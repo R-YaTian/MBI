@@ -12,6 +12,7 @@
 #include "ui/MtpInstallPage.hpp"
 #include "ui/InstallerPage.hpp"
 #include "ui/LocalInstallPage.hpp"
+#include "ui/TicketPage.hpp"
 #include "ui/MainPage.hpp"
 
 #ifdef ENABLE_NET
@@ -29,6 +30,7 @@ namespace app::ui
     MtpInstallPage::Ref mtpinstPage;
     InstallerPage::Ref installerPage;
     LocalInstallPage::Ref localinstPage;
+    TicketPage::Ref ticketPage;
     MainPage::Ref mainPage;
     ClickableImage::Ref backButton;
     ClickableImage::Ref confirmButton;
@@ -222,6 +224,7 @@ namespace app::ui
         usbinstPage = UsbInstallPage::New();
         mtpinstPage = MtpInstallPage::New();
         installerPage = InstallerPage::New();
+        ticketPage = TicketPage::New();
         optionspage = OptionsPage::New();
         _UI_MAINAPP_MENU_SET_BASE(mainPage);
         _UI_MAINAPP_MENU_SET_BASE(optionspage);
@@ -234,6 +237,8 @@ namespace app::ui
         _UI_MAINAPP_MENU_SET_EXTRA(usbinstPage);
         _UI_MAINAPP_MENU_SET_BASE(mtpinstPage);
         _UI_MAINAPP_MENU_SET_EXTRA(mtpinstPage);
+        _UI_MAINAPP_MENU_SET_BASE(ticketPage);
+        _UI_MAINAPP_MENU_SET_EXTRA(ticketPage);
 
 #ifdef ENABLE_NET
         netinstPage = NetInstallPage::New();
@@ -356,6 +361,16 @@ namespace app::ui
             mainApp->SetPageInfoText("inst.usb.top_info"_lang);
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
+            break;
+        case Scene::TicketManager:
+            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
+            mainApp->SetPageInfoText("ticket_manager.scanning"_lang);
+            mainApp->SetBottomText("ticket_manager.bottom_info"_lang);
+            mainApp->LoadLayout(ticketPage);
+            if (ticketPage->LoadTickets())
+            {
+                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
+            }
             break;
         case Scene::Installer:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);

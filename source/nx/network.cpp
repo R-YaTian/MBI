@@ -404,8 +404,6 @@ namespace nx::network
 
     void Initialize()
     {
-        ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
-
         // Initialize the server socket if it hasn't already been
         if (g_serverSocket == 0)
         {
@@ -426,7 +424,6 @@ namespace nx::network
             close(g_serverSocket);
             g_serverSocket = 0;
         }
-        curl_global_cleanup();
     }
 
     std::string ReceiveRemoteString()

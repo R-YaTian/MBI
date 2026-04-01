@@ -16,6 +16,7 @@ namespace app::ui
         SdInstall,
         UdiskInstall,
         MtpInstall,
+        TicketManager,
         Installer,
     };
 

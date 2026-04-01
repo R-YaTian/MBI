@@ -21,12 +21,14 @@ namespace app::ui
             pu::ui::elm::MenuItem::Ref usbInstallMenuItem;
             pu::ui::elm::MenuItem::Ref udiskInstallMenuItem;
             pu::ui::elm::MenuItem::Ref mtpInstallMenuItem;
+            pu::ui::elm::MenuItem::Ref ticketManagerMenuItem;
             pu::ui::elm::MenuItem::Ref settingsMenuItem;
             pu::ui::elm::MenuItem::Ref exitMenuItem;
             void SdInstallMenuItem_Click();
             void UsbInstallMenuItem_Click();
             void UdiskInstallMenuItem_Click();
             void MtpInstallMenuItem_Click();
+            void TicketManagerMenuItem_Click();
             void SettingsMenuItem_Click();
             void ExitMenuItem_Click();
             void mainMenuThread();

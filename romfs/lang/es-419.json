@@ -6,6 +6,7 @@
             "usb": "Instalar por USB",
             "hdd": "Instalar a través de USB HDD",
             "mtp": "Instalar mediante USB MTP",
+            "tickets": "Ver tickets sin usar",
             "set": "Ajustes",
             "exit": "Salir"
         },
@@ -145,6 +146,12 @@
         },
         "title": "¡Cambiar los ajustes de Mohsaua-Buoh-Installer!",
         "buttons": "\ue0e0 Seleccionar/Cambiar    \ue0e1 Cancelar"
+    },
+    "ticket_manager": {
+        "scanning": "Escaneando tickets no utilizados...",
+        "bottom_info": "Por favor espere...",
+        "top_info": "Selecciona el ticket que quieres eliminar, ¡luego pulsa el botón \ue0ef!",
+        "buttons": "\ue0e0 Seleccionar    \ue0e3 Seleccionar todo    \ue0ef Eliminar    \ue0e1 Cancelar"
     },
     "common": {
         "ok": "Aceptar",

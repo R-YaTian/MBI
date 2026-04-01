@@ -6,6 +6,7 @@
             "usb": "USB 経由でインストール",
             "hdd": "USB HDD 経由でインストール",
             "mtp": "USB MTP 経由でインストール",
+            "tickets": "未使用のチケットを表示",
             "set": "設定",
             "exit": "終了"
         },
@@ -145,6 +146,12 @@
         },
         "title": "Mohsaua-Buoh-Installerの設定を変更する",
         "buttons": "\ue0e0 選択/変更    \ue0e1 キャンセル"
+    },
+    "ticket_manager": {
+        "scanning": "未使用のチケットをスキャンしています...",
+        "bottom_info": "お待ちください...",
+        "top_info": "削除したいチケットを選択して、\ue0efボタンを押してください！",
+        "buttons": "\ue0e0 チケットを選択    \ue0e3 すべて選択    \ue0ef 削除    \ue0e1 キャンセル"
     },
     "common": {
         "ok": "OK",

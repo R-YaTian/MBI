@@ -6,6 +6,7 @@
             "usb": "Installer à partir d'un périphèrique USB",
             "hdd": "Installer sur un disque dur USB",
             "mtp": "Installer via USB MTP",
+            "tickets": "Afficher les tickets non utilisés",
             "set": " Paramètres",
             "exit": " Quitter"
         },
@@ -145,6 +146,12 @@
         },
         "title": "Modifiez les paramètres de Mohsaua-Buoh-Installer !",
         "buttons": "\ue0e0 Sélectionner/Modifier    \ue0e1 Annuler"
+    },
+    "ticket_manager": {
+        "scanning": "Analyse des tickets inutilisés...",
+        "bottom_info": "Veuillez patienter...",
+        "top_info": "Sélectionnez le ticket à supprimer, puis appuyez sur le bouton \ue0ef !",
+        "buttons": "\ue0e0 Sélectionner    \ue0e3 Tout sélectionner    \ue0ef Supprimer    \ue0e1 Annuler"
     },
     "common": {
         "ok": "OK",
