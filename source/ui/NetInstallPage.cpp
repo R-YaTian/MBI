@@ -20,13 +20,9 @@ namespace app::ui
         this->Add(this->infoImage);
     }
 
-    void NetInstallPage::drawMenuItems(bool clearItems)
+    void NetInstallPage::drawMenuItems()
     {
-        s32 menuIndex = this->menu->GetSelectedIndex();
-        if (clearItems) this->selectedUrls = {};
-        this->menu->ClearItems();
-        this->menuIndices = {};
-
+        this->selectedUrls = {};
         for (size_t i = 0; i < this->ourUrls.size(); i++)
         {
             const std::string url = this->ourUrls[i];
@@ -34,49 +30,25 @@ namespace app::ui
             std::string formattedURL = nx::network::FormatUrlString(url);
             auto ourEntry = pu::ui::elm::MenuItem::New(formattedURL);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
-            ourEntry->SetIcon(GetResource(app::ui::Resources::UncheckedImage));
+            ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
             ourEntry->SetPreserveTailLength(4);
             ourEntry->SetTruncationMarker("(...)");
-            for (size_t j = 0; j < this->selectedUrls.size(); j++)
-            {
-                if (this->selectedUrls[j] == url)
-                {
-                    ourEntry->SetIcon(GetResource(app::ui::Resources::CheckedImage));
-                }
-            }
             this->menu->AddItem(ourEntry);
-            this->menu->SetSelectedIndex(menuIndex);
-            this->menuIndices.push_back(i);
         }
+        this->menu->SetSelectedIndex(0);
     }
 
-    void NetInstallPage::selectTitle(int selectedIndex, bool redraw)
+    void NetInstallPage::selectTitle(int selectedIndex)
     {
-        size_t urlIndex = 0;
-        if (this->menuIndices.size() > 0)
+        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
-            urlIndex = this->menuIndices[selectedIndex];
-        }
-
-        if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(app::ui::Resources::CheckedImage))
-        {
-            for (size_t i = 0; i < this->selectedUrls.size(); i++)
-            {
-                if (this->selectedUrls[i] == this->ourUrls[urlIndex])
-                {
-                    this->selectedUrls.erase(this->selectedUrls.begin() + i);
-                    break;
-                }
-            }
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::UncheckedImage));
+            this->selectedUrls.erase(selectedIndex);
         }
         else
         {
-            this->selectedUrls.push_back(this->ourUrls[urlIndex]);
-        }
-
-        if (redraw)
-        {
-            this->drawMenuItems(false);
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::CheckedImage));
+            this->selectedUrls[selectedIndex] = this->ourUrls[selectedIndex];
         }
     }
 
@@ -102,8 +74,7 @@ namespace app::ui
                     return startNetwork();
                 }
                 app::config::lastNetUrl = keyboardResult;
-                sourceString = "inst.net.url.source_string"_lang;
-                this->selectedUrls = {keyboardResult};
+                this->selectedUrls[0] = keyboardResult;
                 this->startInstall(true);
                 return false;
             }
@@ -111,11 +82,9 @@ namespace app::ui
         }
         else
         {
-            sourceString = "inst.net.source_string"_lang;
             app::facade::SendPageInfoText("inst.net.top_info"_lang);
             app::facade::SendBottomText("inst.net.buttons1"_lang);
-            this->drawMenuItems(true);
-            this->menu->SetSelectedIndex(0);
+            this->drawMenuItems();
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);
         }
@@ -138,7 +107,13 @@ namespace app::ui
             }
             return;
         }
-        app::installer::Network::InstallFromUrl(this->selectedUrls, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);
+        std::vector<std::string> urlList;
+        for (const auto& pair : this->selectedUrls)
+        {
+            urlList.push_back(pair.second);
+        }
+        std::string sourceString = urlMode ? "inst.net.url.source_string"_lang : "inst.net.source_string"_lang;
+        app::installer::Network::InstallFromUrl(urlList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);
     }
 
     void NetInstallPage::onCancel()
@@ -149,7 +124,7 @@ namespace app::ui
             {
                 this->selectTitle(this->menu->GetSelectedIndex());
             }
-            nx::network::PushExitCommand(this->selectedUrls[0]);
+            nx::network::PushExitCommand(this->selectedUrls.begin()->second);
         }
         nx::network::Finalize();
         SceneJump(Scene::Main);
@@ -171,22 +146,24 @@ namespace app::ui
     {
         if (this->selectedUrls.size() == this->menu->GetItems().size())
         {
-            this->drawMenuItems(true);
+            for (size_t i = 0; i < this->menu->GetItems().size(); i++)
+            {
+                this->selectTitle(i);
+            }
         }
         else
         {
             for (size_t i = 0; i < this->menu->GetItems().size(); i++)
             {
-                if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(app::ui::Resources::CheckedImage))
+                if (this->menu->GetItems()[i]->GetIconTexture() == GetResource(Resources::CheckedImage))
                 {
                     continue;
                 }
                 else
                 {
-                    this->selectTitle(i, false);
+                    this->selectTitle(i);
                 }
             }
-            this->drawMenuItems(false);
         }
     }
 

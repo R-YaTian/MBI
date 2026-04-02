@@ -19,14 +19,9 @@ namespace app::ui
         this->Add(this->infoImage);
     }
 
-    void UsbInstallPage::drawMenuItems(bool clearItems)
+    void UsbInstallPage::drawMenuItems()
     {
-        s32 menuIndex = this->menu->GetSelectedIndex();
-        if (clearItems)
-        {
-            this->selectedTitles = {};
-        }
-        this->menu->ClearItems();
+        this->selectedTitles = {};
         for (auto& itm: this->ourTitles)
         {
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
@@ -34,38 +29,22 @@ namespace app::ui
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
             ourEntry->SetPreserveTailLength(4);
             ourEntry->SetTruncationMarker("(...)");
-            for (size_t i = 0; i < this->selectedTitles.size(); i++)
-            {
-                if (this->selectedTitles[i] == itm)
-                {
-                    ourEntry->SetIcon(GetResource(Resources::CheckedImage));
-                }
-            }
             this->menu->AddItem(ourEntry);
-            this->menu->SetSelectedIndex(menuIndex);
         }
+        this->menu->SetSelectedIndex(0);
     }
 
-    void UsbInstallPage::selectTitle(int selectedIndex, bool redraw)
+    void UsbInstallPage::selectTitle(int selectedIndex)
     {
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
-            for (size_t i = 0; i < this->selectedTitles.size(); i++)
-            {
-                if (this->selectedTitles[i] == this->ourTitles[selectedIndex])
-                {
-                    this->selectedTitles.erase(this->selectedTitles.begin() + i);
-                    break;
-                }
-            }
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::UncheckedImage));
+            this->selectedTitles.erase(selectedIndex);
         }
         else
         {
-            this->selectedTitles.push_back(this->ourTitles[selectedIndex]);
-        }
-        if (redraw)
-        {
-            this->drawMenuItems(false);
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::CheckedImage));
+            this->selectedTitles[selectedIndex] = this->ourTitles[selectedIndex];
         }
     }
 
@@ -84,8 +63,7 @@ namespace app::ui
         {
             app::facade::SendPageInfoText("inst.usb.top_info2"_lang);
             app::facade::SendBottomText("inst.usb.buttons2"_lang);
-            this->drawMenuItems(true);
-            this->menu->SetSelectedIndex(0);
+            this->drawMenuItems();
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);
         }
@@ -105,7 +83,12 @@ namespace app::ui
         {
             return;
         }
-        app::installer::Usb::InstallTitles(this->selectedTitles, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
+        std::vector<std::string> fileList;
+        for (const auto& pair : this->selectedTitles)
+        {
+            fileList.push_back(pair.second);
+        }
+        app::installer::Usb::InstallTitles(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
     void UsbInstallPage::onCancel()
@@ -131,7 +114,10 @@ namespace app::ui
     {
         if (this->selectedTitles.size() == this->menu->GetItems().size())
         {
-            this->drawMenuItems(true);
+            for (size_t i = 0; i < this->menu->GetItems().size(); i++)
+            {
+                this->selectTitle(i);
+            }
         }
         else
         {
@@ -143,10 +129,9 @@ namespace app::ui
                 }
                 else
                 {
-                    this->selectTitle(i, false);
+                    this->selectTitle(i);
                 }
             }
-            this->drawMenuItems(false);
         }
     }
 

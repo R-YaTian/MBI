@@ -10,7 +10,7 @@ namespace app::ui
     struct TicketPage::InternalData
     {
         std::vector<nx::misc::Ticket> ticketsList;
-        std::vector<nx::misc::Ticket> selectedTickets;
+        std::map<size_t, nx::misc::Ticket> selectedTickets;
     };
 
     TicketPage::~TicketPage() = default;
@@ -27,51 +27,30 @@ namespace app::ui
         pageData = std::make_unique<InternalData>();
     }
 
-    void TicketPage::drawMenuItems(bool clearItems)
+    void TicketPage::drawMenuItems()
     {
-        s32 menuIndex = this->menu->GetSelectedIndex();
-        if (clearItems)
-        {
-            this->pageData->selectedTickets = {};
-        }
-        this->menu->ClearItems();
+        this->pageData->selectedTickets = {};
         for (auto& itm: this->pageData->ticketsList)
         {
             auto ourEntry = pu::ui::elm::MenuItem::New(itm.ToString());
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
             ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
-            for (size_t i = 0; i < this->pageData->selectedTickets.size(); i++)
-            {
-                if (this->pageData->selectedTickets[i].ToString() == itm.ToString())
-                {
-                    ourEntry->SetIcon(GetResource(Resources::CheckedImage));
-                }
-            }
             this->menu->AddItem(ourEntry);
-            this->menu->SetSelectedIndex(menuIndex);
         }
+        this->menu->SetSelectedIndex(0);
     }
 
-    void TicketPage::selectTicket(int selectedIndex, bool redraw)
+    void TicketPage::selectTicket(int selectedIndex)
     {
         if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == GetResource(Resources::CheckedImage))
         {
-            for (size_t i = 0; i < this->pageData->selectedTickets.size(); i++)
-            {
-                if (this->pageData->selectedTickets[i].ToString() == this->pageData->ticketsList[selectedIndex].ToString())
-                {
-                    this->pageData->selectedTickets.erase(this->pageData->selectedTickets.begin() + i);
-                    break;
-                }
-            }
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::UncheckedImage));
+            this->pageData->selectedTickets.erase(selectedIndex);
         }
         else
         {
-            this->pageData->selectedTickets.push_back(this->pageData->ticketsList[selectedIndex]);
-        }
-        if (redraw)
-        {
-            this->drawMenuItems(false);
+            this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::CheckedImage));
+            this->pageData->selectedTickets[selectedIndex] = this->pageData->ticketsList[selectedIndex];
         }
     }
 
@@ -90,8 +69,7 @@ namespace app::ui
         {
             app::facade::SendPageInfoText("ticket_manager.top_info"_lang);
             app::facade::SendBottomText("ticket_manager.buttons"_lang);
-            this->drawMenuItems(true);
-            this->menu->SetSelectedIndex(0);
+            this->drawMenuItems();
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);
         }
@@ -119,7 +97,10 @@ namespace app::ui
     {
         if (this->pageData->selectedTickets.size() == this->menu->GetItems().size())
         {
-            this->drawMenuItems(true);
+            for (size_t i = 0; i < this->menu->GetItems().size(); i++)
+            {
+                this->selectTicket(i);
+            }
         }
         else
         {
@@ -131,10 +112,9 @@ namespace app::ui
                 }
                 else
                 {
-                    this->selectTicket(i, false);
+                    this->selectTicket(i);
                 }
             }
-            this->drawMenuItems(false);
         }
     }
 
