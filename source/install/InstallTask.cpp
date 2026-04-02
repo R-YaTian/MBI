@@ -364,10 +364,12 @@ namespace app
                 u16 ECDSA_Properties = 0x4 + 0x3C + 0x40 + 0x146;
                 u16 RSA_2048_Properties = 0x4 + 0x100 + 0x3C + 0x146;
                 u16 RSA_4096_Properties = 0x4 + 0x200 + 0x3C + 0x146;
+                u16 HMAC_160_Properties = 0x4 + 0x14 + 0x28 + 0x146;
 
                 u16 ECDSA_RightsId = 0x4 + 0x3C + 0x40 + 0x160;
                 u16 RSA_2048_RightsId = 0x4 + 0x100 + 0x3C + 0x160;
                 u16 RSA_4096_RightsId = 0x4 + 0x200 + 0x3C + 0x160;
+                u16 HMAC_160_RightsId = 0x4 + 0x14 + 0x28 + 0x160;
 
                 // ECDSA SHA256 & SHA1
                 if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && tikBuf.get()[ECDSA_Properties - 1] != tikBuf.get()[ECDSA_RightsId + 0x0F])
@@ -388,6 +390,13 @@ namespace app
                 {
                     tikBuf.get()[RSA_4096_Properties] = 0x0;
                     tikBuf.get()[RSA_4096_Properties - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
+                }
+
+                // HMAC_160 SHA1
+                else if (tikBuf.get()[0] == 6 && (tikBuf.get()[HMAC_160_Properties - 1] != tikBuf.get()[HMAC_160_RightsId + 0x0F]))
+                {
+                    tikBuf.get()[HMAC_160_Properties] = 0x0;
+                    tikBuf.get()[HMAC_160_Properties - 1] = tikBuf.get()[HMAC_160_RightsId + 0x0F];
                 }
             }
 
