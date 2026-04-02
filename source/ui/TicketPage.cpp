@@ -160,6 +160,16 @@ namespace app::ui
             onSelectAll();
         }
 
+        if (Down & HidNpadButton_ZL)
+        {
+            onPageUp();
+        }
+
+        if (Down & HidNpadButton_ZR)
+        {
+            onPageDown();
+        }
+
         if (Down & HidNpadButton_Plus)
         {
             onConfirm();

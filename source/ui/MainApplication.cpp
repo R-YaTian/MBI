@@ -371,6 +371,10 @@ namespace app::ui
             {
                 mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
             }
+            else
+            {
+                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Base);
+            }
             break;
         case Scene::Installer:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);

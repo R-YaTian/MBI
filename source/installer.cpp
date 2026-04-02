@@ -306,7 +306,7 @@ namespace app::installer
 
             try
             {
-                nx::network::Initialize();
+                nx::network::InitializeServerSocket();
 
                 std::string ourIPAddress = nx::network::GetIPAddress();
                 app::facade::SendPageInfoText("inst.net.top_info1"_lang + ourIPAddress);

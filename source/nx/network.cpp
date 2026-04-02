@@ -284,7 +284,7 @@ namespace nx::network
         return count;
     }
 
-    static void NSULDrop(const std::string& url)
+    static void SendDropPacket(const std::string& url)
     {
         CURL* curl = curl_easy_init();
 
@@ -368,8 +368,14 @@ namespace nx::network
         return inet_ntoa(addr);
     }
 
-    static void InitializeServerSocket() try
+    void InitializeServerSocket() try
     {
+        // Initialize the server socket if it hasn't already been
+        if (g_serverSocket != 0)
+        {
+            return;
+        }
+
         // Create a socket
         g_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
@@ -400,15 +406,6 @@ namespace nx::network
     {
         LOG_DEBUG("Failed to initialize server socket!\n");
         THROW_FORMAT("Failed to initialize server socket:\n%s", e.what());
-    }
-
-    void Initialize()
-    {
-        // Initialize the server socket if it hasn't already been
-        if (g_serverSocket == 0)
-        {
-            InitializeServerSocket();
-        }
     }
 
     void Finalize()
@@ -463,7 +460,7 @@ namespace nx::network
     void PushExitCommand(const std::string& url)
     {
         LOG_DEBUG("Telling the server we're done\n");
-        // Send 1 byte ack to close the server, OG tinfoil compatibility
+        // Send 1 byte ack to close the server (OG tinfoil compatibility)
         u8 ack = 0;
         WaitSendNetworkData(g_clientSocket, &ack, sizeof(u8));
 
@@ -474,6 +471,6 @@ namespace nx::network
             urlHost = urlHost.substr(0, pos);
         }
         // Send 'DROP' header so ns-usbloader knows we're done
-        NSULDrop(urlHost);
+        SendDropPacket(urlHost);
     }
 }

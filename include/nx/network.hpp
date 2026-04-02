@@ -67,7 +67,7 @@ namespace nx::network
     std::string FormatUrlString(const std::string& url);
     std::string GetIPAddress();
 
-    void Initialize();
+    void InitializeServerSocket();
     void Finalize();
     std::string ReceiveRemoteString();
     void PushExitCommand(const std::string& url);
