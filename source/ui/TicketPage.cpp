@@ -29,7 +29,6 @@ namespace app::ui
 
     void TicketPage::drawMenuItems()
     {
-        this->pageData->selectedTickets = {};
         for (auto& itm: this->pageData->ticketsList)
         {
             auto ourEntry = pu::ui::elm::MenuItem::New(itm.ToString());
@@ -57,7 +56,6 @@ namespace app::ui
     bool TicketPage::LoadTickets()
     {
         this->menu->SetVisible(false);
-        this->menu->ClearItems();
         this->infoImage->SetVisible(true);
         app::facade::SendRenderRequest();
         this->pageData->ticketsList = nx::misc::ScanTickets();
@@ -78,6 +76,9 @@ namespace app::ui
 
     void TicketPage::onCancel()
     {
+        this->pageData->ticketsList.clear();
+        this->pageData->selectedTickets.clear();
+        this->menu->ClearItems();
         SceneJump(Scene::Main);
     }
 

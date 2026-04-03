@@ -21,7 +21,6 @@ namespace app::ui
 
     void UsbInstallPage::drawMenuItems()
     {
-        this->selectedTitles = {};
         for (auto& itm: this->ourTitles)
         {
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
@@ -51,7 +50,6 @@ namespace app::ui
     bool UsbInstallPage::startUsb()
     {
         this->menu->SetVisible(false);
-        this->menu->ClearItems();
         this->infoImage->SetVisible(true);
         app::facade::SendRenderRequest();
         this->ourTitles = app::installer::Usb::WaitingForFileList();
@@ -88,12 +86,18 @@ namespace app::ui
         {
             fileList.push_back(pair.second);
         }
+        this->ourTitles.clear();
+        this->selectedTitles.clear();
+        this->menu->ClearItems();
         app::installer::Usb::InstallTitles(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
     void UsbInstallPage::onCancel()
     {
         nx::usb::USBCommandManager::SendExitCommand();
+        this->ourTitles.clear();
+        this->selectedTitles.clear();
+        this->menu->ClearItems();
         SceneJump(Scene::Main);
         nx::usb::usbDeviceReset();
     }

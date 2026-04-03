@@ -22,11 +22,9 @@ namespace app::ui
 
     void NetInstallPage::drawMenuItems()
     {
-        this->selectedUrls = {};
         for (size_t i = 0; i < this->ourUrls.size(); i++)
         {
             const std::string url = this->ourUrls[i];
-
             std::string formattedURL = nx::network::FormatUrlString(url);
             auto ourEntry = pu::ui::elm::MenuItem::New(formattedURL);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
@@ -55,7 +53,6 @@ namespace app::ui
     bool NetInstallPage::startNetwork()
     {
         this->menu->SetVisible(false);
-        this->menu->ClearItems();
         this->infoImage->SetVisible(true);
         this->ourUrls = app::installer::Network::WaitingForNetworkData();
         if (!this->ourUrls.size())
@@ -113,6 +110,9 @@ namespace app::ui
             urlList.push_back(pair.second);
         }
         std::string sourceString = urlMode ? "inst.net.url.source_string"_lang : "inst.net.source_string"_lang;
+        this->selectedUrls.clear();
+        this->ourUrls.clear();
+        this->menu->ClearItems();
         app::installer::Network::InstallFromUrl(urlList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, sourceString);
     }
 
@@ -127,6 +127,9 @@ namespace app::ui
             nx::network::PushExitCommand(this->selectedUrls.begin()->second);
         }
         nx::network::Finalize();
+        this->selectedUrls.clear();
+        this->ourUrls.clear();
+        this->menu->ClearItems();
         SceneJump(Scene::Main);
     }
 
