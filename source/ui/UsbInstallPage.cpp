@@ -78,7 +78,7 @@ namespace app::ui
                                                "inst.target.desc01"_lang,
                                                "common.cancel_desc"_lang,
                                               {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true,
-                                               static_cast<int>(Resources::InstallDiskImage));
+                                               "install-disk");
         if (dialogResult < 0)
         {
             return;

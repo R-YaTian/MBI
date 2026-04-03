@@ -150,12 +150,6 @@ namespace app::ui
         this->bgImg = LoadBackground(app::config::storagePath);
         this->logoImg = LoadTexture("romfs:/images/logo.png");
         this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.png");
-        this->installDiskImg = LoadTexture("romfs:/images/icons/install-disk.png");
-        this->errorImg = LoadTexture("romfs:/images/icons/error.png");
-        this->warningImg = LoadTexture("romfs:/images/icons/warning.png");
-        this->informationImg = LoadTexture("romfs:/images/icons/information.png");
-        this->languageImg = LoadTexture("romfs:/images/icons/language.png");
-        this->deleteImg = LoadTexture("romfs:/images/icons/delete.png");
         this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
         this->backImg = LoadTexture("romfs:/images/icons/backward.png");
         this->confirmImg = LoadTexture("romfs:/images/icons/confirm.png");
@@ -334,7 +328,7 @@ namespace app::ui
                     mountPointList.push_back(nx::udisk::getMountPointName(i));
                 }
                 mountPointList.push_back("common.cancel"_lang);
-                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, true, GetResource(Resources::InstallDiskImage));
+                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, true, LoadTexture("romfs:/images/icons/install-disk.png"));
                 if (ret < 0)
                 {
                     return;
@@ -346,7 +340,7 @@ namespace app::ui
             }
             else
             {
-                mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true, GetResource(Resources::InformationImage));
+                mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true, LoadTexture("romfs:/images/icons/information.png"));
                 return;
             }
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
@@ -398,18 +392,6 @@ namespace app::ui
             return mainApp->dirImg;
         case Resources::BackToParentImage:
             return mainApp->dirbackImg;
-        case Resources::InstallDiskImage:
-            return mainApp->installDiskImg;
-        case Resources::ErrorImage:
-            return mainApp->errorImg;
-        case Resources::WarningImage:
-            return mainApp->warningImg;
-        case Resources::InformationImage:
-            return mainApp->informationImg;
-        case Resources::LanguageImage:
-            return mainApp->languageImg;
-        case Resources::DeleteImage:
-            return mainApp->deleteImg;
         default:
             return nullptr;
         }

@@ -22,7 +22,7 @@ namespace app::ui
             if (menuLoaded)
             {
                 appletFinished = true;
-                app::facade::ShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true, static_cast<int>(Resources::WarningImage));
+                app::facade::ShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true, "warning");
             }
         }
         else if (!appletFinished)
@@ -105,7 +105,7 @@ namespace app::ui
         }
         if (nx::network::GetIPAddress() == "1.0.0.127")
         {
-            app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true, static_cast<int>(Resources::InformationImage));
+            app::facade::ShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true, "information");
             return;
         }
         SceneJump(Scene::NetworkInstall);
@@ -123,7 +123,7 @@ namespace app::ui
             if (app::facade::ShowDialog("main.usb.warn.title"_lang,
                                         "main.usb.warn.desc"_lang,
                                        {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false,
-                                        static_cast<int>(Resources::WarningImage)) == 1)
+                                        "warning") == 1)
             {
                 app::config::usbAck = true;
             }
@@ -137,7 +137,7 @@ namespace app::ui
             app::facade::ShowDialog("main.usb.error.title"_lang,
                                     "main.usb.error.desc"_lang,
                                    {"common.ok"_lang}, false,
-                                    static_cast<int>(Resources::InformationImage));
+                                    "information");
         }
     }
 

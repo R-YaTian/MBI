@@ -207,7 +207,7 @@ namespace app::ui
                                                "inst.target.desc01"_lang,
                                                "common.cancel_desc"_lang,
                                               {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true,
-                                               static_cast<int>(Resources::InstallDiskImage));
+                                               "install-disk");
         if (dialogResult < 0)
         {
             return;
@@ -295,7 +295,7 @@ namespace app::ui
         {
             app::facade::ShowDialog(pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.title"_lang : "inst.hdd.help.title"_lang,
                                     pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.desc"_lang : "inst.hdd.help.desc"_lang,
-                                    {"common.ok"_lang}, true, static_cast<int>(Resources::InformationImage));
+                                    {"common.ok"_lang}, true, "information");
         }
 
         if (Down & HidNpadButton_ZL)

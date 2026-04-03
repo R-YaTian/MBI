@@ -10,16 +10,6 @@ namespace app::ui
 
 namespace app::facade
 {
-    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool use_last_opt_as_cancel, int icon_res_id)
-    {
-        pu::sdl2::TextureHandle::Ref icon = {};
-        if (icon_res_id >= 0)
-        {
-            icon = app::ui::GetResource(static_cast<app::ui::Resources>(icon_res_id));
-        }
-        return app::ui::mainApp->CreateShowDialog(title, content, opts, use_last_opt_as_cancel, icon);
-    }
-
     void SendBottomText(std::string text)
     {
         app::ui::mainApp->SetBottomText(text);
@@ -70,14 +60,18 @@ namespace app::facade
         app::ui::SceneJump(app::ui::Scene::Installer);
     }
 
-    s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, int icon_res_id)
+    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name)
     {
         auto dialog = pu::ui::Dialog::New(title, content);
         dialog->SetSpaceBetweenOptions(35);
         dialog->SetOptionHorizontalMargin(40);
-        if (icon_res_id >= 0)
+        if (icon_name != "")
         {
-            dialog->SetIcon(app::ui::GetResource(static_cast<app::ui::Resources>(icon_res_id)));
+            pu::sdl2::TextureHandle::Ref icon = ui::LoadTexture("romfs:/images/icons/" + icon_name + ".png");
+            if (icon->Get() != nullptr)
+            {
+                dialog->SetIcon(icon);
+            }
         }
 
         for (u32 i = 0; i < opts.size(); i++)

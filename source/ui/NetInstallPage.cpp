@@ -70,7 +70,7 @@ namespace app::ui
             {
                 if (nx::network::FormatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://")
                 {
-                    app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, static_cast<int>(Resources::WarningImage));
+                    app::facade::ShowDialog("inst.net.url.warn"_lang, "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, "warning");
                     return startNetwork();
                 }
                 app::config::lastNetUrl = keyboardResult;
@@ -98,7 +98,7 @@ namespace app::ui
                                                "inst.target.desc01"_lang,
                                                "common.cancel_desc"_lang,
                                               {"inst.target.opt0"_lang, "inst.target.opt1"_lang, "common.cancel"_lang}, true,
-                                               static_cast<int>(Resources::InstallDiskImage));
+                                               "install-disk");
         if (dialogResult < 0)
         {
             if (urlMode)

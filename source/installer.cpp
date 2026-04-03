@@ -139,7 +139,7 @@ namespace app::installer
                     if(app::facade::ShowDialog(ourTitleList.size() > 1 ? std::to_string(ourTitleList.size()) +
                                                (storageSrc == StorageSource::SD ? "inst.sd.delete_info_multi"_lang : "inst.hdd.delete_info_multi"_lang) :
                                                (storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
-                                               "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, 9) == 1)
+                                               "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, "delete") == 1)
                     {
                         for (size_t i = 0; i < ourTitleList.size(); i++)
                         {
@@ -193,7 +193,7 @@ namespace app::installer
                 }
                 if (kDown & HidNpadButton_X)
                 {
-                    app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true, 7);
+                    app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true, "information");
                 }
 
                 if (!nx::usb::usbDeviceIsConnected())
@@ -340,7 +340,7 @@ namespace app::installer
                     }
                     if (kDown & HidNpadButton_Minus)
                     {
-                        app::facade::ShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true, 7);
+                        app::facade::ShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true, "information");
                     }
                     if (kDown & HidNpadButton_X)
                     {
@@ -354,7 +354,7 @@ namespace app::installer
                         if (nx::network::FormatUrlString(url) == "" || url == "https://" || url == "http://")
                         {
                             app::facade::ShowDialog("inst.net.url.warn"_lang,
-                                                    "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, 6);
+                                                    "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, "warning");
                             goto back_to_loop;
                         }
                         else
@@ -436,7 +436,7 @@ namespace app::installer
                         {
                             LOG_DEBUG("Failed to fetch file list\n");
                         }
-                        app::facade::ShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true, 6);
+                        app::facade::ShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, {"common.ok"_lang}, true, "warning");
                     }
 back_to_loop:
                     std::string remoteData = nx::network::ReceiveRemoteString();
@@ -460,7 +460,7 @@ back_to_loop:
             catch (std::runtime_error& e)
             {
                 LOG_DEBUG("%s", e.what());
-                app::facade::ShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true, 5);
+                app::facade::ShowDialog("inst.net.failed"_lang, (std::string)e.what(), {"common.ok"_lang}, true, "error");
                 return {};
             }
         }

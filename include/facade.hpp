@@ -6,8 +6,6 @@
 
 namespace app::facade
 {
-    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool use_last_opt_as_cancel, int icon_res_id = -1);
-    s32 CreateDialogSimple(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, int icon_res_id = -1);
     void SendBottomText(std::string text);
     void SendPageInfoText(std::string text);
     void SendPageInfoTextAndRender(std::string text);
@@ -17,4 +15,5 @@ namespace app::facade
     void SendInstallProgress(double percent);
     void SendInstallFinished();
     void ShowInstaller();
+    s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name = "");
 }
