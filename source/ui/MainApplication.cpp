@@ -3,7 +3,6 @@
 #include "util/util.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
-#include "nx/udisk.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/ClickableImage.hpp"
 #include "ui/BaseMenuPage.hpp"
@@ -275,8 +274,6 @@ namespace app::ui
 
     void SceneJump(Scene idx)
     {
-        int ret = -1;
-        int deviceCount = 0;
         switch (idx)
         {
         case Scene::Main:
@@ -315,40 +312,16 @@ namespace app::ui
             mainApp->SetPageInfoText("inst.sd.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
             localinstPage->setStorageSourceToSdmc();
-            localinstPage->drawMenuItems(true, "sdmc:");
             mainApp->LoadLayout(localinstPage);
             break;
         case Scene::UdiskInstall:
-            deviceCount = nx::udisk::getDeviceCount();
-            if(deviceCount > 1)
+            if (localinstPage->setStorageSourceToUdisk())
             {
-                std::vector<std::string> mountPointList;
-                for (int i=0; i < deviceCount; i++)
-                {
-                    mountPointList.push_back(nx::udisk::getMountPointName(i));
-                }
-                mountPointList.push_back("common.cancel"_lang);
-                ret = mainApp->CreateShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, true, LoadTexture("romfs:/images/icons/install-disk.png"));
-                if (ret < 0)
-                {
-                    return;
-                }
+                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
+                mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
+                mainApp->SetBottomText("inst.hdd.buttons"_lang);
+                mainApp->LoadLayout(localinstPage);
             }
-            else if (deviceCount == 1)
-            {
-                ret = 0;
-            }
-            else
-            {
-                mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true, LoadTexture("romfs:/images/icons/information.png"));
-                return;
-            }
-            mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
-            mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
-            mainApp->SetBottomText("inst.hdd.buttons"_lang);
-            localinstPage->setStorageSourceToUdisk();
-            localinstPage->drawMenuItems(true, nx::udisk::getMountPointName(ret));
-            mainApp->LoadLayout(localinstPage);
             break;
         case Scene::MtpInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);

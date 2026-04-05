@@ -77,8 +77,8 @@ namespace app
         u64 id_min = contentMetaKey.id;
         u64 id_max = contentMetaKey.id;
 
-        // if installing a patch, remove all previously installed patches.
-        if (contentMetaType == NcmContentMetaType_Patch)
+        // if installing a patch or DLC, remove all previously installed ncas.
+        if (contentMetaType == NcmContentMetaType_Patch || contentMetaType == NcmContentMetaType_AddOnContent)
         {
             id_min = 0;
             id_max = UINT64_MAX;

@@ -13,9 +13,8 @@ namespace app::ui
             LocalInstallPage();
             ~LocalInstallPage();
             PU_SMART_CTOR(LocalInstallPage)
-            void drawMenuItems(bool clearItems, nx::fs::Path ourPath);
             void setStorageSourceToSdmc();
-            void setStorageSourceToUdisk();
+            bool setStorageSourceToUdisk();
             void onCancel() override;
             void onConfirm() override;
             void onSelectAll() override;
@@ -24,9 +23,10 @@ namespace app::ui
             pu::ui::elm::Menu::Ref GetMenu() override { return this->menu; }
             struct InternalData;
             std::unique_ptr<InternalData> pageData;
-
+            void ClearPageData();
+            void drawMenuItems(nx::fs::Path ourPath);
             void followDirectory();
-            void selectFile(int selectedIndex, bool redraw = true);
+            void selectFile(int selectedIndex);
             void startInstall();
             void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
     };
