@@ -64,7 +64,6 @@
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la carte SD, puis appuyez sur le bouton \ue0ef!",
             "source_string": "Installer depuis un fichier sur carte SD",
-            "delete_info": " Installation réussie! Supprimer de la carte SD?",
             "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la carte SD ?",
             "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois qu'ils ont été installés.",
             "buttons": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0f0 Aide   \ue0e1 Annuler"
@@ -88,8 +87,6 @@
             },
             "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la disque dur USB, puis appuyez sur le bouton \ue0ef!",
             "source_string": "Installer depuis un périphérique de stockage USB",
-            "delete_info": " Installation réussie! Supprimer de la disque dur USB?",
-            "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la disque dur USB ?",
             "multi_device_desc": "Veuillez sélectionner un périphérique USB ou une partition",
             "buttons": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0f0 Aide   \ue0e1 Annuler"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "Ignorez la version minimale de firmware requise par les jeux",
             "boost_mode": "Activer le  \"boost mode\" pendant l'installation",
-            "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
+            "ask_delete": "Demande de suppression des fichiers originaux après l'installation depuis la carte SD",
             "enableSound": "Info audio à la fin",
             "fix_ticket": "Tentative de correction du mauvais vidage de ticket",
             "skip_base": "Ignorer automatiquement les Base-NCAs déjà installés",

@@ -64,7 +64,6 @@
             },
             "top_info": "메모리 카드에서 설치할 파일을 선택한 후 \ue0ef 버튼을 누릅니다.",
             "source_string": "SD 카드 파일로 설치",
-            "delete_info": " 설치가 완료되었습니다! SD 메모리 카드에서 파일을 삭제하시겠습니까?",
             "delete_info_multi": " 선택한 파일이 모두 설치되었습니다! SD 메모리 카드에서 선택한 파일을 삭제하시겠습니까?",
             "delete_desc": "설치가 완료되면 원본 파일은 더 이상 사용되지 않습니다.",
             "buttons": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0f0 도움말    \ue0e1 취소"
@@ -88,8 +87,6 @@
             },
             "top_info": "USB HDD 에서 설치할 파일을 선택하고 \ue0ef 버튼을 눌러주세요!",
             "source_string": "USB 저장 장치에서 설치",
-            "delete_info": " 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
-            "delete_info_multi": " 선택한 파일이 모두 설치되었습니다!\nUSB HDD에서 파일을 삭제하시겠습니까?",
             "multi_device_desc": "USB 장치 또는 파티션을 선택하세요",
             "buttons": "\ue0e0 파일 선택    \ue0e3 모두 선택    \ue0ef 선택한 파일 설치    \ue0f0 도움말    \ue0e1 취소"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "게임 타이틀에 필요한 최소 펌웨어 버전 무시",
             "boost_mode": "설치 중 \"오버클럭\" 활성화 요청",
-            "ask_delete": "설치 완료 후 원본파일 삭제 요청",
+            "ask_delete": "SD 카드에서 설치 완료 후 원본 파일 삭제 요청",
             "enableSound": "끝에 정보 오디오",
             "fix_ticket": "잘못된 티켓 덤프를 수정하려고 시도합니다",
             "skip_base": "설치된 Base-NCAs 를 자동으로 건너뛰기",

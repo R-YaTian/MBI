@@ -64,7 +64,6 @@
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde la tarjeta SD, y pulsa el botón \ue0ef!",
             "source_string": "Instalar desde archivo de tarjeta SD",
-            "delete_info": " instalado. ¿Borrarlo de la tarjeta SD?",
             "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la tarjeta SD?",
             "delete_desc": "Los archivos originales no hacen falta después de ser instalados",
             "buttons": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0f0 Ayuda   \ue0e1 Cancelar"
@@ -88,8 +87,6 @@
             },
             "top_info": "¡Selecciona los archivos que quieres instalar desde la USB HDD, y pulsa el botón \ue0ef!",
             "source_string": "Instalar desde dispositivo de almacenamiento USB",
-            "delete_info": " instalado. ¿Borrarlo de la USB HDD?",
-            "delete_info_multi": " archivos instalados con éxito. ¿Borrarlos de la USB HDD?",
             "multi_device_desc": "Seleccione un dispositivo USB o una partición",
             "buttons": "\ue0e0 Selecionar Archivo   \ue0e3 Seleccionar Todo   \ue0ef Instalar   \ue0f0 Ayuda   \ue0e1 Cancelar"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "Ignorar la versión mínima de firmware que necesitan los títulos",
             "boost_mode": "Habilitar el «modo Turbo» durante las instalaciones",
-            "ask_delete": "Preguntar si borrar los archivos originales, luego de una instalación satisfactoria",
+            "ask_delete": "Preguntar si borrar los archivos originales después de instalar desde la tarjeta SD",
             "enableSound": "Audio de información al final",
             "fix_ticket": "Intento de corregir volcado de ticket incorrecto",
             "skip_base": "Omitir automáticamente las Base-NCAs ya instaladas",

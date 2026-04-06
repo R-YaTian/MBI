@@ -64,7 +64,6 @@
             },
             "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
             "source_string": "通过 SD 卡文件安装",
-            "delete_info": " 安装完成！是否要从 SD 卡中删除安装文件？",
             "delete_info_multi": " 个文件批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
@@ -88,8 +87,6 @@
             },
             "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
             "source_string": "通过 USB 存储设备安装",
-            "delete_info": " 安装完成！是否要从 USB 移动硬盘中删除安装文件？",
-            "delete_info_multi": " 个文件批量安装完成！是否要从 USB 移动硬盘中删除本次所有安装文件？",
             "multi_device_desc": "请选择一个 USB 设备或分区",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "忽略软件的最低固件版本要求",
             "boost_mode": "安装时启用“增速模式”(解锁 CPU 频率)",
-            "ask_delete": "安装完成后询问是否删除原始文件",
+            "ask_delete": "安装完成后询问是否删除原始文件(仅从 SD 卡安装时)",
             "enableSound": "安装完成后播放提示音",
             "fix_ticket": "尝试修复错误的票据转储",
             "skip_base": "智能跳过已安装的本体NCA",

@@ -64,7 +64,6 @@
             },
             "top_info": "Select what files you want to install from SD card, then press the \ue0ef button!",
             "source_string": "Install from SD card file",
-            "delete_info": " installed! Delete it from the SD card?",
             "delete_info_multi": " files installed successfully! Delete them from the SD card?",
             "delete_desc": "The original files aren't needed anymore after they've been installed",
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
@@ -88,8 +87,6 @@
             },
             "top_info": "Select what files you want to install from USB HDD, then press the \ue0ef button!",
             "source_string": "Install from USB storage device",
-            "delete_info": " installed! Delete it from the USB HDD?",
-            "delete_info_multi": " files installed successfully! Delete them from the USB HDD?",
             "multi_device_desc": "Please select a USB device or partition",
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "Ignore minimum firmware version required by titles",
             "boost_mode": "Enable \"boost mode\" during installations",
-            "ask_delete": "Ask to delete original files after installation",
+            "ask_delete": "Ask to delete original files after installation from SD card",
             "enableSound": "Info audio at the end",
             "fix_ticket": "Try to fix bad ticket dump",
             "skip_base": "Skip installed base NCAs automatically",

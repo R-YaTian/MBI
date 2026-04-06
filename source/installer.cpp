@@ -134,11 +134,9 @@ namespace app::installer
             if (fileInstalled)
             {
                 OnSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42, 4));
-                if (app::config::deletePrompt)
+                if (app::config::deletePrompt && storageSrc == StorageSource::SD)
                 {
-                    if(app::facade::ShowDialog(ourTitleList.size() > 1 ? std::to_string(ourTitleList.size()) +
-                                               (storageSrc == StorageSource::SD ? "inst.sd.delete_info_multi"_lang : "inst.hdd.delete_info_multi"_lang) :
-                                               (storageSrc == StorageSource::SD ? "inst.sd.delete_info"_lang : "inst.hdd.delete_info"_lang),
+                    if(app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang,
                                                "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, "delete") == 1)
                     {
                         for (size_t i = 0; i < ourTitleList.size(); i++)

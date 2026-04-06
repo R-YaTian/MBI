@@ -64,7 +64,6 @@
             },
             "top_info": "Seleziona quali file vuoi installare dalla SD, poi premi Il tasto \ue0ef!",
             "source_string": "Installa da file su scheda SD",
-            "delete_info": " installato! Cancellarlo dalla SD?",
             "delete_info_multi": " file installati correttamente! Cancellarli dalla SD?",
             "delete_desc": "I file originali non sono più necessari dopo averli installati",
             "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0f0 Aiuto    \ue0e1 Annulla"
@@ -88,8 +87,6 @@
             },
             "top_info": "Seleziona quali file vuoi installare dalla USB HDD, poi premi Il tasto \ue0ef!",
             "source_string": "Installa da dispositivo di archiviazione USB",
-            "delete_info": " installato! Cancellarlo dalla USB HDD?",
-            "delete_info_multi": " file installati correttamente! Cancellarli dalla USB HDD?",
             "multi_device_desc": "Seleziona un dispositivo USB o una partizione",
             "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0f0 Aiuto    \ue0e1 Annulla"
         },
@@ -128,7 +125,7 @@
         "menu_items": {
             "ignore_firm": "Ignora la versione minima del firmware richiesta dai titoli",
             "boost_mode": "Abilita la \"boost mode\" durante le installazioni",
-            "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
+            "ask_delete": "Chiedi di cancellare i file originali dopo l'installazione dalla scheda SD",
             "enableSound": "Info audio alla fine",
             "fix_ticket": "Tentativo di correggere dump ticket errato",
             "skip_base": "Salta automaticamente i Base-NCAs già installati",
