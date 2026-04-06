@@ -25,6 +25,7 @@ namespace app::config
     extern bool deletePrompt;
     extern bool enableSound;
     extern bool fixTicket;
+    extern bool skipBase;
     extern bool usbAck;
     extern bool use12hTime;
 

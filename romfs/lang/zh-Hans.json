@@ -109,7 +109,7 @@
             "desc1": " 安装完成！",
             "downloading": "传输中...",
             "at": " 以 ",
-            "removing": "正在移除已安装的 nca 文件: ",
+            "removing": "正在移除已安装的 NCA 文件: ",
             "no_space": "剩余空间不足以安装:"
         },
         "nca_verify": {
@@ -131,6 +131,7 @@
             "ask_delete": "安装完成后询问是否删除原始文件",
             "enableSound": "安装完成后播放提示音",
             "fix_ticket": "尝试修复错误的票据转储",
+            "skip_base": "智能跳过已安装的本体NCA",
             "use_12h_time": "使用12小时制时间",
             "language": "显示语言：",
             "credits": "致谢"

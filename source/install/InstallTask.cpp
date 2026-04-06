@@ -9,10 +9,11 @@
 
 namespace app
 {
-    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, std::unique_ptr<app::install::Worker> worker) :
+    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, std::unique_ptr<app::install::Worker> worker) :
         m_destStorageId(destStorageId),
         m_ignoreReqFirmVersion(ignoreReqFirmVersion),
         m_fixTicket(fixTicket),
+        m_skipBase(skipBase),
         m_contentMeta(),
         m_worker(std::move(worker))
     {
@@ -46,7 +47,8 @@ namespace app
 
     void InstallTask::InstallApplicationRecord(int i)
     {
-        const u64 baseTitleId = nx::ncm::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
+        NcmContentMetaType contentType = this->GetContentMetaType(i);
+        const u64 baseTitleId = nx::ncm::GetBaseTitleId(this->GetTitleId(i), contentType);
 
         // Add our new content meta
         NsExtContentStorageMetaKey storageRecord;
@@ -55,14 +57,17 @@ namespace app
 
         LOG_DEBUG("Pushing application record...\n");
         ASSERT_OK(nsextPushApplicationRecord(baseTitleId, NsExtApplicationEvent_Present, &storageRecord, 1), "Failed to push application record");
-        if (hosversionAtLeast(6,0,0))
+        if (contentType == NcmContentMetaType_Patch)
         {
-            ASSERT_OK(avmInitialize(), "Failed to initialize avm");
-            ASSERT_OK(avmPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to push launch version");
-            ASSERT_OK(avmUpgradeLaunchRequiredVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to upgrade launch required version");
-            avmExit();
+            if (hosversionAtLeast(6,0,0))
+            {
+                ASSERT_OK(avmInitialize(), "Failed to initialize avm");
+                ASSERT_OK(avmPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to push launch version");
+                ASSERT_OK(avmUpgradeLaunchRequiredVersion(baseTitleId, storageRecord.meta_key.version), "avm: Failed to upgrade launch required version");
+                avmExit();
+            }
+            ASSERT_OK(nsextPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "Failed to push launch version");
         }
-        ASSERT_OK(nsextPushLaunchVersion(baseTitleId, storageRecord.meta_key.version), "Failed to push launch version");
     }
 
     void InstallTask::RemoveInstalledNcas(int idx)
@@ -77,8 +82,14 @@ namespace app
         u64 id_min = contentMetaKey.id;
         u64 id_max = contentMetaKey.id;
 
-        // if installing a patch or DLC, remove all previously installed ncas.
-        if (contentMetaType == NcmContentMetaType_Patch || contentMetaType == NcmContentMetaType_AddOnContent)
+        if (contentMetaType == NcmContentMetaType_Application && m_skipBase)
+        {
+            LOG_DEBUG("Skipping base NCAs removal\n");
+            return;
+        }
+
+        // if installing a patch, remove all previously installed ncas.
+        if (contentMetaType == NcmContentMetaType_Patch)
         {
             id_min = 0;
             id_max = UINT64_MAX;
@@ -179,10 +190,30 @@ namespace app
         {
             m_worker->ClearHashMap();
             LOG_DEBUG("Installing NCAs...\n");
+            size_t skippedNcas = 0;
             for (auto& record : contentMeta.GetContentInfos())
             {
+                if (m_skipBase)
+                {
+                    bool alreadyExists = false;
+                    const NcmStorageId storageIDs[] { NcmStorageId_SdCard, NcmStorageId_BuiltInUser };
+                    for (size_t i = 0; i < std::size(storageIDs); i++)
+                    {
+                        nx::ncm::ContentStorage contentStorage(storageIDs[i]);
+                        if (contentStorage.Has(record.content_id))
+                        {
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                    if (alreadyExists)
+                    {
+                        ++skippedNcas;
+                        continue;
+                    }
+                }
                 std::string ncaIdStr = nx::nca::GetNcaIdString(record.content_id);
-                LOG_DEBUG("Installing from %s\n", ncaIdStr.c_str());
+                LOG_DEBUG("Installing %s\n", ncaIdStr.c_str());
                 this->InstallNCA(record.content_id);
                 if (contentMeta.GetDistributionType() == 0)
                 {
@@ -196,7 +227,7 @@ namespace app
                     }
                 }
             }
-            if (contentMeta.GetDistributionType() == 1)
+            if (contentMeta.GetDistributionType() == 1 && skippedNcas == 0)
             {
                 app::facade::SendInstallInfoText("inst.nca_verify.missing_digital"_lang);
                 std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();

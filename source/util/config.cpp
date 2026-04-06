@@ -13,6 +13,7 @@ namespace app::config
     std::string InstallerInfoTextColor;
     int languageSetting;
     bool fixTicket;
+    bool skipBase;
     bool deletePrompt;
     bool enableSound;
     bool ignoreReqVers;
@@ -24,6 +25,7 @@ namespace app::config
     {
         jt::Json j;
         j["fixTicket"] = fixTicket;
+        j["skipBase"] = skipBase;
         j["deletePrompt"] = deletePrompt;
         j["enableSound"] = enableSound;
         j["ignoreReqVers"] = ignoreReqVers;
@@ -53,6 +55,7 @@ namespace app::config
         }
 
         fixTicket = j.value("fixTicket", true);
+        skipBase = j.value("skipBase", false);
         deletePrompt = j.value("deletePrompt", false);
         enableSound = j.value("enableSound", true);
         ignoreReqVers = j.value("ignoreReqVers", false);

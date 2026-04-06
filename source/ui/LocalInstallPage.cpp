@@ -54,8 +54,10 @@ namespace app::ui
 
         try
         {
+            pageData->menuDirectories.clear();
             pageData->menuDirectories = nx::fs::GetDirsAtPath(pageData->currentDir);
             std::sort(pageData->menuDirectories.begin(), pageData->menuDirectories.end(), app::util::IgnoreCaseCompare);
+            pageData->menuFiles.clear();
             pageData->menuFiles = nx::fs::GetDirectoryFiles(pageData->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
             std::sort(pageData->menuFiles.begin(), pageData->menuFiles.end(), app::util::IgnoreCaseCompare);
         }
@@ -91,13 +93,16 @@ namespace app::ui
             std::string itm = file.filename().string();
             auto ourEntry = pu::ui::elm::MenuItem::New(itm);
             ourEntry->SetColor(COLOR(app::config::FileTextColor));
-            ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
             ourEntry->SetPreserveTailLength(4);
             ourEntry->SetTruncationMarker("(...)");
             if (pageData->selectedTitles.contains(file.string()))
             {
                 ourEntry->SetIcon(GetResource(Resources::CheckedImage));
                 ++pageData->selectedSize;
+            }
+            else
+            {
+                ourEntry->SetIcon(GetResource(Resources::UncheckedImage));
             }
             this->menu->AddItem(ourEntry);
         }
