@@ -4,6 +4,7 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "nx/ncm.hpp"
+#include "nx/misc.hpp"
 
 namespace app::ui
 {
@@ -253,13 +254,36 @@ namespace app::ui
         {
             return;
         }
-        std::string desc = "";
-        std::vector<NcmContentId> orphanedContentIds = nx::ncm::LookupOrphanContent();
-        for (const NcmContentId &contentId : orphanedContentIds)
+
+        s32 ret = app::facade::ShowDialog("clean_orphaned.title"_lang, "clean_orphaned.desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, "warning");
+        if (ret != 1)
         {
-            desc += "- " + nx::nca::GetNcaIdString(contentId) + "\n";
+            return;
         }
-        app::facade::ShowDialog("options.clean_orphaned.title"_lang, desc, {"common.ok"_lang}, true, "information");
+
+        app::config::SaveSettings();
+        app::facade::ShowInstaller();
+        app::facade::SendBottomText("ticket_manager.bottom_info"_lang);
+        app::facade::SendPageInfoTextAndRender("clean_orphaned.working"_lang);
+
+        bool result = nx::ncm::CleanupPlaceHolder(NcmStorageId_SdCard);
+        app::facade::SendInstallInfoText("clean_orphaned.placeholder_sd"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
+
+        s32 contentCount = 0;
+        s32 deletedCount = nx::ncm::DeleteOrphanContent(NcmStorageId_SdCard, &contentCount);
+        app::facade::SendInstallInfoText("clean_orphaned.orphaned_sd"_lang + std::to_string(contentCount) + ", " + (deletedCount >= 0 ? "clean_orphaned.deleted"_lang + std::to_string(deletedCount) : "clean_orphaned.delete_failed"_lang));
+    
+        result = nx::ncm::CleanupPlaceHolder(NcmStorageId_BuiltInUser);
+        app::facade::SendInstallInfoText("clean_orphaned.placeholder_nand"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
+    
+        contentCount = 0;
+        deletedCount = nx::ncm::DeleteOrphanContent(NcmStorageId_BuiltInUser, &contentCount);
+        app::facade::SendInstallInfoText("clean_orphaned.orphaned_nand"_lang + std::to_string(contentCount) + ", " + (deletedCount >= 0 ? "clean_orphaned.deleted"_lang + std::to_string(deletedCount) : "clean_orphaned.delete_failed"_lang));
+
+        result = nx::misc::CleanPendingUpdate();
+        app::facade::SendInstallInfoText("clean_orphaned.pending_update"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
+
+        app::facade::SendInstallFinished();
     }
 
     void OptionsPage::onCancel()

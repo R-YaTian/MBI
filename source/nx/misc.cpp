@@ -245,16 +245,6 @@ namespace nx::misc
             nssuExit();
         }
 
-        try
-        {
-            nx::ncm::ContentStorage contentStorage(NcmStorageId_BuiltInSystem);
-            contentStorage.CleanupAllPlaceHolder();
-        }
-        catch (const std::exception& e)
-        {
-            return false;
-        }
-
-        return true;
+        return ncm::CleanupPlaceHolder(NcmStorageId_BuiltInSystem);
     }
 }

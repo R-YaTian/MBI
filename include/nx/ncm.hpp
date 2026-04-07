@@ -84,7 +84,8 @@ namespace nx::ncm
             void RebuildNcaToInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap);
     };
 
-    std::vector<NcmContentId> LookupOrphanContent();
+    bool CleanupPlaceHolder(const NcmStorageId& storageId);
+    s32 DeleteOrphanContent(const NcmStorageId& storageId, s32* outContentCount = nullptr);
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
 }
