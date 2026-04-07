@@ -21,6 +21,7 @@ namespace app::ui
             pu::ui::elm::MenuItem::Ref fixTicketOption;
             pu::ui::elm::MenuItem::Ref skipBaseOption;
             pu::ui::elm::MenuItem::Ref use12hTimeOption;
+            pu::ui::elm::MenuItem::Ref cleanOrphanedOption;
             pu::ui::elm::MenuItem::Ref languageOption;
             pu::ui::elm::MenuItem::Ref creditsOption;
             void IgnoreFirmOption_Click();
@@ -30,6 +31,7 @@ namespace app::ui
             void FixTicketOption_Click();
             void SkipBaseOption_Click();
             void Use12hTimeOption_Click();
+            void CleanOrphanedOption_Click();
             void LanguageOption_Click();
             void CreditsOption_Click();
             void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);

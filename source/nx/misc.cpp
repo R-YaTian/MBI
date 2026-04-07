@@ -1,5 +1,6 @@
 #include "nx/misc.hpp"
 #include "nx/error.hpp"
+#include "nx/ncm.hpp"
 #include <switch.h>
 #include <sstream>
 #include <iomanip>
@@ -234,5 +235,26 @@ namespace nx::misc
 
         esExit();
         return tickets;
+    }
+
+    bool CleanPendingUpdate()
+    {
+        if (R_SUCCEEDED(nssuInitialize()))
+        {
+            nssuDestroySystemUpdateTask();
+            nssuExit();
+        }
+
+        try
+        {
+            nx::ncm::ContentStorage contentStorage(NcmStorageId_BuiltInSystem);
+            contentStorage.CleanupAllPlaceHolder();
+        }
+        catch (const std::exception& e)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

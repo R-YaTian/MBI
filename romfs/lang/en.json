@@ -130,6 +130,7 @@
             "fix_ticket": "Try to fix bad ticket dump",
             "skip_base": "Skip installed base NCAs automatically",
             "use_12h_time": "Use 12h time format",
+            "clean_orphaned": "Delete orphaned contents",
             "language": "Language: ",
             "credits": "Credits"
         },

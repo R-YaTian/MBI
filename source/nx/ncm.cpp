@@ -81,6 +81,28 @@ namespace nx::ncm
         return std::string(pathBuf);
     }
 
+    std::vector<NcmContentId> ContentStorage::ListContentId()
+    {
+        std::vector<NcmContentId> contentIds;
+        s32 contentCount = 0;
+        ASSERT_OK(ncmContentStorageGetContentCount(&m_contentStorage, &contentCount), "Failed to get content count");
+        contentIds.resize(contentCount);
+
+        s32 listCount = 0;
+        ASSERT_OK(ncmContentStorageListContentId(&m_contentStorage, contentIds.data(), contentCount, &listCount, 0), "Failed to list content IDs");
+        if (contentCount != listCount)
+        {
+            THROW_FORMAT("Failed to list content IDs");
+        }
+
+        return contentIds;
+    }
+
+    void ContentStorage::CleanupAllPlaceHolder()
+    {
+        ASSERT_OK(ncmContentStorageCleanupAllPlaceHolder(&m_contentStorage), "Failed to cleanup all placeholder");
+    }
+
     ContentMeta::ContentMeta()
     {
         m_bytes.Resize(sizeof(NcmExtPackagedContentMetaHeader));
@@ -247,6 +269,43 @@ namespace nx::ncm
         contentStorage.Delete(m_contentId);
         contentStorage.Register(*(NcmPlaceHolderId*)&m_contentId, m_contentId);
         try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&m_contentId); } catch (...) {}
+    }
+
+    std::vector<NcmContentId> LookupOrphanContent()
+    {
+        std::vector<NcmContentId> orphanContentIds;
+        const NcmStorageId storageIDs[] { NcmStorageId_SdCard, NcmStorageId_BuiltInUser };
+        for (size_t i = 0; i < std::size(storageIDs); i++)
+        {
+            ContentStorage contentStorage(storageIDs[i]);
+            std::vector<NcmContentId> contentIds;
+            s32 contentCount = 0;
+            try
+            {
+                contentIds = contentStorage.ListContentId();
+            }
+            catch (const std::exception& e)
+            {
+                LOG_DEBUG("Failed to list content IDs for storage ID %d: %s\n", storageIDs[i], e.what());
+                continue;
+            }
+            contentCount = contentIds.size();
+            std::unique_ptr<bool[]> orphaned(new bool[contentCount]);
+
+            NcmContentMetaDatabase db = {};
+            ASSERT_OK(ncmOpenContentMetaDatabase(std::addressof(db), storageIDs[i]), "Failed to open content meta database");
+            ASSERT_OK(ncmContentMetaDatabaseLookupOrphanContent(std::addressof(db), orphaned.get(), contentIds.data(), contentCount), "Failed to lookup orphan content");
+            ncmContentMetaDatabaseClose(std::addressof(db));
+            for (s32 j = 0; j < contentCount; j++)
+            {
+                if (orphaned[j])
+                {
+                    LOG_DEBUG("Found orphan content ID: %s\n", nca::GetNcaIdString(contentIds[j]).c_str());
+                    orphanContentIds.push_back(contentIds[j]);
+                }
+            }
+        }
+        return orphanContentIds;
     }
 
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath)

@@ -51,6 +51,8 @@ namespace nx::ncm
             void Register(const NcmPlaceHolderId &placeholderId, const NcmContentId &registeredId);
             bool Delete(const NcmContentId &registeredId);
             bool Has(const NcmContentId &registeredId);
+            void CleanupAllPlaceHolder();
+            std::vector<NcmContentId> ListContentId();
             std::string GetPath(const NcmContentId &registeredId);
             const NcmStorageId& GetStorageId() const { return m_storageId; }
     };
@@ -82,6 +84,7 @@ namespace nx::ncm
             void RebuildNcaToInstall(const NcmStorageId& destStorageId, const std::map<std::string, std::vector<u8>>& hashMap);
     };
 
+    std::vector<NcmContentId> LookupOrphanContent();
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
 }

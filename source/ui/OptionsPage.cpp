@@ -3,6 +3,7 @@
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
+#include "nx/ncm.hpp"
 
 namespace app::ui
 {
@@ -36,9 +37,14 @@ namespace app::ui
         use12hTimeOption = pu::ui::elm::MenuItem::New("options.menu_items.use_12h_time"_lang);
         use12hTimeOption->SetColor(COLOR(app::config::MenuTextColor));
         use12hTimeOption->AddOnKey(std::bind(&OptionsPage::Use12hTimeOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        cleanOrphanedOption = pu::ui::elm::MenuItem::New("options.menu_items.clean_orphaned"_lang);
+        cleanOrphanedOption->SetColor(COLOR(app::config::MenuTextColor));
+        cleanOrphanedOption->AddOnKey(std::bind(&OptionsPage::CleanOrphanedOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        cleanOrphanedOption->SetIcon(LoadTexture("romfs:/images/icons/clean.png"));
         languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
         languageOption->SetColor(COLOR(app::config::MenuTextColor));
         languageOption->AddOnKey(std::bind(&OptionsPage::LanguageOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
+        languageOption->SetIcon(LoadTexture("romfs:/images/icons/earth.png"));
         creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
         creditsOption->SetColor(COLOR(app::config::MenuTextColor));
         creditsOption->AddOnKey(std::bind(&OptionsPage::CreditsOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
@@ -50,6 +56,7 @@ namespace app::ui
         this->menu->AddItem(fixTicketOption);
         this->menu->AddItem(skipBaseOption);
         this->menu->AddItem(use12hTimeOption);
+        this->menu->AddItem(cleanOrphanedOption);
         this->menu->AddItem(languageOption);
         this->menu->AddItem(creditsOption);
         ignoreFirmOption->SetIcon(this->getMenuOptionIcon(app::config::ignoreReqVers));
@@ -238,6 +245,21 @@ namespace app::ui
             app::config::SaveSettings();
             CloseWithFadeOut();
         }
+    }
+
+    void OptionsPage::CleanOrphanedOption_Click()
+    {
+        if (inputGuard)
+        {
+            return;
+        }
+        std::string desc = "";
+        std::vector<NcmContentId> orphanedContentIds = nx::ncm::LookupOrphanContent();
+        for (const NcmContentId &contentId : orphanedContentIds)
+        {
+            desc += "- " + nx::nca::GetNcaIdString(contentId) + "\n";
+        }
+        app::facade::ShowDialog("options.clean_orphaned.title"_lang, desc, {"common.ok"_lang}, true, "information");
     }
 
     void OptionsPage::onCancel()
