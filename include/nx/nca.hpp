@@ -156,7 +156,5 @@ namespace nx::nca
         std::vector<u8> data;
     };
 
-    std::string GetNcaIdString(const NcmContentId& ncaId);
-    NcmContentId GetNcaIdFromString(std::string ncaIdStr);
     void BuildNcaByHeader(NcaHeader& nca_header, u8 index, const std::vector<FileEntry>& entries, u32 block_size, data::ByteIO& buf);
 }

@@ -242,7 +242,7 @@ namespace nx::ncm
             {
                 continue;
             }
-            std::string ncaIdStr = nx::nca::GetNcaIdString(packagedContentInfos[i].info.content_id);
+            std::string ncaIdStr = GetContentIdString(packagedContentInfos[i].info.content_id);
             auto it = hashMap.find(ncaIdStr);
             if (it != hashMap.end())
             {
@@ -312,7 +312,7 @@ namespace nx::ncm
         {
             if (orphaned[i])
             {
-                LOG_DEBUG("Found orphan content ID: %s\n", nca::GetNcaIdString(contentIds[i]).c_str());
+                LOG_DEBUG("Found orphan content ID: %s\n", GetContentIdString(contentIds[i]).c_str());
                 contentStorage.Delete(contentIds[i]);
                 ++orphanedContentCount;
             }
@@ -358,5 +358,30 @@ namespace nx::ncm
             default:
                 return titleId;
         }
+    }
+
+    constexpr auto CONTENT_ID_STRING_SIZE = 32;
+
+    std::string GetContentIdString(const NcmContentId& id)
+    {
+        char idStr[CONTENT_ID_STRING_SIZE + 1] = {0};
+        u64 idLower = __bswap64(*(u64 *)id.c);
+        u64 idUpper = __bswap64(*(u64 *)(id.c + 0x8));
+        std::snprintf(idStr, sizeof(idStr), "%016lx%016lx", idLower, idUpper);
+        return std::string(idStr);
+    }
+
+    NcmContentId GetContentIdFromString(const std::string& idStr)
+    {
+        NcmContentId contentId = {0};
+        char lowerU64[17] = {0};
+        char upperU64[17] = {0};
+        memcpy(lowerU64, idStr.c_str(), 16);
+        memcpy(upperU64, idStr.c_str() + 16, 16);
+
+        *(u64 *)contentId.c = __bswap64(strtoul(lowerU64, NULL, 16));
+        *(u64 *)(contentId.c + 8) = __bswap64(strtoul(upperU64, NULL, 16));
+
+        return contentId;
     }
 }

@@ -88,4 +88,6 @@ namespace nx::ncm
     s32 DeleteOrphanContent(const NcmStorageId& storageId, s32* outContentCount = nullptr);
     ContentMeta GetContentMetaFromNCA(const std::string& ncaPath);
     u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
+    std::string GetContentIdString(const NcmContentId& id);
+    NcmContentId GetContentIdFromString(const std::string& idStr);
 }

@@ -1,5 +1,4 @@
 #include "nx/content.hpp"
-#include "nx/nca.hpp"
 
 namespace nx
 {
@@ -23,7 +22,7 @@ namespace nx
     const void* Content::GetFileEntryByNcaId(const NcmContentId& ncaId)
     {
         const void* fileEntry = nullptr;
-        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
+        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
 
         if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr)
         {

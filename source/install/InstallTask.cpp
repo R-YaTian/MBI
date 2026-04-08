@@ -143,7 +143,7 @@ namespace app
 
                     if (contentStorage.Delete(info.content_id))
                     {
-                        app::facade::SendInstallInfoText("inst.info_page.removing"_lang + nx::nca::GetNcaIdString(info.content_id));
+                        app::facade::SendInstallInfoText("inst.info_page.removing"_lang + nx::ncm::GetContentIdString(info.content_id));
                     }
                 }
 
@@ -212,7 +212,7 @@ namespace app
                         continue;
                     }
                 }
-                std::string ncaIdStr = nx::nca::GetNcaIdString(record.content_id);
+                std::string ncaIdStr = nx::ncm::GetContentIdString(record.content_id);
                 LOG_DEBUG("Installing %s\n", ncaIdStr.c_str());
                 this->InstallNCA(record.content_id);
                 if (contentMeta.GetDistributionType() == 0)
@@ -266,7 +266,7 @@ namespace app
         for (const void* fileEntry : m_worker->GetContent()->GetFileEntriesByExtension("cnmt.nca"))
         {
             std::string cnmtNcaName(m_worker->GetContent()->GetFileEntryName(fileEntry));
-            NcmContentId cnmtContentId = nx::nca::GetNcaIdFromString(cnmtNcaName);
+            NcmContentId cnmtContentId = nx::ncm::GetContentIdFromString(cnmtNcaName);
             size_t cnmtNcaSize = m_worker->GetContent()->GetFileEntrySize(fileEntry);
 
             nx::ncm::ContentStorage contentStorage(m_destStorageId);
@@ -319,7 +319,7 @@ namespace app
 
         if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
         {
-            app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::nca::GetNcaIdString(ncaId));
+            app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::ncm::GetContentIdString(ncaId));
         }
 
         // outHeader not nullptr means we are installing a CNMT NCA

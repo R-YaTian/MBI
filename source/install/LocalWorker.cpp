@@ -96,7 +96,7 @@ namespace app::install
 
         std::vector<u8> hash(SHA256_HASH_SIZE);
         writer.close(hash.data());
-        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
+        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
         m_hashMap[ncaIdStr] = hash;
     }
 

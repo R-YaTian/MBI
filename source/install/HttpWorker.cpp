@@ -130,7 +130,7 @@ namespace app::install
             x << installProgress;
             app::facade::SendInstallBarText(x.str() + "%");
         }
-        std::string ncaIdStr = nx::nca::GetNcaIdString(ncaId);
+        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
         m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.Finalize();
         app::facade::SendInstallProgress(100);
 
