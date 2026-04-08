@@ -136,8 +136,8 @@ namespace nx::misc
         std::string ToString() const;
     };
 
+    void SetBoostMode(bool enable);
     std::string OpenSoftwareKeyboard(std::string guideText, std::string initialText, int LenMax);
-    uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed);
     u32 GetBatteryValue();
     std::string UTF16toUTF8(const std::u16string& src);
     std::u16string UTF8toUTF16(const std::string& src);

@@ -49,34 +49,26 @@ namespace app::installer
         audioThread.join();
     }
 
-    NX_INLINE std::vector<uint32_t> OnStart(std::string sourceString)
+    NX_INLINE bool OnStart(std::string sourceString)
     {
         app::manager::initInstallServices();
         app::facade::ShowInstaller();
         app::facade::SendBottomText(sourceString);
-
-        std::vector<uint32_t> previousClockValues;
         if (app::config::overClock)
         {
-            previousClockValues.push_back(nx::misc::SetClockSpeed(0, 1785000000));
-            previousClockValues.push_back(nx::misc::SetClockSpeed(1, 76800000));
-            previousClockValues.push_back(nx::misc::SetClockSpeed(2, 1600000000));
+            nx::misc::SetBoostMode(true);
         }
-
         app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
-        return previousClockValues;
+        return true;
     }
 
-    NX_INLINE void OnExit(const std::vector<uint32_t>& previousClockValues)
+    NX_INLINE void OnExit()
     {
-        if (previousClockValues.size() > 0)
-        {
-            nx::misc::SetClockSpeed(0, previousClockValues[0]);
-            nx::misc::SetClockSpeed(1, previousClockValues[1]);
-            nx::misc::SetClockSpeed(2, previousClockValues[2]);
-        }
-
         LOG_DEBUG("Done");
+        if (app::config::overClock)
+        {
+            nx::misc::SetBoostMode(false);
+        }
         app::facade::SendInstallFinished();
         app::manager::deinitInstallServices();
     }
@@ -85,7 +77,7 @@ namespace app::installer
     {
         void InstallFromFile(std::vector<nx::fs::Path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
         {
-            std::vector<uint32_t> previousClockValues = OnStart(storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
+            OnStart(storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
 
             bool fileInstalled = true;
             unsigned int titleItr;
@@ -150,7 +142,7 @@ namespace app::installer
                 }
             }
 
-            OnExit(previousClockValues);
+            OnExit();
         }
     }
 
@@ -227,7 +219,7 @@ namespace app::installer
 
         void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
         {
-            std::vector<uint32_t> previousClockValues = OnStart("inst.usb.source_string"_lang);
+            OnStart("inst.usb.source_string"_lang);
 
             std::vector<std::string> fileNames;
             for (size_t i = 0; i < ourTitleList.size(); i++)
@@ -286,7 +278,7 @@ namespace app::installer
             }
 
             nx::usb::usbDeviceReset();
-            OnExit(previousClockValues);
+            OnExit();
         }
     }
 
@@ -465,7 +457,7 @@ back_to_loop:
 
         void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource)
         {
-            std::vector<uint32_t> previousClockValues = OnStart(ourSource);
+            OnStart(ourSource);
 
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
@@ -524,7 +516,7 @@ back_to_loop:
                 OnSuccess(ourUrlList.size(), urlNames[0]);
             }
 
-            OnExit(previousClockValues);
+            OnExit();
         }
     }
 #endif

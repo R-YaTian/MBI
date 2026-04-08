@@ -7,6 +7,49 @@
 
 namespace nx::misc
 {
+    void SetBoostMode(bool enable)
+    {
+        static u32 previousCPU = 0;
+        static u32 previousGPU = 0;
+        static u32 previousEMC = 0;
+        if (hosversionAtLeast(8,0,0))
+        {
+            appletSetCpuBoostMode(enable ? ApmCpuBoostMode_FastLoad : ApmCpuBoostMode_Normal);
+        }
+        else
+        {
+            pcvInitialize();
+            if (enable)
+            {
+                pcvGetClockRate(PcvModule_CpuBus, &previousCPU);
+                pcvGetClockRate(PcvModule_GPU, &previousGPU);
+                pcvGetClockRate(PcvModule_EMC, &previousEMC);
+                pcvSetClockRate(PcvModule_CpuBus, 1785000000);
+                pcvSetClockRate(PcvModule_GPU, 76800000);
+                pcvSetClockRate(PcvModule_EMC, 1600000000);
+            }
+            else
+            {
+                if (previousCPU != 0)
+                {
+                    pcvSetClockRate(PcvModule_CpuBus, previousCPU);
+                    previousCPU = 0;
+                }
+                if (previousGPU != 0)
+                {
+                    pcvSetClockRate(PcvModule_GPU, previousGPU);
+                    previousGPU = 0;
+                }
+                if (previousEMC != 0)
+                {
+                    pcvSetClockRate(PcvModule_EMC, previousEMC);
+                    previousEMC = 0;
+                }
+            }
+            pcvExit();
+        }
+    }
+
     std::string OpenSoftwareKeyboard(std::string guideText, std::string initialText, int LenMax)
     {
         Result rc = 0;
@@ -27,75 +70,6 @@ namespace nx::misc
             }
         }
         return "";
-    }
-
-    uint32_t SetClockSpeed(int deviceToClock, uint32_t clockSpeed)
-    {
-        uint32_t hz = 0;
-        uint32_t previousHz = 0;
-
-        if (deviceToClock > 2 || deviceToClock < 0)
-        {
-            return 0;
-        }
-
-        if (hosversionAtLeast(8,0,0))
-        {
-            ClkrstSession session = {0};
-            PcvModuleId pcvModuleId;
-            pcvInitialize();
-            clkrstInitialize();
-
-            switch (deviceToClock)
-            {
-                case 0:
-                    pcvGetModuleId(&pcvModuleId, PcvModule_CpuBus);
-                    break;
-                case 1:
-                    pcvGetModuleId(&pcvModuleId, PcvModule_GPU);
-                    break;
-                case 2:
-                    pcvGetModuleId(&pcvModuleId, PcvModule_EMC);
-                    break;
-            }
-
-            clkrstOpenSession(&session, pcvModuleId, 3);
-            clkrstGetClockRate(&session, &previousHz);
-            clkrstSetClockRate(&session, clockSpeed);
-            clkrstGetClockRate(&session, &hz);
-
-            pcvExit();
-            clkrstCloseSession(&session);
-            clkrstExit();
-
-            return previousHz;
-        }
-        else
-        {
-            PcvModule pcvModule;
-            pcvInitialize();
-
-            switch (deviceToClock)
-            {
-                case 0:
-                    pcvModule = PcvModule_CpuBus;
-                    break;
-                case 1:
-                    pcvModule = PcvModule_GPU;
-                    break;
-                case 2:
-                    pcvModule = PcvModule_EMC;
-                    break;
-            }
-
-            pcvGetClockRate(pcvModule, &previousHz);
-            pcvSetClockRate(pcvModule, clockSpeed);
-            pcvGetClockRate(pcvModule, &hz);
-
-            pcvExit();
-
-            return previousHz;
-        }
     }
 
     u32 GetBatteryValue()
