@@ -130,7 +130,7 @@
             "fix_ticket": "Try to fix bad ticket dump",
             "skip_base": "Skip installed base NCAs automatically",
             "use_12h_time": "Use 12h time format",
-            "clean_orphaned": "Delete orphaned contents",
+            "clean_orphaned": "Cleanup placeholder and orphaned contents",
             "language": "Language: ",
             "credits": "Credits"
         },
@@ -152,13 +152,25 @@
         "close": "Close",
         "yes": "Yes",
         "no": "No",
-        "cancel_desc": "Press \ue0e1 to cancel"
+        "cancel_desc": "Press \ue0e1 to cancel",
+        "waiting": "Please wait...",
+        "success": "Succeeded",
+        "fail": "Failed"
     },
     "ticket_manager": {
         "scanning": "Scanning unused tickets...",
-        "bottom_info": "Please wait...",
         "top_info": "Select which ticket you want to delete, then press the \ue0ef button!",
         "buttons": "\ue0e0 Select Ticket    \ue0e3 Select All    \ue0ef Delete    \ue0e1 Cancel"
+    },
+    "clean_orphaned": {
+        "title": "Clean placeholder and orphaned contents",
+        "desc": "This will also clean pending system update.\nThis action cannot be undone! Continue?",
+        "working": "Cleaning placeholder and orphaned contents",
+        "placeholder": " : Cleanup all placeholder - ",
+        "orphaned_scanning": "Scanning orphaned contents for %s",
+        "found_registered": "Found %d registered contents",
+        "orphaned_deleted": "Deleted %d orphaned contents",
+        "pending_update": "Cleanup pending update - "
     },
     "misc": {
         "battery_charge": "Battery"

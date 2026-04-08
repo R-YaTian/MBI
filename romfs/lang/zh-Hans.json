@@ -130,7 +130,7 @@
             "fix_ticket": "尝试修复错误的票据转储",
             "skip_base": "智能跳过已安装的本体NCA",
             "use_12h_time": "使用12小时制时间",
-            "clean_orphaned": "清理孤立资源",
+            "clean_orphaned": "清理占位文件和孤立资源",
             "language": "显示语言：",
             "credits": "致谢"
         },
@@ -152,13 +152,25 @@
         "close": "关闭",
         "yes": "是",
         "no": "否",
-        "cancel_desc": "按 \ue0e1 取消"
+        "cancel_desc": "按 \ue0e1 取消",
+        "waiting": "请等待...",
+        "success": "成功",
+        "fail": "失败"
     },
     "ticket_manager": {
         "scanning": "正在扫描未使用的票据...",
-        "bottom_info": "请等待...",
         "top_info": "选择要删除的票据, 然后按 \ue0ef!",
         "buttons": "\ue0e0 选择票据    \ue0e3 选择全部    \ue0ef 删除    \ue0e1 取消"
+    },
+    "clean_orphaned": {
+        "title": "清理占位文件和孤立资源",
+        "desc": "这也将清理待处理的系统更新。\n此操作无法撤销！是否继续？",
+        "working": "正在清理占位文件和孤立资源",
+        "placeholder": " : 清理所有占位文件 - ",
+        "orphaned_scanning": "正在扫描 %s 的孤立资源",
+        "found_registered": "找到 %d 个已注册的内容",
+        "orphaned_deleted": "已删除 %d 个孤立资源",
+        "pending_update": "清理待处理的系统更新 - "
     },
     "misc": {
         "battery_charge": "电量"

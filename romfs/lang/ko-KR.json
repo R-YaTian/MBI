@@ -147,7 +147,6 @@
     },
     "ticket_manager": {
         "scanning": "사용하지 않은 티켓을 스캔 중입니다...",
-        "bottom_info": "잠시 기다려주세요...",
         "top_info": "삭제할 티켓을 선택한 후 \ue0ef 버튼을 누르세요!",
         "buttons": "\ue0e0 티켓 선택    \ue0e3 모두 선택    \ue0ef 삭제    \ue0e1 취소"
     },
@@ -157,7 +156,8 @@
         "close": "닫기",
         "yes": "예",
         "no": "아니오",
-        "cancel_desc": "취소하려면 버튼 \ue0e1 를 누르세요."
+        "cancel_desc": "취소하려면 버튼 \ue0e1 를 누르세요.",
+        "waiting": "잠시 기다려주세요..."
     },
     "misc": {
         "battery_charge": "배터리"

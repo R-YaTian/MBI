@@ -147,7 +147,6 @@
     },
     "ticket_manager": {
         "scanning": "Scannen ungenutzter Tickets...",
-        "bottom_info": "Bitte warten...",
         "top_info": "Wählen Sie das Ticket aus, das Sie löschen möchten, und drücken Sie dann die Taste \ue0ef!",
         "buttons": "\ue0e0 Ticket auswählen    \ue0e3 Alle auswählen    \ue0ef Löschen    \ue0e1 Abbrechen"
     },
@@ -157,7 +156,8 @@
         "close": "Schließen",
         "yes": "Ja",
         "no": "Nein",
-        "cancel_desc": "Drücke \ue0e1 zum Abbrechen "
+        "cancel_desc": "Drücke \ue0e1 zum Abbrechen ",
+        "waiting": "Bitte warten..."
     },
     "misc": {
         "battery_charge": "Batterie"

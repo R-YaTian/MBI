@@ -332,7 +332,7 @@ namespace app::ui
         case Scene::TicketManager:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("ticket_manager.scanning"_lang);
-            mainApp->SetBottomText("ticket_manager.bottom_info"_lang);
+            mainApp->SetBottomText("common.waiting"_lang);
             mainApp->LoadLayout(ticketPage);
             if (ticketPage->LoadTickets())
             {

@@ -147,7 +147,6 @@
     },
     "ticket_manager": {
         "scanning": "未使用のチケットをスキャンしています...",
-        "bottom_info": "お待ちください...",
         "top_info": "削除したいチケットを選択して、\ue0efボタンを押してください！",
         "buttons": "\ue0e0 チケットを選択    \ue0e3 すべて選択    \ue0ef 削除    \ue0e1 キャンセル"
     },
@@ -157,7 +156,8 @@
         "close": "閉じる",
         "yes": "はい",
         "no": "いいえ",
-        "cancel_desc": "\ue0e1 を押してキャンセル"
+        "cancel_desc": "\ue0e1 を押してキャンセル",
+        "waiting": "お待ちください..."
     },
     "misc": {
         "battery_charge": "バッテリー"

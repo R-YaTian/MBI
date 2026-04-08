@@ -147,7 +147,6 @@
     },
     "ticket_manager": {
         "scanning": "Analisando tickets não utilizados...",
-        "bottom_info": "Por favor aguarde...",
         "top_info": "Selecione o ticket que deseja eliminar, depois pressione o botão \ue0ef!",
         "buttons": "\ue0e0 Selecionar    \ue0e3 Selecionar Todos    \ue0ef Eliminar    \ue0e1 Cancelar"
     },
@@ -157,7 +156,8 @@
         "close": "Fechar",
         "yes": "Sim",
         "no": "Não",
-        "cancel_desc": "Pressione \ue0e1 para cancelar"
+        "cancel_desc": "Pressione \ue0e1 para cancelar",
+        "waiting": "Por favor aguarde..."
     },
     "misc": {
         "battery_charge": "Bateria"

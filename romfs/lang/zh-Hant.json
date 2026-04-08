@@ -147,7 +147,6 @@
     },
     "ticket_manager": {
         "scanning": "正在掃描未使用的票據...",
-        "bottom_info": "請稍候...",
         "top_info": "選擇要刪除的票據，然後按\ue0ef鈕！",
         "buttons": "\ue0e0 選擇票據    \ue0e3 全選    \ue0ef 刪除    \ue0e1 取消"
     },
@@ -157,7 +156,8 @@
         "close": "關閉",
         "yes": "是",
         "no": "否",
-        "cancel_desc": "按 \ue0e1 鈕取消"
+        "cancel_desc": "按 \ue0e1 鈕取消",
+        "waiting": "請稍候..."
     },
     "misc": {
         "battery_charge": "電池"
