@@ -74,7 +74,7 @@ namespace nx::mtp
     struct InstallSharedData {
         Mutex mutex;
         std::string current_file;
-        FsContentStorageId target_storage;
+        FsContentStorageId target_storage = FsContentStorageId_SdCard;
 
         OnInstallStart on_start;
         OnInstallWrite on_write;

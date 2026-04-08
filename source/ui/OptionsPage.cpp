@@ -266,24 +266,35 @@ namespace app::ui
         app::facade::SendBottomText("common.waiting"_lang);
         app::facade::SendPageInfoTextAndRender("clean_orphaned.working"_lang);
 
+        char msg[256] = {};
         bool result = nx::ncm::CleanupPlaceHolder(NcmStorageId_SdCard);
-        app::facade::SendInstallInfoText("clean_orphaned.placeholder_sd"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
+        app::facade::SendInstallInfoText("inst.target.opt0"_lang + "clean_orphaned.placeholder"_lang + (result ? "common.success"_lang : "common.fail"_lang));
 
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.orphaned_scanning"_lang.c_str(), "inst.target.opt0"_lang.c_str());
+        app::facade::SendInstallInfoText(std::string(msg));
         s32 contentCount = 0;
         s32 deletedCount = nx::ncm::DeleteOrphanContent(NcmStorageId_SdCard, &contentCount);
-        app::facade::SendInstallInfoText("clean_orphaned.orphaned_sd"_lang + std::to_string(contentCount) + ", " + (deletedCount >= 0 ? "clean_orphaned.deleted"_lang + std::to_string(deletedCount) : "clean_orphaned.delete_failed"_lang));
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.found_registered"_lang.c_str(), contentCount);
+        app::facade::SendInstallInfoText(std::string(msg));
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.orphaned_deleted"_lang.c_str(), deletedCount);
+        app::facade::SendInstallInfoText(std::string(msg));
     
         result = nx::ncm::CleanupPlaceHolder(NcmStorageId_BuiltInUser);
-        app::facade::SendInstallInfoText("clean_orphaned.placeholder_nand"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
+        app::facade::SendInstallInfoText("inst.target.opt1"_lang + "clean_orphaned.placeholder"_lang + (result ? "common.success"_lang : "common.fail"_lang));
     
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.orphaned_scanning"_lang.c_str(), "inst.target.opt1"_lang.c_str());
+        app::facade::SendInstallInfoText(std::string(msg));
         contentCount = 0;
         deletedCount = nx::ncm::DeleteOrphanContent(NcmStorageId_BuiltInUser, &contentCount);
-        app::facade::SendInstallInfoText("clean_orphaned.orphaned_nand"_lang + std::to_string(contentCount) + ", " + (deletedCount >= 0 ? "clean_orphaned.deleted"_lang + std::to_string(deletedCount) : "clean_orphaned.delete_failed"_lang));
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.found_registered"_lang.c_str(), contentCount);
+        app::facade::SendInstallInfoText(std::string(msg));
+        std::snprintf(msg, sizeof(msg), "clean_orphaned.orphaned_deleted"_lang.c_str(), deletedCount);
+        app::facade::SendInstallInfoText(std::string(msg));
 
         result = nx::misc::CleanPendingUpdate();
-        app::facade::SendInstallInfoText("clean_orphaned.pending_update"_lang + (result ? "clean_orphaned.success"_lang : "clean_orphaned.failure"_lang));
-
+        app::facade::SendInstallInfoText("clean_orphaned.pending_update"_lang + (result ? "common.success"_lang : "common.fail"_lang));
         app::facade::SendInstallFinished();
+        app::facade::SendBottomText("");
     }
 
     void OptionsPage::onCancel()
