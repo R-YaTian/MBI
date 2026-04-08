@@ -180,6 +180,26 @@ namespace nx::fs
         return size;
     }
 
+    s64 GetTotalSpaceSize(FsContentStorageId id)
+    {
+        FsFileSystem fs{};
+        s64 size = 0;
+        Result ret = 0;
+        if (id == FsContentStorageId_SdCard)
+        {
+            fsFsGetTotalSpace(fsdevGetDeviceFileSystem("sdmc:"), "/", &size);
+        }
+        else if (id == FsContentStorageId_User)
+        {
+            ret = fsOpenContentStorageFileSystem(&fs, id);
+            if (R_SUCCEEDED(ret) && R_SUCCEEDED(ret = fsFsGetTotalSpace(&fs, "/", &size)))
+            {
+                fsFsClose(&fs);
+            }
+        }
+        return size;
+    }
+
     std::string FormatSizeString(s64 size)
     {
         static const char* units[] = { " B", " KB", " MB", " GB", " TB" };

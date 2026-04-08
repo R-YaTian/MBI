@@ -111,6 +111,7 @@ namespace nx::fs
     };
 
     s64 GetFreeSpaceSize(FsContentStorageId id);
+    s64 GetTotalSpaceSize(FsContentStorageId id);
     std::string FormatSizeString(s64 size);
     std::vector<Path> GetDirectoryFiles(const std::string &dir, const std::vector<std::string> &extensions);
     std::vector<Path> GetDirsAtPath(const std::string &dir);
