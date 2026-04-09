@@ -162,6 +162,9 @@ namespace app::installer
 
         std::vector<std::string> WaitingForFileList()
         {
+            u64 freq = armGetSystemTickFreq();
+            u64 startTime = armGetSystemTick();
+
             nx::usb::FileListHeader header;
 
             padConfigureInput(8, HidNpadStyleSet_NpadStandard);
@@ -170,10 +173,14 @@ namespace app::installer
 
             while (true)
             {
-                if (transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
+                // If we don't update the UI occasionally the Switch basically crashes on this screen if you press the home button
+                u64 newTime = armGetSystemTick();
+                if (newTime - startTime >= freq * 0.01)
                 {
-                    break;
+                    startTime = newTime;
+                    app::facade::SendRenderRequest();
                 }
+
                 padUpdate(&pad);
                 u64 kDown = padGetButtonsDown(&pad);
 
@@ -186,9 +193,9 @@ namespace app::installer
                     app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true, "information");
                 }
 
-                if (!nx::usb::usbDeviceIsConnected())
+                if (nx::usb::usbDeviceIsConnected() && transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
                 {
-                    return {};
+                    break;
                 }
             }
 
@@ -277,7 +284,7 @@ namespace app::installer
                 OnSuccess(ourTitleList.size(), fileNames[0]);
             }
 
-            nx::usb::usbDeviceReset();
+            nx::usb::usbDeviceExit();
             OnExit();
         }
     }
@@ -310,7 +317,7 @@ namespace app::installer
                 {
                     // If we don't update the UI occasionally the Switch basically crashes on this screen if you press the home button
                     u64 newTime = armGetSystemTick();
-                    if (newTime - startTime >= freq * 0.25)
+                    if (newTime - startTime >= freq * 0.01)
                     {
                         startTime = newTime;
                         app::facade::SendRenderRequest();

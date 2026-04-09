@@ -46,9 +46,6 @@ namespace nx::usb
     /// Write data with the specified interface.
     size_t usbDeviceWriteEx(const void* buffer, size_t size, u32 interface, u64 timeout);
 
-    /// Reinitialize the USB device service.
-    void usbDeviceReset();
-
     /// Checks whether the USB device is connected.
     bool usbDeviceIsConnected();
 

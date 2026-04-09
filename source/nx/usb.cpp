@@ -573,12 +573,6 @@ namespace nx::usb
         return usbDeviceWriteEx(buffer, size, 0, timeout);
     }
 
-    void usbDeviceReset()
-    {
-        usbDeviceExit();
-        usbDeviceInitialize();
-    }
-
     bool usbDeviceIsConnected()
     {
         UsbState state = UsbState_Detached;

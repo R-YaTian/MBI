@@ -98,8 +98,8 @@ namespace app::ui
         this->ourTitles.clear();
         this->selectedTitles.clear();
         this->menu->ClearItems();
+        nx::usb::usbDeviceExit();
         SceneJump(Scene::Main);
-        nx::usb::usbDeviceReset();
     }
 
     void UsbInstallPage::onConfirm()

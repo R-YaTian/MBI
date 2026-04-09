@@ -4,6 +4,7 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
+#include "nx/udisk.hpp"
 #include "nx/usb.hpp"
 #include "nx/mtp.hpp"
 
@@ -128,17 +129,8 @@ namespace app::ui
                 app::config::usbAck = true;
             }
         }
-        if (nx::usb::usbDeviceIsConnected())
-        {
-            SceneJump(Scene::UsbInstall);
-        }
-        else
-        {
-            app::facade::ShowDialog("main.usb.error.title"_lang,
-                                    "main.usb.error.desc"_lang,
-                                   {"common.ok"_lang}, false,
-                                    "information");
-        }
+        nx::usb::usbDeviceInitialize();
+        SceneJump(Scene::UsbInstall);
     }
 
     void MainPage::UdiskInstallMenuItem_Click()
@@ -147,6 +139,7 @@ namespace app::ui
         {
             return;
         }
+        nx::udisk::init();
         SceneJump(Scene::UdiskInstall);
     }
 
@@ -156,7 +149,6 @@ namespace app::ui
         {
             return;
         }
-        nx::usb::usbDeviceExit();
         nx::mtp::Setup();
         SceneJump(Scene::MtpInstall);
     }

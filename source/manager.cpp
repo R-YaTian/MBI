@@ -2,7 +2,6 @@
 #include <switch-ipcext.h>
 #include "manager.hpp"
 #include "nx/fs.hpp"
-#include "nx/usb.hpp"
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
 #include "util/config.hpp"
@@ -15,8 +14,6 @@ namespace app::manager
 {
     void initApp()
     {
-        nx::usb::usbDeviceInitialize();
-
         if (!nx::fs::Exists("sdmc:/config"))
             nx::fs::MakeDir("sdmc:/config");
         if (!nx::fs::Exists(app::config::storagePath))
@@ -33,9 +30,6 @@ namespace app::manager
         nxlinkStdio();
 #endif
 #endif
-
-        if (nx::usb::usbDeviceIsInitialized())
-            nx::udisk::init();
 
         Mix_Init(MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG);
         if (R_FAILED(ncmInitialize()))
@@ -54,8 +48,6 @@ namespace app::manager
         curl_global_cleanup();
         socketExit();
 #endif
-
-        nx::usb::usbDeviceExit();
     }
 
     void initInstallServices()
