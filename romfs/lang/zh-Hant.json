@@ -150,6 +150,17 @@
         "top_info": "選擇要刪除的票據，然後按\ue0ef鈕！",
         "buttons": "\ue0e0 選擇票據    \ue0e3 全選    \ue0ef 刪除    \ue0e1 取消"
     },
+    "clean_orphaned": {
+        "title": "清理佔位檔案和孤立資源",
+        "desc": "這也將清理待安裝的系統更新。\n此操作無法撤銷！繼續？",
+        "working": "正在清理佔位檔案和孤立資源...",
+        "placeholder": " : 清理所有佔位檔案 - ",
+        "orphaned_scanning": "正在掃描 %s 的孤立資源",
+        "found_registered": "找到 %d 個已註冊的資源",
+        "orphaned_deleted": "已刪除 %d 個孤立資源",
+        "pending_update": "清理待安裝的系統更新 - ",
+        "buttons": "\ue0e1 返回"
+    },
     "common": {
         "ok": "確定",
         "cancel": "取消",
@@ -157,7 +168,9 @@
         "yes": "是",
         "no": "否",
         "cancel_desc": "按 \ue0e1 鈕取消",
-        "waiting": "請稍候..."
+        "waiting": "請稍候...",
+        "success": "成功",
+        "fail": "失敗"
     },
     "misc": {
         "battery_charge": "電池"

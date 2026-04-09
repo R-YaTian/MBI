@@ -150,6 +150,17 @@
         "top_info": "Selecciona el ticket que quieres eliminar, ¡luego pulsa el botón \ue0ef!",
         "buttons": "\ue0e0 Seleccionar    \ue0e3 Seleccionar todo    \ue0ef Eliminar    \ue0e1 Cancelar"
     },
+    "clean_orphaned": {
+        "title": "Limpiar placeholders y contenidos huérfanos",
+        "desc": "Esto también limpiará la actualización del sistema pendiente.\n¡Esta acción no se puede deshacer! ¿Continuar?",
+        "working": "Limpiando placeholders y contenidos huérfanos...",
+        "placeholder": " : Limpiar todos los placeholders - ",
+        "orphaned_scanning": "Escaneando contenidos huérfanos para %s",
+        "found_registered": "Se encontraron %d contenidos registrados",
+        "orphaned_deleted": "Se eliminaron %d contenidos huérfanos",
+        "pending_update": "Limpiar actualización pendiente - ",
+        "buttons": "\ue0e1 Atrás"
+    },
     "common": {
         "ok": "Aceptar",
         "cancel": "Cancelar",
@@ -157,7 +168,9 @@
         "yes": "Si",
         "no": "No",
         "cancel_desc": "Pulsa \ue0e1 para cancelar",
-        "waiting": "Por favor espere..."
+        "waiting": "Por favor espere...",
+        "success": "Éxito",
+        "fail": "Falló"
     },
     "misc": {
         "battery_charge": "Batería"

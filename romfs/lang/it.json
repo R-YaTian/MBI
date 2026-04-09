@@ -150,6 +150,17 @@
         "top_info": "Seleziona il ticket che vuoi eliminare, quindi premi il tasto \ue0ef!",
         "buttons": "\ue0e0 Seleziona    \ue0e3 Seleziona tutto    \ue0ef Elimina    \ue0e1 Annulla"
     },
+    "clean_orphaned": {
+        "title": "Pulisci contenuti orfani e segnaposto",
+        "desc": "Questo pulirà anche gli aggiornamenti di sistema in sospeso.\nQuesta azione non può essere annullata! Continuare?",
+        "working": "Pulizia dei contenuti orfani e segnaposto in corso...",
+        "placeholder": " : Pulisci tutti i segnaposto - ",
+        "orphaned_scanning": "Scansione dei contenuti orfani per %s",
+        "found_registered": "Trovati %d contenuti registrati",
+        "orphaned_deleted": "Eliminati %d contenuti orfani",
+        "pending_update": "Pulisci aggiornamento in sospeso - ",
+        "buttons": "\ue0e1 Indietro"
+    },
     "common": {
         "ok": "OK",
         "cancel": "Annulla",
@@ -157,7 +168,9 @@
         "yes": "Sì",
         "no": "No",
         "cancel_desc": "Premi \ue0e1 per annullare",
-        "waiting": "Per favore, attendere..."
+        "waiting": "Per favore, attendere...",
+        "success": "Successo",
+        "fail": "Fallita"
     },
     "misc": {
         "battery_charge": "Batteria"

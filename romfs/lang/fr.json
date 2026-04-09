@@ -150,6 +150,17 @@
         "top_info": "Sélectionnez le ticket à supprimer, puis appuyez sur le bouton \ue0ef !",
         "buttons": "\ue0e0 Sélectionner    \ue0e3 Tout sélectionner    \ue0ef Supprimer    \ue0e1 Annuler"
     },
+    "clean_orphaned": {
+        "title": "Nettoyer les placeholders et les contenus orphelins",
+        "desc": "Cela nettoiera également les mises à jour système en attente.\nCette action ne peut pas être annulée ! Continuer ?",
+        "working": "Nettoyage des placeholders et des contenus orphelins...",
+        "placeholder": " : Nettoyer tous les placeholders - ",
+        "orphaned_scanning": "Analyse des contenus orphelins pour %s",
+        "found_registered": "Trouvé %d contenus enregistrés",
+        "orphaned_deleted": "Supprimé %d contenus orphelins",
+        "pending_update": "Nettoyer la mise à jour en attente - ",
+        "buttons": "\ue0e1 Retour"
+    },
     "common": {
         "ok": "OK",
         "cancel": "Annuler",
@@ -157,7 +168,9 @@
         "yes": "Oui",
         "no": "Non",
         "cancel_desc": "Appuyez sur \ue0e1 pour annuler",
-        "waiting": "Veuillez patienter..."
+        "waiting": "Veuillez patienter...",
+        "success": "Succès",
+        "fail": "Échec"
     },
     "misc": {
         "battery_charge": "Batterie"

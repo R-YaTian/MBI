@@ -38,7 +38,7 @@ namespace app::ui
         use12hTimeOption = pu::ui::elm::MenuItem::New("options.menu_items.use_12h_time"_lang);
         use12hTimeOption->SetColor(COLOR(app::config::MenuTextColor));
         use12hTimeOption->AddOnKey(std::bind(&OptionsPage::Use12hTimeOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
-        cleanOrphanedOption = pu::ui::elm::MenuItem::New("options.menu_items.clean_orphaned"_lang);
+        cleanOrphanedOption = pu::ui::elm::MenuItem::New("clean_orphaned.title"_lang);
         cleanOrphanedOption->SetColor(COLOR(app::config::MenuTextColor));
         cleanOrphanedOption->AddOnKey(std::bind(&OptionsPage::CleanOrphanedOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         cleanOrphanedOption->SetIcon(LoadTexture("romfs:/images/icons/clean.png"));
@@ -294,7 +294,7 @@ namespace app::ui
         result = nx::misc::CleanPendingUpdate();
         app::facade::SendInstallInfoText("clean_orphaned.pending_update"_lang + (result ? "common.success"_lang : "common.fail"_lang));
         app::facade::SendInstallFinished();
-        app::facade::SendBottomText("");
+        app::facade::SendBottomText("clean_orphaned.buttons"_lang);
     }
 
     void OptionsPage::onCancel()

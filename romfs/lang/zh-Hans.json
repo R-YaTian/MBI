@@ -130,7 +130,6 @@
             "fix_ticket": "尝试修复错误的票据转储",
             "skip_base": "智能跳过已安装的本体NCA",
             "use_12h_time": "使用12小时制时间",
-            "clean_orphaned": "清理占位文件和孤立资源",
             "language": "显示语言：",
             "credits": "致谢"
         },
@@ -165,12 +164,13 @@
     "clean_orphaned": {
         "title": "清理占位文件和孤立资源",
         "desc": "这也将清理待处理的系统更新。\n此操作无法撤销！是否继续？",
-        "working": "正在清理占位文件和孤立资源",
+        "working": "正在清理占位文件和孤立资源...",
         "placeholder": " : 清理所有占位文件 - ",
         "orphaned_scanning": "正在扫描 %s 的孤立资源",
         "found_registered": "找到 %d 个已注册的内容",
         "orphaned_deleted": "已删除 %d 个孤立资源",
-        "pending_update": "清理待处理的系统更新 - "
+        "pending_update": "清理待处理的系统更新 - ",
+        "buttons": "\ue0e1 返回"
     },
     "misc": {
         "battery_charge": "电量"

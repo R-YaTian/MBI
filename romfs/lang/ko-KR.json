@@ -150,6 +150,17 @@
         "top_info": "삭제할 티켓을 선택한 후 \ue0ef 버튼을 누르세요!",
         "buttons": "\ue0e0 티켓 선택    \ue0e3 모두 선택    \ue0ef 삭제    \ue0e1 취소"
     },
+    "clean_orphaned": {
+        "title": "자리표시자 및 고아 콘텐츠 정리",
+        "desc": "보류 중인 시스템 업데이트도 정리됩니다.\n이 작업은 취소할 수 없습니다! 계속하시겠습니까?",
+        "working": "자리표시자 및 고아 콘텐츠를 정리 중...",
+        "placeholder": " : 모든 자리표시자 정리 - ",
+        "orphaned_scanning": "%s 에 대한 고아 콘텐츠 스캔 중",
+        "found_registered": "%d 개의 등록된 콘텐츠 발견",
+        "orphaned_deleted": "%d 개의 고아 콘텐츠 삭제됨",
+        "pending_update": "보류 중인 업데이트 정리 - ",
+        "buttons": "\ue0e1 뒤로가기"
+    },
     "common": {
         "ok": "확인",
         "cancel": "취소",
@@ -157,7 +168,9 @@
         "yes": "예",
         "no": "아니오",
         "cancel_desc": "취소하려면 버튼 \ue0e1 를 누르세요.",
-        "waiting": "잠시 기다려주세요..."
+        "waiting": "잠시 기다려주세요...",
+        "success": "성공",
+        "fail": "실패"
     },
     "misc": {
         "battery_charge": "배터리"

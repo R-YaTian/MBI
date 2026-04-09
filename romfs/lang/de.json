@@ -150,6 +150,17 @@
         "top_info": "Wählen Sie das Ticket aus, das Sie löschen möchten, und drücken Sie dann die Taste \ue0ef!",
         "buttons": "\ue0e0 Ticket auswählen    \ue0e3 Alle auswählen    \ue0ef Löschen    \ue0e1 Abbrechen"
     },
+    "clean_orphaned": {
+        "title": "Platzhalter und verwaiste Inhalte bereinigen",
+        "desc": "Dies bereinigt auch ausstehende Systemaktualisierungen.\nDiese Aktion kann nicht rückgängig gemacht werden! Fortfahren?",
+        "working": "Platzhalter und verwaiste Inhalte werden bereinigt...",
+        "placeholder": " : Alle Platzhalter bereinigen - ",
+        "orphaned_scanning": "Verwaiste Inhalte werden gescannt für %s",
+        "found_registered": "%d registrierte Inhalte gefunden",
+        "orphaned_deleted": "%d verwaiste Inhalte gelöscht",
+        "pending_update": "Ausstehende Aktualisierung bereinigen - ",
+        "buttons": "\ue0e1 Zurück"
+    },
     "common": {
         "ok": "OK",
         "cancel": "Abbrechen",
@@ -157,7 +168,9 @@
         "yes": "Ja",
         "no": "Nein",
         "cancel_desc": "Drücke \ue0e1 zum Abbrechen ",
-        "waiting": "Bitte warten..."
+        "waiting": "Bitte warten...",
+        "success": "Erfolg",
+        "fail": "Fehlgeschlagen"
     },
     "misc": {
         "battery_charge": "Batterie"
