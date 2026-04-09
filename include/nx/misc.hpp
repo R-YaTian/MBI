@@ -4,6 +4,7 @@
 #include <switch/types.h>
 #include <vector>
 #include <string>
+#include <map>
 
 namespace nx::misc
 {
@@ -143,5 +144,6 @@ namespace nx::misc
     std::u16string UTF8toUTF16(const std::string& src);
     std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length = 0, const std::string& marker = "(...)");
     std::vector<Ticket> ScanTickets();
+    std::map<u64, std::vector<NsApplicationContentMetaStatus>> ScanApplicationsContentMetaStatus();
     bool CleanPendingUpdate();
 }

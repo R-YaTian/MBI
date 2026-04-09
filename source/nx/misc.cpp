@@ -211,6 +211,39 @@ namespace nx::misc
         return tickets;
     }
 
+    constexpr size_t ApplicationRecordBufferCount = 30;
+    NsApplicationRecord g_ApplicationRecordBuffer[ApplicationRecordBufferCount];
+
+    std::map<u64, std::vector<NsApplicationContentMetaStatus>> ScanApplicationsContentMetaStatus()
+    {
+        std::map<u64, std::vector<NsApplicationContentMetaStatus>> applicationsMetaMap;
+        s32 cur_offset = 0;
+        while (true)
+        {
+            s32 record_count = 0;
+            if(R_FAILED(nsListApplicationRecord(g_ApplicationRecordBuffer, ApplicationRecordBufferCount, cur_offset, &record_count)) || record_count == 0)
+            {
+                break;
+            }
+
+            cur_offset += record_count;
+            for(s32 i = 0; i < record_count; i++)
+            {
+                u64 app_id = g_ApplicationRecordBuffer[i].application_id;
+                s32 status_count = 0;
+                nsCountApplicationContentMeta(app_id, &status_count);
+                std::vector<NsApplicationContentMetaStatus> entries(status_count);
+                nsListApplicationContentMetaStatus(app_id, 0, entries.data(), entries.size(), &status_count);
+                entries.resize(status_count);
+                if (status_count > 0)
+                {
+                    applicationsMetaMap[app_id] = entries;
+                }
+            }
+        }
+        return applicationsMetaMap;
+    }
+
     bool CleanPendingUpdate()
     {
         if (R_SUCCEEDED(nssuInitialize()))
