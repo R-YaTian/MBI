@@ -2,15 +2,15 @@
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "nx/misc.hpp"
+#include "nx/ext.hpp"
 #include "facade.hpp"
 
 namespace app::ui
 {
     struct TicketPage::InternalData
     {
-        std::vector<nx::misc::Ticket> ticketsList;
-        std::map<size_t, nx::misc::Ticket> selectedTickets;
+        std::vector<nx::ext::Ticket> ticketsList;
+        std::map<size_t, nx::ext::Ticket> selectedTickets;
     };
 
     TicketPage::~TicketPage() = default;
@@ -58,7 +58,7 @@ namespace app::ui
         this->menu->SetVisible(false);
         this->infoImage->SetVisible(true);
         app::facade::SendRenderRequest();
-        this->pageData->ticketsList = nx::misc::ScanTickets();
+        this->pageData->ticketsList = nx::ext::ScanTickets();
         if (!this->pageData->ticketsList.size())
         {
             return false;

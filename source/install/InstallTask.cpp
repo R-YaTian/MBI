@@ -1,7 +1,7 @@
 #include "install/InstallTask.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
-#include "nx/misc.hpp"
+#include "nx/ext.hpp"
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
@@ -376,9 +376,9 @@ namespace app
             std::unique_ptr<u8[]> certBuf;
             if (certFileEntries[i] == nullptr)
             {
-                certSize = nx::misc::CommonCertificateSize;
+                certSize = nx::ext::CommonCertificateSize;
                 certBuf = std::make_unique<u8[]>(certSize);
-                memcpy(certBuf.get(), nx::misc::CommonCertificateData, certSize);
+                memcpy(certBuf.get(), nx::ext::CommonCertificateData, certSize);
             }
             else
             {

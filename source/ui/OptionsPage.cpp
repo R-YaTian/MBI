@@ -4,7 +4,7 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "nx/ncm.hpp"
-#include "nx/misc.hpp"
+#include "nx/ext.hpp"
 
 namespace app::ui
 {
@@ -291,7 +291,7 @@ namespace app::ui
         std::snprintf(msg, sizeof(msg), "clean_orphaned.orphaned_deleted"_lang.c_str(), deletedCount);
         app::facade::SendInstallInfoText(std::string(msg));
 
-        result = nx::misc::CleanPendingUpdate();
+        result = nx::ext::CleanPendingUpdate();
         app::facade::SendInstallInfoText("clean_orphaned.pending_update"_lang + (result ? "common.success"_lang : "common.fail"_lang));
         app::facade::SendInstallFinished();
         app::facade::SendBottomText("clean_orphaned.buttons"_lang);
