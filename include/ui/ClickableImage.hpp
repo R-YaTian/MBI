@@ -37,6 +37,7 @@ namespace app::ui
             OnClickCallback cb;
             std::chrono::steady_clock::time_point touch_time_point;
             bool touched;
+            bool enabled = true;
 
         public:
             ClickableImage(const s32 x, const s32 y, pu::sdl2::TextureHandle::Ref tex);
@@ -92,6 +93,11 @@ namespace app::ui
             inline void SetOnClick(OnClickCallback cb)
             {
                 this->cb = cb;
+            }
+
+            inline void SetEnabled(const bool enabled)
+            {
+                this->enabled = enabled;
             }
 
             void OnRender(pu::ui::render::Renderer::Ref &drawer, const s32 x, const s32 y) override;

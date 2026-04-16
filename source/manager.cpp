@@ -32,6 +32,7 @@ namespace app::manager
 #endif
 
         Mix_Init(MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG);
+        accountInitialize(AccountServiceType_Administrator);
         if (R_FAILED(ncmInitialize()))
             LOG_DEBUG("Failed to initialize ncm\n");
     }
@@ -39,6 +40,7 @@ namespace app::manager
     void deinitApp()
     {
         ncmExit();
+        accountExit();
         Mix_Quit();
 
         nx::udisk::exit();

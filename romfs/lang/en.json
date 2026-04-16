@@ -173,6 +173,7 @@
         "buttons": "\ue0e1 Back"
     },
     "misc": {
-        "battery_charge": "Battery"
+        "battery_charge": "Battery",
+        "sel_user": "Selected user:"
     }
 }

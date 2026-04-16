@@ -61,7 +61,7 @@ namespace app::ui
             std::string freeSpaceCurrentText;
             std::string timeCurrentText;
             std::string dateCurrentText;
-            u32 batteryCurrentValue;
+            u32 batteryCurrentValue = 255;
             pu::sdl2::TextureHandle::Ref bgImg;
             pu::sdl2::TextureHandle::Ref logoImg;
             pu::sdl2::TextureHandle::Ref backImg;
@@ -69,6 +69,7 @@ namespace app::ui
             pu::sdl2::TextureHandle::Ref selectAllImg;
             pu::sdl2::TextureHandle::Ref pageUpImg;
             pu::sdl2::TextureHandle::Ref pageDownImg;
+            pu::sdl2::TextureHandle::Ref defaultUserImg;
             pu::ui::elm::Image::Ref titleImage;
             pu::ui::elm::TextBlock::Ref appVersionText;
             pu::ui::elm::TextBlock::Ref freeSpaceText;
@@ -80,6 +81,9 @@ namespace app::ui
             pu::ui::elm::Rectangle::Ref infoRect;
             pu::ui::elm::TextBlock::Ref botText;
             pu::ui::elm::TextBlock::Ref pageInfoText;
+            pu::ui::elm::TextBlock::Ref userNameText;
+            AccountUid currentSelectedUser;
+            AccountProfileBase currentProfileBase;
             pu::sdl2::TextureHandle::Ref LoadBackground(const std::string& bgDir);
             void UpdateStats();
     };
@@ -87,6 +91,11 @@ namespace app::ui
     inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path)
     {
         return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromFile(path));
+    }
+
+    inline pu::sdl2::TextureHandle::Ref LoadTexture(const void *img_data, const size_t img_size)
+    {
+        return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImageFromBuffer(img_data, img_size));
     }
 
     inline bool IsLongPress(u64& start, bool held, bool up, double seconds)

@@ -173,6 +173,7 @@
         "buttons": "\ue0e1 返回"
     },
     "misc": {
-        "battery_charge": "电量"
+        "battery_charge": "电量",
+        "sel_user": "用户:"
     }
 }

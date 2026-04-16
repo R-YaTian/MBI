@@ -3,6 +3,7 @@
 #include "util/util.hpp"
 #include "nx/fs.hpp"
 #include "nx/misc.hpp"
+#include "nx/acc.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/ClickableImage.hpp"
 #include "ui/BaseMenuPage.hpp"
@@ -36,6 +37,7 @@ namespace app::ui
     ClickableImage::Ref pageUpButton;
     ClickableImage::Ref pageDownButton;
     ClickableImage::Ref selectAllButton;
+    ClickableImage::Ref userImage;
 
     static s32 previousTouchCount = 0;
 
@@ -50,6 +52,8 @@ namespace app::ui
         layout->Add(this->freeSpaceText); \
         layout->Add(this->dateText); \
         layout->Add(this->timeText); \
+        layout->Add(this->userNameText); \
+        layout->Add(userImage); \
     }
 
     #define _UI_MAINAPP_MENU_SET_EXTRA(layout) { \
@@ -136,6 +140,32 @@ namespace app::ui
             timeCurrentText = newTimeText;
             this->timeText->SetText(timeCurrentText);
         }
+
+        const auto selectedUser = nx::acc::GetSelectedUser();
+        if (!nx::acc::EqualUids(&selectedUser, &this->currentSelectedUser))
+        {
+            this->currentSelectedUser = selectedUser;
+            if (nx::acc::HasSelectedUser())
+            {
+                std::vector<u8> iconData = nx::acc::GetSelectedUserIcon();
+                userImage->SetImage(LoadTexture(iconData.data(), iconData.size()));
+                const auto rc = nx::acc::ReadSelectedUser(&this->currentProfileBase, nullptr);
+                if (R_SUCCEEDED(rc))
+                {
+                    this->userNameText->SetText("misc.sel_user"_lang + "\n" + std::string(this->currentProfileBase.nickname));
+                }
+                else
+                {
+                    this->userNameText->SetText("");
+                }
+            }
+            else
+            {
+                userImage->SetImage(this->defaultUserImg);
+            }
+            userImage->SetWidth(80);
+            userImage->SetHeight(80);
+        }
     }
 
     void MainApplication::OnLoad()
@@ -155,8 +185,7 @@ namespace app::ui
         this->selectAllImg = LoadTexture("romfs:/images/icons/select-all.png");
         this->pageUpImg = LoadTexture("romfs:/images/icons/page-up.png");
         this->pageDownImg = LoadTexture("romfs:/images/icons/page-down.png");
-
-        batteryCurrentValue = 255;
+        this->defaultUserImg = LoadTexture("romfs:/images/icon.jpg");
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#000000c0"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#000000c0"));
@@ -171,21 +200,25 @@ namespace app::ui
         this->appVersionText = pu::ui::elm::TextBlock::New(490, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 9, "misc.battery_charge"_lang + ": ??%");
+        this->batteryValueText = pu::ui::elm::TextBlock::New(1100, 7, "misc.battery_charge"_lang + ": ??%");
         this->batteryValueText->SetFont("DefaultFont@32");
-        this->freeSpaceText = pu::ui::elm::TextBlock::New(700 * pu::ui::render::ScreenFactor, 49, freeSpaceCurrentText);
+        this->freeSpaceText = pu::ui::elm::TextBlock::New(1100, 47, freeSpaceCurrentText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
-        this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);
+        this->dateText = pu::ui::elm::TextBlock::New(1700, 7, dateCurrentText);
         this->dateText->SetFont("DefaultFont@32");
         this->dateText->SetColor(COLOR("#FFFFFFFF"));
-        this->timeText = pu::ui::elm::TextBlock::New(1700, 49, timeCurrentText);
+        this->timeText = pu::ui::elm::TextBlock::New(1700, 47, timeCurrentText);
         this->timeText->SetFont("DefaultFont@32");
         this->timeText->SetColor(COLOR("#FFFFFFFF"));
-
-        this->UpdateStats();
+        this->userNameText = pu::ui::elm::TextBlock::New(750, 3, "");
+        this->userNameText->SetFont("DefaultFont@32");
+        this->userNameText->SetColor(COLOR("#FFFFFFFF"));
 
         // Setup clickable buttons
+        userImage = ClickableImage::New(660, 7, this->defaultUserImg);
+        userImage->SetWidth(80);
+        userImage->SetHeight(80);
         backButton = ClickableImage::New(1820, 990, this->backImg);
         confirmButton = ClickableImage::New(1710, 990, this->confirmImg);
         selectAllButton = ClickableImage::New(1600, 990, this->selectAllImg);
@@ -211,6 +244,9 @@ namespace app::ui
             auto lyt = this->GetLayout<BaseMenuPage>();
             lyt->onPageUp();
         });
+
+        nx::acc::SelectFromPreselectedUser();
+        this->UpdateStats();
 
         mainPage = MainPage::New();
         localinstPage = LocalInstallPage::New();
