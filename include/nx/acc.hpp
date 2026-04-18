@@ -40,5 +40,6 @@ namespace nx::acc
     Result ReadSelectedUser(AccountProfileBase *out_prof_base, AccountUserData *out_user_data);
     bool IsLinked();
     Result UnlinkLocally();
+    Result LinkLocally();
     std::vector<u8> GetSelectedUserIcon();
 }

@@ -86,6 +86,7 @@ namespace app::ui
             AccountProfileBase currentProfileBase;
             pu::sdl2::TextureHandle::Ref LoadBackground(const std::string& bgDir);
             void UpdateStats();
+            void UserActions();
     };
 
     inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path)

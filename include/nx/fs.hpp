@@ -46,6 +46,11 @@ namespace nx::fs
         return std::filesystem::create_directory(path);
     }
 
+    inline bool MakeDirs(const Path& path)
+    {
+        return std::filesystem::create_directories(path);
+    }
+
     class IFileSystem;
 
     class IFile

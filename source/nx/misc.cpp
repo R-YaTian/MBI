@@ -1,6 +1,7 @@
 #include "nx/misc.hpp"
 #include "nx/error.hpp"
 #include <switch.h>
+#include <map>
 
 namespace nx::misc
 {
@@ -144,5 +145,54 @@ namespace nx::misc
         {
             return in;
         }
+    }
+
+    const std::string GetLocale()
+    {
+        u64 languageCode = 0;
+        setInitialize();
+        setGetSystemLanguage(&languageCode);
+        setExit();
+        return std::string(reinterpret_cast<char*>(&languageCode));
+    }
+
+    const std::string GetTimeZone()
+    {
+        TimeLocationName tl;
+        setInitialize();
+        setsysGetDeviceTimeZoneLocationName(&tl);
+        setExit();
+        return tl.name;
+    }
+
+    const static std::map<std::string, std::string> regionMap = {
+        {"ja", "JP"},
+        {"en-US", "US"},
+        {"fr", "FR"},
+        {"de", "DE"},
+        {"it", "IT"},
+        {"es", "ES"},
+        {"zh-CN", "CN"},
+        {"ko", "KR"},
+        {"nl", "NL"},
+        {"pt", "PT"},
+        {"ru", "RU"},
+        {"zh-TW", "TW"}, // Taiwan, Province of China
+        {"en-GB", "GB"},
+        {"fr-CA", "CA"},
+        {"es-419", "MX"}, // Simply using MX for Latin America region...
+        {"zh-Hans", "CN"},
+        {"zh-Hant", "HK"},
+        {"pt-BR", "BR"}
+    };
+
+    const std::string GetCountryCode(const std::string& locale)
+    {
+        auto it = regionMap.find(locale);
+        if (it != regionMap.end())
+        {
+            return it->second;
+        }
+        return "US";
     }
 }

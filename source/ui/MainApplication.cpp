@@ -14,6 +14,7 @@
 #include "ui/LocalInstallPage.hpp"
 #include "ui/TicketPage.hpp"
 #include "ui/MainPage.hpp"
+#include "facade.hpp"
 
 #ifdef ENABLE_NET
 #include "ui/NetInstallPage.hpp"
@@ -152,11 +153,11 @@ namespace app::ui
                 const auto rc = nx::acc::ReadSelectedUser(&this->currentProfileBase, nullptr);
                 if (R_SUCCEEDED(rc))
                 {
-                    this->userNameText->SetText("misc.sel_user"_lang + "\n" + std::string(this->currentProfileBase.nickname));
+                    this->userNameText->SetText("misc.user"_lang + "\n" + std::string(this->currentProfileBase.nickname));
                 }
                 else
                 {
-                    this->userNameText->SetText("");
+                    this->userNameText->SetText("misc.user"_lang + "\n" + "misc.unsel"_lang);
                 }
             }
             else
@@ -197,12 +198,12 @@ namespace app::ui
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->titleImage = pu::ui::elm::Image::New(0, 0, this->logoImg);
-        this->appVersionText = pu::ui::elm::TextBlock::New(490, 29, "v" + app::config::appVersion);
+        this->appVersionText = pu::ui::elm::TextBlock::New(480, 29, "v" + app::config::appVersion);
         this->appVersionText->SetFont("DefaultFont@42");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = pu::ui::elm::TextBlock::New(1100, 7, "misc.battery_charge"_lang + ": ??%");
+        this->batteryValueText = pu::ui::elm::TextBlock::New(1105, 7, "misc.battery_charge"_lang + ": ??%");
         this->batteryValueText->SetFont("DefaultFont@32");
-        this->freeSpaceText = pu::ui::elm::TextBlock::New(1100, 47, freeSpaceCurrentText);
+        this->freeSpaceText = pu::ui::elm::TextBlock::New(1105, 47, freeSpaceCurrentText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->dateText = pu::ui::elm::TextBlock::New(1700, 7, dateCurrentText);
@@ -219,6 +220,7 @@ namespace app::ui
         userImage = ClickableImage::New(660, 7, this->defaultUserImg);
         userImage->SetWidth(80);
         userImage->SetHeight(80);
+        userImage->SetOnClick(std::bind(&MainApplication::UserActions, this));
         backButton = ClickableImage::New(1820, 990, this->backImg);
         confirmButton = ClickableImage::New(1710, 990, this->confirmImg);
         selectAllButton = ClickableImage::New(1600, 990, this->selectAllImg);
@@ -308,8 +310,54 @@ namespace app::ui
         }
     }
 
+    void MainApplication::UserActions()
+    {
+        if (nx::acc::HasSelectedUser())
+        {
+            bool isLinked = nx::acc::IsLinked();
+            std::vector<std::string> optionsList;
+            if (isLinked)
+            {
+                optionsList.push_back("user_actions.unlink"_lang);
+            }
+            else
+            {
+                optionsList.push_back("user_actions.link"_lang);
+            }
+            optionsList.push_back("user_actions.sel_user"_lang);
+            optionsList.push_back("common.cancel"_lang);
+            int ret = app::facade::ShowDialog("user_actions.title"_lang, "user_actions.desc"_lang, optionsList, false, "warning");
+            if (ret < 0)
+            {
+                return;
+            }
+            switch (ret)
+            {
+                case 0: // Link or Unlink
+                    if (isLinked)
+                    {
+                        nx::acc::UnlinkLocally();
+                    }
+                    else
+                    {
+                        nx::acc::LinkLocally();
+                    }
+                    return;
+                case 1: // Select user
+                    break;
+                case 2: // Cancel
+                    return;
+                default:
+                    return;
+            }
+        }
+
+        nx::acc::SelectUser();
+    }
+
     void SceneJump(Scene idx)
     {
+        userImage->SetEnabled(true);
         switch (idx)
         {
         case Scene::Main:
@@ -380,6 +428,7 @@ namespace app::ui
             }
             break;
         case Scene::Installer:
+            userImage->SetEnabled(false);
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("");
             installerPage->Prepare();
