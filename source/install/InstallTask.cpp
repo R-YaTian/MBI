@@ -245,7 +245,7 @@ namespace app
         }
         catch (std::runtime_error& e)
         {
-            LOG_DEBUG("WARNING: Ticket installation failed! This may not be an issue, depending on your use case.\nProceed with caution!\n");
+            THROW_FORMAT("Ticket installation failed!\n%s", e.what());
         }
     }
 
@@ -351,7 +351,8 @@ namespace app
         std::vector<const void*> tikFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("tik");
         if (tikFileEntries.size() == 0)
         {
-            THROW_FORMAT("No tik file found in the content!");
+            LOG_DEBUG("No tik file found in the content!");
+            return;
         }
 
         std::vector<const void*> tmpFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("cert");
