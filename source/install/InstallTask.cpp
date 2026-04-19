@@ -326,8 +326,6 @@ namespace app
         if (outHeader != nullptr)
         {
             memcpy(outHeader, header, sizeof(nx::nca::NcaHeader));
-            // Delete CNMT NCA from ContentStorage if already exists
-            contentStorage->Delete(ncaId);
         }
 
         delete header;
