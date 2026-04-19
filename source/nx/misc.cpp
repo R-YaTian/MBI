@@ -67,6 +67,20 @@ namespace nx::misc
         }
     }
 
+    void AttemptForceReboot()
+    {
+        Result rc = spsmInitialize();
+        if (R_FAILED(rc))
+        {
+            return;
+        }
+        else
+        {
+            spsmShutdown(true);
+            spsmExit();
+        }
+    }
+
     std::string OpenSoftwareKeyboard(std::string guideText, std::string initialText, int LenMax)
     {
         Result rc = 0;
@@ -159,9 +173,9 @@ namespace nx::misc
     const std::string GetTimeZone()
     {
         TimeLocationName tl;
-        setInitialize();
+        setsysInitialize();
         setsysGetDeviceTimeZoneLocationName(&tl);
-        setExit();
+        setsysExit();
         return tl.name;
     }
 

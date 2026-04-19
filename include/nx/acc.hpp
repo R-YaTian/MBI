@@ -1,4 +1,3 @@
-
 /*
     This file is port from Goldleaf (https://github.com/XorTroll/Goldleaf)
     Goldleaf - Multipurpose homebrew tool for Nintendo Switch
@@ -40,6 +39,6 @@ namespace nx::acc
     Result ReadSelectedUser(AccountProfileBase *out_prof_base, AccountUserData *out_user_data);
     bool IsLinked();
     Result UnlinkLocally();
-    Result LinkLocally();
+    void LinkLocally();
     std::vector<u8> GetSelectedUserIcon();
 }

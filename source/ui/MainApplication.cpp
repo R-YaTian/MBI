@@ -334,15 +334,27 @@ namespace app::ui
             switch (ret)
             {
                 case 0: // Link or Unlink
+                {
+                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("user_actions.confirm"_lang, "", 2);
+                    if (requestConfirm != "OK")
+                    {
+                        return;
+                    }
+                    svcSleepThread(2e+6); // 2ms
+                    app::facade::SendRenderRequest();
                     if (isLinked)
                     {
-                        nx::acc::UnlinkLocally();
+                        Result ret = nx::acc::UnlinkLocally();
+                        app::facade::ShowDialog("user_actions.unlink"_lang,
+                                                R_SUCCEEDED(ret) ? "common.success"_lang : "common.fail"_lang,
+                                                {"common.ok"_lang}, false, "information");
                     }
                     else
                     {
                         nx::acc::LinkLocally();
                     }
                     return;
+                }
                 case 1: // Select user
                     break;
                 case 2: // Cancel

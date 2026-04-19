@@ -1,4 +1,3 @@
-
 /*
     This file is port from Goldleaf (https://github.com/XorTroll/Goldleaf)
     Goldleaf - Multipurpose homebrew tool for Nintendo Switch
@@ -30,13 +29,7 @@
 
 namespace nx::acc
 {
-    #define ACCOUNT_PATH "account:/su"
-    static auto baasDir = std::string(ACCOUNT_PATH) + "/baas";
-    static auto nasDir = std::string(ACCOUNT_PATH) + "/nas";
-    static auto BAAS_HEADER2 = 0x0000006E00000001;
-    static auto BAAS_HEADER3 = 0x0000000100000001;
-    static auto PROFILE = R"({"id":"#NAS_ID#","language":"#LOCALE#","timezone":"#TIMEZONE#","country":"#COUNTRY_CODE#","analyticsOptedIn":false,"gender":"male","emailOptedIn":false,"birthday":"1980-01-01","isChild":false,"email":"•","screenName":"•","region":"","loginId":"•","nickname":"•","isNnLinked":false,"isTwitterLinked":false,"isFacebookLinked":false,"isGoogleLinked":false})";
-    static std::mt19937_64 engine(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+    constexpr std::string ACCOUNT_PATH = "account:/su";
 
     class Generator
     {
@@ -72,12 +65,17 @@ namespace nx::acc
         }
 
         private:
+            std::mt19937_64 engine;
             unsigned long _naccountId;
-            std::string _naccountIdStr;
             unsigned long _baasUserId;
+            std::string _naccountIdStr;
+            const u64 BAAS_HEADER2 = 0x0000006E00000001;
+            const u64 BAAS_HEADER3 = 0x0000000100000001;
+            const std::string PROFILE = R"({"id":"#NAS_ID#","language":"#LOCALE#","timezone":"#TIMEZONE#","country":"#COUNTRY_CODE#","gender":"male","birthday":"2000-01-01","isChild":false,"email":"•","screenName":"•","region":"","loginId":"•","nickname":"•","isNnLinked":false,"isTwitterLinked":false,"isFacebookLinked":false,"isGoogleLinked":false})";
 
         public:
-            Generator()
+            Generator():
+                engine(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count())
             {
                 _baasUserId = generateBytes();
                 _naccountId = generateBytes();
@@ -96,9 +94,9 @@ namespace nx::acc
                 auto account_id = generateBytes();
                 std::ofstream ofs(fullpath, std::ios::binary | std::ios::trunc);
                 ofs.write(reinterpret_cast<char*>(&account_id), sizeof(account_id));
-                ofs.write(reinterpret_cast<char*>(&BAAS_HEADER2), sizeof(BAAS_HEADER2));
+                ofs.write(reinterpret_cast<const char*>(&BAAS_HEADER2), sizeof(BAAS_HEADER2));
                 ofs.write(reinterpret_cast<char*>(&_naccountId), sizeof(_naccountId));
-                ofs.write(reinterpret_cast<char*>(&BAAS_HEADER3), sizeof(BAAS_HEADER3));
+                ofs.write(reinterpret_cast<const char*>(&BAAS_HEADER3), sizeof(BAAS_HEADER3));
                 ofs.write(reinterpret_cast<char*>(&_baasUserId), sizeof(_baasUserId));
                 ofs << generateRandomAlphanumericString(40);
             }
@@ -165,29 +163,17 @@ namespace nx::acc
         fsFsClose(&acc);
     }
 
-    static std::string FormatHex128(const AccountUid user_id)
+    static std::string FormatAccountUidString(const AccountUid user_id)
     {
-        auto ptr = reinterpret_cast<const u8*>(user_id.uid);
-        std::stringstream strm;
-        strm << std::hex << std::uppercase;
-        for(u32 i = 0; i < sizeof(AccountUid); i++) {
-            strm << static_cast<u32>(ptr[i]);
-        }
-        return strm.str();
-    }
-
-    static void AttemptForceReboot()
-    {
-        Result rc = spsmInitialize();
-        if (R_FAILED(rc))
-        {
-            return;
-        }
-        else
-        {
-            spsmShutdown(true);
-            spsmExit();
-        }
+        std::stringstream uid_str;
+        uid_str << std::setfill('0') << std::setw(8) << std::hex << (user_id.uid[0] & 0xffffffff) << "-";
+        uid_str << std::setfill('0') << std::setw(4) << std::hex << ((user_id.uid[0] >> 32) & 0xffff) << "-";
+        uid_str << std::setfill('0') << std::setw(4) << std::hex << ((user_id.uid[0] >> 48) & 0xffff) << "-";
+        uid_str << std::setfill('0') << std::setw(2) << std::hex << (user_id.uid[1] & 0xff);
+        uid_str << std::setfill('0') << std::setw(2) << std::hex << ((user_id.uid[1] >> 8) & 0xff) << "-";
+        uid_str << std::setfill('0') << std::setw(8) << std::hex << ((user_id.uid[1] >> 32) & 0xffffffff);
+        uid_str << std::setfill('0') << std::setw(4) << std::hex << ((user_id.uid[1] >> 16) & 0xffff);
+        return uid_str.str();
     }
 
     namespace
@@ -284,13 +270,16 @@ namespace nx::acc
         return rc;
     }
 
-    Result LinkLocally()
+    void LinkLocally()
     {
         FsFileSystem acc = MountAccountData();
+        const std::string baasDir = ACCOUNT_PATH + "/baas";
+        const std::string nasDir = ACCOUNT_PATH + "/nas";
         nx::fs::MakeDirs(baasDir);
         nx::fs::MakeDirs(nasDir);
+
         Generator gen;
-        auto linkerFile = baasDir + "/" + FormatHex128(g_SelectedUser) + ".dat";
+        auto linkerFile = baasDir + "/" + FormatAccountUidString(g_SelectedUser) + ".dat";
         gen.WriteBaas(linkerFile);
 
         auto profileDataFilename = nasDir + "/" + gen.GetNaccountIdStr() + ".dat";
@@ -300,8 +289,7 @@ namespace nx::acc
         gen.WriteProfileJson(profileJsonFilename);
 
         UnmountAccountData(acc, true);
-        AttemptForceReboot();
-        return 0;
+        misc::AttemptForceReboot();
     }
 
     std::vector<u8> GetSelectedUserIcon()

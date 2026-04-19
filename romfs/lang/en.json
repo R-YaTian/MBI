@@ -182,6 +182,7 @@
         "desc": "Link or unlink user account locally. This action cannot be undone!\nNote: The console will automatically reboot after the link operation is completed.",
         "sel_user": "Select user",
         "link": "Link locally",
-        "unlink": "Unlink locally"
+        "unlink": "Unlink locally",
+        "confirm": "Type 'OK' to continue."
     }
 }
