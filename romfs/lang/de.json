@@ -173,6 +173,16 @@
         "fail": "Fehlgeschlagen"
     },
     "misc": {
-        "battery_charge": "Batterie"
+        "battery_charge": "Batterie",
+        "user": "Benutzer:",
+        "unsel": "Nicht ausgewählt"
+    },
+    "user_actions": {
+        "title": "Benutzeraktionen",
+        "desc": "Verknüpfe oder trenne das Benutzerkonto lokal. Diese Aktion kann nicht rückgängig gemacht werden!\nHinweis: Die Konsole wird nach Abschluss des Verknüpfungsvorgangs automatisch neu gestartet.",
+        "sel_user": "Benutzer Auswahl",
+        "link": "Lokal verbinden",
+        "unlink": "Lokal trennen",
+        "confirm": "Geben Sie 'OK' ein, um fortzufahren."
     }
 }

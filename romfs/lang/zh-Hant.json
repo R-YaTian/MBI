@@ -173,6 +173,16 @@
         "fail": "失敗"
     },
     "misc": {
-        "battery_charge": "電池"
+        "battery_charge": "電池",
+        "user": "使用者:",
+        "unsel": "未選擇"
+    },
+    "user_actions": {
+        "title": "使用者操作",
+        "desc": "在本機連結或解除連結使用者帳戶。此操作無法復原!\n注意: 連結操作完成後，主機將自動重新啟動。",
+        "sel_user": "選擇使用者",
+        "link": "本機連結",
+        "unlink": "本機解除連結",
+        "confirm": "輸入 'OK' 以繼續。"
     }
 }

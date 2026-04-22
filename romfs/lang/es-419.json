@@ -173,6 +173,16 @@
         "fail": "Falló"
     },
     "misc": {
-        "battery_charge": "Batería"
+        "battery_charge": "Batería",
+        "user": "Usuario:",
+        "unsel": "No seleccionado"
+    },
+    "user_actions": {
+        "title": "Acciones del usuario",
+        "desc": "Vincula o desvincula la cuenta de usuario localmente. ¡Esta acción no se puede deshacer!\nNota: La consola se reiniciará automáticamente después de completar la operación de vinculación.",
+        "sel_user": "Seleccionar usuario",
+        "link": "Vincular localmente",
+        "unlink": "Desvincular localmente",
+        "confirm": "Escribe 'OK' para continuar."
     }
 }

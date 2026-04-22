@@ -173,6 +173,16 @@
         "fail": "Échec"
     },
     "misc": {
-        "battery_charge": "Batterie"
+        "battery_charge": "Batterie",
+        "user": "Utilisateur:",
+        "unsel": "Non sélectionné"
+    },
+    "user_actions": {
+        "title": "Actions utilisateur",
+        "desc": "Liez ou dissociez le compte utilisateur localement. Cette action ne peut pas être annulée!\nRemarque: La console redémarrera automatiquement après la fin de l'opération de liaison.",
+        "sel_user": "Sélection de l'utilisateur",
+        "link": "Connecter localement",
+        "unlink": "Déconnecter localement",
+        "confirm": "Tapez 'OK' pour continuer."
     }
 }

@@ -173,6 +173,16 @@
         "fail": "Fallita"
     },
     "misc": {
-        "battery_charge": "Batteria"
+        "battery_charge": "Batteria",
+        "user": "Utente:",
+        "unsel": "Non selezionato"
+    },
+    "user_actions": {
+        "title": "Azioni utente",
+        "desc": "Collega o scollega l'account utente localmente. Questa azione non può essere annullata!\nNota: La console si riavvierà automaticamente dopo il completamento dell'operazione di collegamento.",
+        "sel_user": "Selezione utente",
+        "link": "Collega localmente",
+        "unlink": "Scollega localmente",
+        "confirm": "Digita 'OK' per continuare."
     }
 }
