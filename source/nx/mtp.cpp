@@ -8,7 +8,7 @@
 
 // Set to 1 if switch freezes here when allocating a huge (1+GB) file.
 // afaik this only happens when using emuMMC + windows.
-#define NX_MTP_DISABLE_SET_FILE_SIZE 0
+#define NX_MTP_DISABLE_SET_FILE_SIZE 1
 
 namespace nx::mtp
 {
@@ -708,6 +708,7 @@ namespace nx::mtp
         Result CreateFile(const char* path, s64 size) override
         {
             R_TRY(FailedIfNotEnabled());
+            R_UNLESS(!g_shared_data.in_progress, MAKERESULT(420, 20)); // Device busy, another install in progress.
             R_TRY(IsValidFileType(path));
             R_TRY(FsProxyVfs::CreateFile(path, size));
             R_SUCCEED();
@@ -758,35 +759,25 @@ namespace nx::mtp
 
         void CloseFile(haze::File *file) override
         {
-            auto f = static_cast<File*>(file->impl);
-            if (!f)
             {
-                return;
-            }
-
-            bool update{};
-            {
+                LOG_DEBUG("[MTP] closing current file\n");
                 SCOPED_MUTEX(&g_shared_data.mutex);
-                if (f->mode == haze::FileOpenMode_WRITE)
+                auto f = static_cast<File*>(file->impl);
+                if (f && f->mode == haze::FileOpenMode_WRITE)
                 {
-                    LOG_DEBUG("[MTP] closing current file\n");
                     if (g_shared_data.on_close)
                     {
                         g_shared_data.on_close();
                     }
 
-                    g_shared_data.in_progress = false;
                     g_shared_data.current_file.clear();
-                    update = true;
+
+                    delete f;
+                    file->impl = nullptr;
                 }
             }
 
-            if (update)
-            {
-                OnInstallTask();
-            }
-
-            FsProxyVfs::CloseFile(file);
+            OnInstallTask();
         }
     };
 
@@ -797,12 +788,18 @@ namespace nx::mtp
         g_shared_data.on_write = on_write;
         g_shared_data.on_close = on_close;
         g_shared_data.enabled = true;
+        g_shared_data.in_progress = false;
     }
 
     void DisableInstallMode()
     {
         SCOPED_MUTEX(&g_shared_data.mutex);
         g_shared_data.enabled = false;
+    }
+
+    void FinishInstallProgress()
+    {
+        g_shared_data.in_progress = false;
     }
 
     void Setup()

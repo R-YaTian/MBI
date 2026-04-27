@@ -10,6 +10,7 @@ namespace nx::mtp
 
     void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
     void DisableInstallMode();
+    void FinishInstallProgress();
     void Setup();
     void Cleanup();
 }
