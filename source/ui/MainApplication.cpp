@@ -188,7 +188,7 @@ namespace app::ui
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#000000c0"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#000000c0"));
-        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 676 * pu::ui::render::ScreenFactor, "");
+        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 1020, "");
         this->botText->SetFont("DefaultFont@30");
         this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#00000080"));
@@ -210,7 +210,7 @@ namespace app::ui
         this->timeText = pu::ui::elm::TextBlock::New(1700, 47, timeCurrentText);
         this->timeText->SetFont("DefaultFont@32");
         this->timeText->SetColor(COLOR("#FFFFFFFF"));
-        this->userNameText = pu::ui::elm::TextBlock::New(750, 3, "");
+        this->userNameText = pu::ui::elm::TextBlock::New(750, 9, "misc.user"_lang + "\n" + "misc.unsel"_lang);
         this->userNameText->SetFont("DefaultFont@32");
         this->userNameText->SetColor(COLOR("#FFFFFFFF"));
 
