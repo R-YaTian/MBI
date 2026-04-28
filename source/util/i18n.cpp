@@ -9,23 +9,22 @@ namespace app::i18n
 {
     jt::Json lang;
 
-    void Load(int languageCode)
+    int Load(int index)
     {
-        FILE *fp;
-        std::string languagePath;
-        int langInt = languageCode;
-        if (langInt == -1)
+        int languageCode = index;
+        if (languageCode == -1)
         {
-            SetLanguage ourLang;
-            u64 lcode = 0;
+            SetLanguage langID;
+            u64 tmp = 0;
             setInitialize();
-            setGetSystemLanguage(&lcode);
-            setMakeLanguage(lcode, &ourLang);
+            setGetSystemLanguage(&tmp);
+            setMakeLanguage(tmp, &langID);
             setExit();
-            langInt = (int)ourLang;
+            languageCode = (int)langID;
         }
 
-        switch (langInt)
+        std::string languagePath;
+        switch (languageCode)
         {
             case 0:
                 languagePath = "romfs:/lang/jp.json";
@@ -69,14 +68,15 @@ namespace app::i18n
                 languagePath = "romfs:/lang/en.json";
         }
 
-        fp = fopen(languagePath.c_str(), "r");
+        FILE *fp = fopen(languagePath.c_str(), "r");
         if (!fp)
         {
             LOG_DEBUG("FAILED TO LOAD LANGUAGE FILE\n");
-            return;
+            return -1;
         }
         lang = jt::Json::parse(fp);
         fclose(fp);
+        return languageCode;
     }
 
     jt::Json GetRelativeJson(const jt::Json& j, std::string key)

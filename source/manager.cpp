@@ -35,6 +35,8 @@ namespace app::manager
         accountInitialize(AccountServiceType_Administrator);
         if (R_FAILED(ncmInitialize()))
             LOG_DEBUG("Failed to initialize ncm\n");
+        if (R_FAILED(romfsInit()))
+            LOG_DEBUG("Failed to mount romfs\n");
     }
 
     void deinitApp()
@@ -42,7 +44,7 @@ namespace app::manager
         ncmExit();
         accountExit();
         Mix_Quit();
-
+        romfsExit();
         nx::udisk::exit();
 
 #ifdef ENABLE_NET

@@ -137,8 +137,8 @@ namespace nx::nca
                 u8 sdk_major;
             };
         };
-        u8 m_cryptoType2; /* Which keyblob (field 2) */
-        u8 m_cryptoType3;
+        u8 key_gen;
+        u8 sig_key_gen;
         u8 _0x222[0xE]; /* Padding. */
         FsRightsId m_rightsId; /* Rights ID (for titlekey crypto). */
         NcaSectionEntry fs_table[4]; /* Section entry metadata. */

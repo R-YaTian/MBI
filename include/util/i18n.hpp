@@ -4,7 +4,7 @@
 
 namespace app::i18n
 {
-    void Load(int languageCode);
+    int Load(int index);
     std::string LanguageEntry(std::string key);
     std::string GetRandomMsg();
 }

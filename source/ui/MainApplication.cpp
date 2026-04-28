@@ -173,8 +173,6 @@ namespace app::ui
     {
         mainApp = this;
 
-        app::i18n::Load(app::config::languageSetting);
-
         this->checkboxBlank = LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
         this->checkboxTick = LoadTexture("romfs:/images/icons/check-box-outline.png");
         this->bgImg = LoadBackground(app::config::storagePath);

@@ -317,7 +317,13 @@ namespace app
             THROW_FORMAT("Invalid NCA magic");
         }
 
-        if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, nx::Crypto::NCAHeaderSignature))
+        if (header->sig_key_gen >= std::size(nx::Crypto::NCAHeaderSignature))
+        {
+            THROW_FORMAT("Invalid signature key generation");
+        }
+
+        auto mod = nx::Crypto::NCAHeaderSignature[header->sig_key_gen];
+        if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, mod))
         {
             app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::ncm::GetContentIdString(ncaId));
         }

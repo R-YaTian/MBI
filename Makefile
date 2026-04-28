@@ -52,7 +52,7 @@ ifneq ($(WITH_DEBUG),)
 endif
 
 ifneq ($(WITH_NETWORK),)
-	NETFLAG := -DENABLE_NET
+	NETFLAG := -DENABLE_NET -DCURL_NO_OLDIES=1
 endif
 
 #---------------------------------------------------------------------------------
@@ -71,7 +71,8 @@ endif
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS) $(NETFLAG)
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++23
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++26
+CFLAGS	+= -std=c23
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
