@@ -7,7 +7,6 @@ namespace app::config
     inline const std::string storagePath = "sdmc:/config/MBI";
     inline const std::string settingsFile = storagePath + "/config.json";
     inline const std::string themecolorFile = storagePath + "/color.json";
-    inline const std::string appVersion = APPVER;
     inline constexpr auto mainMenuItemSize = 112;
     inline constexpr auto subMenuItemSize = 76;
 

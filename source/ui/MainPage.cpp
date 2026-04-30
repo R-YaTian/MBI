@@ -4,7 +4,6 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
-#include "nx/udisk.hpp"
 #include "nx/usb.hpp"
 #include "nx/mtp.hpp"
 
@@ -139,7 +138,6 @@ namespace app::ui
         {
             return;
         }
-        nx::udisk::init();
         SceneJump(Scene::UdiskInstall);
     }
 

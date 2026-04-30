@@ -15,4 +15,5 @@ namespace nx::misc
     const std::string GetLocale();
     const std::string GetTimeZone();
     const std::string GetCountryCode(const std::string& locale);
+    const std::string GetSerialNumber();
 }

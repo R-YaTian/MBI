@@ -20,6 +20,7 @@ namespace app::manager
             nx::fs::MakeDir(app::config::storagePath);
         app::config::ParseSettings();
         app::config::ParseThemeColor();
+        nx::udisk::init();
 
 #ifdef ENABLE_NET
         socketInitializeDefault();

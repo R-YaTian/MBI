@@ -27,7 +27,7 @@ jobs:
 
     - name: Checkout latest libusbhsfs commit
       run: |
-        git clone https://github.com/DarkMatterCore/libusbhsfs.git
+        git clone -b legacy https://github.com/R-YaTian/libusbhsfs.git
 
     - name: Checkout latest Plutonium commit
       run: |

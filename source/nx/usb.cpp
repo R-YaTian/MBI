@@ -1,4 +1,5 @@
 #include "nx/usb.hpp"
+#include "nx/misc.hpp"
 #include <string.h>
 #include <malloc.h>
 
@@ -228,7 +229,7 @@ namespace nx::usb
                     // Send product
                     if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iProduct, "Nintendo Switch");
                     // Send serial number
-                    if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iSerialNumber, APPVER);
+                    if (R_SUCCEEDED(rc)) rc = usbDsAddUsbStringDescriptor(&iSerialNumber, nx::misc::GetSerialNumber().c_str());
 
                     // Send device descriptors
                     struct usb_device_descriptor device_descriptor = {

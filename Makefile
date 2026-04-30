@@ -69,7 +69,7 @@ ifneq ($(WITH_NETWORK),)
 	CFLAGS	+=	`curl-config --cflags`
 endif
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"$(APP_VERSION)\" $(DEBUGFLAGS) $(NETFLAG)
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wall -Werror -DAPPVER=\"v$(APP_VERSION)\" $(DEBUGFLAGS) $(NETFLAG)
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++26
 CFLAGS	+= -std=c23
