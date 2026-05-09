@@ -8,5 +8,4 @@ namespace app::manager
     void deinitApp();
     void initInstallServices();
     void deinitInstallServices();
-    void playAudio(std::string audioPath);
 }

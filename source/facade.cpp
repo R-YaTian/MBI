@@ -101,4 +101,26 @@ namespace app::facade
             return opt;
         }
     }
+
+    void PlayAudio(const std::string& filename)
+    {
+        std::string finalPath = app::ui::mainApp->GetFinalResourcePath("audio", filename);
+        if (finalPath == "")
+        {
+            return;
+        }
+
+        pu::audio::Initialize();
+        pu::audio::Sfx sfx = pu::audio::LoadSfx(finalPath);
+        if (sfx != nullptr)
+        {
+            int channel = pu::audio::PlaySfx(sfx);
+            if (channel != -1)
+            {
+                while (pu::audio::IsPlayingSfx(channel));
+            }
+            pu::audio::DestroySfx(sfx);
+        }
+        pu::audio::Finalize();
+    }
 }

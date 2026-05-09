@@ -77,9 +77,9 @@ CFLAGS	+= -std=c23
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=	-lSDL2 -lc -lSDL2_ttf -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -logg # Audio
+LIBS	:=	-lSDL2 -lSDL2_ttf # SDL2 and ttf
 LIBS	+=	-lpu -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `$(PREFIX)pkg-config --libs freetype2` # Graphics
-LIBS	+=	-lz -lssh2 -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lnx -lstdc++fs -lzstd -lnx-ipcext -ljtjson -lhaze # Misc
+LIBS	+=	-lz -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lnx -lzstd -lnx-ipcext -ljtjson -lhaze # Misc
 
 ifneq ($(WITH_NETWORK),)
 	LIBS	+=	`curl-config --libs`

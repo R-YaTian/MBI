@@ -16,4 +16,5 @@ namespace app::facade
     void SendInstallFinished();
     void ShowInstaller();
     s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name = "");
+    void PlayAudio(const std::string& filename);
 }

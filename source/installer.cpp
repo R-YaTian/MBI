@@ -33,8 +33,11 @@ namespace app::installer
         app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg + "!\n" + "inst.info_page.failed_desc"_lang);
         app::facade::SendInstallProgress(0);
         app::facade::SendInstallInfoText((std::string)e.what());
-        std::thread audioThread(app::manager::playAudio, "/fail.wav");
-        audioThread.join();
+        if (app::config::enableSound)
+        {
+            std::thread audioThread(app::facade::PlayAudio, "fail.wav");
+            audioThread.join();
+        }
     }
 
     NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
@@ -45,8 +48,11 @@ namespace app::installer
                                          msg + "inst.info_page.desc1"_lang);
         app::facade::SendInstallProgress(100);
         app::facade::SendInstallInfoText(app::i18n::GetRandomMsg());
-        std::thread audioThread(app::manager::playAudio, "/success.wav");
-        audioThread.join();
+        if (app::config::enableSound)
+        {
+            std::thread audioThread(app::facade::PlayAudio, "success.wav");
+            audioThread.join();
+        }
     }
 
     NX_INLINE bool OnStart(std::string sourceString)

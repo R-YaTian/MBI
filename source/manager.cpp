@@ -1,4 +1,3 @@
-#include <SDL2/SDL_mixer.h>
 #include <switch-ipcext.h>
 #include "manager.hpp"
 #include "nx/fs.hpp"
@@ -32,7 +31,6 @@ namespace app::manager
 #endif
 #endif
 
-        Mix_Init(MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG);
         accountInitialize(AccountServiceType_Administrator);
         if (R_FAILED(ncmInitialize()))
             LOG_DEBUG("Failed to initialize ncm\n");
@@ -44,7 +42,6 @@ namespace app::manager
     {
         ncmExit();
         accountExit();
-        Mix_Quit();
         romfsExit();
         nx::udisk::exit();
 
@@ -69,46 +66,5 @@ namespace app::manager
         esExit();
         splCryptoExit();
         splExit();
-    }
-
-    void playAudio(std::string audioPath)
-    {
-        std::string finalPath = "romfs:/audio"  + audioPath;
-        if (nx::fs::Exists(app::config::storagePath + audioPath))
-        {
-            finalPath = app::config::storagePath + audioPath;
-        }
-
-        int audio_rate = 44100;
-        Uint16 audio_format = AUDIO_S16SYS;
-        int audio_channels = 2;
-        int audio_buffers = 4096;
-
-        if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
-            return;
-
-        Mix_Chunk *sound = NULL;
-        sound = Mix_LoadWAV(finalPath.c_str());
-        if (sound == NULL || !app::config::enableSound)
-        {
-            Mix_FreeChunk(sound);
-            Mix_CloseAudio();
-            return;
-        }
-
-        int channel = Mix_PlayChannel(-1, sound, 0);
-        if (channel == -1)
-        {
-            Mix_FreeChunk(sound);
-            Mix_CloseAudio();
-            return;
-        }
-
-        while (Mix_Playing(channel) != 0);
-
-        Mix_FreeChunk(sound);
-        Mix_CloseAudio();
-
-        return;
     }
 }

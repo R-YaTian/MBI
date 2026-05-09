@@ -280,6 +280,20 @@ namespace app::ui
         SceneJump(Scene::Main);
     }
 
+    std::string MainApplication::GetFinalResourcePath(const std::string& type, const std::string& name)
+    {
+        std::string finalPath = "romfs:/" + type + "/" + name;
+        if (nx::fs::Exists(app::config::storagePath + "/" + name))
+        {
+            finalPath = app::config::storagePath + "/" + name;
+        }
+        else if (!nx::fs::Exists(finalPath))
+        {
+            return "";
+        }
+        return finalPath;
+    }
+
     void MainApplication::SetTouchButtonAreaType(TouchButtonAreaType type)
     {
         switch (type)
