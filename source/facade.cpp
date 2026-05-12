@@ -67,7 +67,7 @@ namespace app::facade
         dialog->SetOptionHorizontalMargin(40);
         if (icon_name != "")
         {
-            pu::sdl2::TextureHandle::Ref icon = ui::LoadTexture("romfs:/images/icons/" + icon_name + ".png");
+            pu::sdl2::TextureHandle::Ref icon = ui::LoadTexture("romfs:/images/icons/" + icon_name + ".webp");
             if (icon->Get() != nullptr)
             {
                 dialog->SetIcon(icon);
@@ -110,16 +110,13 @@ namespace app::facade
             return;
         }
 
-        pu::audio::Initialize();
-        pu::audio::Sfx sfx = pu::audio::LoadSfx(finalPath);
-        if (sfx != nullptr)
+        pu::audio::Initialize(pu::audio::INIT_ALL);
+        pu::audio::Music mus = pu::audio::OpenMusic(finalPath);
+        if (mus != nullptr)
         {
-            int channel = pu::audio::PlaySfx(sfx);
-            if (channel != -1)
-            {
-                while (pu::audio::IsPlayingSfx(channel));
-            }
-            pu::audio::DestroySfx(sfx);
+            pu::audio::PlayMusic(mus, 0);
+            while (pu::audio::IsPlayingMusic());
+            pu::audio::DestroyMusic(mus);
         }
         pu::audio::Finalize();
     }

@@ -41,37 +41,37 @@ namespace app::ui
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.png"));
+        this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.webp"));
         this->sdInstallMenuItem->AddOnKey(std::bind(&MainPage::SdInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
 #ifdef ENABLE_NET
         this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
         this->netInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->netInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/cloud-download.png"));
+        this->netInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/cloud-download.webp"));
         this->netInstallMenuItem->AddOnKey(std::bind(&MainPage::NetInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
 #endif
         this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
         this->usbInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->usbInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-port.png"));
+        this->usbInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-port.webp"));
         this->usbInstallMenuItem->AddOnKey(std::bind(&MainPage::UsbInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->udiskInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
         this->udiskInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->udiskInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/disk.png"));
+        this->udiskInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/disk.webp"));
         this->udiskInstallMenuItem->AddOnKey(std::bind(&MainPage::UdiskInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->mtpInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.mtp"_lang);
         this->mtpInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->mtpInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-mtp.png"));
+        this->mtpInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/usb-mtp.webp"));
         this->mtpInstallMenuItem->AddOnKey(std::bind(&MainPage::MtpInstallMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->ticketManagerMenuItem = pu::ui::elm::MenuItem::New("main.menu.tickets"_lang);
         this->ticketManagerMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->ticketManagerMenuItem->SetIcon(LoadTexture("romfs:/images/icons/ticket.png"));
+        this->ticketManagerMenuItem->SetIcon(LoadTexture("romfs:/images/icons/ticket.webp"));
         this->ticketManagerMenuItem->AddOnKey(std::bind(&MainPage::TicketManagerMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
         this->settingsMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.png"));
+        this->settingsMenuItem->SetIcon(LoadTexture("romfs:/images/icons/settings.webp"));
         this->settingsMenuItem->AddOnKey(std::bind(&MainPage::SettingsMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
         this->exitMenuItem->SetColor(COLOR(app::config::MenuTextColor));
-        this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.png"));
+        this->exitMenuItem->SetIcon(LoadTexture("romfs:/images/icons/exit-run.webp"));
         this->exitMenuItem->AddOnKey(std::bind(&MainPage::ExitMenuItem_Click, this), HidNpadButton_A | HidNpadButton_Verification);
         this->optionMenu->AddItem(this->sdInstallMenuItem);
 #ifdef ENABLE_NET

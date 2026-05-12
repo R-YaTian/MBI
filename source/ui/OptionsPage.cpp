@@ -41,11 +41,11 @@ namespace app::ui
         cleanOrphanedOption = pu::ui::elm::MenuItem::New("clean_orphaned.title"_lang);
         cleanOrphanedOption->SetColor(COLOR(app::config::MenuTextColor));
         cleanOrphanedOption->AddOnKey(std::bind(&OptionsPage::CleanOrphanedOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
-        cleanOrphanedOption->SetIcon(LoadTexture("romfs:/images/icons/clean.png"));
+        cleanOrphanedOption->SetIcon(LoadTexture("romfs:/images/icons/clean.webp"));
         languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(app::config::languageSetting));
         languageOption->SetColor(COLOR(app::config::MenuTextColor));
         languageOption->AddOnKey(std::bind(&OptionsPage::LanguageOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);
-        languageOption->SetIcon(LoadTexture("romfs:/images/icons/earth.png"));
+        languageOption->SetIcon(LoadTexture("romfs:/images/icons/earth.webp"));
         creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
         creditsOption->SetColor(COLOR(app::config::MenuTextColor));
         creditsOption->AddOnKey(std::bind(&OptionsPage::CreditsOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);

@@ -35,7 +35,7 @@ namespace app::installer
         app::facade::SendInstallInfoText((std::string)e.what());
         if (app::config::enableSound)
         {
-            std::thread audioThread(app::facade::PlayAudio, "fail.wav");
+            std::thread audioThread(app::facade::PlayAudio, "fail.mp3");
             audioThread.join();
         }
     }
@@ -50,7 +50,7 @@ namespace app::installer
         app::facade::SendInstallInfoText(app::i18n::GetRandomMsg());
         if (app::config::enableSound)
         {
-            std::thread audioThread(app::facade::PlayAudio, "success.wav");
+            std::thread audioThread(app::facade::PlayAudio, "success.mp3");
             audioThread.join();
         }
     }

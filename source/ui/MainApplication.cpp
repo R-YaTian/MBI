@@ -69,7 +69,7 @@ namespace app::ui
 
     pu::sdl2::TextureHandle::Ref MainApplication::LoadBackground(const std::string& bgDir)
     {
-        static const std::vector<std::string> exts = {".png", ".jpg", ".bmp"};
+        static const std::vector<std::string> exts = {".png", ".jpg", ".bmp", ".webp"};
         for (auto const& ext : exts)
         {
             auto path = bgDir + "/background" + ext;
@@ -78,7 +78,7 @@ namespace app::ui
                 return LoadTexture(path);
             }
         }
-        return LoadTexture("romfs:/images/background.png");
+        return LoadTexture("romfs:/images/background.webp");
     }
 
     static std::string GetBatteryColor(u32 batteryValue)
@@ -173,18 +173,18 @@ namespace app::ui
     {
         mainApp = this;
 
-        this->checkboxBlank = LoadTexture("romfs:/images/icons/checkbox-blank-outline.png");
-        this->checkboxTick = LoadTexture("romfs:/images/icons/check-box-outline.png");
+        this->checkboxBlank = LoadTexture("romfs:/images/icons/checkbox-blank-outline.webp");
+        this->checkboxTick = LoadTexture("romfs:/images/icons/check-box-outline.webp");
         this->bgImg = LoadBackground(app::config::storagePath);
-        this->logoImg = LoadTexture("romfs:/images/logo.png");
-        this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.png");
-        this->dirImg = LoadTexture("romfs:/images/icons/folder.png");
-        this->backImg = LoadTexture("romfs:/images/icons/backward.png");
-        this->confirmImg = LoadTexture("romfs:/images/icons/confirm.png");
-        this->selectAllImg = LoadTexture("romfs:/images/icons/select-all.png");
-        this->pageUpImg = LoadTexture("romfs:/images/icons/page-up.png");
-        this->pageDownImg = LoadTexture("romfs:/images/icons/page-down.png");
-        this->defaultUserImg = LoadTexture("romfs:/images/icon.jpg");
+        this->logoImg = LoadTexture("romfs:/images/logo.webp");
+        this->dirbackImg = LoadTexture("romfs:/images/icons/folder-upload.webp");
+        this->dirImg = LoadTexture("romfs:/images/icons/folder.webp");
+        this->backImg = LoadTexture("romfs:/images/icons/backward.webp");
+        this->confirmImg = LoadTexture("romfs:/images/icons/confirm.webp");
+        this->selectAllImg = LoadTexture("romfs:/images/icons/select-all.webp");
+        this->pageUpImg = LoadTexture("romfs:/images/icons/page-up.webp");
+        this->pageDownImg = LoadTexture("romfs:/images/icons/page-down.webp");
+        this->defaultUserImg = LoadTexture("romfs:/images/icon.webp");
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#000000c0"));
         this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#000000c0"));
