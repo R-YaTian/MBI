@@ -153,16 +153,17 @@ namespace app::ui
                 const auto rc = nx::acc::ReadSelectedUser(&this->currentProfileBase, nullptr);
                 if (R_SUCCEEDED(rc))
                 {
-                    this->userNameText->SetText("misc.user"_lang + "\n" + std::string(this->currentProfileBase.nickname));
+                    userNameText->SetText("misc.user"_lang + "\n" + std::string(this->currentProfileBase.nickname));
                 }
                 else
                 {
-                    this->userNameText->SetText("misc.user"_lang + "\n" + "misc.unsel"_lang);
+                    userNameText->SetText("misc.user"_lang + "\n" + "misc.unsel"_lang);
                 }
             }
             else
             {
                 userImage->SetImage(this->defaultUserImg);
+                userNameText->SetText("misc.user"_lang + "\n" + "misc.unsel"_lang);
             }
             userImage->SetWidth(80);
             userImage->SetHeight(80);
@@ -327,6 +328,7 @@ namespace app::ui
         if (nx::acc::HasSelectedUser())
         {
             bool isLinked = nx::acc::IsLinked();
+            u32 userCount = nx::acc::GetUserCount();
             std::vector<std::string> optionsList;
             if (isLinked)
             {
@@ -338,6 +340,10 @@ namespace app::ui
             }
             optionsList.push_back("user_actions.sel_user"_lang);
             optionsList.push_back("common.cancel"_lang);
+            if (!isLinked && userCount > 1)
+            {
+                optionsList.push_back("user_actions.del_user"_lang);
+            }
             int ret = app::facade::ShowDialog("user_actions.title"_lang, "user_actions.desc"_lang, optionsList, false, "warning");
             if (ret < 0)
             {
@@ -371,6 +377,19 @@ namespace app::ui
                     break;
                 case 2: // Cancel
                     return;
+                case 3: // Delete user (only shows when the user is not linked and there are more than 1 users)
+                {
+                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("user_actions.confirm"_lang, "", 2);
+                    if (requestConfirm != "OK")
+                    {
+                        return;
+                    }
+                    Result ret = nx::acc::DeleteUser();
+                    app::facade::ShowDialog("user_actions.del_user"_lang,
+                                            R_SUCCEEDED(ret) ? "common.success"_lang : "common.fail"_lang,
+                                            {"common.ok"_lang}, false, "information");
+                    return;
+                }
                 default:
                     return;
             }

@@ -179,8 +179,9 @@
     },
     "user_actions": {
         "title": "User actions",
-        "desc": "Link or unlink user account locally. This action cannot be undone!\nNote: The console will automatically reboot after the link operation is completed.",
+        "desc": "Link or unlink user account locally. This action cannot be undone!\nNote: The console will automatically reboot after the link operation is completed.\nThe delete option is hidden if the user is linked or if only one user exists.",
         "sel_user": "Select user",
+        "del_user": "Delete user",
         "link": "Link locally",
         "unlink": "Unlink locally",
         "confirm": "Type 'OK' to continue."

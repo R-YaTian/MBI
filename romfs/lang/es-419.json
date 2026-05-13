@@ -179,8 +179,9 @@
     },
     "user_actions": {
         "title": "Acciones del usuario",
-        "desc": "Vincula o desvincula la cuenta de usuario localmente. ¡Esta acción no se puede deshacer!\nNota: La consola se reiniciará automáticamente después de completar la operación de vinculación.",
+        "desc": "Vincula o desvincula la cuenta de usuario localmente. ¡Esta acción no se puede deshacer!\nNota: La consola se reiniciará automáticamente después de completar la operación de vinculación.\nLa opción de eliminar está oculta si el usuario está vinculado o si solo existe un usuario.",
         "sel_user": "Seleccionar usuario",
+        "del_user": "Eliminar usuario",
         "link": "Vincular localmente",
         "unlink": "Desvincular localmente",
         "confirm": "Escribe 'OK' para continuar."

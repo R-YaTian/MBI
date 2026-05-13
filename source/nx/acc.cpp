@@ -187,6 +187,13 @@ namespace nx::acc
         }
     }
 
+    u32 GetUserCount()
+    {
+        s32 count = 0;
+        accountGetUserCount(&count);
+        return static_cast<u32>(count);
+    }
+
     AccountUid GetSelectedUser()
     {
         return g_SelectedUser;
@@ -311,5 +318,15 @@ namespace nx::acc
             accountProfileClose(&prof);
         }
         return {};
+    }
+
+    Result DeleteUser()
+    {
+        const auto rc = accountextDeleteUser(GetSelectedUser());
+        if (R_SUCCEEDED(rc))
+        {
+            g_SelectedUser = {};
+        }
+        return rc;
     }
 }

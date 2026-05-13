@@ -179,8 +179,9 @@
     },
     "user_actions": {
         "title": "Actions utilisateur",
-        "desc": "Liez ou dissociez le compte utilisateur localement. Cette action ne peut pas être annulée!\nRemarque: La console redémarrera automatiquement après la fin de l'opération de liaison.",
+        "desc": "Liez ou dissociez le compte utilisateur localement. Cette action ne peut pas être annulée!\nRemarque: La console redémarrera automatiquement après la fin de l'opération de liaison.\nL'option de suppression est masquée si l'utilisateur est lié ou si un seul utilisateur existe.",
         "sel_user": "Sélection de l'utilisateur",
+        "del_user": "Supprimer l'utilisateur",
         "link": "Connecter localement",
         "unlink": "Déconnecter localement",
         "confirm": "Tapez 'OK' pour continuer."

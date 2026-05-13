@@ -31,6 +31,7 @@ namespace nx::acc
         return memcmp(user_id_a->uid, user_id_b->uid, sizeof(AccountUid)) == 0;
     }
 
+    u32 GetUserCount();
     AccountUid GetSelectedUser();
     bool HasSelectedUser();
     void SetSelectedUser(const AccountUid user_id);
@@ -41,4 +42,5 @@ namespace nx::acc
     Result UnlinkLocally();
     void LinkLocally();
     std::vector<u8> GetSelectedUserIcon();
+    Result DeleteUser();
 }

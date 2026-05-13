@@ -179,8 +179,9 @@
     },
     "user_actions": {
         "title": "Benutzeraktionen",
-        "desc": "Verknüpfe oder trenne das Benutzerkonto lokal. Diese Aktion kann nicht rückgängig gemacht werden!\nHinweis: Die Konsole wird nach Abschluss des Verknüpfungsvorgangs automatisch neu gestartet.",
+        "desc": "Verknüpfe oder trenne das Benutzerkonto lokal. Diese Aktion kann nicht rückgängig gemacht werden!\nHinweis: Die Konsole wird nach Abschluss des Verknüpfungsvorgangs automatisch neu gestartet.\nDie Option zum Löschen ist ausgeblendet, wenn der Benutzer verknüpft ist oder nur ein Benutzer existiert.",
         "sel_user": "Benutzer Auswahl",
+        "del_user": "Benutzer löschen",
         "link": "Lokal verbinden",
         "unlink": "Lokal trennen",
         "confirm": "Geben Sie 'OK' ein, um fortzufahren."

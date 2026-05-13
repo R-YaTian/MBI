@@ -179,8 +179,9 @@
     },
     "user_actions": {
         "title": "Azioni utente",
-        "desc": "Collega o scollega l'account utente localmente. Questa azione non può essere annullata!\nNota: La console si riavvierà automaticamente dopo il completamento dell'operazione di collegamento.",
+        "desc": "Collega o scollega l'account utente localmente. Questa azione non può essere annullata!\nNota: La console si riavvierà automaticamente dopo il completamento dell'operazione di collegamento.\nL'opzione di eliminazione è nascosta se l'utente è collegato o se esiste un solo utente.",
         "sel_user": "Selezione utente",
+        "del_user": "Elimina utente",
         "link": "Collega localmente",
         "unlink": "Scollega localmente",
         "confirm": "Digita 'OK' per continuare."
