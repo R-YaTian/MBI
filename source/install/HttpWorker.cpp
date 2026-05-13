@@ -4,6 +4,7 @@
 #include "nx/fs.hpp"
 #include "facade.hpp"
 #include <sstream>
+#include <iomanip>
 #include <thread>
 
 namespace app::install
@@ -106,7 +107,9 @@ namespace app::install
 
                 std::stringstream x;
                 x << downloadProgress;
-                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
+                std::stringstream speedStr;
+                speedStr << std::fixed << std::setprecision(2) << speed;
+                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
                 app::facade::SendInstallProgress((double)downloadProgress);
             }
         }

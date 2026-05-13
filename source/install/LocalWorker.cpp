@@ -5,6 +5,7 @@
 #include "nx/fs.hpp"
 #include "facade.hpp"
 #include <sstream>
+#include <iomanip>
 
 namespace app::install
 {
@@ -74,7 +75,9 @@ namespace app::install
                     app::facade::SendInstallProgress((double)(progress * 100.0));
                     std::stringstream x;
                     x << (int)(progress * 100.0);
-                    app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + std::to_string(speed).substr(0, std::to_string(speed).size() - 4) + "MB/s");
+                    std::stringstream speedStr;
+                    speedStr << std::fixed << std::setprecision(2) << speed;
+                    app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
                 }
 
                 if (fileOff + readSize >= ncaSize)
