@@ -78,7 +78,7 @@ ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS	:=	-lpu -lSDL2_gfx `sdl2-config --libs` `$(PREFIX)pkg-config --libs freetype2` # Graphics
-LIBS	+=	-lwebp -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lnx -lzstd -lnx-ipcext -ljtjson -lhaze # Misc
+LIBS	+=	-lwebp -lwebpdemux -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lnx -lzstd -lnx-ipcext -ljtjson -lhaze # Misc
 
 ifneq ($(WITH_NETWORK),)
 	LIBS	+=	`curl-config --libs`
