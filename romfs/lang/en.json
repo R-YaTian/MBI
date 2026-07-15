@@ -23,10 +23,6 @@
                 "title": "Warning!",
                 "desc": "USB installations may not \"just werk\" on some devices and setups.\nIf you experience issues with USB installations, please don't pull your\nhair out! It's advised to use NS-USBloader for USB installations, or\nLAN/Internet installations instead for remote installation, especially\nwhen paired with an ethernet adapter!\n\nYou have been warned...",
                 "opt1": "Don't tell me again"
-            },
-            "error": {
-                "title": "No USB connection detected",
-                "desc": "Plug in to a compatible device to install over USB"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Help",
                 "desc": "Files can be installed over USB from other devices using tools such as\nNS-USBloader in Awoo mode. To send files to your Switch, open one of\nthese pieces of software on your PC, select your files, then upload to\nyour console!\n\nUnfortunately USB installations require a specific setup on some\nplatforms, and can be rather buggy at times. If you can't figure it out,\ngive LAN/internet installs a try, or copy your files to your SD card and\ntry the \"Install from SD Card\" option on the main menu!"
             },
-            "top_info": "USB connection successful! Waiting for list of files to be sent...",
-            "top_info2": "Select what files you want to install over USB, then press the \ue0ef button!",
+            "top_info": "Select what files you want to install over USB, then press the \ue0ef button!",
             "error": "USB transfer timed out or failed",
             "source_string": "Install via USB",
             "buttons": "\ue0e2 (Hold) Help    \ue0e1 (Hold) Cancel",
@@ -185,5 +180,25 @@
         "link": "Link locally",
         "unlink": "Unlink locally",
         "confirm": "Type 'OK' to continue."
+    },
+    "usbds": {
+        "states": [
+            "Detached",
+            "Attached",
+            "Powered",
+            "Default",
+            "Address",
+            "Configured",
+            "Suspended"
+        ],
+        "speed": [
+            "None",
+            "USB 1.0 Low Speed",
+            "USB 1.1 Full Speed",
+            "USB 2.0 High Speed",
+            "USB 3.0 Super Speed",
+            "Unknown"
+        ],
+        "message": "USB State: %s | Speed: %s"
     }
 }

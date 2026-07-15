@@ -23,10 +23,6 @@
                 "title": "¡Advertencia!",
                 "desc": "Las instalaciones por USB pueden no funcionar muy bien en algunos dispositivos y configuraciones.\nSi experimentas problemas con las instalaciones USB, ¡por favor no te tires de los pelos!\nSe recomienda el uso de NS-USBloader para las instalaciones por USB,\no instalaciones a través de LAN/Internet en su lugar para instalar de forma remota, ¡especialmente\ncuando se usa en conjunto con un adaptador de ethernet!\n\nTe lo hemos advertido...",
                 "opt1": "No me vuelvas a advertir"
-            },
-            "error": {
-                "title": "No se ha detectado una conexión USB",
-                "desc": "Conecta a un dispositivo compatible para hacer instalaciones por USB"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Ayuda",
                 "desc": "Se pueden instalar archivos por USB de otros dispositivos utilizando herramientas como\nNS-USBloader en modo Awoo. Para enviar archivos a tu Switch, abre uno de\nestos programas en tu ordenador, selecciona tus archivos, ¡y súbelos a\ntu consola!\n\nPor desgracia, las instalaciones por USB necesitan una configuración especial en algunas\nplataformas, y puede ser bastante problemática a veces. Si no consigues hacer que funcione,\nprueba las instalaciones por red local/Internet, o copia tus archivos a la tarjeta SD y prueba la opción de «Instalar desde tarjeta SD» en el menú principal."
             },
-            "top_info": "¡Conexión USB exitosa! Esperando que se envíe la lista de archivos...",
-            "top_info2": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón \ue0ef!",
+            "top_info": "¡Selecciona los archivos que quieres instalar por USB y pulsa el botón \ue0ef!",
             "error": "Tiempo de espera agotado o error de transferencia USB",
             "source_string": "Instalar mediante USB",
             "buttons": "\ue0e2 (Mantener) Ayuda    \ue0e1 (Mantener) Cancelar",
@@ -185,5 +180,25 @@
         "link": "Vincular localmente",
         "unlink": "Desvincular localmente",
         "confirm": "Escribe 'OK' para continuar."
+    },
+    "usbds": {
+        "states": [
+            "Desconectado",
+            "Conectado",
+            "Encendido",
+            "Predeterminado",
+            "Dirección",
+            "Configurado",
+            "Suspendido"
+        ],
+        "speed": [
+            "Ninguna",
+            "USB 1.0 Baja velocidad",
+            "USB 1.1 Velocidad completa",
+            "USB 2.0 Alta velocidad",
+            "USB 3.0 Super velocidad",
+            "Desconocido"
+        ],
+        "message": "USB Estado: %s | Velocidad: %s"
     }
 }

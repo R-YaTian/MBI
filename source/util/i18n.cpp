@@ -109,4 +109,18 @@ namespace app::i18n
         srand(time(NULL));
         return j[rand() % j.size()].get<std::string>();
     }
+
+    std::string GetRelativeMsgAt(const std::string& key, size_t index)
+    {
+        jt::Json j = app::i18n::GetRelativeJson(lang, key);
+        if (j.is_null())
+        {
+            return "Missing key: " + key;
+        }
+        if (index >= j.size())
+        {
+            return "Index out of bounds for key: " + key;
+        }
+        return j[index].get<std::string>();
+    }
 }

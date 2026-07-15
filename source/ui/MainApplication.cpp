@@ -426,7 +426,7 @@ namespace app::ui
             break;
         case Scene::UsbInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
-            mainApp->SetPageInfoText("inst.usb.top_info"_lang);
+            mainApp->SetPageInfoText("");
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
             if (usbinstPage->startUsb())
@@ -452,7 +452,7 @@ namespace app::ui
             break;
         case Scene::MtpInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
-            mainApp->SetPageInfoText("inst.usb.top_info"_lang);
+            mainApp->SetPageInfoText("");
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
             break;

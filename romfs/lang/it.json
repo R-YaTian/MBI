@@ -23,10 +23,6 @@
                 "title": "Attenzione!",
                 "desc": "L'installazione USB potrebbe non funzionare su alcuni dispositivi e in alcune configurazioni.\nSe stai incontrando dei problemi con l'installazione USB, non disperare!\nÈ consigliato usare NS-USBloader per le installazioni via USB, mentre\nLAN/Internet per le installazioni remote, specie\nquando si utilizza un adattatore ethernet!\n\nSei stato avvertito...",
                 "opt1": "Non dirmelo di nuovo!"
-            },
-            "error": {
-                "title": "Nessuna connessione USB rilevata",
-                "desc": "Collega a un dispositivo compatibile per installare via USB"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Aiuto",
                 "desc": "I file possono essere installati via USB da altri dispositivi utilizzando programmi come\nNS-USBloader in modalità \"Awoo\". Per inviare i file, apri uno di\nquesti software sul tuo PC, seleziona i file, poi mandali\nalla console!\n\nSfortunatamente l'installazione via USB richiede configurazioni specifiche in certe\npiattaforme, che possono non funzionare correttamente alle volte. Se proprio non riesci,\ndai una possibilità all'installazione via LAN/internet, o copia i file nella SD e\nseleziona l'opzione \"Installa dalla SD\" nel menù principale!"
             },
-            "top_info": "Connessione USB avvenuta correttamete! Aspetto che la lista dei file venga inviata...",
-            "top_info2": "Seleziona quali file vuoi installare via USB, poi premi il tasto \ue0ef!",
+            "top_info": "Seleziona quali file vuoi installare via USB, poi premi il tasto \ue0ef!",
             "error": "Trasferimento USB scaduto o fallito",
             "source_string": "Installa tramite USB",
             "buttons": "\ue0e2 (Tieni premuto) Aiuto    \ue0e1 (Tieni premuto) Annulla",
@@ -185,5 +180,25 @@
         "link": "Collega localmente",
         "unlink": "Scollega localmente",
         "confirm": "Digita 'OK' per continuare."
+    },
+    "usbds": {
+        "states": [
+            "Scollegato",
+            "Collegato",
+            "Alimentato",
+            "Predefinito",
+            "Indirizzato",
+            "Configurato",
+            "Sospeso"
+        ],
+        "speed": [
+            "Nessuna",
+            "USB 1.0 Bassa velocità",
+            "USB 1.1 Piena velocità",
+            "USB 2.0 Alta velocità",
+            "USB 3.0 SuperSpeed",
+            "Sconosciuta"
+        ],
+        "message": "Stato USB: %s | Velocità USB: %s"
     }
 }

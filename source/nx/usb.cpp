@@ -219,7 +219,8 @@ namespace nx::usb
             rc = usbDsInitialize();
 
             if (R_SUCCEEDED(rc)) {
-                if (hosversionAtLeast(5,0,0)) {
+                if (hosversionAtLeast(5,0,0))
+                {
                     u8 iManufacturer, iProduct, iSerialNumber;
                     static const u16 supported_langs[1] = {0x0409};
                     // Send language descriptor
@@ -574,11 +575,27 @@ namespace nx::usb
         return usbDeviceWriteEx(buffer, size, 0, timeout);
     }
 
-    bool usbDeviceIsConnected()
+    UsbState usbDeviceGetState()
     {
         UsbState state = UsbState_Detached;
         usbDsGetState(&state);
-        return state == UsbState_Configured;
+        return state;
+    }
+
+    DeviceSpeed usbDeviceGetSpeed()
+    {
+        if (hosversionAtLeast(8,0,0))
+        {
+            UsbDeviceSpeed speed = UsbDeviceSpeed_None;
+            usbDsGetSpeed(&speed);
+            return (DeviceSpeed)speed;
+        }
+        return DeviceSpeed_Unknown;
+    }
+
+    bool usbDeviceIsConnected()
+    {
+        return usbDeviceGetState() == UsbState_Configured;
     }
 
     bool usbDeviceIsInitialized()

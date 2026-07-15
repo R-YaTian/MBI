@@ -23,10 +23,6 @@
                 "title": "Warnung!",
                 "desc": "USB-Installationen funktionieren möglicherweise mit manchen Geräten und\nKonfigurationen nicht. Falls du Probleme mit USB-Installationen hast,\nreiß dir nicht die Haare aus! Wir empfehlen NS-USBloader für USB-Installationen\noder stattdessen LAN/Internet Installationen,\nam besten über einen Ethernet-Adapter verbunden.\n\nWir haben dich gewarnt...",
                 "opt1": "Warnt mich nicht nochmal"
-            },
-            "error": {
-                "title": "Keine USB-Verbindung erkannt",
-                "desc": "Verbinde die Switch für USB-Installationen mit einem kompatiblen Gerät"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Hilfe",
                 "desc": "Dateien können mit Tools, wie NS-USBloader im Awoo-Modus\nvon anderen Geräten aus installiert werden.\nUm Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät, wähle die Dateien\naus und übertrage sie dann auf die Konsole!\n\nLeider erfordern USB-Installationen auf einigen Plattformen ein spezielles\nSetup und können manchmal ziemlich fehlerhaft sein. Falls das nicht klappt,\nversuche es mit LAN/Internet Installation oder kopiere deine Dateien auf\ndeine SD-Karte und versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!"
             },
-            "top_info": "USB verbunden! Warte auf die Dateiliste...",
-            "top_info2": "Wähle Dateien zur Installation aus und drücke dann \ue0ef!",
+            "top_info": "Wähle Dateien zur Installation aus und drücke dann \ue0ef!",
             "error": "USB Übertragung ist zeitlich abgelaufen oder fehlgeschlagen",
             "source_string": "Über USB installieren",
             "buttons": "\ue0e2 (Halten) Hilfe    \ue0e1 (Halte) Abbrechen",
@@ -185,5 +180,25 @@
         "link": "Lokal verbinden",
         "unlink": "Lokal trennen",
         "confirm": "Geben Sie 'OK' ein, um fortzufahren."
+    },
+    "usbds": {
+        "states": [
+            "Getrennt",
+            "Angeschlossen",
+            "Eingeschaltet",
+            "Standard",
+            "Adressiert",
+            "Konfiguriert",
+            "Pausiert"
+        ],
+        "speed": [
+            "Keine",
+            "USB 1.0 Niedrige Geschwindigkeit",
+            "USB 1.1 Volle Geschwindigkeit",
+            "USB 2.0 Hohe Geschwindigkeit",
+            "USB 3.0 SuperSpeed",
+            "Unbekannt"
+        ],
+        "message": "USB-Status: %s | USB-Geschwindigkeit: %s"
     }
 }

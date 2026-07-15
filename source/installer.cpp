@@ -199,6 +199,14 @@ namespace app::installer
                     app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true, "information");
                 }
 
+                char msg[256] = {};
+                UsbState usbState = nx::usb::usbDeviceGetState();
+                nx::usb::DeviceSpeed usbSpeed = nx::usb::usbDeviceGetSpeed();
+                std::snprintf(msg, sizeof(msg), "usbds.message"_lang.c_str(),
+                                                app::i18n::GetRelativeMsgAt("usbds.states", usbState).c_str(),
+                                                app::i18n::GetRelativeMsgAt("usbds.speed", usbSpeed).c_str());
+                app::facade::SendPageInfoText(msg);
+
                 if (nx::usb::usbDeviceIsConnected() && transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
                 {
                     break;

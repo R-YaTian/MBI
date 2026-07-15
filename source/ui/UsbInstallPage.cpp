@@ -59,7 +59,7 @@ namespace app::ui
         }
         else
         {
-            app::facade::SendPageInfoText("inst.usb.top_info2"_lang);
+            app::facade::SendPageInfoText("inst.usb.top_info"_lang);
             app::facade::SendBottomText("inst.usb.buttons2"_lang);
             this->drawMenuItems();
             this->infoImage->SetVisible(false);

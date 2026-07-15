@@ -25,6 +25,16 @@ namespace nx::usb
         u8 bInterfaceProtocol;
     } NX_PACKED;
 
+    typedef enum
+    {
+        DeviceSpeed_None = 0x0,
+        DeviceSpeed_Low = 0x1,   ///< USB 1.0 Low Speed
+        DeviceSpeed_Full = 0x2,  ///< USB 1.1 Full Speed
+        DeviceSpeed_High = 0x3,  ///< USB 2.0 High Speed
+        DeviceSpeed_Super = 0x4, ///< USB 3.0 Super Speed
+        DeviceSpeed_Unknown = 0x5,
+    } DeviceSpeed;
+
     /// Initializes USB device service with the default number of interfaces.
     Result usbDeviceInitialize();
 
@@ -45,6 +55,12 @@ namespace nx::usb
 
     /// Write data with the specified interface.
     size_t usbDeviceWriteEx(const void* buffer, size_t size, u32 interface, u64 timeout);
+
+    /// Gets the current state of the USB device.
+    UsbState usbDeviceGetState();
+
+    /// Gets the current speed of the USB device.
+    DeviceSpeed usbDeviceGetSpeed();
 
     /// Checks whether the USB device is connected.
     bool usbDeviceIsConnected();

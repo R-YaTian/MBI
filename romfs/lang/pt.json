@@ -23,10 +23,6 @@
                 "title": "Aviso!",
                 "desc": "A instalação através do USB \"simplesmente não funcionará\" em alguns dispositivos ou configurações.\nSe tiver problemas a instalar através do USB, por favor não arranque\ncabelos! Recomendamos que use o NS-USBloader para instalações USB, ou\nem alternativa instale remotamente através da LAN/Internet, especialmente\nse usar um adaptador ethernet!\n\nIrá benefeciar imenso com isso...",
                 "opt1": "Não me aborrecer novamente"
-            },
-            "error": {
-                "title": "Nenhuma ligação USB detetada",
-                "desc": "Ligue um dispositivo compatível para instalar através do USB"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Ajuda",
                 "desc": "Os Ficheiros podem ser instalados através do USB a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Awoo. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC, selecione os ficheiros e envie para\na consola!\n\nInfelizmente as instalações USB requerem configurações epecíficas em algumas\nplataformas causando problemas. Se for o caso,\ntente instalar através da LAN/Internet, ou copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
             },
-            "top_info": "USB connection successful! Waiting for list of files to be sent...",
-            "top_info2": "Selecione os ficheiros que deseja instalar através do USB, depois pressione o botão \ue0ef!",
+            "top_info": "Selecione os ficheiros que deseja instalar através do USB, depois pressione o botão \ue0ef!",
             "error": "A transferência USB expirou ou falhou",
             "source_string": "Instalar via USB",
             "buttons": "\ue0e2 (Manter primido) Ajuda    \ue0e1 (Manter primido) Cancelar",
@@ -185,5 +180,25 @@
         "link": "Vincular localmente",
         "unlink": "Desvincular localmente",
         "confirm": "Digite 'OK' para continuar."
+    },
+    "usbds": {
+        "states": [
+            "Desconectado",
+            "Conectado",
+            "Energia",
+            "Padrão",
+            "Endereço",
+            "Configurado",
+            "Suspenso"
+        ],
+        "speed": [
+            "Nenhum",
+            "USB 1.0 Baixa velocidade",
+            "USB 1.1 Velocidade total",
+            "USB 2.0 Alta velocidade",
+            "USB 3.0 SuperSpeed",
+            "Desconhecida"
+        ],
+        "message": "USB Estado: %s | Velocidade: %s"
     }
 }

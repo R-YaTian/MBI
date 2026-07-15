@@ -23,10 +23,6 @@
                 "title": "Avertissement!",
                 "desc": "L'installation USB peut ne \"pas fonctionner\" sur certains appareils et certaines configurations.\nSi vous rencontrez des problèmes avec l'installation USB, ne vous arrachez pas les cheveux !\n\n Il est conseillé d'utiliser NS-USBloader pour l'installation USB. Pour installer à distance, préfèrez les modes \nLAN/Internet, en particulier si vous utilisez un adaptateur ethernet!\n\nVous avez été prévenu...",
                 "opt1": "Ne plus m'avertir"
-            },
-            "error": {
-                "title": "Aucune connection USB détectée",
-                "desc": "Branchez un appareil compatible pour installer via le port USB"
             }
         },
         "applet": {
@@ -73,8 +69,7 @@
                 "title": "Aide",
                 "desc": "Les fichiers peuvent être installés à partir du port USB depuis vos autres périphériques à l'aide d'outils tels que\nNS-USBloader en mode Awoo. Pour envoyer des fichiers à votre Switch, ouvrez un\nde ces logiciels sur votre PC, sélectionnez vos fichiers, puis téléchargez-les\nsur votre console !\n\nMalheureusement, les installations USB nécessitent une configuration spécifique sur certaines\nplates-formes, et peuvent parfois être assez buggées. Si vous n'arrivez pas à comprendre,\nessayez les installations LAN/internet, ou copiez vos fichiers sur votre carte SD et\nessayezl'option \"Installer à partir de la carte SD\" depuis le menu principal!"
             },
-            "top_info": "Connexion USB réussie ! En attente de l'envoi de la liste des fichiers...",
-            "top_info2": "Sélectionnez les fichiers que vous voulez installer par USB, puis appuyez sur le bouton \ue0ef!",
+            "top_info": "Sélectionnez les fichiers que vous voulez installer par USB, puis appuyez sur le bouton \ue0ef!",
             "error": "Le transfert USB a été interrompu ou a échoué",
             "source_string": "Installer via USB",
             "buttons": "\ue0e2 (Maintenir) Aide    \ue0e1 (Maintenir) Annuler",
@@ -185,5 +180,25 @@
         "link": "Connecter localement",
         "unlink": "Déconnecter localement",
         "confirm": "Tapez 'OK' pour continuer."
+    },
+    "usbds": {
+        "states": [
+            "Détaché",
+            "Attaché",
+            "Alimenté",
+            "Par défaut",
+            "Adressé",
+            "Configuré",
+            "Suspendu"
+        ],
+        "speed": [
+            "Aucune",
+            "USB 1.0 Basse vitesse",
+            "USB 1.1 Pleine vitesse",
+            "USB 2.0 Haute vitesse",
+            "USB 3.0 SuperSpeed",
+            "Inconnue"
+        ],
+        "message": "État USB : %s | Vitesse USB : %s"
     }
 }
