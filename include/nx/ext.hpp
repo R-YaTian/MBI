@@ -140,6 +140,6 @@ namespace nx::ext
     using AppMetaMap = std::map<u64, std::vector<NsApplicationContentMetaStatus>>;
 
     AppMetaMap ScanApplicationsContentMetaStatus();
-    std::vector<Ticket> ScanTickets();
+    std::vector<Ticket> ScanTickets(const AppMetaMap* app_meta_map = nullptr);
     bool CleanPendingUpdate();
 }

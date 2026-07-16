@@ -55,7 +55,47 @@ namespace nx::ext
         return applicationsMetaMap;
     }
 
-    std::vector<Ticket> ScanTickets()
+    static bool ExistsApplicationContent(const AppMetaMap& app_meta_map, const u64 program_id, const NcmContentMetaType content_type)
+    {
+        const auto app_id = ncm::GetBaseTitleId(program_id, content_type);
+        auto it = app_meta_map.find(app_id);
+        if (it != app_meta_map.end())
+        {
+            const auto& entries = it->second;
+            const auto cnt_it = std::find_if(entries.begin(), entries.end(), [&](const NsApplicationContentMetaStatus &cnt_status) -> bool {
+                return (cnt_status.application_id == program_id) && (cnt_status.storageID != NcmStorageId_GameCard);
+            });
+
+            if (cnt_it != entries.end())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    static bool ExistsApplicationAnyContents(const AppMetaMap& app_meta_map, const u64 program_id)
+    {
+        if (ExistsApplicationContent(app_meta_map, program_id, NcmContentMetaType_Application))
+        {
+            return true;
+        }
+        if (ExistsApplicationContent(app_meta_map, program_id, NcmContentMetaType_Patch))
+        {
+            return true;
+        }
+        if (ExistsApplicationContent(app_meta_map, program_id, NcmContentMetaType_AddOnContent))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    std::vector<Ticket> ScanTickets(const AppMetaMap* app_meta_map)
     {
         esInitialize();
         std::vector<Ticket> tickets;
@@ -74,6 +114,14 @@ namespace nx::ext
                         .rights_id = ids[i],
                         .type = TicketType::Common
                     };
+                    if (app_meta_map != nullptr)
+                    {
+                        const auto app_id = esGetRightsIdApplicationId(&common_tik.rights_id);
+                        if (ExistsApplicationAnyContents(*app_meta_map, app_id))
+                        {
+                            continue; // Skip this ticket if any contents exist for the application
+                        }
+                    }
                     tickets.push_back(common_tik);
                 }
             }
@@ -94,6 +142,14 @@ namespace nx::ext
                         .rights_id = ids[i],
                         .type = TicketType::Personalized
                     };
+                    if (app_meta_map != nullptr)
+                    {
+                        const auto app_id = esGetRightsIdApplicationId(&personalized_tik.rights_id);
+                        if (ExistsApplicationAnyContents(*app_meta_map, app_id))
+                        {
+                            continue; // Skip this ticket if any contents exist for the application
+                        }
+                    }
                     tickets.push_back(personalized_tik);
                 }
             }

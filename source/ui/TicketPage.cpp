@@ -10,6 +10,7 @@ namespace app::ui
     struct TicketPage::InternalData
     {
         std::vector<nx::ext::Ticket> ticketsList;
+        nx::ext::AppMetaMap applicationsMetaMap;
         std::map<size_t, nx::ext::Ticket> selectedTickets;
     };
 
@@ -58,7 +59,8 @@ namespace app::ui
         this->menu->SetVisible(false);
         this->infoImage->SetVisible(true);
         app::facade::SendRenderRequest();
-        this->pageData->ticketsList = nx::ext::ScanTickets();
+        this->pageData->applicationsMetaMap = nx::ext::ScanApplicationsContentMetaStatus();
+        this->pageData->ticketsList = nx::ext::ScanTickets(&this->pageData->applicationsMetaMap);
         if (!this->pageData->ticketsList.size())
         {
             return false;
@@ -78,6 +80,7 @@ namespace app::ui
     {
         this->pageData->ticketsList.clear();
         this->pageData->selectedTickets.clear();
+        this->pageData->applicationsMetaMap.clear();
         this->menu->ClearItems();
         SceneJump(Scene::Main);
     }
