@@ -142,6 +142,10 @@
     },
     "ticket_manager": {
         "scanning": "Scannen ungenutzter Tickets...",
+        "delete_title": "Ticket löschen",
+        "delete_info_multi": " nicht verwendete Tickets erfolgreich gelöscht!",
+        "no_unused": "Keine ungenutzten Tickets gefunden!",
+        "used_not_allowed": "Um Risiken zu vermeiden, ist das Löschen von benutzten Tickets nicht erlaubt",
         "top_info": "Wählen Sie das Ticket aus, das Sie löschen möchten, und drücken Sie dann die Taste \ue0ef!",
         "buttons": "\ue0e0 Ticket auswählen    \ue0e3 Alle auswählen    \ue0ef Löschen    \ue0e1 Abbrechen"
     },
@@ -165,7 +169,8 @@
         "cancel_desc": "Drücke \ue0e1 zum Abbrechen ",
         "waiting": "Bitte warten...",
         "success": "Erfolg",
-        "fail": "Fehlgeschlagen"
+        "fail": "Fehlgeschlagen",
+        "confirm": "Geben Sie 'OK' ein, um fortzufahren."
     },
     "misc": {
         "battery_charge": "Batterie",
@@ -178,8 +183,7 @@
         "sel_user": "Benutzer Auswahl",
         "del_user": "Benutzer löschen",
         "link": "Lokal verbinden",
-        "unlink": "Lokal trennen",
-        "confirm": "Geben Sie 'OK' ein, um fortzufahren."
+        "unlink": "Lokal trennen"
     },
     "usbds": {
         "states": [

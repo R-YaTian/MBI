@@ -3,6 +3,7 @@
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "nx/ext.hpp"
+#include "nx/misc.hpp"
 #include "facade.hpp"
 
 namespace app::ui
@@ -63,6 +64,10 @@ namespace app::ui
         this->pageData->ticketsList = nx::ext::ScanTickets(&this->pageData->applicationsMetaMap);
         if (!this->pageData->ticketsList.size())
         {
+            app::facade::ShowDialog("ticket_manager.no_unused"_lang,
+                                    "ticket_manager.used_not_allowed"_lang,
+                                    {"common.ok"_lang}, false, "information");
+            onCancel();
             return false;
         }
         else
@@ -93,7 +98,31 @@ namespace app::ui
             {
                 this->selectTicket(this->menu->GetSelectedIndex());
             }
-            // Todo: Implement ticket deletion
+            std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("common.confirm"_lang, "", 2);
+            if (requestConfirm != "OK")
+            {
+                return;
+            }
+            size_t count = 0;
+            for (const auto& [index, ticket] : this->pageData->selectedTickets)
+            {
+                Result rc = nx::ext::RemoveTicket(ticket.rights_id);
+                if (R_SUCCEEDED(rc))
+                {
+                    this->pageData->ticketsList.erase(this->pageData->ticketsList.begin() + index);
+                    count++;
+                }
+            }
+            this->pageData->selectedTickets.clear();
+            this->menu->ClearItems();
+            this->drawMenuItems();
+            app::facade::ShowDialog("ticket_manager.delete_title"_lang,
+                                    std::to_string(count) + "ticket_manager.delete_info_multi"_lang,
+                                    {"common.ok"_lang}, false, "information");
+            if (!this->pageData->ticketsList.size())
+            {
+                onCancel();
+            }
         }
     }
 

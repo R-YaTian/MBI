@@ -142,6 +142,10 @@
     },
     "ticket_manager": {
         "scanning": "未使用のチケットをスキャンしています...",
+        "delete_title": "チケットを削除",
+        "delete_info_multi": " 未使用のチケットを正常に削除しました！",
+        "no_unused": "未使用チケットはありません！",
+        "used_not_allowed": "リスク回避のため、使用済みチケットの削除はできません",
         "top_info": "削除したいチケットを選択して、\ue0efボタンを押してください！",
         "buttons": "\ue0e0 チケットを選択    \ue0e3 すべて選択    \ue0ef 削除    \ue0e1 キャンセル"
     },
@@ -165,7 +169,8 @@
         "cancel_desc": "\ue0e1 を押してキャンセル",
         "waiting": "お待ちください...",
         "success": "成功",
-        "fail": "失敗"
+        "fail": "失敗",
+        "confirm": "'OK' を入力して続行します。"
     },
     "misc": {
         "battery_charge": "バッテリー",
@@ -178,8 +183,7 @@
         "sel_user": "ユーザーを選択",
         "del_user": "ユーザーを削除",
         "link": "リンク(ローカル)",
-        "unlink": "リンク解除(ローカル)",
-        "confirm": "'OK' を入力して続行します。"
+        "unlink": "リンク解除(ローカル)"
     },
     "usbds": {
         "states": [

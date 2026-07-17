@@ -141,5 +141,6 @@ namespace nx::ext
 
     AppMetaMap ScanApplicationsContentMetaStatus();
     std::vector<Ticket> ScanTickets(const AppMetaMap* app_meta_map = nullptr);
+    Result RemoveTicket(const EsRightsId& rights_id);
     bool CleanPendingUpdate();
 }

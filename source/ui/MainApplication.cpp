@@ -353,7 +353,7 @@ namespace app::ui
             {
                 case 0: // Link or Unlink
                 {
-                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("user_actions.confirm"_lang, "", 2);
+                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("common.confirm"_lang, "", 2);
                     if (requestConfirm != "OK")
                     {
                         return;
@@ -379,7 +379,7 @@ namespace app::ui
                     return;
                 case 3: // Delete user (only shows when the user is not linked and there are more than 1 users)
                 {
-                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("user_actions.confirm"_lang, "", 2);
+                    std::string requestConfirm = nx::misc::OpenSoftwareKeyboard("common.confirm"_lang, "", 2);
                     if (requestConfirm != "OK")
                     {
                         return;
@@ -464,10 +464,6 @@ namespace app::ui
             if (ticketPage->LoadTickets())
             {
                 mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
-            }
-            else
-            {
-                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Base);
             }
             break;
         case Scene::Installer:

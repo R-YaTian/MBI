@@ -142,6 +142,10 @@
     },
     "ticket_manager": {
         "scanning": "사용하지 않은 티켓을 스캔 중입니다...",
+        "delete_title": "티켓 삭제",
+        "delete_info_multi": " 사용하지 않는 티켓을 성공적으로 삭제했습니다!",
+        "no_unused": "사용하지 않은 티켓이 없습니다!",
+        "used_not_allowed": "위험을 방지하기 위해 사용 중인 티켓 삭제는 허용되지 않습니다",
         "top_info": "삭제할 티켓을 선택한 후 \ue0ef 버튼을 누르세요!",
         "buttons": "\ue0e0 티켓 선택    \ue0e3 모두 선택    \ue0ef 삭제    \ue0e1 취소"
     },
@@ -165,7 +169,8 @@
         "cancel_desc": "취소하려면 버튼 \ue0e1 를 누르세요.",
         "waiting": "잠시 기다려주세요...",
         "success": "성공",
-        "fail": "실패"
+        "fail": "실패",
+        "confirm": "'OK'를 입력하여 계속합니다."
     },
     "misc": {
         "battery_charge": "배터리",
@@ -178,8 +183,7 @@
         "sel_user": "사용자 선택",
         "del_user": "사용자 삭제",
         "link": "연결(로컬)",
-        "unlink": "연결 해제(로컬)",
-        "confirm": "'OK'를 입력하여 계속합니다."
+        "unlink": "연결 해제(로컬)"
     },
     "usbds": {
         "states": [

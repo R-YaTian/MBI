@@ -149,11 +149,16 @@
         "cancel_desc": "Press \ue0e1 to cancel",
         "waiting": "Please wait...",
         "success": "Succeeded",
-        "fail": "Failed"
+        "fail": "Failed",
+        "confirm": "Type 'OK' to continue."
     },
     "ticket_manager": {
         "scanning": "Scanning unused tickets...",
         "top_info": "Select which ticket you want to delete, then press the \ue0ef button!",
+        "delete_title": "Delete ticket",
+        "delete_info_multi": " unused tickets deleted successfully!",
+        "no_unused": "No unused tickets found!",
+        "used_not_allowed": "In order to avoid risks, removing used tickets is not allowed",
         "buttons": "\ue0e0 Select Ticket    \ue0e3 Select All    \ue0ef Delete    \ue0e1 Cancel"
     },
     "clean_orphaned": {
@@ -178,8 +183,7 @@
         "sel_user": "Select user",
         "del_user": "Delete user",
         "link": "Link locally",
-        "unlink": "Unlink locally",
-        "confirm": "Type 'OK' to continue."
+        "unlink": "Unlink locally"
     },
     "usbds": {
         "states": [

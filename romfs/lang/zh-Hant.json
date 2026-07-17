@@ -142,6 +142,10 @@
     },
     "ticket_manager": {
         "scanning": "正在掃描未使用的票據...",
+        "delete_title": "刪除票據",
+        "delete_info_multi": " 未使用的票據已成功刪除！",
+        "no_unused": "沒有找到未使用的票據!",
+        "used_not_allowed": "為避免風險，不允許刪除正在使用的票據",
         "top_info": "選擇要刪除的票據，然後按\ue0ef鈕！",
         "buttons": "\ue0e0 選擇票據    \ue0e3 全選    \ue0ef 刪除    \ue0e1 取消"
     },
@@ -165,7 +169,8 @@
         "cancel_desc": "按 \ue0e1 鈕取消",
         "waiting": "請稍候...",
         "success": "成功",
-        "fail": "失敗"
+        "fail": "失敗",
+        "confirm": "輸入 'OK' 以繼續。"
     },
     "misc": {
         "battery_charge": "電池",
@@ -178,8 +183,7 @@
         "sel_user": "選擇使用者",
         "del_user": "刪除使用者",
         "link": "本機連結",
-        "unlink": "本機解除連結",
-        "confirm": "輸入 'OK' 以繼續。"
+        "unlink": "本機解除連結"
     },
     "usbds": {
         "states": [

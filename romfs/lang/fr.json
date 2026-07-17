@@ -142,6 +142,10 @@
     },
     "ticket_manager": {
         "scanning": "Analyse des tickets inutilisés...",
+        "delete_title": "Supprimer le ticket",
+        "delete_info_multi": " tickets inutilisés supprimés avec succès !",
+        "no_unused": "Aucun ticket inutilisé trouvé !",
+        "used_not_allowed": "Afin d'éviter les risques, la suppression des tickets utilisés n'est pas autorisée",
         "top_info": "Sélectionnez le ticket à supprimer, puis appuyez sur le bouton \ue0ef !",
         "buttons": "\ue0e0 Sélectionner    \ue0e3 Tout sélectionner    \ue0ef Supprimer    \ue0e1 Annuler"
     },
@@ -165,7 +169,8 @@
         "cancel_desc": "Appuyez sur \ue0e1 pour annuler",
         "waiting": "Veuillez patienter...",
         "success": "Succès",
-        "fail": "Échec"
+        "fail": "Échec",
+        "confirm": "Tapez 'OK' pour continuer."
     },
     "misc": {
         "battery_charge": "Batterie",
@@ -178,8 +183,7 @@
         "sel_user": "Sélection de l'utilisateur",
         "del_user": "Supprimer l'utilisateur",
         "link": "Connecter localement",
-        "unlink": "Déconnecter localement",
-        "confirm": "Tapez 'OK' pour continuer."
+        "unlink": "Déconnecter localement"
     },
     "usbds": {
         "states": [

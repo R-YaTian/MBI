@@ -149,11 +149,16 @@
         "cancel_desc": "按 \ue0e1 取消",
         "waiting": "请等待...",
         "success": "成功",
-        "fail": "失败"
+        "fail": "失败",
+        "confirm": "输入 'OK' 以继续。"
     },
     "ticket_manager": {
         "scanning": "正在扫描未使用的票据...",
         "top_info": "选择要删除的票据, 然后按 \ue0ef!",
+        "delete_title": "删除票据",
+        "delete_info_multi": " 个未使用的票据删除成功!",
+        "no_unused": "没有找到未使用的票据!",
+        "used_not_allowed": "为避免风险, 不允许删除正在使用的票据",
         "buttons": "\ue0e0 选择票据    \ue0e3 选择全部    \ue0ef 删除    \ue0e1 取消"
     },
     "clean_orphaned": {
@@ -178,8 +183,7 @@
         "sel_user": "切换用户",
         "del_user": "删除用户",
         "link": "离线绑定",
-        "unlink": "离线解绑",
-        "confirm": "输入 'OK' 以继续。"
+        "unlink": "离线解绑"
     },
     "usbds": {
         "states": [

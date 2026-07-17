@@ -160,6 +160,14 @@ namespace nx::ext
         return tickets;
     }
 
+    Result RemoveTicket(const EsRightsId& rights_id)
+    {
+        esInitialize();
+        const auto rc = esDeleteTicket(&rights_id);
+        esExit();
+        return rc;
+    }
+
     bool CleanPendingUpdate()
     {
         if (R_SUCCEEDED(nssuInitialize()))
