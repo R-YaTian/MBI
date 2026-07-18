@@ -1,14 +1,32 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <switch/types.h>
 #include "nx/ncm.hpp"
 #include "nx/xfs0.hpp"
 
 namespace nx
 {
+    struct ContentCollectionEntry
+    {
+        // collection name within file.
+        std::string name{};
+        // collection offset within file.
+        s64 offset{};
+        // collection size within file, may be compressed size.
+        s64 size{};
+        u8 type{};
+        NcmContentId content_id{};
+    };
+
+    using ContentCollections = std::vector<ContentCollectionEntry>;
+
     class Content
     {
+        protected:
+            ContentCollections m_collections;
+
         public:
             enum class Type
             {
@@ -29,5 +47,6 @@ namespace nx
             const void* GetFileEntryByName(std::string name);
             const void* GetFileEntryByNcaId(const NcmContentId& ncaId);
             std::vector<const void*> GetFileEntriesByExtension(std::string extension);
+            ContentCollections& GetCollections() { return m_collections; }
     };
 }

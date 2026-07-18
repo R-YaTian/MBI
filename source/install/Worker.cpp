@@ -14,11 +14,10 @@ namespace app::install
         std::vector<u8> headerBytes(sizeof(nx::XFS0BaseHeader), 0);
         worker.BufferData(headerBytes.data(), 0x0, sizeof(nx::XFS0BaseHeader));
 
-        // Commit it, so we can read back
-        nsp.CommitHeader(std::vector<u8>(headerBytes));
+        nx::XFS0BaseHeader* header = reinterpret_cast<nx::XFS0BaseHeader*>(headerBytes.data());
 
         // Retrieve the full header
-        size_t remainingHeaderSize = nsp.GetBaseHeader()->numFiles * sizeof(nx::PFS0FileEntry) + nsp.GetBaseHeader()->stringTableSize;
+        size_t remainingHeaderSize = header->numFiles * sizeof(nx::PFS0FileEntry) + header->stringTableSize;
         headerBytes.resize(sizeof(nx::XFS0BaseHeader) + remainingHeaderSize, 0);
         worker.BufferData(headerBytes.data() + sizeof(nx::XFS0BaseHeader), sizeof(nx::XFS0BaseHeader), remainingHeaderSize);
 
@@ -30,7 +29,7 @@ namespace app::install
         LOG_DEBUG("Retrieving HFS0 header...\n");
 
         // Retrieve hfs0 offset
-        u64 hfs0Offset = 0xf000;
+        u64 hfs0Offset = HFS0_ROOT_HEADER_OFFSET;
 
         // Retrieve main hfs0 header
         std::vector<u8> m_headerBytes;
@@ -41,7 +40,13 @@ namespace app::install
         nx::XFS0BaseHeader* header = reinterpret_cast<nx::XFS0BaseHeader*>(m_headerBytes.data());
         if (header->magic != MAGIC_HFS0)
         {
-            THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", hfs0Offset);
+            // otherwise, try and again as maybe the key area pre-prended.
+            hfs0Offset = HFS0_ROOT_HEADER_OFFSET_WITH_KEY_AREA;
+            worker.BufferData(m_headerBytes.data(), hfs0Offset, sizeof(nx::XFS0BaseHeader));
+            if (header->magic != MAGIC_HFS0)
+            {
+                THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", hfs0Offset);
+            }
         }
         size_t remainingHeaderSize = header->numFiles * sizeof(nx::HFS0FileEntry) + header->stringTableSize;
         m_headerBytes.resize(sizeof(nx::XFS0BaseHeader) + remainingHeaderSize, 0);
@@ -51,8 +56,8 @@ namespace app::install
         header = reinterpret_cast<nx::XFS0BaseHeader*>(m_headerBytes.data());
         for (unsigned int i = 0; i < header->numFiles; i++)
         {
-            const nx::HFS0FileEntry* entry = hfs0GetFileEntry(header, i);
-            std::string entryName(hfs0GetFileName(header, entry));
+            const nx::HFS0FileEntry* entry = nx::hfs0GetFileEntry(header, i);
+            std::string entryName(nx::hfs0GetFileName(header, entry));
 
             if (entryName != "secure")
             {
@@ -60,20 +65,19 @@ namespace app::install
             }
 
             std::vector<u8> secureHeaderBytes;
-            u64 secureHeaderOffset = hfs0Offset + remainingHeaderSize + 0x10 + entry->dataOffset;
+            u64 secureHeaderOffset = hfs0Offset + m_headerBytes.size() + entry->dataOffset;
             secureHeaderBytes.resize(sizeof(nx::XFS0BaseHeader), 0);
             worker.BufferData(secureHeaderBytes.data(), secureHeaderOffset, sizeof(nx::XFS0BaseHeader));
 
-            // Commit it, so we can read back
-            xci.CommitHeader(std::vector<u8>(secureHeaderBytes), secureHeaderOffset);
+            nx::XFS0BaseHeader* secureHeader = reinterpret_cast<nx::XFS0BaseHeader*>(secureHeaderBytes.data());
 
-            if (xci.GetBaseHeader()->magic != MAGIC_HFS0)
+            if (secureHeader->magic != MAGIC_HFS0)
             {
                 THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", secureHeaderOffset);
             }
 
             // Retrieve full header
-            remainingHeaderSize = xci.GetBaseHeader()->numFiles * sizeof(nx::HFS0FileEntry) + xci.GetBaseHeader()->stringTableSize;
+            remainingHeaderSize = secureHeader->numFiles * sizeof(nx::HFS0FileEntry) + secureHeader->stringTableSize;
             secureHeaderBytes.resize(sizeof(nx::XFS0BaseHeader) + remainingHeaderSize, 0);
             worker.BufferData(secureHeaderBytes.data() + sizeof(nx::XFS0BaseHeader), secureHeaderOffset + sizeof(nx::XFS0BaseHeader), remainingHeaderSize);
 

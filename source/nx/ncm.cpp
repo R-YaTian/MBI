@@ -147,7 +147,7 @@ namespace nx::ncm
             NcmPackagedContentInfo packagedContentInfo = packagedContentInfos[i];
 
             // Don't install delta fragments. Even patches don't seem to install them.
-            if (packagedContentInfo.info.content_type <= 5)
+            if (packagedContentInfo.info.content_type < NcmContentType_DeltaFragment)
             {
                 m_packagedContentInfos.push_back(packagedContentInfo);
             }

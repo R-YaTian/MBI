@@ -3,6 +3,8 @@
 #include <switch/types.h>
 
 #define MAGIC_HFS0 0x30534648
+#define HFS0_ROOT_HEADER_OFFSET 0xF000
+#define HFS0_ROOT_HEADER_OFFSET_WITH_KEY_AREA (HFS0_ROOT_HEADER_OFFSET + 0x1000)
 
 namespace nx
 {
@@ -26,7 +28,7 @@ namespace nx
         unsigned char hash[0x20];
     } NX_PACKED;
 
-    static_assert(sizeof(HFS0FileEntry) == 0x40, "HFS0FileEntry must be 0x18");
+    static_assert(sizeof(HFS0FileEntry) == 0x40, "HFS0FileEntry must be 0x40");
 
     struct XFS0BaseHeader
     {

@@ -506,7 +506,9 @@ back_to_loop:
                     }
 
                     std::unique_ptr<nx::Content> content;
-                    if (nx::network::DownloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD")
+                    std::string extPart = ourUrlList[urlItr].substr(ourUrlList[urlItr].size() - 3, 2);
+                    std::transform(extPart.begin(), extPart.end(), extPart.begin(), ::tolower);
+                    if (extPart == "xc")
                     {
                         content = std::make_unique<nx::XCI>();
                     }
