@@ -5,7 +5,6 @@
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
-#include <thread>
 
 namespace app
 {
@@ -166,12 +165,6 @@ namespace app
             m_contentMeta.push_back(std::get<0>(cnmtTuple));
             NcmContentInfo cnmtContentRecord = std::get<1>(cnmtTuple);
 
-            nx::ncm::ContentStorage contentStorage(m_destStorageId);
-            if (!contentStorage.Has(cnmtContentRecord.content_id))
-            {
-                THROW_FORMAT("CNMT NCA not found after installation!");
-            }
-
             // Parse data and create install content meta
             nx::data::ByteBuffer installContentMetaBuf;
             m_contentMeta[i].SetContentId(cnmtContentRecord.content_id);
@@ -188,7 +181,6 @@ namespace app
     {
         for (nx::ncm::ContentMeta contentMeta : m_contentMeta)
         {
-            m_worker->ClearHashMap();
             LOG_DEBUG("Installing NCAs...\n");
             size_t skippedNcas = 0;
             for (auto& record : contentMeta.GetContentInfos())
@@ -269,13 +261,17 @@ namespace app
             NcmContentId cnmtContentId = nx::ncm::GetContentIdFromString(cnmtNcaName);
             size_t cnmtNcaSize = m_worker->GetContent()->GetFileEntrySize(fileEntry);
 
-            nx::ncm::ContentStorage contentStorage(m_destStorageId);
-
             LOG_DEBUG("CNMT Name: %s\n", cnmtNcaName.c_str());
 
             // We install the cnmt nca early to read from it later
             nx::nca::NcaHeader ncaHeader;
-            this->InstallNCA(cnmtContentId, &ncaHeader);
+            this->InstallNCA(cnmtContentId, false, &ncaHeader);
+
+            nx::ncm::ContentStorage contentStorage(m_destStorageId);
+            if (!contentStorage.Has(cnmtContentId))
+            {
+                THROW_FORMAT("CNMT NCA not found after installation!");
+            }
             std::string cnmtNCAFullPath = contentStorage.GetPath(cnmtContentId);
 
             NcmContentInfo cnmtContentInfo;
@@ -290,7 +286,7 @@ namespace app
         return contentMetaList;
     }
 
-    void InstallTask::InstallNCA(const NcmContentId& ncaId, nx::nca::NcaHeader* outHeader)
+    void InstallTask::InstallNCA(const NcmContentId& ncaId, bool skipRegister, nx::nca::NcaHeader* outHeader)
     {
         const void* fileEntry = m_worker->GetContent()->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_worker->GetContent()->GetFileEntryName(fileEntry);
@@ -336,6 +332,11 @@ namespace app
 
         delete header;
         m_worker->StreamToPlaceholder(contentStorage, ncaId);
+
+        if (skipRegister)
+        {
+            return;
+        }
 
         LOG_DEBUG("Registering placeholder...\n");
         try
@@ -438,6 +439,101 @@ namespace app
 
             // Finally, let's actually import the ticket
             ASSERT_OK(esImportTicket(tikBuf.get(), tikSize, certBuf.get(), certSize), "Failed to import ticket");
+        }
+    }
+
+    void InstallTask::InstallFromCollections()
+    {
+        m_worker->GetContent()->GenerateCollections();
+        std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> contentMetaList;
+
+        const nx::ContentCollections& collections = m_worker->GetContent()->GetCollections();
+        for (const auto& entry : collections)
+        {
+            if (entry.type == nx::ContentCollectionType::ARCHIVE)
+            {
+                this->InstallNCA(entry.content_id, true);
+            }
+            else if (entry.type == nx::ContentCollectionType::META)
+            {
+                nx::nca::NcaHeader ncaHeader;
+                this->InstallNCA(entry.content_id, false, &ncaHeader);
+
+                nx::ncm::ContentStorage contentStorage(m_destStorageId);
+                if (!contentStorage.Has(entry.content_id))
+                {
+                    THROW_FORMAT("CNMT NCA not found after installation!");
+                }
+                std::string cnmtNCAFullPath = contentStorage.GetPath(entry.content_id);
+
+                NcmContentInfo cnmtContentInfo;
+                cnmtContentInfo.content_id = entry.content_id;
+                ncmU64ToContentInfoSize(entry.size, &cnmtContentInfo);
+                cnmtContentInfo.content_type = NcmContentType_Meta;
+
+                contentMetaList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
+                std::get<0>(contentMetaList.back()).SetNcaHeader(ncaHeader);
+            }
+        }
+
+        for (size_t i = 0; i < contentMetaList.size(); i++)
+        {
+            std::tuple<nx::ncm::ContentMeta, NcmContentInfo> cnmtTuple = contentMetaList[i];
+
+            m_contentMeta.push_back(std::get<0>(cnmtTuple));
+            NcmContentInfo cnmtContentRecord = std::get<1>(cnmtTuple);
+
+            // Parse data and create install content meta
+            nx::data::ByteBuffer installContentMetaBuf;
+            m_contentMeta[i].SetContentId(cnmtContentRecord.content_id);
+            m_contentMeta[i].SetupPackagedContentMeta();
+            m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
+
+            this->InstallContentMetaRecords(installContentMetaBuf, i);
+            this->InstallApplicationRecord(i);
+        }
+
+        for (nx::ncm::ContentMeta contentMeta : m_contentMeta)
+        {
+            for (auto& record : contentMeta.GetContentInfos())
+            {
+                std::string ncaIdStr = nx::ncm::GetContentIdString(record.content_id);
+
+                nx::ncm::ContentStorage contentStorage(m_destStorageId);
+                LOG_DEBUG("Registering placeholder...\n");
+                try
+                {
+                    contentStorage.Register(*(NcmPlaceHolderId*)&record.content_id, record.content_id);
+                }
+                catch (...)
+                {
+                    LOG_DEBUG(("Failed to register " + ncaIdStr + ". It may already exist.\n").c_str());
+                }
+
+                if (contentMeta.GetDistributionType() == 0)
+                {
+                    const u8* metaHash = contentMeta.GetHashByContentId(record.content_id);
+                    const u8* workerHash = m_worker->GetHashByContentIdString(ncaIdStr);
+                    if (metaHash != nullptr &&
+                        workerHash != nullptr &&
+                        memcmp(metaHash, workerHash, SHA256_HASH_SIZE) != 0)
+                    {
+                        app::facade::SendInstallInfoText("inst.nca_verify.hash_failed"_lang + ncaIdStr);
+                    }
+                }
+            }
+            if (contentMeta.GetDistributionType() == 1)
+            {
+                app::facade::SendInstallInfoText("inst.nca_verify.missing_digital"_lang);
+                std::map<std::string, std::vector<u8>> hashMap = m_worker->GetHashMap();
+                contentMeta.RebuildNcaToInstall(m_destStorageId, hashMap);
+            }
+        }
+
+        for (const auto& entry : collections)
+        {
+            nx::ncm::ContentStorage contentStorage(m_destStorageId);
+            try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&entry.content_id); } catch (...) {}
         }
     }
 }

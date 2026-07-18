@@ -8,6 +8,14 @@
 
 namespace nx
 {
+    enum class ContentCollectionType
+    {
+        ARCHIVE,
+        META,
+        TIK,
+        CERT,
+    };
+
     struct ContentCollectionEntry
     {
         // collection name within file.
@@ -16,7 +24,7 @@ namespace nx
         s64 offset{};
         // collection size within file, may be compressed size.
         s64 size{};
-        u8 type{};
+        ContentCollectionType type{};
         NcmContentId content_id{};
     };
 
@@ -47,6 +55,7 @@ namespace nx
             const void* GetFileEntryByName(std::string name);
             const void* GetFileEntryByNcaId(const NcmContentId& ncaId);
             std::vector<const void*> GetFileEntriesByExtension(std::string extension);
-            ContentCollections& GetCollections() { return m_collections; }
+            void GenerateCollections();
+            const ContentCollections& GetCollections() { return m_collections; }
     };
 }

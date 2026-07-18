@@ -28,7 +28,6 @@ namespace app::install
                 return nullptr;
             }
             const std::map<std::string, std::vector<u8>>& GetHashMap() const { return m_hashMap; }
-            void ClearHashMap() { m_hashMap.clear(); }
         protected:
             explicit Worker(std::unique_ptr<nx::Content> content) : m_content(std::move(content)) {}
 

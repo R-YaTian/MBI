@@ -1,11 +1,12 @@
 #include "nx/content.hpp"
+#include <algorithm>
 
 namespace nx
 {
     const void* Content::GetFileEntryByName(std::string name)
     {
         // returns only the .nca and .cnmt.nca filenames
-        for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++)
+        for (u32 i = 0; i < this->GetBaseHeader()->numFiles; i++)
         {
             const void* fileEntry = this->GetFileEntry(i);
             std::string foundName(this->GetFileEntryName(fileEntry));
@@ -45,7 +46,7 @@ namespace nx
     {
         std::vector<const void*> entryList;
 
-        for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++)
+        for (u32 i = 0; i < this->GetBaseHeader()->numFiles; i++)
         {
             const void* fileEntry = this->GetFileEntry(i);
             std::string name(this->GetFileEntryName(fileEntry));
@@ -58,5 +59,37 @@ namespace nx
         }
 
         return entryList;
+    }
+
+    void Content::GenerateCollections()
+    {
+        for (u32 i = 0; i < this->GetBaseHeader()->numFiles; i++)
+        {
+            const void* fileEntry = this->GetFileEntry(i);
+            ContentCollectionEntry entry;
+            entry.name = this->GetFileEntryName(fileEntry);
+            entry.offset = this->GetFileEntryOffset(fileEntry);
+            entry.size = this->GetFileEntrySize(fileEntry);
+            entry.content_id = nx::ncm::GetContentIdFromString(entry.name.substr(0, entry.name.find(".")));
+            if (entry.name.ends_with(".cnmt.nca") || entry.name.ends_with(".cnmt.ncz"))
+            {
+                entry.type = ContentCollectionType::META;
+            }
+            else if (entry.name.ends_with(".tik"))
+            {
+                entry.type = ContentCollectionType::TIK;
+            }
+            else if (entry.name.ends_with(".cert"))
+            {
+                entry.type = ContentCollectionType::CERT;
+            }
+            m_collections.emplace_back(entry);
+        }
+
+        const auto sorter = [](const ContentCollectionEntry& lhs, const ContentCollectionEntry& rhs) -> bool {
+            return lhs.offset < rhs.offset;
+        };
+
+        std::sort(m_collections.begin(), m_collections.end(), sorter);
     }
 }

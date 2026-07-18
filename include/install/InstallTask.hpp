@@ -24,6 +24,7 @@ namespace app
             void Prepare();
             void Begin();
             void InstallTicketCert();
+            void InstallFromCollections();
 
         private:
             std::unique_ptr<app::install::Worker> m_worker;
@@ -32,7 +33,7 @@ namespace app
             NcmContentMetaType GetContentMetaType(int i = 0);
             std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadContentMeta();
             void ParseTicketCert();
-            void InstallNCA(const NcmContentId &ncaId, nx::nca::NcaHeader* outHeader = nullptr);
+            void InstallNCA(const NcmContentId &ncaId, bool skipRegister = false, nx::nca::NcaHeader* outHeader = nullptr);
             void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             void InstallApplicationRecord(int i);
             void RemoveInstalledNcas(int idx);
