@@ -36,6 +36,6 @@ namespace app
             void InstallNCA(const NcmContentId &ncaId, bool skipRegister = false, nx::nca::NcaHeader* outHeader = nullptr);
             void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             void InstallApplicationRecord(int i);
-            void RemoveInstalledNcas(int idx);
+            void RemoveInstalledNcas(int idx, bool skipBase = false);
     };
 }

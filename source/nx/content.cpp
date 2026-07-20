@@ -61,7 +61,7 @@ namespace nx
         return entryList;
     }
 
-    void Content::GenerateCollections()
+    const ContentCollections& Content::GetCollections()
     {
         for (u32 i = 0; i < this->GetBaseHeader()->numFiles; i++)
         {
@@ -91,5 +91,6 @@ namespace nx
         };
 
         std::sort(m_collections.begin(), m_collections.end(), sorter);
+        return m_collections;
     }
 }

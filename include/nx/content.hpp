@@ -55,7 +55,6 @@ namespace nx
             const void* GetFileEntryByName(std::string name);
             const void* GetFileEntryByNcaId(const NcmContentId& ncaId);
             std::vector<const void*> GetFileEntriesByExtension(std::string extension);
-            void GenerateCollections();
-            const ContentCollections& GetCollections() { return m_collections; }
+            const ContentCollections& GetCollections();
     };
 }

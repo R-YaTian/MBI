@@ -69,7 +69,7 @@ namespace app
         }
     }
 
-    void InstallTask::RemoveInstalledNcas(int idx)
+    void InstallTask::RemoveInstalledNcas(int idx, bool skipBase)
     {
         NcmContentMetaKey contentMetaKey = m_contentMeta[idx].GetContentMetaKey();
         NcmContentMetaType contentMetaType = static_cast<NcmContentMetaType>(contentMetaKey.type);
@@ -81,7 +81,7 @@ namespace app
         u64 id_min = contentMetaKey.id;
         u64 id_max = contentMetaKey.id;
 
-        if (contentMetaType == NcmContentMetaType_Application && m_skipBase)
+        if (contentMetaType == NcmContentMetaType_Application && skipBase)
         {
             LOG_DEBUG("Skipping base NCAs removal\n");
             return;
@@ -171,7 +171,7 @@ namespace app
             m_contentMeta[i].SetupPackagedContentMeta();
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
-            this->RemoveInstalledNcas(i);
+            this->RemoveInstalledNcas(i, m_skipBase);
             this->InstallContentMetaRecords(installContentMetaBuf, i);
             this->InstallApplicationRecord(i);
         }
@@ -444,9 +444,7 @@ namespace app
 
     void InstallTask::InstallFromCollections()
     {
-        m_worker->GetContent()->GenerateCollections();
         std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> contentMetaList;
-
         const nx::ContentCollections& collections = m_worker->GetContent()->GetCollections();
         for (const auto& entry : collections)
         {
@@ -489,6 +487,7 @@ namespace app
             m_contentMeta[i].SetupPackagedContentMeta();
             m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
 
+            this->RemoveInstalledNcas(i);
             this->InstallContentMetaRecords(installContentMetaBuf, i);
             this->InstallApplicationRecord(i);
         }
@@ -533,6 +532,10 @@ namespace app
         for (const auto& entry : collections)
         {
             nx::ncm::ContentStorage contentStorage(m_destStorageId);
+            if (entry.type != nx::ContentCollectionType::ARCHIVE)
+            {
+                continue;
+            }
             try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&entry.content_id); } catch (...) {}
         }
     }
