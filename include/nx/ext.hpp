@@ -137,6 +137,15 @@ namespace nx::ext
         std::string ToString() const;
     };
 
+    struct TikCollection
+    {
+        // raw data of the ticket / cert.
+        std::vector<u8> ticket{};
+        std::vector<u8> cert{};
+        // set via the name of the ticket.
+        FsRightsId rights_id{};
+    };
+
     using AppMetaMap = std::map<u64, std::vector<NsApplicationContentMetaStatus>>;
 
     AppMetaMap ScanApplicationsContentMetaStatus();

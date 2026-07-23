@@ -364,6 +364,48 @@ namespace app
         try { contentStorage->DeletePlaceholder(*(NcmPlaceHolderId*)&ncaId); } catch (...) {}
     }
 
+    static void TryFixTicket(std::unique_ptr<u8[]>& tikBuf)
+    {
+        // https://switchbrew.org/wiki/Ticket#Certificate_chain
+        u16 ECDSA_Properties = 0x4 + 0x3C + 0x40 + 0x146;
+        u16 RSA_2048_Properties = 0x4 + 0x100 + 0x3C + 0x146;
+        u16 RSA_4096_Properties = 0x4 + 0x200 + 0x3C + 0x146;
+        u16 HMAC_160_Properties = 0x4 + 0x14 + 0x28 + 0x146;
+
+        u16 ECDSA_RightsId = 0x4 + 0x3C + 0x40 + 0x160;
+        u16 RSA_2048_RightsId = 0x4 + 0x100 + 0x3C + 0x160;
+        u16 RSA_4096_RightsId = 0x4 + 0x200 + 0x3C + 0x160;
+        u16 HMAC_160_RightsId = 0x4 + 0x14 + 0x28 + 0x160;
+
+        // ECDSA SHA256 & SHA1
+        if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && tikBuf.get()[ECDSA_Properties - 1] != tikBuf.get()[ECDSA_RightsId + 0x0F])
+        {
+            tikBuf.get()[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
+            tikBuf.get()[ECDSA_Properties - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
+        }
+
+        // RSA_2048 SHA256 & SHA1
+        else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048_Properties - 1] != tikBuf.get()[RSA_2048_RightsId + 0x0F]))
+        {
+            tikBuf.get()[RSA_2048_Properties] = 0x0;
+            tikBuf.get()[RSA_2048_Properties - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
+        }
+
+        // RSA_4096 SHA256 & SHA1
+        else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096_Properties - 1] != tikBuf.get()[RSA_4096_RightsId + 0x0F]))
+        {
+            tikBuf.get()[RSA_4096_Properties] = 0x0;
+            tikBuf.get()[RSA_4096_Properties - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
+        }
+
+        // HMAC_160 SHA1
+        else if (tikBuf.get()[0] == 6 && (tikBuf.get()[HMAC_160_Properties - 1] != tikBuf.get()[HMAC_160_RightsId + 0x0F]))
+        {
+            tikBuf.get()[HMAC_160_Properties] = 0x0;
+            tikBuf.get()[HMAC_160_Properties - 1] = tikBuf.get()[HMAC_160_RightsId + 0x0F];
+        }
+    }
+
     void InstallTask::ParseTicketCert()
     {
         // Read the tik files and put it into a buffer
@@ -411,44 +453,7 @@ namespace app
             // Try to fix a bad ticket dump
             if (m_fixTicket)
             {
-                // https://switchbrew.org/wiki/Ticket#Certificate_chain
-                u16 ECDSA_Properties = 0x4 + 0x3C + 0x40 + 0x146;
-                u16 RSA_2048_Properties = 0x4 + 0x100 + 0x3C + 0x146;
-                u16 RSA_4096_Properties = 0x4 + 0x200 + 0x3C + 0x146;
-                u16 HMAC_160_Properties = 0x4 + 0x14 + 0x28 + 0x146;
-
-                u16 ECDSA_RightsId = 0x4 + 0x3C + 0x40 + 0x160;
-                u16 RSA_2048_RightsId = 0x4 + 0x100 + 0x3C + 0x160;
-                u16 RSA_4096_RightsId = 0x4 + 0x200 + 0x3C + 0x160;
-                u16 HMAC_160_RightsId = 0x4 + 0x14 + 0x28 + 0x160;
-
-                // ECDSA SHA256 & SHA1
-                if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && tikBuf.get()[ECDSA_Properties - 1] != tikBuf.get()[ECDSA_RightsId + 0x0F])
-                {
-                    tikBuf.get()[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
-                    tikBuf.get()[ECDSA_Properties - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
-                }
-
-                // RSA_2048 SHA256 & SHA1
-                else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048_Properties - 1] != tikBuf.get()[RSA_2048_RightsId + 0x0F]))
-                {
-                    tikBuf.get()[RSA_2048_Properties] = 0x0;
-                    tikBuf.get()[RSA_2048_Properties - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
-                }
-
-                // RSA_4096 SHA256 & SHA1
-                else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096_Properties - 1] != tikBuf.get()[RSA_4096_RightsId + 0x0F]))
-                {
-                    tikBuf.get()[RSA_4096_Properties] = 0x0;
-                    tikBuf.get()[RSA_4096_Properties - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
-                }
-
-                // HMAC_160 SHA1
-                else if (tikBuf.get()[0] == 6 && (tikBuf.get()[HMAC_160_Properties - 1] != tikBuf.get()[HMAC_160_RightsId + 0x0F]))
-                {
-                    tikBuf.get()[HMAC_160_Properties] = 0x0;
-                    tikBuf.get()[HMAC_160_Properties - 1] = tikBuf.get()[HMAC_160_RightsId + 0x0F];
-                }
+                TryFixTicket(tikBuf);
             }
 
             // Finally, let's actually import the ticket
