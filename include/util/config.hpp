@@ -26,6 +26,7 @@ namespace app::config
     extern bool fixTicket;
     extern bool skipBase;
     extern bool usbAck;
+    extern bool appletAck;
     extern bool use12hTime;
 
     void SaveSettings();

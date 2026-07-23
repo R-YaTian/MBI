@@ -21,8 +21,7 @@
         "usb": {
             "warn": {
                 "title": "Avertissement!",
-                "desc": "L'installation USB peut ne \"pas fonctionner\" sur certains appareils et certaines configurations.\nSi vous rencontrez des problèmes avec l'installation USB, ne vous arrachez pas les cheveux !\n\n Il est conseillé d'utiliser NS-USBloader pour l'installation USB. Pour installer à distance, préfèrez les modes \nLAN/Internet, en particulier si vous utilisez un adaptateur ethernet!\n\nVous avez été prévenu...",
-                "opt1": "Ne plus m'avertir"
+                "desc": "L'installation USB peut ne \"pas fonctionner\" sur certains appareils et certaines configurations.\nSi vous rencontrez des problèmes avec l'installation USB, ne vous arrachez pas les cheveux !\n\n Il est conseillé d'utiliser NS-USBloader pour l'installation USB. Pour installer à distance, préfèrez les modes \nLAN/Internet, en particulier si vous utilisez un adaptateur ethernet!\n\nVous avez été prévenu..."
             }
         },
         "applet": {
@@ -170,12 +169,14 @@
         "waiting": "Veuillez patienter...",
         "success": "Succès",
         "fail": "Échec",
-        "confirm": "Tapez 'OK' pour continuer."
+        "confirm": "Tapez 'OK' pour continuer.",
+        "donot_show_again": "Ne plus m'avertir"
     },
     "misc": {
         "battery_charge": "Batterie",
         "user": "Utilisateur:",
-        "unsel": "Non sélectionné"
+        "unsel": "Non sélectionné",
+        "applet_mode": "Mode Applet"
     },
     "user_actions": {
         "title": "Actions utilisateur",

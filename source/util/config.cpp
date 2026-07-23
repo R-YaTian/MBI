@@ -19,6 +19,7 @@ namespace app::config
     bool ignoreReqVers;
     bool overClock;
     bool usbAck;
+    bool appletAck;
     bool use12hTime;
 
     void SaveSettings()
@@ -32,6 +33,7 @@ namespace app::config
         j["languageSetting"] = languageSetting;
         j["overClock"] = overClock;
         j["usbAck"] = usbAck;
+        j["appletAck"] = appletAck;
         j["lastNetUrl"] = lastNetUrl;
         j["httpIndexUrl"] = httpIndexUrl;
         j["use12hTime"] = use12hTime;
@@ -62,6 +64,7 @@ namespace app::config
         languageSetting = j.value("languageSetting", -1);
         overClock = j.value("overClock", false);
         usbAck = j.value("usbAck", false);
+        appletAck = j.value("appletAck", false);
         lastNetUrl = j.value("lastNetUrl", std::string("https://"));
         httpIndexUrl = j.value("httpIndexUrl", std::string("http://"));
         use12hTime = j.value("use12hTime", false);

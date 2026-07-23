@@ -21,8 +21,7 @@
         "usb": {
             "warn": {
                 "title": "注意！",
-                "desc": "使用USB進行安裝時，在部分型號設備或少數軟體可能無法\"正確執行\"。\n如果使用USB安裝失敗時，可以改用NS-USBloader來進行USB安裝；\n如果有配置高速網卡建構的網路環境，也可以透過NAS區網/WiFi無線網路來進行遠端安裝。\n\n嘗試其他安裝方式，大部分的狀況都可以迎刃而解。",
-                "opt1": "不再顯示此提醒訊息"
+                "desc": "使用USB進行安裝時，在部分型號設備或少數軟體可能無法\"正確執行\"。\n如果使用USB安裝失敗時，可以改用NS-USBloader來進行USB安裝；\n如果有配置高速網卡建構的網路環境，也可以透過NAS區網/WiFi無線網路來進行遠端安裝。\n\n嘗試其他安裝方式，大部分的狀況都可以迎刃而解。"
             }
         },
         "applet": {
@@ -170,12 +169,14 @@
         "waiting": "請稍候...",
         "success": "成功",
         "fail": "失敗",
-        "confirm": "輸入 'OK' 以繼續。"
+        "confirm": "輸入 'OK' 以繼續。",
+        "donot_show_again": "不再顯示此訊息"
     },
     "misc": {
         "battery_charge": "電池",
         "user": "使用者:",
-        "unsel": "未選擇"
+        "unsel": "未選擇",
+        "applet_mode": "Applet模式"
     },
     "user_actions": {
         "title": "使用者操作",

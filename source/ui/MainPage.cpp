@@ -22,7 +22,15 @@ namespace app::ui
             if (menuLoaded)
             {
                 appletFinished = true;
-                app::facade::ShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true, "warning");
+                if (!app::config::appletAck)
+                {
+                    if (app::facade::ShowDialog("main.applet.title"_lang,
+                                                "main.applet.desc"_lang,
+                                               {"common.ok"_lang, "common.donot_show_again"_lang}, false, "warning") == 1)
+                    {
+                        app::config::appletAck = true;
+                    }
+                }
             }
         }
         else if (!appletFinished)
@@ -122,7 +130,7 @@ namespace app::ui
         {
             if (app::facade::ShowDialog("main.usb.warn.title"_lang,
                                         "main.usb.warn.desc"_lang,
-                                       {"common.ok"_lang, "main.usb.warn.opt1"_lang}, false,
+                                       {"common.ok"_lang, "common.donot_show_again"_lang}, false,
                                         "warning") == 1)
             {
                 app::config::usbAck = true;

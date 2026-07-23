@@ -50,6 +50,7 @@ namespace app::ui
         layout->Add(this->titleImage); \
         layout->Add(this->appVersionText); \
         layout->Add(this->batteryValueText); \
+        layout->Add(this->appletText); \
         layout->Add(this->freeSpaceText); \
         layout->Add(this->dateText); \
         layout->Add(this->timeText); \
@@ -205,6 +206,9 @@ namespace app::ui
         this->freeSpaceText = pu::ui::elm::TextBlock::New(1105, 49, freeSpaceCurrentText);
         this->freeSpaceText->SetFont("DefaultFont@32");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
+        this->appletText = pu::ui::elm::TextBlock::New(1437, 9, appletGetAppletType() == AppletType_LibraryApplet ? "misc.applet_mode"_lang : "");
+        this->appletText->SetFont("DefaultFont@32");
+        this->appletText->SetColor(COLOR("#FF0000FF"));
         this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);
         this->dateText->SetFont("DefaultFont@32");
         this->dateText->SetColor(COLOR("#FFFFFFFF"));

@@ -21,12 +21,11 @@
         "usb": {
             "warn": {
                 "title": "Attenzione!",
-                "desc": "L'installazione USB potrebbe non funzionare su alcuni dispositivi e in alcune configurazioni.\nSe stai incontrando dei problemi con l'installazione USB, non disperare!\nÈ consigliato usare NS-USBloader per le installazioni via USB, mentre\nLAN/Internet per le installazioni remote, specie\nquando si utilizza un adattatore ethernet!\n\nSei stato avvertito...",
-                "opt1": "Non dirmelo di nuovo!"
+                "desc": "L'installazione USB potrebbe non funzionare su alcuni dispositivi e in alcune configurazioni.\nSe stai incontrando dei problemi con l'installazione USB, non disperare!\nÈ consigliato usare NS-USBloader per le installazioni via USB, mentre\nLAN/Internet per le installazioni remote, specie\nquando si utilizza un adattatore ethernet!\n\nSei stato avvertito..."
             }
         },
         "applet": {
-            "title": "Applet Mode non è supportata",
+            "title": "Modalità Applet non è supportata",
             "desc": "Puoi incontrare problemi utilizzando Mohsaua-Buoh-Installer in Applet Mode. Se\nriscontri problemi, ti prego di utilizzare Mohsaua-Buoh-Installer avviandolo attraverso un gioco\ngià installato (tieni premuto R mentre avvii un gioco)!"
         },
         "buttons": "\ue0e0 Seleziona    \ue0ef Esci"
@@ -170,12 +169,14 @@
         "waiting": "Per favore, attendere...",
         "success": "Successo",
         "fail": "Fallita",
-        "confirm": "Digita 'OK' per continuare."
+        "confirm": "Digita 'OK' per continuare.",
+        "donot_show_again": "Non dirmelo di nuovo!"
     },
     "misc": {
         "battery_charge": "Batteria",
         "user": "Utente:",
-        "unsel": "Non selezionato"
+        "unsel": "Non selezionato",
+        "applet_mode": "Modalità Applet"
     },
     "user_actions": {
         "title": "Azioni utente",

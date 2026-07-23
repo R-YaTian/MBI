@@ -75,6 +75,7 @@ namespace app::ui
             pu::ui::elm::TextBlock::Ref appVersionText;
             pu::ui::elm::TextBlock::Ref freeSpaceText;
             pu::ui::elm::TextBlock::Ref batteryValueText;
+            pu::ui::elm::TextBlock::Ref appletText;
             pu::ui::elm::TextBlock::Ref timeText;
             pu::ui::elm::TextBlock::Ref dateText;
             pu::ui::elm::Rectangle::Ref topRect;

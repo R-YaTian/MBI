@@ -21,8 +21,7 @@
         "usb": {
             "warn": {
                 "title": "Warning!",
-                "desc": "USB installations may not \"just werk\" on some devices and setups.\nIf you experience issues with USB installations, please don't pull your\nhair out! It's advised to use NS-USBloader for USB installations, or\nLAN/Internet installations instead for remote installation, especially\nwhen paired with an ethernet adapter!\n\nYou have been warned...",
-                "opt1": "Don't tell me again"
+                "desc": "USB installations may not \"just werk\" on some devices and setups.\nIf you experience issues with USB installations, please don't pull your\nhair out! It's advised to use NS-USBloader for USB installations, or\nLAN/Internet installations instead for remote installation, especially\nwhen paired with an ethernet adapter!\n\nYou have been warned..."
             }
         },
         "applet": {
@@ -150,7 +149,8 @@
         "waiting": "Please wait...",
         "success": "Succeeded",
         "fail": "Failed",
-        "confirm": "Type 'OK' to continue."
+        "confirm": "Type 'OK' to continue.",
+        "donot_show_again": "Don't tell me again"
     },
     "ticket_manager": {
         "scanning": "Scanning unused tickets...",
@@ -175,7 +175,8 @@
     "misc": {
         "battery_charge": "Battery",
         "user": "User:",
-        "unsel": "Unselected"
+        "unsel": "Unselected",
+        "applet_mode": "Applet Mode"
     },
     "user_actions": {
         "title": "User actions",

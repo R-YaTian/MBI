@@ -21,8 +21,7 @@
         "usb": {
             "warn": {
                 "title": "Warnung!",
-                "desc": "USB-Installationen funktionieren möglicherweise mit manchen Geräten und\nKonfigurationen nicht. Falls du Probleme mit USB-Installationen hast,\nreiß dir nicht die Haare aus! Wir empfehlen NS-USBloader für USB-Installationen\noder stattdessen LAN/Internet Installationen,\nam besten über einen Ethernet-Adapter verbunden.\n\nWir haben dich gewarnt...",
-                "opt1": "Warnt mich nicht nochmal"
+                "desc": "USB-Installationen funktionieren möglicherweise mit manchen Geräten und\nKonfigurationen nicht. Falls du Probleme mit USB-Installationen hast,\nreiß dir nicht die Haare aus! Wir empfehlen NS-USBloader für USB-Installationen\noder stattdessen LAN/Internet Installationen,\nam besten über einen Ethernet-Adapter verbunden.\n\nWir haben dich gewarnt..."
             }
         },
         "applet": {
@@ -170,12 +169,14 @@
         "waiting": "Bitte warten...",
         "success": "Erfolg",
         "fail": "Fehlgeschlagen",
-        "confirm": "Geben Sie 'OK' ein, um fortzufahren."
+        "confirm": "Geben Sie 'OK' ein, um fortzufahren.",
+        "donot_show_again": "Warnt mich nicht nochmal"
     },
     "misc": {
         "battery_charge": "Batterie",
         "user": "Benutzer:",
-        "unsel": "Nicht ausgewählt"
+        "unsel": "Nicht ausgewählt",
+        "applet_mode": "Applet-Modus"
     },
     "user_actions": {
         "title": "Benutzeraktionen",

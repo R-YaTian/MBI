@@ -21,13 +21,12 @@
         "usb": {
             "warn": {
                 "title": "警告！",
-                "desc": "USB 安装功能可能在某些设备或软件环境下无法正常使用。\n如果您在使用 USB 安装中遇到问题，请不要心急！\n建议使用 NS-USBloader 来进行 USB 安装，\n或者在主机已连接到网络的情况下进行网络远程安装！\n\n多尝试各种方法，终会成功。",
-                "opt1": "不再提示"
+                "desc": "USB 安装功能可能在某些设备或软件环境下无法正常使用。\n如果您在使用 USB 安装中遇到问题，请不要心急！\n建议使用 NS-USBloader 来进行 USB 安装，\n或者在主机已连接到网络的情况下进行网络远程安装！\n\n多尝试各种方法，终会成功。"
             }
         },
         "applet": {
-            "title": "不支持 Applet 模式",
-            "desc": "在 Applet 模式下使用 Mohsaua-Buoh-Installer 可能会遇到问题，\n如果遇到问题，请切换 Mohsaua-Buoh-Installer 的运行模式！\n(退回主界面，按住 \ue0e5 并打开任意游戏，进入 hbmenu 后再打开 Mohsaua-Buoh-Installer 即可)"
+            "title": "不支持小程序模式",
+            "desc": "在小程序模式下使用 Mohsaua-Buoh-Installer 可能会遇到问题，\n如果遇到问题，请切换 Mohsaua-Buoh-Installer 的运行模式！\n(退回主界面，按住 \ue0e5 并打开任意游戏，进入 hbmenu 后再打开 Mohsaua-Buoh-Installer 即可)"
         },
         "buttons": "\ue0e0 选择    \ue0ef 退出"
     },
@@ -150,7 +149,8 @@
         "waiting": "请等待...",
         "success": "成功",
         "fail": "失败",
-        "confirm": "输入 'OK' 以继续。"
+        "confirm": "输入 'OK' 以继续。",
+        "donot_show_again": "不再提示"
     },
     "ticket_manager": {
         "scanning": "正在扫描未使用的票据...",
@@ -175,7 +175,8 @@
     "misc": {
         "battery_charge": "电量",
         "user": "用户:",
-        "unsel": "未选择"
+        "unsel": "未选择",
+        "applet_mode": "小程序模式"
     },
     "user_actions": {
         "title": "用户操作",

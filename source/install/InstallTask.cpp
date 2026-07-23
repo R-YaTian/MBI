@@ -16,12 +16,26 @@ namespace app
         m_contentMeta(),
         m_worker(std::move(worker))
     {
-        appletSetMediaPlaybackState(true);
+        if (hosversionAtLeast(5,0,0))
+        {
+            appletSetAutoSleepDisabled(true);
+        }
+        else
+        {
+            appletSetMediaPlaybackState(true);
+        }
     }
 
     InstallTask::~InstallTask()
     {
-        appletSetMediaPlaybackState(false);
+        if (hosversionAtLeast(5,0,0))
+        {
+            appletSetAutoSleepDisabled(false);
+        }
+        else
+        {
+            appletSetMediaPlaybackState(false);
+        }
     }
 
     void InstallTask::InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i)
