@@ -12,6 +12,8 @@
 
 namespace nx::mtp
 {
+    const char* program_path = nullptr;
+
     #define R_SUCCEED() return (Result)0
     #define R_THROW(_rc) return _rc
     #define R_UNLESS(expr, res) { \
@@ -223,6 +225,10 @@ namespace nx::mtp
 
         Result DeleteFile(const char* path) override
         {
+            if (strcasecmp(FixPath(path), program_path) == 0)
+            {
+                romfsExit();
+            }
             return fsFsDeleteFile(&m_fs, FixPath(path));
         }
 
@@ -802,7 +808,7 @@ namespace nx::mtp
         g_shared_data.in_progress = false;
     }
 
-    void Setup()
+    void Setup(const char* app_path)
     {
         haze::FsEntries fs_entries;
         fs_entries.emplace_back(std::make_shared<FsSdmc>());
@@ -810,6 +816,11 @@ namespace nx::mtp
         fs_entries.emplace_back(std::make_shared<FsInstallProxy>("install", "Install (NSP, XCI, NSZ, XCZ)"));
 
         haze::Initialize(nullptr, fs_entries);
+
+        if (app_path)
+        {
+            program_path = app_path;
+        }
     }
 
     void Cleanup()

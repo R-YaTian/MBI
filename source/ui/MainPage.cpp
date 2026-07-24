@@ -3,6 +3,7 @@
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
+#include "manager.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/usb.hpp"
 #include "nx/mtp.hpp"
@@ -155,7 +156,7 @@ namespace app::ui
         {
             return;
         }
-        nx::mtp::Setup();
+        nx::mtp::Setup(app::manager::getAppPath());
         SceneJump(Scene::MtpInstall);
     }
 

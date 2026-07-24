@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-    app::manager::initApp();
+    app::manager::initApp(argv[0]);
     int langCode = app::i18n::Load(app::config::languageSetting);
     PlSharedFontType defaultFont = PlSharedFontType_Standard;
     std::vector<PlSharedFontType> lang_fonts = {

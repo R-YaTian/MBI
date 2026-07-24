@@ -4,8 +4,9 @@
 
 namespace app::manager
 {
-    void initApp();
+    void initApp(const char* argv0 = nullptr);
     void deinitApp();
     void initInstallServices();
     void deinitInstallServices();
+    const char* getAppPath();
 }

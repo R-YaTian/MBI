@@ -11,7 +11,9 @@
 
 namespace app::manager
 {
-    void initApp()
+    std::string app_path;
+
+    void initApp(const char* argv0)
     {
         if (!nx::fs::Exists("sdmc:/config"))
             nx::fs::MakeDir("sdmc:/config");
@@ -36,6 +38,15 @@ namespace app::manager
             LOG_DEBUG("Failed to initialize ncm\n");
         if (R_FAILED(romfsInit()))
             LOG_DEBUG("Failed to mount romfs\n");
+
+        if (!std::strncmp(argv0, "sdmc:/", 6))
+        {
+            app_path = argv0 + 5;
+        }
+        else
+        {
+            app_path = argv0;
+        }
     }
 
     void deinitApp()
@@ -66,5 +77,10 @@ namespace app::manager
         esExit();
         splCryptoExit();
         splExit();
+    }
+
+    const char* getAppPath()
+    {
+        return app_path.c_str();
     }
 }
