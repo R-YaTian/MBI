@@ -249,11 +249,6 @@ namespace app
             std::vector<nx::ext::TikCollection> tickets;
             const nx::ContentCollections& collections = this->m_worker->GetContent()->GetCollections();
             this->ParseTicketsIntoCollection(tickets, collections, true);
-            if (tickets.size() == 0)
-            {
-                LOG_DEBUG("No tickets found, skipping ticket installation\n");
-                return;
-            }
             this->ImportTickets(std::span<nx::ext::TikCollection>(tickets.data(), tickets.size()));
         }
         catch (std::runtime_error& e)
@@ -390,28 +385,28 @@ namespace app
         u16 HMAC_160_RightsId = 0x4 + 0x14 + 0x28 + 0x160;
 
         // ECDSA SHA256 & SHA1
-        if ((tikBuf[0] == 5 || tikBuf[0] == 2) && tikBuf.size() > ECDSA_RightsId + 0x0F && tikBuf[ECDSA_Properties - 1] != tikBuf[ECDSA_RightsId + 0x0F])
+        if ((tikBuf[0] == 5 || tikBuf[0] == 2) && tikBuf.size() > static_cast<size_t>(ECDSA_RightsId + 0x0F) && tikBuf[ECDSA_Properties - 1] != tikBuf[ECDSA_RightsId + 0x0F])
         {
             tikBuf[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
             tikBuf[ECDSA_Properties - 1] = tikBuf[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
         }
 
         // RSA_2048 SHA256 & SHA1
-        else if ((tikBuf[0] == 4 || tikBuf[0] == 1) && tikBuf.size() > RSA_2048_RightsId + 0x0F && tikBuf[RSA_2048_Properties - 1] != tikBuf[RSA_2048_RightsId + 0x0F])
+        else if ((tikBuf[0] == 4 || tikBuf[0] == 1) && tikBuf.size() > static_cast<size_t>(RSA_2048_RightsId + 0x0F) && tikBuf[RSA_2048_Properties - 1] != tikBuf[RSA_2048_RightsId + 0x0F])
         {
             tikBuf[RSA_2048_Properties] = 0x0;
             tikBuf[RSA_2048_Properties - 1] = tikBuf[RSA_2048_RightsId + 0x0F];
         }
 
         // RSA_4096 SHA256 & SHA1
-        else if ((tikBuf[0] == 3 || tikBuf[0] == 0) && tikBuf.size() > RSA_4096_RightsId + 0x0F && tikBuf[RSA_4096_Properties - 1] != tikBuf[RSA_4096_RightsId + 0x0F])
+        else if ((tikBuf[0] == 3 || tikBuf[0] == 0) && tikBuf.size() > static_cast<size_t>(RSA_4096_RightsId + 0x0F) && tikBuf[RSA_4096_Properties - 1] != tikBuf[RSA_4096_RightsId + 0x0F])
         {
             tikBuf[RSA_4096_Properties] = 0x0;
             tikBuf[RSA_4096_Properties - 1] = tikBuf[RSA_4096_RightsId + 0x0F];
         }
 
         // HMAC_160 SHA1
-        else if (tikBuf[0] == 6 && tikBuf.size() > HMAC_160_RightsId + 0x0F && tikBuf[HMAC_160_Properties - 1] != tikBuf[HMAC_160_RightsId + 0x0F])
+        else if (tikBuf[0] == 6 && tikBuf.size() > static_cast<size_t>(HMAC_160_RightsId + 0x0F) && tikBuf[HMAC_160_Properties - 1] != tikBuf[HMAC_160_RightsId + 0x0F])
         {
             tikBuf[HMAC_160_Properties] = 0x0;
             tikBuf[HMAC_160_Properties - 1] = tikBuf[HMAC_160_RightsId + 0x0F];
@@ -459,6 +454,12 @@ namespace app
 
     void InstallTask::ImportTickets(std::span<nx::ext::TikCollection> collections)
     {
+        if (collections.size() == 0)
+        {
+            LOG_DEBUG("No tickets found, skipping ticket installation\n");
+            return;
+        }
+
         for (auto& collection : collections)
         {
             // Try to fix a bad ticket dump
@@ -479,6 +480,8 @@ namespace app
     {
         std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> contentMetaList;
         const nx::ContentCollections& collections = m_worker->GetContent()->GetCollections();
+        std::vector<nx::ext::TikCollection> tickets;
+        this->ParseTicketsIntoCollection(tickets, collections);
         for (const auto& entry : collections)
         {
             if (entry.type == nx::ContentCollectionType::ARCHIVE)
@@ -505,6 +508,24 @@ namespace app
                 contentMetaList.push_back( { nx::ncm::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo } );
                 std::get<0>(contentMetaList.back()).SetNcaHeader(ncaHeader);
             }
+            else if (entry.type == nx::ContentCollectionType::TIK || entry.type == nx::ContentCollectionType::CERT)
+            {
+                const FsRightsId& rights_id = entry.info.rights_id;
+                auto ticketIt = std::ranges::find_if(tickets, [&rights_id](const auto& e){
+                    return !std::memcmp(&rights_id, &e.rights_id, sizeof(rights_id));
+                });
+                if (ticketIt != tickets.end())
+                {
+                    if (entry.type == nx::ContentCollectionType::CERT)
+                    {
+                        m_worker->BufferData(ticketIt->cert.data(), entry.offset, entry.size);
+                    }
+                    else
+                    {
+                        m_worker->BufferData(ticketIt->ticket.data(), entry.offset, entry.size);
+                    }
+                }
+            }
         }
 
         for (size_t i = 0; i < contentMetaList.size(); i++)
@@ -524,6 +545,8 @@ namespace app
             this->InstallContentMetaRecords(installContentMetaBuf, i);
             this->InstallApplicationRecord(i);
         }
+
+        this->ImportTickets(std::span<nx::ext::TikCollection>(tickets.data(), tickets.size()));
 
         for (nx::ncm::ContentMeta contentMeta : m_contentMeta)
         {
