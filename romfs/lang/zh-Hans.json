@@ -122,7 +122,7 @@
             "ask_delete": "安装完成后询问是否删除原始文件(仅从 SD 卡安装时)",
             "enableSound": "安装完成后播放提示音",
             "fix_ticket": "尝试修复错误的票据转储",
-            "skip_base": "智能跳过已安装的本体NCA",
+            "skip_base": "智能跳过已安装的本体NCA (MTP 安装除外)",
             "use_12h_time": "使用12小时制时间",
             "language": "显示语言：",
             "credits": "致谢"

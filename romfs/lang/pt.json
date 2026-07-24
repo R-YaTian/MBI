@@ -122,7 +122,7 @@
             "enableSound": "Áudio informativo no final",
             "ask_delete": "Pedir para eliminar os ficheiros originais após a instalação a partir do cartão SD",
             "fix_ticket": "Tentativa de corrigir despejo de ticket incorreto",
-            "skip_base": "Ignorar automaticamente Base-NCAs já instalados",
+            "skip_base": "Ignorar automaticamente Base-NCAs já instalados (exceto em instalações MTP)",
             "use_12h_time": "Use formato de hora de 12h",
             "language": "Idioma: ",
             "credits": "Créditos"

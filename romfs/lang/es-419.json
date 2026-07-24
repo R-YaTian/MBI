@@ -122,7 +122,7 @@
             "ask_delete": "Preguntar si borrar los archivos originales después de instalar desde la tarjeta SD",
             "enableSound": "Audio de información al final",
             "fix_ticket": "Intento de corregir volcado de ticket incorrecto",
-            "skip_base": "Omitir automáticamente las Base-NCAs ya instaladas",
+            "skip_base": "Omitir automáticamente las Base-NCAs ya instaladas (excepto en instalaciones MTP)",
             "use_12h_time": "Usar formato de hora de 12 horas",
             "language": "Idioma: ",
             "credits": "Créditos"

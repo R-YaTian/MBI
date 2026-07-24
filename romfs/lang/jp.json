@@ -122,7 +122,7 @@
             "ask_delete": "SDカードからのインストール後に元のファイルを削除するか尋ねる",
             "enableSound": "最後に情報オーディオ",
             "fix_ticket": "不正なチケットダンプを修正しようとしています",
-            "skip_base": "インストール済みの Base-NCAs を自動的にスキップ",
+            "skip_base": "インストール済みの Base-NCAs を自動的にスキップ (MTP インストールを除く)",
             "use_12h_time": "12時間形式を使用する",
             "language": "言語: ",
             "credits": "クレジット"

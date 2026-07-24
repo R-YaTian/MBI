@@ -122,7 +122,7 @@
             "ask_delete": "在安裝完成後，詢問是否刪除原始檔案(用SD記憶卡進行安裝時)",
             "enableSound": "安裝完成時播放通知音效",
             "fix_ticket": "嘗試修復錯誤的票據轉儲",
-            "skip_base": "自動略過已安裝的本體NCA",
+            "skip_base": "自動略過已安裝的本體NCA (MTP 安裝除外)",
             "use_12h_time": "使用12小時制格式",
             "language": "介面語系: ",
             "credits": "感謝名單"

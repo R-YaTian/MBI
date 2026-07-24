@@ -122,7 +122,7 @@
             "ask_delete": "Ask to delete original files after installation from SD card",
             "enableSound": "Info audio at the end",
             "fix_ticket": "Try to fix bad ticket dump",
-            "skip_base": "Skip installed base NCAs automatically",
+            "skip_base": "Skip installed base NCAs automatically (except for MTP installs)",
             "use_12h_time": "Use 12h time format",
             "language": "Language: ",
             "credits": "Credits"

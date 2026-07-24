@@ -122,7 +122,7 @@
             "ask_delete": "Chiedi di cancellare i file originali dopo l'installazione dalla scheda SD",
             "enableSound": "Info audio alla fine",
             "fix_ticket": "Tentativo di correggere dump ticket errato",
-            "skip_base": "Salta automaticamente i Base-NCAs già installati",
+            "skip_base": "Salta automaticamente i Base-NCAs già installati (tranne per le installazioni MTP)",
             "use_12h_time": "Usa il formato ora 12h",
             "language": "Lingua: ",
             "credits": "Crediti"

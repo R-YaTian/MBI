@@ -122,7 +122,7 @@
             "ask_delete": "Demande de suppression des fichiers originaux après l'installation depuis la carte SD",
             "enableSound": "Info audio à la fin",
             "fix_ticket": "Tentative de correction du mauvais vidage de ticket",
-            "skip_base": "Ignorer automatiquement les Base-NCAs déjà installés",
+            "skip_base": "Ignorer automatiquement les Base-NCAs déjà installés (sauf pour les installations MTP)",
             "use_12h_time": "Utiliser le format d'heure 12h",
             "language": "Langage: ",
             "credits": "Crédits"
