@@ -3,7 +3,9 @@
 #include <memory>
 #include <vector>
 #include <tuple>
+#include <span>
 #include "nx/ncm.hpp"
+#include "nx/ext.hpp"
 #include "install/Worker.hpp"
 
 namespace app
@@ -32,7 +34,8 @@ namespace app
             u64 GetTitleId(int i = 0);
             NcmContentMetaType GetContentMetaType(int i = 0);
             std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadContentMeta();
-            void ParseTicketCert();
+            void ParseTicketsIntoCollection(std::vector<nx::ext::TikCollection>& tickets, const nx::ContentCollections& collections, bool read_data = false);
+            void ImportTickets(std::span<nx::ext::TikCollection> collections);
             void InstallNCA(const NcmContentId &ncaId, bool skipRegister = false, nx::nca::NcaHeader* outHeader = nullptr);
             void InstallContentMetaRecords(nx::data::ByteBuffer& installContentMetaBuf, int i);
             void InstallApplicationRecord(int i);

@@ -16,6 +16,14 @@ namespace nx
         CERT,
     };
 
+    typedef union
+    {
+        NcmContentId content_id;
+        FsRightsId rights_id;
+    } ContentCollectionInfo;
+
+    static_assert(sizeof(ContentCollectionInfo) == 0x10);
+
     struct ContentCollectionEntry
     {
         // collection name within file.
@@ -25,7 +33,7 @@ namespace nx
         // collection size within file, may be compressed size.
         s64 size{};
         ContentCollectionType type{};
-        NcmContentId content_id{};
+        ContentCollectionInfo info{};
     };
 
     using ContentCollections = std::vector<ContentCollectionEntry>;

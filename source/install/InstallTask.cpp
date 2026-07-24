@@ -1,7 +1,6 @@
 #include "install/InstallTask.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
-#include "nx/ext.hpp"
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
@@ -247,7 +246,15 @@ namespace app
         LOG_DEBUG("Installing ticket and cert...\n");
         try
         {
-            this->ParseTicketCert();
+            std::vector<nx::ext::TikCollection> tickets;
+            const nx::ContentCollections& collections = this->m_worker->GetContent()->GetCollections();
+            this->ParseTicketsIntoCollection(tickets, collections, true);
+            if (tickets.size() == 0)
+            {
+                LOG_DEBUG("No tickets found, skipping ticket installation\n");
+                return;
+            }
+            this->ImportTickets(std::span<nx::ext::TikCollection>(tickets.data(), tickets.size()));
         }
         catch (std::runtime_error& e)
         {
@@ -364,8 +371,13 @@ namespace app
         try { contentStorage->DeletePlaceholder(*(NcmPlaceHolderId*)&ncaId); } catch (...) {}
     }
 
-    static void TryFixTicket(std::unique_ptr<u8[]>& tikBuf)
+    static void TryFixTicket(std::vector<u8>& tikBuf)
     {
+        if (tikBuf.empty())
+        {
+            return;
+        }
+
         // https://switchbrew.org/wiki/Ticket#Certificate_chain
         u16 ECDSA_Properties = 0x4 + 0x3C + 0x40 + 0x146;
         u16 RSA_2048_Properties = 0x4 + 0x100 + 0x3C + 0x146;
@@ -378,86 +390,88 @@ namespace app
         u16 HMAC_160_RightsId = 0x4 + 0x14 + 0x28 + 0x160;
 
         // ECDSA SHA256 & SHA1
-        if ((tikBuf.get()[0] == 5 || tikBuf.get()[0] == 2) && tikBuf.get()[ECDSA_Properties - 1] != tikBuf.get()[ECDSA_RightsId + 0x0F])
+        if ((tikBuf[0] == 5 || tikBuf[0] == 2) && tikBuf.size() > ECDSA_RightsId + 0x0F && tikBuf[ECDSA_Properties - 1] != tikBuf[ECDSA_RightsId + 0x0F])
         {
-            tikBuf.get()[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
-            tikBuf.get()[ECDSA_Properties - 1] = tikBuf.get()[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
+            tikBuf[ECDSA_Properties] = 0x0; // Bad ticket dump may place key generation at wrong position, clearing it...
+            tikBuf[ECDSA_Properties - 1] = tikBuf[ECDSA_RightsId + 0x0F]; // Fix key generation using rights_id + 0x0F (last byte of rights_id should equal key generation)
         }
 
         // RSA_2048 SHA256 & SHA1
-        else if ((tikBuf.get()[0] == 4 || tikBuf.get()[0] == 1) && (tikBuf.get()[RSA_2048_Properties - 1] != tikBuf.get()[RSA_2048_RightsId + 0x0F]))
+        else if ((tikBuf[0] == 4 || tikBuf[0] == 1) && tikBuf.size() > RSA_2048_RightsId + 0x0F && tikBuf[RSA_2048_Properties - 1] != tikBuf[RSA_2048_RightsId + 0x0F])
         {
-            tikBuf.get()[RSA_2048_Properties] = 0x0;
-            tikBuf.get()[RSA_2048_Properties - 1] = tikBuf.get()[RSA_2048_RightsId + 0x0F];
+            tikBuf[RSA_2048_Properties] = 0x0;
+            tikBuf[RSA_2048_Properties - 1] = tikBuf[RSA_2048_RightsId + 0x0F];
         }
 
         // RSA_4096 SHA256 & SHA1
-        else if ((tikBuf.get()[0] == 3 || tikBuf.get()[0] == 0) && (tikBuf.get()[RSA_4096_Properties - 1] != tikBuf.get()[RSA_4096_RightsId + 0x0F]))
+        else if ((tikBuf[0] == 3 || tikBuf[0] == 0) && tikBuf.size() > RSA_4096_RightsId + 0x0F && tikBuf[RSA_4096_Properties - 1] != tikBuf[RSA_4096_RightsId + 0x0F])
         {
-            tikBuf.get()[RSA_4096_Properties] = 0x0;
-            tikBuf.get()[RSA_4096_Properties - 1] = tikBuf.get()[RSA_4096_RightsId + 0x0F];
+            tikBuf[RSA_4096_Properties] = 0x0;
+            tikBuf[RSA_4096_Properties - 1] = tikBuf[RSA_4096_RightsId + 0x0F];
         }
 
         // HMAC_160 SHA1
-        else if (tikBuf.get()[0] == 6 && (tikBuf.get()[HMAC_160_Properties - 1] != tikBuf.get()[HMAC_160_RightsId + 0x0F]))
+        else if (tikBuf[0] == 6 && tikBuf.size() > HMAC_160_RightsId + 0x0F && tikBuf[HMAC_160_Properties - 1] != tikBuf[HMAC_160_RightsId + 0x0F])
         {
-            tikBuf.get()[HMAC_160_Properties] = 0x0;
-            tikBuf.get()[HMAC_160_Properties - 1] = tikBuf.get()[HMAC_160_RightsId + 0x0F];
+            tikBuf[HMAC_160_Properties] = 0x0;
+            tikBuf[HMAC_160_Properties - 1] = tikBuf[HMAC_160_RightsId + 0x0F];
         }
     }
 
-    void InstallTask::ParseTicketCert()
+    void InstallTask::ParseTicketsIntoCollection(std::vector<nx::ext::TikCollection>& tickets, const nx::ContentCollections& collections, bool read_data)
     {
-        // Read the tik files and put it into a buffer
-        std::vector<const void*> tikFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("tik");
-        if (tikFileEntries.size() == 0)
+        for (const auto& collection : collections)
         {
-            LOG_DEBUG("No tik file found in the content!");
-            return;
+            if (collection.type == nx::ContentCollectionType::TIK)
+            {
+                nx::ext::TikCollection entry{};
+                entry.rights_id = collection.info.rights_id;
+
+                const auto cert = std::ranges::find_if(collections, [&collection](const auto& e){
+                    return e.type == nx::ContentCollectionType::CERT
+                        && std::memcmp(e.info.rights_id.c, collection.info.rights_id.c, sizeof(e.info.rights_id.c)) == 0;
+                });
+
+                entry.ticket.resize(collection.size);
+                if (cert == collections.cend())
+                {
+                    entry.cert.resize(nx::ext::CommonCertificateSize);
+                    memcpy(entry.cert.data(), nx::ext::CommonCertificateData, nx::ext::CommonCertificateSize);
+                }
+                else
+                {
+                    entry.cert.resize(cert->size);
+                    if (read_data)
+                    {
+                        m_worker->BufferData(entry.cert.data(), cert->offset, cert->size);
+                    }
+                }
+
+                if (read_data)
+                {
+                    m_worker->BufferData(entry.ticket.data(), collection.offset, collection.size);
+                }
+
+                tickets.emplace_back(entry);
+            }
         }
+    }
 
-        std::vector<const void*> tmpFileEntries = m_worker->GetContent()->GetFileEntriesByExtension("cert");
-        std::vector<const void*> certFileEntries(tikFileEntries.size(), nullptr);
-        for (size_t i = 0; i < tmpFileEntries.size(); i++)
+    void InstallTask::ImportTickets(std::span<nx::ext::TikCollection> collections)
+    {
+        for (auto& collection : collections)
         {
-            if (i >= tikFileEntries.size())
-            {
-                break;
-            }
-            certFileEntries[i] = tmpFileEntries[i];
-        }
-
-        for (size_t i = 0; i < tikFileEntries.size(); i++)
-        {
-            u64 tikSize = m_worker->GetContent()->GetFileEntrySize(tikFileEntries[i]);
-            auto tikBuf = std::make_unique<u8[]>(tikSize);
-            LOG_DEBUG("> Reading tik\n");
-            m_worker->BufferData(tikBuf.get(), m_worker->GetContent()->GetFileEntryOffset(tikFileEntries[i]), tikSize);
-
-            u64 certSize;
-            std::unique_ptr<u8[]> certBuf;
-            if (certFileEntries[i] == nullptr)
-            {
-                certSize = nx::ext::CommonCertificateSize;
-                certBuf = std::make_unique<u8[]>(certSize);
-                memcpy(certBuf.get(), nx::ext::CommonCertificateData, certSize);
-            }
-            else
-            {
-                certSize = m_worker->GetContent()->GetFileEntrySize(certFileEntries[i]);
-                certBuf = std::make_unique<u8[]>(certSize);
-                LOG_DEBUG("> Reading cert\n");
-                m_worker->BufferData(certBuf.get(), m_worker->GetContent()->GetFileEntryOffset(certFileEntries[i]), certSize);
-            }
-
             // Try to fix a bad ticket dump
             if (m_fixTicket)
             {
-                TryFixTicket(tikBuf);
+                TryFixTicket(collection.ticket);
             }
 
             // Finally, let's actually import the ticket
-            ASSERT_OK(esImportTicket(tikBuf.get(), tikSize, certBuf.get(), certSize), "Failed to import ticket");
+            ASSERT_OK(esImportTicket(collection.ticket.data(),
+                                     collection.ticket.size(),
+                                     collection.cert.data(),
+                                     collection.cert.size()), "Failed to import ticket");
         }
     }
 
@@ -469,22 +483,22 @@ namespace app
         {
             if (entry.type == nx::ContentCollectionType::ARCHIVE)
             {
-                this->InstallNCA(entry.content_id, true);
+                this->InstallNCA(entry.info.content_id, true);
             }
             else if (entry.type == nx::ContentCollectionType::META)
             {
                 nx::nca::NcaHeader ncaHeader;
-                this->InstallNCA(entry.content_id, false, &ncaHeader);
+                this->InstallNCA(entry.info.content_id, false, &ncaHeader);
 
                 nx::ncm::ContentStorage contentStorage(m_destStorageId);
-                if (!contentStorage.Has(entry.content_id))
+                if (!contentStorage.Has(entry.info.content_id))
                 {
                     THROW_FORMAT("CNMT NCA not found after installation!");
                 }
-                std::string cnmtNCAFullPath = contentStorage.GetPath(entry.content_id);
+                std::string cnmtNCAFullPath = contentStorage.GetPath(entry.info.content_id);
 
                 NcmContentInfo cnmtContentInfo;
-                cnmtContentInfo.content_id = entry.content_id;
+                cnmtContentInfo.content_id = entry.info.content_id;
                 ncmU64ToContentInfoSize(entry.size, &cnmtContentInfo);
                 cnmtContentInfo.content_type = NcmContentType_Meta;
 
@@ -555,7 +569,7 @@ namespace app
             {
                 continue;
             }
-            try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&entry.content_id); } catch (...) {}
+            try { contentStorage.DeletePlaceholder(*(NcmPlaceHolderId*)&entry.info.content_id); } catch (...) {}
         }
     }
 }
