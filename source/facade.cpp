@@ -1,6 +1,7 @@
 #include "facade.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
+#include "ui/MtpInstallPage.hpp"
 
 namespace app::ui
 {
@@ -33,19 +34,31 @@ namespace app::facade
 
     void SendInstallInfoText(std::string text)
     {
-        app::ui::installerPage->AppendInstallInfoText(text);
+        auto lyt = app::ui::mainApp->GetLayout<app::ui::InstallerPage>();
+        if (lyt)
+        {
+            lyt->AppendInstallInfoText(text);
+        }
         SendRenderRequest();
     }
 
     void SendInstallBarText(std::string text)
     {
-        app::ui::installerPage->SetInstallBarText(text);
+        auto lyt = app::ui::mainApp->GetLayout<app::ui::InstallerPage>();
+        if (lyt)
+        {
+            lyt->SetInstallBarText(text);
+        }
         SendRenderRequest();
     }
 
     void SendInstallProgress(double percent)
     {
-        app::ui::installerPage->SetProgressBar(percent);
+        auto lyt = app::ui::mainApp->GetLayout<app::ui::InstallerPage>();
+        if (lyt)
+        {
+            lyt->SetProgressBar(percent);
+        }
         SendRenderRequest();
     }
 

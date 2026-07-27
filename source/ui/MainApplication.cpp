@@ -455,8 +455,11 @@ namespace app::ui
             }
             break;
         case Scene::MtpInstall:
+            userImage->SetEnabled(false);
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("");
+            mtpinstPage->Prepare();
+            mtpinstPage->onInitInstallMode();
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
             break;
