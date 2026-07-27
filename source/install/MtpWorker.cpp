@@ -22,7 +22,7 @@ namespace app::install
         mutexInit(&m_mutex);
         condvarInit(&m_can_read);
         condvarInit(&m_can_write);
-        RetrieveHeader();
+        // RetrieveHeader();
     }
 
     MtpWorker::~MtpWorker() = default;
@@ -56,7 +56,7 @@ namespace app::install
         }
     }
 
-    void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId)
+    void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
@@ -72,8 +72,14 @@ namespace app::install
 
         u64 fileStart = m_content->GetFileEntryOffset(fileEntry);
         u64 fileOff = 0;
-        size_t readSize = 0x400000; // 4MB buff
+        size_t readSize = MAX_BUFFER_SIZE; // 4MB buff
         auto readBuffer = std::make_unique<u8[]>(readSize);
+        if (header != nullptr)
+        {
+            std::memcpy(readBuffer.get(), header, sizeof(nx::nca::NcaHeader));
+            writer.write(readBuffer.get(), sizeof(nx::nca::NcaHeader));
+            fileOff += sizeof(nx::nca::NcaHeader);
+        }
 
         u64 freq = armGetSystemTickFreq();
         u64 startTime = armGetSystemTick();
@@ -84,13 +90,14 @@ namespace app::install
         try
         {
             app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+            app::facade::SendInstallInfoText("NCA size: " + std::to_string(ncaSize) + " bytes");
             app::facade::SendInstallProgress(0);
             while (fileOff < ncaSize)
             {
                 progress = (float) fileOff / (float) ncaSize;
                 u64 newTime = armGetSystemTick();
 
-                if (fileOff % (0x400000 * 3) == 0)
+                if (fileOff % (MAX_BUFFER_SIZE * 3) == 0)
                 {
                     size_t newSizeBuffered = fileOff;
                     double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
@@ -114,6 +121,7 @@ namespace app::install
                 }
 
                 this->BufferData(readBuffer.get(), fileOff + fileStart, readSize);
+                app::facade::SendInstallInfoText("readSize: " + std::to_string(readSize) + " bytes");
                 writer.write(readBuffer.get(), readSize);
 
                 fileOff += readSize;

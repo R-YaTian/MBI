@@ -12,7 +12,7 @@ namespace app::install
             UsbWorker(std::unique_ptr<nx::Content> content, const std::string& filename);
             ~UsbWorker();
 
-            void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId) override;
+            void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) override;
             void BufferData(void* buf, off_t offset, size_t size) override;
 
         private:

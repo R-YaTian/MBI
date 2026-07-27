@@ -54,7 +54,7 @@ namespace app::install
         }
     }
 
-    void HttpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId)
+    void HttpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);

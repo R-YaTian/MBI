@@ -72,7 +72,7 @@ namespace app::install
         }
     }
 
-    void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId)
+    void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);

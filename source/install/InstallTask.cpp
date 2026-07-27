@@ -7,13 +7,13 @@
 
 namespace app
 {
-    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, std::unique_ptr<app::install::Worker> worker) :
+    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker) :
         m_destStorageId(destStorageId),
         m_ignoreReqFirmVersion(ignoreReqFirmVersion),
         m_fixTicket(fixTicket),
         m_skipBase(skipBase),
         m_contentMeta(),
-        m_worker(std::move(worker))
+        m_worker(worker)
     {
         if (hosversionAtLeast(5,0,0))
         {
@@ -319,23 +319,24 @@ namespace app
         try { contentStorage->DeletePlaceholder(*(NcmPlaceHolderId*)&ncaId); } catch (...) {}
 
         nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
+        nx::nca::NcaHeader decryptedHeader;
         m_worker->BufferData(header, m_worker->GetContent()->GetFileEntryOffset(fileEntry), sizeof(nx::nca::NcaHeader));
 
         nx::Crypto::AesXtr crypto(nx::Crypto::Keys().headerKey, false);
-        crypto.decrypt(header, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
+        crypto.decrypt(&decryptedHeader, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
 
-        if (header->magic != MAGIC_NCA3)
+        if (decryptedHeader.magic != MAGIC_NCA3)
         {
             THROW_FORMAT("Invalid NCA magic");
         }
 
-        if (header->sig_key_gen >= std::size(nx::Crypto::NCAHeaderSignature))
+        if (decryptedHeader.sig_key_gen >= std::size(nx::Crypto::NCAHeaderSignature))
         {
             THROW_FORMAT("Invalid signature key generation");
         }
 
-        auto mod = nx::Crypto::NCAHeaderSignature[header->sig_key_gen];
-        if (!nx::Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, mod))
+        auto mod = nx::Crypto::NCAHeaderSignature[decryptedHeader.sig_key_gen];
+        if (!nx::Crypto::rsa2048PssVerify(&decryptedHeader.magic, 0x200, decryptedHeader.fixed_key_sig, mod))
         {
             app::facade::SendInstallInfoText("inst.nca_verify.error"_lang + nx::ncm::GetContentIdString(ncaId));
         }
@@ -343,11 +344,11 @@ namespace app
         // outHeader not nullptr means we are installing a CNMT NCA
         if (outHeader != nullptr)
         {
-            memcpy(outHeader, header, sizeof(nx::nca::NcaHeader));
+            memcpy(outHeader, &decryptedHeader, sizeof(nx::nca::NcaHeader));
         }
 
+        m_worker->StreamToPlaceholder(contentStorage, ncaId, header);
         delete header;
-        m_worker->StreamToPlaceholder(contentStorage, ncaId);
 
         if (skipRegister)
         {

@@ -20,7 +20,7 @@ namespace app
             std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
         public:
-            InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, std::unique_ptr<app::install::Worker> worker);
+            InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker);
             ~InstallTask();
 
             void Prepare();
@@ -29,7 +29,7 @@ namespace app
             void InstallFromCollections();
 
         private:
-            std::unique_ptr<app::install::Worker> m_worker;
+            install::Worker* m_worker;
 
             u64 GetTitleId(int i = 0);
             NcmContentMetaType GetContentMetaType(int i = 0);
