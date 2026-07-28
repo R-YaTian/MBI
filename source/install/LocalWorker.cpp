@@ -37,8 +37,14 @@ namespace app::install
 
         u64 fileStart = m_content->GetFileEntryOffset(fileEntry);
         u64 fileOff = 0;
+        size_t prependedSize = 0;
         size_t readSize = 0x400000; // 4MB buff
         auto readBuffer = std::make_unique<u8[]>(readSize);
+        if (header != nullptr)
+        {
+            prependedSize = sizeof(nx::nca::NcaHeader);
+            std::memcpy(readBuffer.get(), header, prependedSize);
+        }
 
         u64 freq = armGetSystemTickFreq();
         u64 startTime = armGetSystemTick();
@@ -76,8 +82,12 @@ namespace app::install
                 readSize = ncaSize - fileOff;
             }
 
-            this->BufferData(readBuffer.get(), fileOff + fileStart, readSize);
+            this->BufferData(readBuffer.get() + prependedSize, fileOff + fileStart + prependedSize, readSize - prependedSize);
             writer.write(readBuffer.get(), readSize);
+            if (prependedSize != 0)
+            {
+                prependedSize = 0;
+            }
 
             fileOff += readSize;
         }

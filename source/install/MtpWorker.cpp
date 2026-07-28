@@ -66,13 +66,13 @@ namespace app::install
 
         u64 fileStart = m_content->GetFileEntryOffset(fileEntry);
         u64 fileOff = 0;
-        size_t readSize = MAX_BUFFER_SIZE; // 4MB buff
+        size_t prependedSize = 0;
+        size_t readSize = 0x400000; // 4MB buff
         auto readBuffer = std::make_unique<u8[]>(readSize);
         if (header != nullptr)
         {
-            std::memcpy(readBuffer.get(), header, sizeof(nx::nca::NcaHeader));
-            writer.write(readBuffer.get(), sizeof(nx::nca::NcaHeader));
-            fileOff += sizeof(nx::nca::NcaHeader);
+            prependedSize = sizeof(nx::nca::NcaHeader);
+            std::memcpy(readBuffer.get(), header, prependedSize);
         }
 
         u64 freq = armGetSystemTickFreq();
@@ -84,14 +84,13 @@ namespace app::install
         try
         {
             app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-            app::facade::SendInstallInfoText("NCA size: " + std::to_string(ncaSize) + " bytes");
             app::facade::SendInstallProgress(0);
             while (fileOff < ncaSize)
             {
                 progress = (float) fileOff / (float) ncaSize;
                 u64 newTime = armGetSystemTick();
 
-                if (fileOff % (MAX_BUFFER_SIZE * 3) == 0)
+                if (fileOff % (0x400000 * 3) == 0)
                 {
                     size_t newSizeBuffered = fileOff;
                     double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
@@ -114,9 +113,12 @@ namespace app::install
                     readSize = ncaSize - fileOff;
                 }
 
-                this->BufferData(readBuffer.get(), fileOff + fileStart, readSize);
-                app::facade::SendInstallInfoText("readSize: " + std::to_string(readSize) + " bytes");
+                this->BufferData(readBuffer.get() + prependedSize, fileOff + fileStart + prependedSize, readSize - prependedSize);
                 writer.write(readBuffer.get(), readSize);
+                if (prependedSize != 0)
+                {
+                    prependedSize = 0;
+                }
 
                 fileOff += readSize;
             }

@@ -64,6 +64,9 @@ namespace app::ui
             pageData->m_source->RetrieveHeader();
             installTask->InstallFromCollections();
             app::facade::SendInstallProgress(100);
+            pageData->m_state = State::Done;
+            pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
+            pageData->m_source->Disable();
         }
     }
 
