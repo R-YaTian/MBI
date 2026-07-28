@@ -2,12 +2,7 @@
 #include "util/i18n.hpp"
 #include "nx/error.hpp"
 #include "nx/usb.hpp"
-#include "nx/fs.hpp"
-#include "facade.hpp"
 #include <malloc.h>
-#include <sstream>
-#include <iomanip>
-#include <thread>
 
 namespace app::install
 {
@@ -19,10 +14,11 @@ namespace app::install
 
     UsbWorker::~UsbWorker() = default;
 
-    void UsbWorker::USBReadThread(void* in)
+    void UsbWorker::ReadThread(void* in)
     {
-        USBArgs* args = static_cast<USBArgs*>(in);
-        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(args->fileName, args->xfs0Offset, args->ncaSize);
+        ThreadData* args = static_cast<ThreadData*>(in);
+        std::string fileName = std::string(static_cast<char*>(args->in));
+        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(fileName, args->xfs0Offset, args->ncaSize);
 
         u8* buf = (u8*)memalign(0x1000, 0x800000);
         u64 sizeRemaining = header.dataSize;
@@ -35,7 +31,7 @@ namespace app::install
                 tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, (u64)0x800000), 5000000000);
                 if (tmpSizeRead == 0)
                 {
-                    THROW_FORMAT(("inst.usb.error"_lang).c_str());
+                    throw std::runtime_error(("inst.usb.error"_lang).c_str());
                 }
                 sizeRemaining -= tmpSizeRead;
 
@@ -50,10 +46,13 @@ namespace app::install
                 args->bufferedPlaceholderWriter->AppendData(buf, tmpSizeRead);
             }
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             stopThreads = true;
-            errorMessage = e.what();
+            if (args->errorMessage != nullptr)
+            {
+                *args->errorMessage = e.what();
+            }
         }
 
         free(buf);
@@ -61,7 +60,7 @@ namespace app::install
 
     void UsbWorker::PlaceholderWrite(void* in)
     {
-        USBArgs* args = static_cast<USBArgs*>(in);
+        ThreadData* args = static_cast<ThreadData*>(in);
 
         while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
         {
@@ -74,97 +73,7 @@ namespace app::install
 
     void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
-        std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
-
-        LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
-        size_t ncaSize = m_content->GetFileEntrySize(fileEntry);
-        if (ncaSize > (size_t)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
-        {
-            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
-        }
-
-        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
-        USBArgs args;
-        args.fileName = m_fileName;
-        args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;
-        args.xfs0Offset = m_content->GetFileEntryOffset(fileEntry);
-        args.ncaSize = ncaSize;
-        stopThreads = false;
-
-        std::thread usbThread = std::thread(&UsbWorker::USBReadThread, this, &args);
-        std::thread writeThread = std::thread(&UsbWorker::PlaceholderWrite, this, &args);
-
-        u64 freq = armGetSystemTickFreq();
-        u64 startTime = armGetSystemTick();
-        size_t startSizeBuffered = 0;
-        double speed = 0.0;
-
-        app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "...");
-        app::facade::SendInstallProgress(0);
-        while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreads)
-        {
-            u64 newTime = armGetSystemTick();
-
-            if (newTime - startTime >= freq)
-            {
-                size_t newSizeBuffered = bufferedPlaceholderWriter.GetSizeBuffered();
-                double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
-                double duration = ((double)(newTime - startTime) / (double)freq);
-                speed =  mbBuffered / duration;
-
-                startTime = newTime;
-                startSizeBuffered = newSizeBuffered;
-                int downloadProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeBuffered() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
-#ifdef NXLINK_DEBUG
-                u64 totalSizeMB = bufferedPlaceholderWriter.GetTotalDataSize() / 1000000;
-                u64 downloadSizeMB = bufferedPlaceholderWriter.GetSizeBuffered() / 1000000;
-                LOG_DEBUG("> Download Progress: %lu/%lu MB (%i%s) (%.2f MB/s)\r", downloadSizeMB, totalSizeMB, downloadProgress, "%", speed);
-#endif
-                std::stringstream x;
-                x << downloadProgress;
-                std::stringstream speedStr;
-                speedStr << std::fixed << std::setprecision(2) << speed;
-                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
-                app::facade::SendInstallProgress((double)downloadProgress);
-            }
-        }
-        app::facade::SendInstallProgress(100);
-
-#ifdef NXLINK_DEBUG
-        u64 totalSizeMB = bufferedPlaceholderWriter.GetTotalDataSize() / 1000000;
-#endif
-
-        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-        app::facade::SendInstallProgress(0);
-        while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreads)
-        {
-            int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
-#ifdef NXLINK_DEBUG
-            u64 installSizeMB = bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / 1000000;
-            LOG_DEBUG("> Install Progress: %lu/%lu MB (%i%s)\r", installSizeMB, totalSizeMB, installProgress, "%");
-#endif
-            app::facade::SendInstallProgress((double)installProgress);
-            std::stringstream x;
-            x << installProgress;
-            app::facade::SendInstallBarText(x.str() + "%");
-        }
-        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
-        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.Finalize();
-        app::facade::SendInstallProgress(100);
-
-        if (usbThread.joinable())
-        {
-            usbThread.join();
-        }
-        if (writeThread.joinable())
-        {
-            writeThread.join();
-        }
-        if (stopThreads)
-        {
-            throw std::runtime_error(errorMessage.c_str());
-        }
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header);
     }
 
     void UsbWorker::BufferData(void* buf, off_t offset, size_t size)

@@ -197,7 +197,7 @@ namespace nx::network
         this->StreamDataRange(offset, size, streamFunc);
     }
 
-    int HTTPDownload::StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc)
+    bool HTTPDownload::StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc)
     {
         if (!m_rangesSupported)
         {
@@ -231,8 +231,11 @@ namespace nx::network
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
         curl_easy_cleanup(curl);
 
-        if (httpCode != 206 || rc != CURLE_OK) return 1;
-        return 0;
+        if (httpCode != 206 || rc != CURLE_OK)
+        {
+            return false;
+        }
+        return true;
     }
     // End HTTPDownload
 

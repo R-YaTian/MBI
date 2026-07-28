@@ -2,7 +2,6 @@
 #include "util/i18n.hpp"
 #include "nx/NcaWriter.hpp"
 #include "nx/error.hpp"
-#include "nx/fs.hpp"
 #include "facade.hpp"
 #include <sstream>
 #include <iomanip>
@@ -32,13 +31,7 @@ namespace app::install
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
-
-        LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
-        if (ncaSize > (size_t)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
-        {
-            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
-        }
 
         NcaWriter writer(ncaId, contentStorage);
 
@@ -53,49 +46,42 @@ namespace app::install
         double speed = 0.0;
 
         float progress;
-        try
+        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::facade::SendInstallProgress(0);
+        while (fileOff < ncaSize)
         {
-            app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
-            app::facade::SendInstallProgress(0);
-            while (fileOff < ncaSize)
+            progress = (float) fileOff / (float) ncaSize;
+            u64 newTime = armGetSystemTick();
+
+            if (fileOff % (0x400000 * 3) == 0)
             {
-                progress = (float) fileOff / (float) ncaSize;
-                u64 newTime = armGetSystemTick();
+                size_t newSizeBuffered = fileOff;
+                double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
+                double duration = ((double)(newTime - startTime) / (double)freq);
+                speed =  mbBuffered / duration;
+                startTime = newTime;
+                startSizeBuffered = newSizeBuffered;
 
-                if (fileOff % (0x400000 * 3) == 0)
-                {
-                    size_t newSizeBuffered = fileOff;
-                    double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
-                    double duration = ((double)(newTime - startTime) / (double)freq);
-                    speed =  mbBuffered / duration;
-                    startTime = newTime;
-                    startSizeBuffered = newSizeBuffered;
-
-                    LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0), "%");
-                    app::facade::SendInstallProgress((double)(progress * 100.0));
-                    std::stringstream x;
-                    x << (int)(progress * 100.0);
-                    std::stringstream speedStr;
-                    speedStr << std::fixed << std::setprecision(2) << speed;
-                    app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
-                }
-
-                if (fileOff + readSize >= ncaSize)
-                {
-                    readSize = ncaSize - fileOff;
-                }
-
-                this->BufferData(readBuffer.get(), fileOff + fileStart, readSize);
-                writer.write(readBuffer.get(), readSize);
-
-                fileOff += readSize;
+                LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0), "%");
+                app::facade::SendInstallProgress((double)(progress * 100.0));
+                std::stringstream x;
+                x << (int)(progress * 100.0);
+                std::stringstream speedStr;
+                speedStr << std::fixed << std::setprecision(2) << speed;
+                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
             }
-            app::facade::SendInstallProgress(100);
+
+            if (fileOff + readSize >= ncaSize)
+            {
+                readSize = ncaSize - fileOff;
+            }
+
+            this->BufferData(readBuffer.get(), fileOff + fileStart, readSize);
+            writer.write(readBuffer.get(), readSize);
+
+            fileOff += readSize;
         }
-        catch (std::exception& e)
-        {
-            LOG_DEBUG("something went wrong: %s\n", e.what());
-        }
+        app::facade::SendInstallProgress(100);
 
         std::vector<u8> hash(SHA256_HASH_SIZE);
         writer.close(hash.data());

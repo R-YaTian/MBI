@@ -1,9 +1,7 @@
 #pragma once
 
-#include "nx/BufferedPlaceholderWriter.hpp"
 #include "nx/network.hpp"
 #include "install/Worker.hpp"
-#include <atomic>
 
 namespace app::install
 {
@@ -15,21 +13,10 @@ namespace app::install
 
             void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) override;
             void BufferData(void* buf, off_t offset, size_t size) override;
+            void ReadThread(void* in) override;
+            void PlaceholderWrite(void* in) override;
 
         private:
             nx::network::HTTPDownload m_download;
-
-            struct StreamArgs
-            {
-                nx::network::HTTPDownload* download;
-                nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter;
-                u64 xfs0Offset;
-                u64 ncaSize;
-            };
-
-            std::atomic<bool> stopThreads{false};
-
-            void CurlStreamThread(void* in);
-            void PlaceholderWrite(void* in);
     };
 }

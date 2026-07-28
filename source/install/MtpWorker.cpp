@@ -60,13 +60,7 @@ namespace app::install
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
-
-        LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
         u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
-        if (ncaSize > (size_t)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
-        {
-            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
-        }
 
         NcaWriter writer(ncaId, contentStorage);
 

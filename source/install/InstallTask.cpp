@@ -1,6 +1,7 @@
 #include "install/InstallTask.hpp"
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
+#include "nx/fs.hpp"
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
@@ -306,9 +307,9 @@ namespace app
     {
         const void* fileEntry = m_worker->GetContent()->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_worker->GetContent()->GetFileEntryName(fileEntry);
+        u64 ncaSize = m_worker->GetContent()->GetFileEntrySize(fileEntry);
 
 #ifdef NXLINK_DEBUG
-        size_t ncaSize = m_worker->GetContent()->GetFileEntrySize(fileEntry);
         LOG_DEBUG("Installing %s to storage Id %u\n", ncaFileName.c_str(), m_destStorageId);
         LOG_DEBUG("Size: 0x%lx\n", ncaSize);
 #endif
@@ -345,6 +346,11 @@ namespace app
         if (outHeader != nullptr)
         {
             memcpy(outHeader, &decryptedHeader, sizeof(nx::nca::NcaHeader));
+        }
+
+        if (ncaSize > (u64)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
+        {
+            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
         }
 
         m_worker->StreamToPlaceholder(contentStorage, ncaId, header);

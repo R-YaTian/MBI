@@ -3,17 +3,32 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <string>
+#include <atomic>
 #include "nx/content.hpp"
+#include "nx/BufferedPlaceholderWriter.hpp"
 
 namespace app::install
 {
+    struct ThreadData
+    {
+        nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter = nullptr;
+        u64 xfs0Offset = 0;
+        u64 ncaSize = 0;
+        void* in = nullptr;
+        std::string* errorMessage = nullptr;
+    };
+
     class Worker
     {
         public:
             virtual ~Worker() = default;
             virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) = 0;
             virtual void BufferData(void* buf, off_t offset, size_t size) = 0;
+            virtual void ReadThread(void* in) {}
+            virtual void PlaceholderWrite(void* in) {}
 
+            void WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn = nullptr, nx::nca::NcaHeader* header = nullptr);
             void RetrieveHeader();
             nx::Content* GetContent() { return m_content.get(); }
             const nx::Content* GetContent() const { return m_content.get(); }
@@ -33,5 +48,7 @@ namespace app::install
 
             std::unique_ptr<nx::Content> m_content;
             std::map<std::string, std::vector<u8>> m_hashMap;
+
+            std::atomic<bool> stopThreads{false};
     };
 }

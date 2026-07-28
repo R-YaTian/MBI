@@ -60,7 +60,7 @@ namespace nx::network
             HTTPDownload(std::string url);
 
             void BufferDataRange(void* buffer, size_t offset, size_t size, std::function<void (size_t sizeRead)> progressFunc);
-            int StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc);
+            bool StreamDataRange(size_t offset, size_t size, std::function<size_t (u8* bytes, size_t size)> streamFunc);
     };
 
     std::string DownloadToBuffer(const std::string& url, int firstRange = -1, int secondRange = -1, long timeout = 5000);
