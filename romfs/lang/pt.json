@@ -34,7 +34,7 @@
         "net": {
             "help": {
                 "title": "Ajuda",
-                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Awoo. Para enviar ficheiros para a Switch, abra um\ndos softwares compatíveis no PC ou no telemóvel, insira o\n endreço de IP da Switch (aparece no ecrã) selecione os ficheiros e envie para\na consola! Se não conseguir selecionar um tipo de ficheiro, tente renomeá-lo para uma extensão compatível.\nO Mohsaua-Buoh-Installer não considera a extensão nas instalações de rede!\n\nSe tiver problemas ou configurar, apenas copie os ficheiros para o cartão SD\ne tente a opção \"Instalação através do cartão SD\" presente no menu principal!"
+                "desc": "Os Ficheiros podem ser instalados remotamente a partir de outros dispositivos usando ferramentas como o\nNS-USBloader em modo Awoo. Abra o software no PC ou dispositivo móvel, informe o IP do Switch\n(exibido na tela), selecione os arquivos e envie para o console.\nSe não puder selecionar tipos de arquivo específicos, tente outro software.\nMohsaua-Buoh-Installer precisa determinar o tipo de arquivo pela extensão!"
             },
             "url": {
                 "warn": "Aviso!",

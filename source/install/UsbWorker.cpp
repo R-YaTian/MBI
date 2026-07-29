@@ -58,19 +58,6 @@ namespace app::install
         free(buf);
     }
 
-    void UsbWorker::PlaceholderWrite(void* in)
-    {
-        ThreadData* args = static_cast<ThreadData*>(in);
-
-        while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
-        {
-            if (args->bufferedPlaceholderWriter->CanWriteSegmentToPlaceholder())
-            {
-                args->bufferedPlaceholderWriter->WriteSegmentToPlaceholder();
-            }
-        }
-    }
-
     void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
         this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header);

@@ -22,7 +22,6 @@ namespace app::install
         mutexInit(&m_mutex);
         condvarInit(&m_can_read);
         condvarInit(&m_can_write);
-        // RetrieveHeader();
     }
 
     MtpWorker::~MtpWorker() = default;

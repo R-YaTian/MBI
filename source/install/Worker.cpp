@@ -109,6 +109,19 @@ namespace app::install
         }
     }
 
+    void Worker::PlaceholderWrite(void* in)
+    {
+        ThreadData* args = static_cast<ThreadData*>(in);
+
+        while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
+        {
+            if (args->bufferedPlaceholderWriter->CanWriteSegmentToPlaceholder())
+            {
+                args->bufferedPlaceholderWriter->WriteSegmentToPlaceholder();
+            }
+        }
+    }
+
     void Worker::WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);

@@ -40,19 +40,6 @@ namespace app::install
         }
     }
 
-    void HttpWorker::PlaceholderWrite(void* in)
-    {
-        ThreadData* args = static_cast<ThreadData*>(in);
-
-        while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
-        {
-            if (args->bufferedPlaceholderWriter->CanWriteSegmentToPlaceholder())
-            {
-                args->bufferedPlaceholderWriter->WriteSegmentToPlaceholder();
-            }
-        }
-    }
-
     void HttpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
         this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)&m_download, header);
