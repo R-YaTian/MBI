@@ -109,6 +109,31 @@ namespace app::install
         }
     }
 
+    void Worker::UpdateTransferProgress(size_t& startSize, size_t newSize, size_t totalSize, u64& startTime, u64 freq)
+    {
+        u64 newTime = armGetSystemTick();
+        if (newTime - startTime < freq * 0.5)
+        {
+            return;
+        }
+
+        double mbBuffered = (newSize / 1000000.0) - (startSize / 1000000.0);
+        double duration = static_cast<double>(newTime - startTime) / static_cast<double>(freq);
+        double speed = mbBuffered / duration;
+
+        startTime = newTime;
+        startSize = newSize;
+
+        int progress = static_cast<int>((double)newSize / (double)totalSize * 100.0);
+        app::facade::SendInstallProgress(static_cast<double>(progress));
+
+        std::stringstream x;
+        x << progress;
+        std::stringstream speedStr;
+        speedStr << std::fixed << std::setprecision(2) << speed;
+        app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
+    }
+
     void Worker::PlaceholderWrite(void* in)
     {
         ThreadData* args = static_cast<ThreadData*>(in);
@@ -144,38 +169,12 @@ namespace app::install
         u64 freq = armGetSystemTickFreq();
         u64 startTime = armGetSystemTick();
         size_t startSizeBuffered = 0;
-        double speed = 0.0;
 
         app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "...");
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreads)
         {
-            u64 newTime = armGetSystemTick();
-
-            if (newTime - startTime >= freq * 0.5)
-            {
-                size_t newSizeBuffered = bufferedPlaceholderWriter.GetSizeBuffered();
-                double mbBuffered = (newSizeBuffered / 1000000.0) - (startSizeBuffered / 1000000.0);
-                double duration = ((double)(newTime - startTime) / (double)freq);
-                speed =  mbBuffered / duration;
-
-                startTime = newTime;
-                startSizeBuffered = newSizeBuffered;
-                int downloadProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeBuffered() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
-
-#ifdef NXLINK_DEBUG
-                u64 totalSizeMB = bufferedPlaceholderWriter.GetTotalDataSize() / 1000000;
-                u64 downloadSizeMB = bufferedPlaceholderWriter.GetSizeBuffered() / 1000000;
-                LOG_DEBUG("> Download Progress: %lu/%lu MB (%i%s) (%.2f MB/s)\r", downloadSizeMB, totalSizeMB, downloadProgress, "%", speed);
-#endif
-
-                std::stringstream x;
-                x << downloadProgress;
-                std::stringstream speedStr;
-                speedStr << std::fixed << std::setprecision(2) << speed;
-                app::facade::SendInstallBarText(x.str() + "% " + "inst.info_page.at"_lang + speedStr.str() + "MB/s");
-                app::facade::SendInstallProgress((double)downloadProgress);
-            }
+            this->UpdateTransferProgress(startSizeBuffered, bufferedPlaceholderWriter.GetSizeBuffered(), bufferedPlaceholderWriter.GetTotalDataSize(), startTime, freq);
         }
         app::facade::SendInstallProgress(100);
 
@@ -187,7 +186,7 @@ namespace app::install
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreads)
         {
-            int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
+            int installProgress = static_cast<int>((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize() * 100.0);
 #ifdef NXLINK_DEBUG
             u64 installSizeMB = bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / 1000000;
             LOG_DEBUG("> Install Progress: %lu/%lu MB (%i%s)\r", installSizeMB, totalSizeMB, installProgress, "%");
@@ -213,5 +212,56 @@ namespace app::install
         {
             THROW_FORMAT("%s", errorMessage.c_str());
         }
+    }
+
+    void Worker::WriteToPlaceholderDirectly(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, const u64 maxBufferSize, nx::nca::NcaHeader* header)
+    {
+        const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
+        std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
+        u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
+
+        NcaWriter writer(ncaId, contentStorage);
+
+        u64 fileStart = m_content->GetFileEntryOffset(fileEntry);
+        u64 fileOff = 0;
+        size_t prependedSize = 0;
+        size_t readSize = maxBufferSize;
+        auto readBuffer = std::make_unique<u8[]>(readSize);
+        if (header != nullptr)
+        {
+            prependedSize = sizeof(nx::nca::NcaHeader);
+            std::memcpy(readBuffer.get(), header, prependedSize);
+        }
+
+        u64 freq = armGetSystemTickFreq();
+        u64 startTime = armGetSystemTick();
+        size_t startSizeBuffered = 0;
+
+        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::facade::SendInstallProgress(0);
+        while (fileOff < ncaSize)
+        {
+            this->UpdateTransferProgress(startSizeBuffered, fileOff, ncaSize, startTime, freq);
+
+            if (fileOff + readSize >= ncaSize)
+            {
+                readSize = ncaSize - fileOff;
+            }
+
+            this->BufferData(readBuffer.get() + prependedSize, fileOff + fileStart + prependedSize, readSize - prependedSize);
+            writer.write(readBuffer.get(), readSize);
+            if (prependedSize != 0)
+            {
+                prependedSize = 0;
+            }
+
+            fileOff += readSize;
+        }
+        app::facade::SendInstallProgress(100);
+
+        std::vector<u8> hash(SHA256_HASH_SIZE);
+        writer.close(hash.data());
+        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
+        m_hashMap[ncaIdStr] = hash;
     }
 }
