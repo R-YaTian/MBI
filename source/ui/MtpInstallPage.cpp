@@ -11,6 +11,7 @@
 #include "nx/xci.hpp"
 #include "nx/misc.hpp"
 #include "facade.hpp"
+#include "installer.hpp"
 
 namespace app::ui
 {
@@ -30,7 +31,8 @@ namespace app::ui
 
     struct MtpInstallPage::InternalData
     {
-        std::shared_ptr<app::install::MtpWorker> m_source{};
+        std::unique_ptr<app::install::MtpWorker> m_source{};
+        std::string m_currentFile{};
         Mutex m_mutex{};
         State m_state{State::None};
     };
@@ -53,11 +55,15 @@ namespace app::ui
         if (pageData->m_state == State::Connected)
         {
             pageData->m_state = State::Progress;
+            std::string shortFileName;
             try
             {
+                shortFileName = nx::misc::ShortenString(pageData->m_currentFile, 42, 4);
+                app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + shortFileName);
                 pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
                 std::unique_ptr<app::InstallTask> installTask =
                     std::make_unique<app::InstallTask>(NcmStorageId_SdCard, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
+                app::facade::SendInstallProgress(0);
                 pageData->m_source->RetrieveHeader();
                 installTask->InstallFromCollections();
                 pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
@@ -66,11 +72,15 @@ namespace app::ui
             }
             catch (std::exception& e)
             {
+                app::installer::OnFailed(shortFileName, e);
                 pageData->m_state = State::Failed;
+                pageData->m_source->Disable();
+                nx::mtp::FinishInstallProgress();
+                nx::mtp::DisableInstallMode();
                 return;
             }
 
-            app::facade::SendInstallProgress(100);
+            app::installer::OnSuccess(1, shortFileName);
             pageData->m_state = State::Done;
         }
     }
@@ -99,22 +109,23 @@ namespace app::ui
             [this](const void *buf, size_t size){ return onInstallWrite(buf, size); },
             [this](){ return onInstallClose(); }
         );
+        this->infoImage->SetVisible(true);
     }
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
-        // if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
-        // {
-        //     return;
-        // }
+        if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
+        {
+            return;
+        }
 
-        static u64 tick;
-        if (IsLongPress(tick, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
+        static u64 tickB, tickY;
+        if (IsLongPress(tickB, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
         {
             onCancel();
         }
 
-        if (IsLongPress(tick, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
+        if (IsLongPress(tickY, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
         {
         }
     }
@@ -155,8 +166,8 @@ namespace app::ui
 
         SCOPED_MUTEX(&pageData->m_mutex);
 
-        std::string p(path);
-        std::string extPart = p.substr(p.size() - 3, 2);
+        std::string fileName(path);
+        std::string extPart = fileName.substr(fileName.size() - 3, 2);
         std::transform(extPart.begin(), extPart.end(), extPart.begin(), ::tolower);
         std::unique_ptr<nx::Content> content;
         if (extPart == "xc")
@@ -168,8 +179,8 @@ namespace app::ui
             content = std::make_unique<nx::NSP>();
         }
         pageData->m_source = std::make_unique<app::install::MtpWorker>(std::move(content), path);
-        pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
         pageData->m_state = State::Connected;
+        pageData->m_currentFile = fileName;
 
         this->infoImage->SetVisible(false);
 

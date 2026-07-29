@@ -53,7 +53,7 @@ namespace app::install
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderDirectly(contentStorage, ncaId, 0x400000, header);
+        this->WriteToPlaceholderDirectly(contentStorage, ncaId, MAX_BUFFER_SIZE, header);
     }
 
     void MtpWorker::BufferData(void* _buf, off_t offset, size_t size)

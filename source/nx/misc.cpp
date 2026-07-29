@@ -145,7 +145,7 @@ namespace nx::misc
     {
         std::u16string in_utf16 = UTF8toUTF16(in);
         size_t units = in_utf16.size();
-        if (units - preserve_tail_length > maxLength)
+        if (units > preserve_tail_length && units - preserve_tail_length > maxLength)
         {
             std::u16string shortened = in_utf16.substr(0, maxLength - UTF8toUTF16(marker).size());
             if (preserve_tail_length > 0)
@@ -154,6 +154,16 @@ namespace nx::misc
                 return UTF16toUTF8(shortened) + marker + UTF16toUTF8(tail);
             }
             return UTF16toUTF8(shortened) + marker;
+        }
+        else if (in.size() > preserve_tail_length && in.size() - preserve_tail_length > maxLength)
+        {
+            std::string shortened = in.substr(0, maxLength - marker.size());
+            if (preserve_tail_length > 0)
+            {
+                std::string tail = in.substr(in.size() - preserve_tail_length);
+                return shortened + marker + tail;
+            }
+            return shortened + marker;
         }
         else
         {

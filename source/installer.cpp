@@ -24,7 +24,14 @@
 
 namespace app::installer
 {
-    NX_INLINE void OnFailed(const std::string& msg, const std::exception& e)
+    NX_INLINE void OnStart(std::string sourceString)
+    {
+        app::facade::ShowInstaller();
+        app::facade::SendBottomText(sourceString);
+        app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
+    }
+
+    void OnFailed(const std::string& msg, const std::exception& e)
     {
         LOG_DEBUG("Failed to install");
         LOG_DEBUG("%s", e.what());
@@ -39,7 +46,7 @@ namespace app::installer
         }
     }
 
-    NX_INLINE void OnSuccess(const size_t count, const std::string& msg)
+    void OnSuccess(const size_t count, const std::string& msg)
     {
         app::facade::SendInstallBarText("inst.info_page.complete"_lang);
         app::facade::SendInstallInfoText(count > 1 ?
@@ -52,13 +59,6 @@ namespace app::installer
             std::thread audioThread(app::facade::PlayAudio, "success.mp3");
             audioThread.join();
         }
-    }
-
-    NX_INLINE void OnStart(std::string sourceString)
-    {
-        app::facade::ShowInstaller();
-        app::facade::SendBottomText(sourceString);
-        app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
     }
 
     namespace Local
