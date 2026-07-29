@@ -2,20 +2,29 @@
 #include "nx/error.hpp"
 #include "nx/nca.hpp"
 #include "nx/fs.hpp"
+#include "nx/misc.hpp"
 #include "nx/Crypto.hpp"
 #include "util/i18n.hpp"
 #include "facade.hpp"
+#include "manager.hpp"
 
 namespace app
 {
-    InstallTask::InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker) :
+    InstallTask::InstallTask(NcmStorageId destStorageId, bool overClock, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker) :
         m_destStorageId(destStorageId),
+        m_overClock(overClock),
         m_ignoreReqFirmVersion(ignoreReqFirmVersion),
         m_fixTicket(fixTicket),
         m_skipBase(skipBase),
         m_contentMeta(),
         m_worker(worker)
     {
+        if (m_overClock)
+        {
+            nx::misc::SetBoostMode(true);
+        }
+        manager::initInstallServices();
+
         if (hosversionAtLeast(5,0,0))
         {
             appletSetAutoSleepDisabled(true);
@@ -28,6 +37,12 @@ namespace app
 
     InstallTask::~InstallTask()
     {
+        if (m_overClock)
+        {
+            nx::misc::SetBoostMode(false);
+        }
+        manager::deinitInstallServices();
+
         if (hosversionAtLeast(5,0,0))
         {
             appletSetAutoSleepDisabled(false);

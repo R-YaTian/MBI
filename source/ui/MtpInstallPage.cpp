@@ -10,11 +10,7 @@
 #include "nx/nsp.hpp"
 #include "nx/xci.hpp"
 #include "nx/misc.hpp"
-#include "installer.hpp"
 #include "facade.hpp"
-#include "manager.hpp"
-#include <thread>
-#include <future>
 
 namespace app::ui
 {
@@ -37,7 +33,6 @@ namespace app::ui
         std::shared_ptr<app::install::MtpWorker> m_source{};
         Mutex m_mutex{};
         State m_state{State::None};
-        std::future<void> m_installTask{};
     };
 
     MtpInstallPage::MtpInstallPage() : InstallerPage()
@@ -58,15 +53,25 @@ namespace app::ui
         if (pageData->m_state == State::Connected)
         {
             pageData->m_state = State::Progress;
-            app::facade::SendInstallProgress(0);
-            std::unique_ptr<app::InstallTask> installTask =
-                std::make_unique<app::InstallTask>(NcmStorageId_SdCard, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
-            pageData->m_source->RetrieveHeader();
-            installTask->InstallFromCollections();
+            try
+            {
+                pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
+                std::unique_ptr<app::InstallTask> installTask =
+                    std::make_unique<app::InstallTask>(NcmStorageId_SdCard, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
+                pageData->m_source->RetrieveHeader();
+                installTask->InstallFromCollections();
+                pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
+                nx::mtp::FinishInstallProgress();
+                pageData->m_source->Disable();
+            }
+            catch (std::exception& e)
+            {
+                pageData->m_state = State::Failed;
+                return;
+            }
+
             app::facade::SendInstallProgress(100);
             pageData->m_state = State::Done;
-            pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
-            pageData->m_source->Disable();
         }
     }
 
@@ -85,11 +90,6 @@ namespace app::ui
     {
         nx::mtp::Cleanup();
         SceneJump(Scene::Main);
-        if (app::config::overClock)
-        {
-            nx::misc::SetBoostMode(false);
-        }
-        app::manager::deinitInstallServices();
     }
 
     void MtpInstallPage::onInitInstallMode()
@@ -99,11 +99,6 @@ namespace app::ui
             [this](const void *buf, size_t size){ return onInstallWrite(buf, size); },
             [this](){ return onInstallClose(); }
         );
-        app::manager::initInstallServices();
-        if (app::config::overClock)
-        {
-            nx::misc::SetBoostMode(true);
-        }
     }
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
@@ -119,12 +114,8 @@ namespace app::ui
             onCancel();
         }
 
-        if ((Down & HidNpadButton_A) != 0)
+        if (IsLongPress(tick, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
         {
-            app::facade::SendInstallProgress(0);
-            app::facade::SendInstallBarText("0%");
-            app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + "...");
-            app::facade::SendInstallProgress(100);
         }
     }
 
@@ -179,10 +170,7 @@ namespace app::ui
         pageData->m_source = std::make_unique<app::install::MtpWorker>(std::move(content), path);
         pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
         pageData->m_state = State::Connected;
-        // pageData->m_installTask = std::async(std::launch::async, [this, source = pageData->m_source]
-        // {
-        //     onInstallTask(source);
-        // });
+
         this->infoImage->SetVisible(false);
 
         return true;

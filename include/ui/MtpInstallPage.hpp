@@ -23,7 +23,7 @@ namespace app::ui
             struct InternalData;
             std::unique_ptr<InternalData> pageData;
             void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
-            void updateState();
             void onInstallTask();
+            void updateState();
     };
 }

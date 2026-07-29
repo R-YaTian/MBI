@@ -14,13 +14,14 @@ namespace app
     {
         protected:
             const NcmStorageId m_destStorageId;
+            bool m_overClock = false;
             bool m_ignoreReqFirmVersion = false;
             bool m_fixTicket = false;
             bool m_skipBase = false;
             std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
         public:
-            InstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker);
+            InstallTask(NcmStorageId destStorageId, bool overClock, bool ignoreReqFirmVersion, bool fixTicket, bool skipBase, install::Worker* worker);
             ~InstallTask();
 
             void Prepare();

@@ -14,7 +14,6 @@
 #include "util/util.hpp"
 #include "util/i18n.hpp"
 #include "installer.hpp"
-#include "manager.hpp"
 #include "facade.hpp"
 
 #ifdef ENABLE_NET
@@ -55,28 +54,11 @@ namespace app::installer
         }
     }
 
-    NX_INLINE bool OnStart(std::string sourceString)
+    NX_INLINE void OnStart(std::string sourceString)
     {
-        app::manager::initInstallServices();
         app::facade::ShowInstaller();
         app::facade::SendBottomText(sourceString);
-        if (app::config::overClock)
-        {
-            nx::misc::SetBoostMode(true);
-        }
         app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
-        return true;
-    }
-
-    NX_INLINE void OnExit()
-    {
-        LOG_DEBUG("Done");
-        if (app::config::overClock)
-        {
-            nx::misc::SetBoostMode(false);
-        }
-        app::facade::SendInstallFinished();
-        app::manager::deinitInstallServices();
     }
 
     namespace Local
@@ -115,7 +97,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
@@ -148,7 +130,7 @@ namespace app::installer
                 }
             }
 
-            OnExit();
+            app::facade::SendInstallFinished();
         }
     }
 
@@ -278,7 +260,7 @@ namespace app::installer
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
@@ -299,7 +281,7 @@ namespace app::installer
             }
 
             nx::usb::usbDeviceExit();
-            OnExit();
+            app::facade::SendInstallFinished();
         }
     }
 
@@ -517,7 +499,7 @@ back_to_loop:
                         content = std::make_unique<nx::NSP>();
                     }
                     std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::HttpWorker>(std::move(content), ourUrlList[urlItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
+                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
 
                     app::facade::SendInstallProgress(0);
                     installTask->Prepare();
@@ -539,7 +521,7 @@ back_to_loop:
                 OnSuccess(ourUrlList.size(), urlNames[0]);
             }
 
-            OnExit();
+            app::facade::SendInstallFinished();
         }
     }
 #endif
