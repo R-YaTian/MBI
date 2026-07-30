@@ -88,7 +88,8 @@
             "desc00": "Onde serão os ",
             "desc01": " ficheiro(s) selecionados instalados?",
             "opt0": "Cartão SD",
-            "opt1": "Memória Interna"
+            "opt1": "Memória Interna",
+            "info": "Instalar em: "
         },
         "info_page": {
             "top_info0": "A instalar ",

@@ -88,7 +88,8 @@
             "desc00": "Dove vuoi installare ",
             "desc01": " file?",
             "opt0": "SD",
-            "opt1": "Memoria interna"
+            "opt1": "Memoria interna",
+            "info": "Installa su: "
         },
         "info_page": {
             "top_info0": "Sto installando ",

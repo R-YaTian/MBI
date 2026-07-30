@@ -88,7 +88,8 @@
             "desc00": "¿Dónde deberían instalarse los ",
             "desc01": " archivo(s) seleccionados?",
             "opt0": "Tarjeta SD",
-            "opt1": "Almacenamiento Interno"
+            "opt1": "Almacenamiento Interno",
+            "info": "Instalar en: "
         },
         "info_page": {
             "top_info0": "Instalando ",

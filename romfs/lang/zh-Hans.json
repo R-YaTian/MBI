@@ -19,10 +19,7 @@
             "desc": "请确保已经关闭飞行模式，并且当前网络连接状态正常。"
         },
         "usb": {
-            "warn": {
-                "title": "警告！",
-                "desc": "USB 安装功能可能在某些设备或软件环境下无法正常使用。\n如果您在使用 USB 安装中遇到问题，请不要心急！\n建议使用 NS-USBloader 来进行 USB 安装，\n或者在主机已连接到网络的情况下进行网络远程安装！\n\n多尝试各种方法，终会成功。"
-            }
+            "warn_desc": "USB 安装功能可能在某些设备或软件环境下无法正常使用。\n如果您在使用 USB 安装中遇到问题，请不要心急！\n建议使用 NS-USBloader 来进行 USB 安装，\n或者在主机已连接到网络的情况下进行网络远程安装！\n\n多尝试各种方法，终会成功。"
         },
         "applet": {
             "title": "不支持小程序模式",
@@ -32,12 +29,8 @@
     },
     "inst": {
         "net": {
-            "help": {
-                "title": "帮助",
-                "desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n需要传输文件时，在PC或移动设备中打开支持的软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请更换其他工具再试。\nMohsaua-Buoh-Installer 需要通过文件扩展名来判断文件类型！"
-            },
+            "help_desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n需要传输文件时，在PC或移动设备中打开支持的软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请更换其他工具再试。\nMohsaua-Buoh-Installer 需要通过文件扩展名来判断文件类型！",
             "url": {
-                "warn": "警告！",
                 "hint": "输入文件链接 (URL)",
                 "invalid": "链接 (URL) 无效！",
                 "source_string": "通过链接 (URL) 安装"
@@ -53,10 +46,7 @@
             "buttons1": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
         },
         "sd": {
-            "help": {
-                "title": "帮助",
-                "desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。"
-            },
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
             "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
             "source_string": "通过 SD 卡文件安装",
             "delete_info_multi": " 个文件批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
@@ -64,10 +54,7 @@
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "usb": {
-            "help": {
-                "title": "帮助",
-                "desc": "可以使用支持的工具通过 USB 安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或移动设备上任一工具软件，\n选择文件，然后上传到您的主机即可！\n\n不过 USB 安装在一些设备或者系统环境下无法正常工作。\n如果无法安装，试试使用网络远程安装，\n或者复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！"
-            },
+            "help_desc": "可以使用支持的工具通过 USB 安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或移动设备上任一工具软件，\n选择文件，然后上传到您的主机即可！\n\n不过 USB 安装在一些设备或者系统环境下无法正常工作。\n如果无法安装，试试使用网络远程安装，\n或者复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！",
             "top_info": "选择想要通过 USB 安装的文件，然后按 \ue0ef 进行安装！",
             "error": "USB 传输超时或失败",
             "source_string": "通过 USB 安装",
@@ -75,20 +62,25 @@
             "buttons2": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
         },
         "hdd": {
-            "help": {
-                "title": "帮助",
-                "desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。"
-            },
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。",
             "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
             "source_string": "通过 USB 存储设备安装",
             "multi_device_desc": "请选择一个 USB 设备或分区",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
+        "mtp": {
+            "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。",
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0ef (按住) 切换读写方案    \ue0e1 (按住) 取消",
+            "method": "读写方案: ",
+            "directly": "单线程",
+            "buffered": "双线程"
+        },
         "target": {
             "desc00": "请选择这 ",
             "desc01": " 个文件的安装位置：",
             "opt0": "SD 卡",
-            "opt1": "内部存储"
+            "opt1": "内部存储",
+            "info": "安装位置: "
         },
         "info_page": {
             "top_info0": "正在安装 ",
@@ -150,7 +142,9 @@
         "success": "成功",
         "fail": "失败",
         "confirm": "输入 'OK' 以继续。",
-        "donot_show_again": "不再提示"
+        "donot_show_again": "不再提示",
+        "help": "帮助",
+        "warning": "警告！"
     },
     "ticket_manager": {
         "scanning": "正在扫描未使用的票据...",

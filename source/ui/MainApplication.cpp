@@ -460,7 +460,7 @@ namespace app::ui
             mainApp->SetPageInfoText("");
             mtpinstPage->Prepare();
             mtpinstPage->onInitInstallMode();
-            mainApp->SetBottomText("inst.usb.buttons"_lang);
+            mainApp->SetBottomText("inst.mtp.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
             break;
         case Scene::TicketManager:

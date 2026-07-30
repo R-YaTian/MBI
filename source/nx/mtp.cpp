@@ -808,6 +808,12 @@ namespace nx::mtp
         g_shared_data.in_progress = false;
     }
 
+    void SetInstallProxyTargetStorage(InstallProxyTargetStorage target)
+    {
+        SCOPED_MUTEX(&g_shared_data.mutex);
+        g_shared_data.target_storage = static_cast<FsContentStorageId>(target + 1);
+    }
+
     void Setup(const char* app_path)
     {
         haze::FsEntries fs_entries;

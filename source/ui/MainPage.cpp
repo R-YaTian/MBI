@@ -129,8 +129,8 @@ namespace app::ui
         }
         if (!app::config::usbAck)
         {
-            if (app::facade::ShowDialog("main.usb.warn.title"_lang,
-                                        "main.usb.warn.desc"_lang,
+            if (app::facade::ShowDialog("common.warning"_lang,
+                                        "main.usb.warn_desc"_lang,
                                        {"common.ok"_lang, "common.donot_show_again"_lang}, false,
                                         "warning") == 1)
             {

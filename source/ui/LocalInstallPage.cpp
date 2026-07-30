@@ -251,8 +251,8 @@ namespace app::ui
 
         if ((Down & HidNpadButton_Minus))
         {
-            app::facade::ShowDialog(pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.title"_lang : "inst.hdd.help.title"_lang,
-                                    pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help.desc"_lang : "inst.hdd.help.desc"_lang,
+            app::facade::ShowDialog("common.help"_lang,
+                                    pageData->storageSrc == installer::Local::StorageSource::SD ? "inst.sd.help_desc"_lang : "inst.hdd.help_desc"_lang,
                                     {"common.ok"_lang}, true, "information");
         }
 

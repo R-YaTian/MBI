@@ -33,6 +33,7 @@ namespace app::ui
     {
         std::unique_ptr<app::install::MtpWorker> m_source{};
         std::string m_currentFile{};
+        nx::mtp::InstallProxyTargetStorage m_targetStorage{nx::mtp::InstallProxyTargetStorage::SdCard};
         Mutex m_mutex{};
         State m_state{State::None};
         std::stop_source m_stop_source{};
@@ -63,8 +64,9 @@ namespace app::ui
                 app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + shortFileName);
                 pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
                 std::unique_ptr<app::InstallTask> installTask =
-                    std::make_unique<app::InstallTask>(NcmStorageId_SdCard, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
+                    std::make_unique<app::InstallTask>(static_cast<NcmStorageId>(pageData->m_targetStorage + 4), app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
                 app::facade::SendInstallProgress(0);
+                app::facade::SendInstallBarText("inst.info_page.preparing"_lang);
                 pageData->m_source->RetrieveHeader();
                 installTask->InstallFromCollections();
                 pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
@@ -94,7 +96,10 @@ namespace app::ui
         std::snprintf(msg, sizeof(msg), "usbds.message"_lang.c_str(),
                                         app::i18n::GetRelativeMsgAt("usbds.states", usbState).c_str(),
                                         app::i18n::GetRelativeMsgAt("usbds.speed", usbSpeed).c_str());
-        app::facade::SendPageInfoText(msg);
+        std::string pageInfo = msg;
+        pageInfo += " | " + "inst.target.info"_lang;
+        pageInfo += pageData->m_targetStorage == nx::mtp::InstallProxyTargetStorage::SdCard ? "inst.target.opt0"_lang : "inst.target.opt1"_lang;
+        app::facade::SendPageInfoText(pageInfo);
     }
 
     void MtpInstallPage::onCancel()
@@ -107,6 +112,7 @@ namespace app::ui
         }
         pageData->m_state = State::None;
         pageData->m_currentFile.clear();
+        pageData->m_targetStorage = nx::mtp::InstallProxyTargetStorage::SdCard;
         nx::mtp::DisableInstallMode();
         nx::mtp::Cleanup();
         SceneJump(Scene::Main);
@@ -124,7 +130,7 @@ namespace app::ui
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
-        static u64 tickB, tickY;
+        static u64 tickB, tickY, tickX, tickPlus;
         if (IsLongPress(tickB, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
         {
             onCancel();
@@ -135,7 +141,18 @@ namespace app::ui
             return;
         }
 
+        if (IsLongPress(tickX, (Held & HidNpadButton_X) != 0, (Up & HidNpadButton_X) != 0, 1.0f))
+        {
+            app::facade::ShowDialog("common.help"_lang, "inst.mtp.help_desc"_lang, {"common.ok"_lang}, true, "information");
+        }
+
         if (IsLongPress(tickY, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
+        {
+            pageData->m_targetStorage = static_cast<nx::mtp::InstallProxyTargetStorage>(!pageData->m_targetStorage);
+            nx::mtp::SetInstallProxyTargetStorage(pageData->m_targetStorage);
+        }
+
+        if (IsLongPress(tickPlus, (Held & HidNpadButton_Plus) != 0, (Up & HidNpadButton_Plus) != 0, 1.0f))
         {
         }
     }

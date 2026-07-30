@@ -88,7 +88,8 @@
             "desc00": "Wo sollen die ",
             "desc01": " Datei(en) installiert werden?",
             "opt0": "SD Karte",
-            "opt1": "Interner Speicher"
+            "opt1": "Interner Speicher",
+            "info": "Installieren nach: "
         },
         "info_page": {
             "top_info0": "Installiere ",

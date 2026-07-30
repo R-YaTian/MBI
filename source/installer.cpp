@@ -178,7 +178,7 @@ namespace app::installer
                 }
                 if (kDown & HidNpadButton_X)
                 {
-                    app::facade::ShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, {"common.ok"_lang}, true, "information");
+                    app::facade::ShowDialog("common.help"_lang, "inst.usb.help_desc"_lang, {"common.ok"_lang}, true, "information");
                 }
 
                 char msg[256] = {};
@@ -333,7 +333,7 @@ namespace app::installer
                     }
                     if (kDown & HidNpadButton_Minus)
                     {
-                        app::facade::ShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, {"common.ok"_lang}, true, "information");
+                        app::facade::ShowDialog("common.help"_lang, "inst.net.help_desc"_lang, {"common.ok"_lang}, true, "information");
                     }
                     if (kDown & HidNpadButton_X)
                     {
@@ -346,7 +346,7 @@ namespace app::installer
                         std::string response;
                         if (nx::network::FormatUrlString(url) == "" || url == "https://" || url == "http://")
                         {
-                            app::facade::ShowDialog("inst.net.url.warn"_lang,
+                            app::facade::ShowDialog("common.warning"_lang,
                                                     "inst.net.url.invalid"_lang, {"common.ok"_lang}, false, "warning");
                             goto back_to_loop;
                         }
