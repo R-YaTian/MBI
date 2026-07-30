@@ -25,7 +25,7 @@ namespace app::ui
         Progress,
         // set when the transfer is finished.
         Done,
-        // failed to connect.
+        // failed to transfer.
         Failed,
     };
 
@@ -35,6 +35,7 @@ namespace app::ui
         std::string m_currentFile{};
         Mutex m_mutex{};
         State m_state{State::None};
+        std::stop_source m_stop_source{};
     };
 
     MtpInstallPage::MtpInstallPage() : InstallerPage()
@@ -98,6 +99,15 @@ namespace app::ui
 
     void MtpInstallPage::onCancel()
     {
+        pageData->m_stop_source.request_stop();
+        if (pageData->m_source)
+        {
+            pageData->m_source->Disable();
+            pageData->m_source.reset();
+        }
+        pageData->m_state = State::None;
+        pageData->m_currentFile.clear();
+        nx::mtp::DisableInstallMode();
         nx::mtp::Cleanup();
         SceneJump(Scene::Main);
     }
@@ -114,15 +124,15 @@ namespace app::ui
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
-        if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
-        {
-            return;
-        }
-
         static u64 tickB, tickY;
         if (IsLongPress(tickB, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
         {
             onCancel();
+        }
+
+        if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
+        {
+            return;
         }
 
         if (IsLongPress(tickY, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
@@ -141,6 +151,11 @@ namespace app::ui
                 {
                     break;
                 }
+
+                if (pageData->m_stop_source.get_token().stop_requested())
+                {
+                    return false;
+                }
             }
 
             svcSleepThread(1e+6);
@@ -157,6 +172,11 @@ namespace app::ui
                          pageData->m_source->GetInstallState() != app::install::MTPInstallState::Progress)
                     {
                         break;
+                    }
+
+                    if (pageData->m_stop_source.get_token().stop_requested())
+                    {
+                        return false;
                     }
                 }
 
@@ -178,7 +198,7 @@ namespace app::ui
         {
             content = std::make_unique<nx::NSP>();
         }
-        pageData->m_source = std::make_unique<app::install::MtpWorker>(std::move(content), path);
+        pageData->m_source = std::make_unique<app::install::MtpWorker>(std::move(content), pageData->m_stop_source.get_token());
         pageData->m_state = State::Connected;
         pageData->m_currentFile = fileName;
 

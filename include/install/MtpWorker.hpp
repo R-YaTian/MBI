@@ -2,6 +2,7 @@
 
 #include "install/Worker.hpp"
 #include <atomic>
+#include <stop_token>
 
 namespace app::install
 {
@@ -15,7 +16,7 @@ namespace app::install
     class MtpWorker : public Worker
     {
         public:
-            MtpWorker(std::unique_ptr<nx::Content> content, const std::string& path);
+            MtpWorker(std::unique_ptr<nx::Content> content, std::stop_token token);
             ~MtpWorker();
 
             void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) override;
@@ -37,6 +38,7 @@ namespace app::install
             std::atomic_bool m_active{};
         private:
             s64 m_offset{};
+            std::stop_token m_token{};
             std::vector<u8> m_buffer{};
             CondVar m_can_read{};
             CondVar m_can_write{};

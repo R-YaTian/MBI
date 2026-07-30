@@ -7,9 +7,10 @@ namespace app::install
 {
     constexpr u64 MAX_BUFFER_SIZE = 1024ULL*1024ULL*1ULL;
 
-    MtpWorker::MtpWorker(std::unique_ptr<nx::Content> content, const std::string &path)
+    MtpWorker::MtpWorker(std::unique_ptr<nx::Content> content, std::stop_token token)
         : Worker(std::move(content))
     {
+        m_token = token;
         m_active = true;
         m_offset = 0;
         m_buffer.reserve(MAX_BUFFER_SIZE);
@@ -27,15 +28,19 @@ namespace app::install
         auto buf = static_cast<u8*>(_buf);
         *bytes_read = 0;
 
-        while (size)
+        while (!m_token.stop_requested())
         {
             SCOPED_MUTEX(&m_mutex);
             if (m_active && m_buffer.empty())
             {
-                condvarWait(std::addressof(m_can_read), std::addressof(m_mutex));
+                Result rc = condvarWait(std::addressof(m_can_read), std::addressof(m_mutex));
+                if (R_FAILED(rc))
+                {
+                    break;
+                }
             }
 
-            if (!m_active && m_buffer.empty())
+            if ((!m_active && m_buffer.empty()) || m_token.stop_requested())
             {
                 break;
             }
@@ -48,7 +53,13 @@ namespace app::install
             size -= rsize;
             buf += rsize;
             *bytes_read += rsize;
+            if (!size)
+            {
+                return;
+            }
         }
+
+        THROW_FORMAT("Failed to read chunk or transfer was cancelled.");
     }
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
@@ -99,7 +110,7 @@ namespace app::install
             return true;
         }
 
-        while (size)
+        while (!m_token.stop_requested())
         {
             SCOPED_MUTEX(&m_mutex);
             if (m_active && m_buffer.size() >= MAX_BUFFER_SIZE)

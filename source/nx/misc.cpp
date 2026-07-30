@@ -143,11 +143,17 @@ namespace nx::misc
 
     std::string ShortenString(const std::string& in, size_t maxLength, size_t preserve_tail_length, const std::string& marker)
     {
+        const size_t marker_u16_len = UTF8toUTF16(marker).size();
+        if (maxLength <= marker_u16_len)
+        {
+            return in;
+        }
+
         std::u16string in_utf16 = UTF8toUTF16(in);
         size_t units = in_utf16.size();
         if (units > preserve_tail_length && units - preserve_tail_length > maxLength)
         {
-            std::u16string shortened = in_utf16.substr(0, maxLength - UTF8toUTF16(marker).size());
+            std::u16string shortened = in_utf16.substr(0, maxLength - marker_u16_len);
             if (preserve_tail_length > 0)
             {
                 std::u16string tail = in_utf16.substr(units - preserve_tail_length);
