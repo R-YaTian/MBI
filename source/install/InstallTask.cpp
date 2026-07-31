@@ -7,8 +7,6 @@
 #include "util/i18n.hpp"
 #include "facade.hpp"
 #include "manager.hpp"
-#include <chrono>
-#include <future>
 
 namespace app
 {
@@ -338,22 +336,7 @@ namespace app
 
         nx::nca::NcaHeader* header = new nx::nca::NcaHeader;
         nx::nca::NcaHeader decryptedHeader;
-        const off_t headerOffset = m_worker->GetContent()->GetFileEntryOffset(fileEntry);
-        std::future<void> headerRead = std::async(std::launch::async, [this, header, headerOffset] {
-            m_worker->BufferData(header, headerOffset, sizeof(nx::nca::NcaHeader));
-        });
-        const u64 freq = armGetSystemTickFreq();
-        u64 lastRenderTime = armGetSystemTick();
-        while (headerRead.wait_for(std::chrono::milliseconds(1)) != std::future_status::ready)
-        {
-            const u64 currentTime = armGetSystemTick();
-            if (currentTime - lastRenderTime >= static_cast<u64>(freq * 0.5))
-            {
-                lastRenderTime = currentTime;
-                app::facade::SendRenderRequest();
-            }
-        }
-        headerRead.get();
+        m_worker->BufferData(header, m_worker->GetContent()->GetFileEntryOffset(fileEntry), sizeof(nx::nca::NcaHeader));
 
         nx::Crypto::AesXtr crypto(nx::Crypto::Keys().headerKey, false);
         crypto.decrypt(&decryptedHeader, header, sizeof(nx::nca::NcaHeader), 0, 0x200);
