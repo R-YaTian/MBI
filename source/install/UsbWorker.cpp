@@ -18,20 +18,20 @@ namespace app::install
     {
         ThreadData* args = static_cast<ThreadData*>(in);
         std::string fileName = std::string(static_cast<char*>(args->in));
-        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(fileName, args->xfs0Offset, args->ncaSize);
+        nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(fileName, args->dataOffset, args->dataSize);
 
-        u8* buf = (u8*)memalign(0x1000, 0x800000);
+        u8* buf = (u8*)memalign(0x1000, nx::data::BUFFER_SEGMENT_DATA_SIZE);
         u64 sizeRemaining = header.dataSize;
         size_t tmpSizeRead = 0;
 
         try
         {
-            while (sizeRemaining && !stopThreads)
+            while (sizeRemaining)
             {
-                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, (u64)0x800000), 5000000000);
+                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, (u64)nx::data::BUFFER_SEGMENT_DATA_SIZE), 5000000000);
                 if (tmpSizeRead == 0)
                 {
-                    throw std::runtime_error(("inst.usb.error"_lang).c_str());
+                    throw std::runtime_error("inst.usb.error"_lang.c_str());
                 }
                 sizeRemaining -= tmpSizeRead;
 
@@ -70,7 +70,7 @@ namespace app::install
         u8* tempBuffer = (u8*)memalign(0x1000, header.dataSize);
         if (nx::usb::USBReadData(tempBuffer, header.dataSize) == 0)
         {
-            THROW_FORMAT(("inst.usb.error"_lang).c_str());
+            THROW_FORMAT("inst.usb.error"_lang.c_str());
         }
         memcpy(buf, tempBuffer, header.dataSize);
         free(tempBuffer);

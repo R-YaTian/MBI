@@ -21,6 +21,7 @@ namespace app::install
 
             void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) override;
             void BufferData(void* _buf, off_t offset, size_t size) override;
+            void ReadThread(void* in) override;
             bool Push(const void* buf, s64 size);
             void Disable();
 

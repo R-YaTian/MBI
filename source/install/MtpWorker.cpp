@@ -23,6 +23,46 @@ namespace app::install
 
     MtpWorker::~MtpWorker() = default;
 
+    void MtpWorker::ReadThread(void* in)
+    {
+        ThreadData* args = static_cast<ThreadData*>(in);
+        MtpWorker* worker = static_cast<MtpWorker*>(args->in);
+
+        std::vector<u8> buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
+
+        u64 sizeRemaining = args->dataSize;
+        size_t tmpSizeRead = 0;
+
+        try
+        {
+            while (sizeRemaining)
+            {
+                const size_t chunkSize = std::min<size_t>(sizeRemaining, nx::data::BUFFER_SEGMENT_DATA_SIZE);
+                worker->BufferData(buf.data(), args->dataOffset + tmpSizeRead, chunkSize);
+
+                while (true)
+                {
+                    if (args->bufferedPlaceholderWriter->CanAppendData(chunkSize))
+                    {
+                        break;
+                    }
+                }
+
+                args->bufferedPlaceholderWriter->AppendData(buf.data(), chunkSize);
+                sizeRemaining -= chunkSize;
+                tmpSizeRead += chunkSize;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            stopThreads = true;
+            if (args->errorMessage != nullptr)
+            {
+                *args->errorMessage = e.what();
+            }
+        }
+    }
+
     void MtpWorker::ReadChunk(void* _buf, s64 size, u64* bytes_read)
     {
         auto buf = static_cast<u8*>(_buf);
@@ -64,7 +104,7 @@ namespace app::install
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderDirectly(contentStorage, ncaId, MAX_BUFFER_SIZE, header);
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header);
     }
 
     void MtpWorker::BufferData(void* _buf, off_t offset, size_t size)

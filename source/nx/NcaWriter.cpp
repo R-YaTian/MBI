@@ -28,6 +28,7 @@ SOFTWARE.
 #include <zstd.h>
 
 constexpr auto NCZ_HEADER_OFFSET = 0x4000;
+constexpr auto DEFLATE_BUFFER_MAX_SIZE = 0x800000;
 
 static void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
@@ -289,11 +290,11 @@ public:
 
                 while(len)
                 {
-                    const size_t writeChunkSz = std::min(0x800000 - m_deflateBuffer.size(), len);
+                    const size_t writeChunkSz = std::min(DEFLATE_BUFFER_MAX_SIZE - m_deflateBuffer.size(), len);
 
                     append(m_deflateBuffer, p, writeChunkSz);
 
-                    if(m_deflateBuffer.size() >= 0x800000)
+                    if(m_deflateBuffer.size() >= DEFLATE_BUFFER_MAX_SIZE)
                     {
                         encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
                         flush();

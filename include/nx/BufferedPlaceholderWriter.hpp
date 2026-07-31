@@ -66,7 +66,7 @@ namespace nx::data
         public:
             BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize);
 
-            void AppendData(void* source, size_t length);
+            void AppendData(const void* source, size_t length);
             bool CanAppendData(size_t length);
 
             void WriteSegmentToPlaceholder();

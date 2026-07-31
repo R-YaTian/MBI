@@ -30,7 +30,7 @@ namespace app::install
             return streamBufSize;
         };
 
-        if (static_cast<nx::network::HTTPDownload*>(args->in)->StreamDataRange(args->xfs0Offset, args->ncaSize, streamFunc) == false)
+        if (static_cast<nx::network::HTTPDownload*>(args->in)->StreamDataRange(args->dataOffset, args->dataSize, streamFunc) == false)
         {
             stopThreads = true;
             if (args->errorMessage != nullptr)

@@ -154,11 +154,18 @@ namespace app::install
         u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
 
         nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
+        u64 prependedSize = 0;
+        if (header != nullptr)
+        {
+            prependedSize = sizeof(nx::nca::NcaHeader);
+            bufferedPlaceholderWriter.AppendData(header, prependedSize);
+        }
+
         ThreadData args{};
         std::string errorMessage;
         args.bufferedPlaceholderWriter = &bufferedPlaceholderWriter;
-        args.xfs0Offset = m_content->GetFileEntryOffset(fileEntry);
-        args.ncaSize = ncaSize;
+        args.dataOffset = m_content->GetFileEntryOffset(fileEntry) + prependedSize;
+        args.dataSize = ncaSize - prependedSize;
         args.in = threadDataIn;
         args.errorMessage = &errorMessage;
         stopThreads = false;

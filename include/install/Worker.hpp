@@ -13,8 +13,8 @@ namespace app::install
     struct ThreadData
     {
         nx::data::BufferedPlaceholderWriter* bufferedPlaceholderWriter = nullptr;
-        u64 xfs0Offset = 0;
-        u64 ncaSize = 0;
+        u64 dataOffset = 0;
+        u64 dataSize = 0;
         void* in = nullptr;
         std::string* errorMessage = nullptr;
     };

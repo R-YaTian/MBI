@@ -365,7 +365,7 @@ namespace app
 
         if (ncaSize > (u64)nx::fs::GetFreeSpaceSize(static_cast<FsContentStorageId>(contentStorage->GetStorageId() - 3)))
         {
-            THROW_FORMAT("%s %s!", ("inst.info_page.no_space"_lang).c_str(), ncaFileName.c_str());
+            THROW_FORMAT("%s %s!", "inst.info_page.no_space"_lang.c_str(), ncaFileName.c_str());
         }
 
         m_worker->StreamToPlaceholder(contentStorage, ncaId, header);

@@ -69,11 +69,8 @@
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
         },
         "mtp": {
-            "help_desc": "",
-            "buttons": "\ue0e2 (Hold) Help    \ue0e3 (Hold) Toggle Install Storage    \ue0ef (Hold) Toggle Install Mode    \ue0e1 (Hold) Cancel",
-            "method": "Install Mode: ",
-            "directly": "Single-threaded",
-            "buffered": "Dual-threaded"
+            "help_desc": "Drag and drop or copy files (NSP, XCI, NSZ, XCZ) to the MTP install folder on your PC or mobile device for installation.",
+            "buttons": "\ue0e2 (Hold) Help    \ue0e3 (Hold) Toggle Install Storage    \ue0e1 (Hold) Cancel/Exit"
         },
         "target": {
             "desc00": "Where should the selected ",

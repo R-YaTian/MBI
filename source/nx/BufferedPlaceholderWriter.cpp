@@ -42,7 +42,7 @@ namespace nx::data
         m_currentSegmentToWritePtr = &m_bufferSegments[m_currentSegmentToWrite];
     }
 
-    void BufferedPlaceholderWriter::AppendData(void* source, size_t length)
+    void BufferedPlaceholderWriter::AppendData(const void* source, size_t length)
     {
         if (m_sizeBuffered + length > m_totalDataSize)
             THROW_FORMAT("Cannot append data as it would exceed the expected total.\n");
@@ -59,14 +59,14 @@ namespace nx::data
 
             if (dataSizeRemaining < bufferSegmentSizeRemaining)
             {
-                memcpy(m_currentFreeSegmentPtr->data + m_currentFreeSegmentPtr->writeOffset, (u8*)source + sourceOffset, dataSizeRemaining);
+                std::memcpy(m_currentFreeSegmentPtr->data + m_currentFreeSegmentPtr->writeOffset, static_cast<const u8*>(source) + sourceOffset, dataSizeRemaining);
                 sourceOffset += dataSizeRemaining;
                 m_currentFreeSegmentPtr->writeOffset += dataSizeRemaining;
                 dataSizeRemaining = 0;
             }
             else
             {
-                memcpy(m_currentFreeSegmentPtr->data + m_currentFreeSegmentPtr->writeOffset, (u8*)source + sourceOffset, bufferSegmentSizeRemaining);
+                std::memcpy(m_currentFreeSegmentPtr->data + m_currentFreeSegmentPtr->writeOffset, static_cast<const u8*>(source) + sourceOffset, bufferSegmentSizeRemaining);
                 dataSizeRemaining -= bufferSegmentSizeRemaining;
                 sourceOffset += bufferSegmentSizeRemaining;
                 m_currentFreeSegmentPtr->writeOffset += bufferSegmentSizeRemaining;

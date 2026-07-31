@@ -70,10 +70,7 @@
         },
         "mtp": {
             "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。",
-            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0ef (按住) 切换读写方案    \ue0e1 (按住) 取消",
-            "method": "读写方案: ",
-            "directly": "单线程",
-            "buffered": "双线程"
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0e1 (按住) 取消/退出"
         },
         "target": {
             "desc00": "请选择这 ",
