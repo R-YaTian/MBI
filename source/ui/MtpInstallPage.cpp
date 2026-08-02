@@ -105,17 +105,20 @@ namespace app::ui
     void MtpInstallPage::onCancel()
     {
         pageData->m_stop_source.request_stop();
-        if (pageData->m_source)
+
+        if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
         {
-            pageData->m_source->Disable();
-            pageData->m_source.reset();
+            return;
         }
-        pageData->m_state = State::None;
-        pageData->m_currentFile.clear();
-        pageData->m_targetStorage = nx::mtp::InstallProxyTargetStorage::SdCard;
-        nx::mtp::DisableInstallMode();
-        nx::mtp::Cleanup();
-        SceneJump(Scene::Main);
+        else
+        {
+            pageData->m_currentFile.clear();
+            pageData->m_state = State::None;
+            pageData->m_stop_source = std::stop_source{};
+            nx::mtp::DisableInstallMode();
+            nx::mtp::Cleanup();
+            SceneJump(Scene::Main);
+        }
     }
 
     void MtpInstallPage::onInitInstallMode()
@@ -130,7 +133,7 @@ namespace app::ui
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
-        static u64 tickB, tickY, tickX, tickPlus;
+        static u64 tickB, tickY, tickX;
         if (IsLongPress(tickB, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
         {
             onCancel();
@@ -150,10 +153,6 @@ namespace app::ui
         {
             pageData->m_targetStorage = static_cast<nx::mtp::InstallProxyTargetStorage>(!pageData->m_targetStorage);
             nx::mtp::SetInstallProxyTargetStorage(pageData->m_targetStorage);
-        }
-
-        if (IsLongPress(tickPlus, (Held & HidNpadButton_Plus) != 0, (Up & HidNpadButton_Plus) != 0, 1.0f))
-        {
         }
     }
 

@@ -801,6 +801,7 @@ namespace nx::mtp
     {
         SCOPED_MUTEX(&g_shared_data.mutex);
         g_shared_data.enabled = false;
+        g_shared_data.current_file.clear();
     }
 
     void FinishInstallProgress()
