@@ -138,6 +138,13 @@ namespace app::ui
 
     void LocalInstallPage::selectFile(int selectedIndex)
     {
+        if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+        {
+            pageData->subPathCounter = 0;
+            onCancel();
+            return;
+        }
+
         int dirListSize = pageData->menuDirectories.size() + (pageData->isRootDirectory ? 0 : 1);
         size_t fileIdx = selectedIndex - dirListSize;
 
@@ -161,6 +168,13 @@ namespace app::ui
 
     void LocalInstallPage::startInstall()
     {
+        if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+        {
+            pageData->subPathCounter = 0;
+            onCancel();
+            return;
+        }
+
         int dialogResult = -1;
         dialogResult = app::facade::ShowDialog("inst.target.desc00"_lang +
                                                std::to_string(pageData->selectedTitles.size()) +
@@ -236,6 +250,10 @@ namespace app::ui
     {
         if (Down & HidNpadButton_B)
         {
+            if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+            {
+                pageData->subPathCounter = 0;
+            }
             onCancel();
         }
 

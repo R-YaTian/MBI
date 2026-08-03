@@ -59,7 +59,7 @@ namespace app::config
         }
 
         fixTicket = j.value("fixTicket", true);
-        skipBase = j.value("skipBase", false);
+        skipBase = j.value("skipBase", true);
         deletePrompt = j.value("deletePrompt", true);
         enableSound = j.value("enableSound", true);
         ignoreReqVers = j.value("ignoreReqVers", false);

@@ -12,6 +12,8 @@
 #include "nx/misc.hpp"
 #include "facade.hpp"
 #include "installer.hpp"
+#include <atomic>
+#include <thread>
 
 namespace app::ui
 {
@@ -68,7 +70,31 @@ namespace app::ui
                     std::make_unique<InstallTask>(static_cast<NcmStorageId>(pageData->m_targetStorage + 4), app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
                 app::facade::SendInstallProgress(0);
                 app::facade::SendInstallBarText("inst.info_page.preparing"_lang);
-                pageData->m_source->RetrieveHeader();
+
+                std::atomic_bool retrieveCompleted{false};
+                std::exception_ptr retrieveError;
+                std::thread retrieveThread([&](){
+                    try { pageData->m_source->RetrieveHeader(); }
+                    catch (...) { retrieveError = std::current_exception(); }
+                    retrieveCompleted.store(true);
+                });
+                const auto renderInterval = armGetSystemTickFreq() * 0.5;
+                auto lastRenderTick = armGetSystemTick();
+                while (!retrieveCompleted.load())
+                {
+                    const auto currentTick = armGetSystemTick();
+                    if ((currentTick - lastRenderTick) >= renderInterval)
+                    {
+                        app::facade::SendRenderRequest();
+                        lastRenderTick = currentTick;
+                    }
+                }
+                retrieveThread.join();
+                if (retrieveError)
+                {
+                    std::rethrow_exception(retrieveError);
+                }
+
                 installTask->InstallFromCollections();
                 pageData->m_source->SetInstallState(install::MTPInstallState::Finished);
                 nx::mtp::FinishInstallProgress();
@@ -117,16 +143,16 @@ namespace app::ui
         }
         else
         {
-            if (pageData->m_source)
-            {
-                pageData->m_source.reset();
-            }
             pageData->m_currentFile.clear();
             pageData->m_state = State::None;
             pageData->m_anyButtonTriggered = false;
             nx::mtp::DisableInstallMode();
             nx::mtp::Cleanup();
             SceneJump(Scene::Main);
+            if (pageData->m_source)
+            {
+                pageData->m_source.reset();
+            }
         }
     }
 
