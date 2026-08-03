@@ -31,7 +31,11 @@ namespace nx::misc
         static u32 previousEMC = 0;
         if (hosversionAtLeast(8,0,0))
         {
-            appletSetCpuBoostMode(enable ? ApmCpuBoostMode_FastLoad : ApmCpuBoostMode_Normal);
+            Result rc = appletSetCpuBoostMode(enable ? ApmCpuBoostMode_FastLoad : ApmCpuBoostMode_Normal);
+            if (R_FAILED(rc))
+            {
+                THROW_FORMAT("appletSetCpuBoostMode failed: 0x%x", rc);
+            }
         }
         else
         {

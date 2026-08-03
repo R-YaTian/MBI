@@ -69,8 +69,9 @@
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
         },
         "mtp": {
-            "help_desc": "Drag and drop or copy files (NSP, XCI, NSZ, XCZ) to the MTP install folder on your PC or mobile device for installation.",
-            "buttons": "\ue0e2 (Hold) Help    \ue0e3 (Hold) Toggle Install Storage    \ue0e1 (Hold) Cancel/Exit"
+            "help_desc": "Drag and drop or copy files (NSP, XCI, NSZ, XCZ) to the MTP install folder on your PC or mobile device for installation.\nHold \ue0e3 to switch between SD card and internal storage, the selected install location will be saved automatically.",
+            "buttons": "\ue0e2 (Hold) Help    \ue0e3 (Hold) Toggle Install Storage    \ue0e1 (Hold) Cancel/Exit",
+            "error": "Failed to read chunk or transfer was cancelled."
         },
         "target": {
             "desc00": "Where should the selected ",

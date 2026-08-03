@@ -1,7 +1,7 @@
 #include "install/MtpWorker.hpp"
 #include "util/ScopedMutex.hpp"
+#include "util/i18n.hpp"
 #include "nx/error.hpp"
-#include "facade.hpp"
 
 namespace app::install
 {
@@ -99,7 +99,7 @@ namespace app::install
             }
         }
 
-        THROW_FORMAT("Failed to read chunk or transfer was cancelled.");
+        throw std::runtime_error("inst.mtp.error"_lang.c_str());
     }
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)

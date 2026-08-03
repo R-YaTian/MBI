@@ -69,8 +69,9 @@
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "mtp": {
-            "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。",
-            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0e1 (按住) 取消/退出"
+            "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。\n按住 \ue0e3 可在SD卡和内部存储之间切换, 所选的安装位置将自动保存。",
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0e1 (按住) 取消/退出",
+            "error": "无法读取数据块或传输已取消。"
         },
         "target": {
             "desc00": "请选择这 ",

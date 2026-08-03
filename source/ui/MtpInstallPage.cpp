@@ -31,12 +31,13 @@ namespace app::ui
 
     struct MtpInstallPage::InternalData
     {
-        std::unique_ptr<app::install::MtpWorker> m_source{};
+        std::unique_ptr<install::MtpWorker> m_source{};
         std::string m_currentFile{};
         nx::mtp::InstallProxyTargetStorage m_targetStorage{nx::mtp::InstallProxyTargetStorage::SdCard};
         Mutex m_mutex{};
         State m_state{State::None};
         std::stop_source m_stop_source{};
+        bool m_anyButtonTriggered{};
     };
 
     MtpInstallPage::MtpInstallPage() : InstallerPage()
@@ -62,14 +63,14 @@ namespace app::ui
             {
                 shortFileName = nx::misc::ShortenString(pageData->m_currentFile, 42, 4);
                 app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + shortFileName);
-                pageData->m_source->SetInstallState(app::install::MTPInstallState::Progress);
-                std::unique_ptr<app::InstallTask> installTask =
-                    std::make_unique<app::InstallTask>(static_cast<NcmStorageId>(pageData->m_targetStorage + 4), app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
+                pageData->m_source->SetInstallState(install::MTPInstallState::Progress);
+                std::unique_ptr<InstallTask> installTask =
+                    std::make_unique<InstallTask>(static_cast<NcmStorageId>(pageData->m_targetStorage + 4), app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());
                 app::facade::SendInstallProgress(0);
                 app::facade::SendInstallBarText("inst.info_page.preparing"_lang);
                 pageData->m_source->RetrieveHeader();
                 installTask->InstallFromCollections();
-                pageData->m_source->SetInstallState(app::install::MTPInstallState::Finished);
+                pageData->m_source->SetInstallState(install::MTPInstallState::Finished);
                 nx::mtp::FinishInstallProgress();
                 pageData->m_source->Disable();
             }
@@ -105,6 +106,10 @@ namespace app::ui
     void MtpInstallPage::onCancel()
     {
         pageData->m_stop_source.request_stop();
+        if (pageData->m_source)
+        {
+            pageData->m_source->Disable();
+        }
 
         if (pageData->m_state == State::Connected || pageData->m_state == State::Progress)
         {
@@ -112,9 +117,13 @@ namespace app::ui
         }
         else
         {
+            if (pageData->m_source)
+            {
+                pageData->m_source.reset();
+            }
             pageData->m_currentFile.clear();
             pageData->m_state = State::None;
-            pageData->m_stop_source = std::stop_source{};
+            pageData->m_anyButtonTriggered = false;
             nx::mtp::DisableInstallMode();
             nx::mtp::Cleanup();
             SceneJump(Scene::Main);
@@ -128,14 +137,29 @@ namespace app::ui
             [this](const void *buf, size_t size){ return onInstallWrite(buf, size); },
             [this](){ return onInstallClose(); }
         );
-        this->infoImage->SetVisible(true);
+        if (!this->infoImage->IsVisible())
+        {
+            this->infoImage->SetVisible(true);
+        }
+        pageData->m_stop_source = std::stop_source();
     }
 
     void MtpInstallPage::onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos)
     {
         static u64 tickB, tickY, tickX;
+        constexpr u64 longPressButtons = HidNpadButton_B | HidNpadButton_X | HidNpadButton_Y;
+        if (pageData->m_anyButtonTriggered)
+        {
+            if ((Held & longPressButtons) != 0)
+            {
+                return;
+            }
+            pageData->m_anyButtonTriggered = false;
+        }
+
         if (IsLongPress(tickB, (Held & HidNpadButton_B) != 0, (Up & HidNpadButton_B) != 0, 1.0f))
         {
+            pageData->m_anyButtonTriggered = true;
             onCancel();
         }
 
@@ -146,11 +170,13 @@ namespace app::ui
 
         if (IsLongPress(tickX, (Held & HidNpadButton_X) != 0, (Up & HidNpadButton_X) != 0, 1.0f))
         {
+            pageData->m_anyButtonTriggered = true;
             app::facade::ShowDialog("common.help"_lang, "inst.mtp.help_desc"_lang, {"common.ok"_lang}, true, "information");
         }
 
         if (IsLongPress(tickY, (Held & HidNpadButton_Y) != 0, (Up & HidNpadButton_Y) != 0, 1.0f))
         {
+            pageData->m_anyButtonTriggered = true;
             pageData->m_targetStorage = static_cast<nx::mtp::InstallProxyTargetStorage>(!pageData->m_targetStorage);
             nx::mtp::SetInstallProxyTargetStorage(pageData->m_targetStorage);
         }
@@ -185,7 +211,7 @@ namespace app::ui
                     SCOPED_MUTEX(&pageData->m_source->m_mutex);
 
                     if (!pageData->m_source->m_active &&
-                         pageData->m_source->GetInstallState() != app::install::MTPInstallState::Progress)
+                         pageData->m_source->GetInstallState() != install::MTPInstallState::Progress)
                     {
                         break;
                     }
@@ -214,7 +240,7 @@ namespace app::ui
         {
             content = std::make_unique<nx::NSP>();
         }
-        pageData->m_source = std::make_unique<app::install::MtpWorker>(std::move(content), pageData->m_stop_source.get_token());
+        pageData->m_source = std::make_unique<install::MtpWorker>(std::move(content), pageData->m_stop_source.get_token());
         pageData->m_state = State::Connected;
         pageData->m_currentFile = fileName;
 

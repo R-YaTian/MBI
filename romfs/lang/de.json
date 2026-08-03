@@ -19,10 +19,7 @@
             "desc": "Überprüfe ob der Flugzeug-Modus deaktiviert ist und ob du mit einem lokalen Netzwerk verbunden bist"
         },
         "usb": {
-            "warn": {
-                "title": "Warnung!",
-                "desc": "USB-Installationen funktionieren möglicherweise mit manchen Geräten und\nKonfigurationen nicht. Falls du Probleme mit USB-Installationen hast,\nreiß dir nicht die Haare aus! Wir empfehlen NS-USBloader für USB-Installationen\noder stattdessen LAN/Internet Installationen,\nam besten über einen Ethernet-Adapter verbunden.\n\nWir haben dich gewarnt..."
-            }
+            "warn_desc": "USB-Installationen funktionieren möglicherweise mit manchen Geräten und\nKonfigurationen nicht. Falls du Probleme mit USB-Installationen hast,\nreiß dir nicht die Haare aus! Wir empfehlen NS-USBloader für USB-Installationen\noder stattdessen LAN/Internet Installationen,\nam besten über einen Ethernet-Adapter verbunden.\n\nWir haben dich gewarnt..."
         },
         "applet": {
             "title": "Applet-Modus wird nicht unterstützt",
@@ -32,12 +29,8 @@
     },
     "inst": {
         "net": {
-            "help": {
-                "title": "Hilfe",
-                "desc": "Dateien können per Tools wie NS-USBloader im Awoo-Modus von anderen\nGeräten installiert werden. Öffne die Software auf deinem PC oder Mobilgerät,\ngib die auf dem Bildschirm angezeigte IP-Adresse deines Switch ein,\nwähle die Dateien und lade sie hoch. Falls keine bestimmten\nDateitypen ausgewählt werden können, nutze eine andere Software.\nMohsaua-Buoh-Installer muss den Dateityp anhand der Dateiendung erkennen!"
-            },
+            "help_desc": "Dateien können per Tools wie NS-USBloader im Awoo-Modus von anderen\nGeräten installiert werden. Öffne die Software auf deinem PC oder Mobilgerät,\ngib die auf dem Bildschirm angezeigte IP-Adresse deines Switch ein,\nwähle die Dateien und lade sie hoch. Falls keine bestimmten\nDateitypen ausgewählt werden können, nutze eine andere Software.\nMohsaua-Buoh-Installer muss den Dateityp anhand der Dateiendung erkennen!",
             "url": {
-                "warn": "Warnung!",
                 "hint": "Gib eine URL zu einer Datei ein",
                 "invalid": "Die eingegebene URL ist ungültig",
                 "source_string": "Über einen Link (URL) installieren"
@@ -53,10 +46,7 @@
             "buttons1": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0e1 Abbrechen"
         },
         "sd": {
-            "help": {
-                "title": "Hilfe",
-                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine SD Karte,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef."
-            },
+            "help_desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine SD Karte,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef.",
             "top_info": "Wähle Dateien zur Installation von der SD-Karte aus und drücke dann \ue0ef!",
             "source_string": "Von SD-Kartendatei installieren",
             "delete_info_multi": " Dateien erfolgreich installiert! Sollen diese von der SD-Karte gelöscht werden?",
@@ -64,10 +54,7 @@
             "buttons": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0f0 Hilfe   \ue0e1 Abbrechen"
         },
         "usb": {
-            "help": {
-                "title": "Hilfe",
-                "desc": "Dateien können mit Tools, wie NS-USBloader im Awoo-Modus\nvon anderen Geräten aus installiert werden.\nUm Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät, wähle die Dateien\naus und übertrage sie dann auf die Konsole!\n\nLeider erfordern USB-Installationen auf einigen Plattformen ein spezielles\nSetup und können manchmal ziemlich fehlerhaft sein. Falls das nicht klappt,\nversuche es mit LAN/Internet Installation oder kopiere deine Dateien auf\ndeine SD-Karte und versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!"
-            },
+            "help_desc": "Dateien können mit Tools, wie NS-USBloader im Awoo-Modus\nvon anderen Geräten aus installiert werden.\nUm Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät, wähle die Dateien\naus und übertrage sie dann auf die Konsole!\n\nLeider erfordern USB-Installationen auf einigen Plattformen ein spezielles\nSetup und können manchmal ziemlich fehlerhaft sein. Falls das nicht klappt,\nversuche es mit LAN/Internet Installation oder kopiere deine Dateien auf\ndeine SD-Karte und versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!",
             "top_info": "Wähle Dateien zur Installation aus und drücke dann \ue0ef!",
             "error": "USB Übertragung ist zeitlich abgelaufen oder fehlgeschlagen",
             "source_string": "Über USB installieren",
@@ -75,14 +62,16 @@
             "buttons2": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0e1 Abbrechen"
         },
         "hdd": {
-            "help": {
-                "title": "Hilfe",
-                "desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine USB HDD,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef."
-            },
+            "help_desc": "Kopiere NSP, NSZ, XCI oder XCZ Dateien auf deine USB HDD,\nsuche nach ihnen und wähle die zu installierenden Titel aus und drücke dann \ue0ef.",
             "top_info": "Wähle Dateien zur Installation von der USB HDD aus und drücke dann \ue0ef!",
             "source_string": "Von USB-Speichergerät installieren",
             "multi_device_desc": "Bitte wählen Sie ein USB-Gerät oder eine Partition",
             "buttons": "\ue0e0 Datei auswählen   \ue0e3 Alle auswählen   \ue0ef Installieren   \ue0f0 Hilfe   \ue0e1 Abbrechen"
+        },
+        "mtp": {
+            "help_desc": "Ziehe NSP, XCI, NSZ oder XCZ Dateien per Drag & Drop in den MTP-Installationsordner auf deinem\nPC oder Mobilgerät, um sie zu installieren.\nHalte \ue0e3 gedrückt, um zwischen SD-Karte und Interner Speicher zu wechseln,\nder ausgewählte Installationsort wird automatisch gespeichert.",
+            "buttons": "\ue0e2 (Halten) Hilfe    \ue0e3 (Halten) Installation Speicher wechseln    \ue0e1 (Halten) Abbrechen/Beenden",
+            "error": "Chunk konnte nicht gelesen werden oder Übertragung wurde abgebrochen."
         },
         "target": {
             "desc00": "Wo sollen die ",
@@ -171,7 +160,9 @@
         "success": "Erfolg",
         "fail": "Fehlgeschlagen",
         "confirm": "Geben Sie 'OK' ein, um fortzufahren.",
-        "donot_show_again": "Warnt mich nicht nochmal"
+        "donot_show_again": "Warnt mich nicht nochmal",
+        "help": "Hilfe",
+        "warning": "Warnung!"
     },
     "misc": {
         "battery_charge": "Batterie",

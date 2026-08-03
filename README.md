@@ -15,6 +15,9 @@ And in Chinese, it is also known as `别多话, 就安装`
 - Verifies NCAs by header signature before they're installed
 - Verifies NCA hashes during installation
 - Supports USB hard drives with multiple partitions and/or multiple USB storage devices
+- Supports viewing and deleting unused tickets
+- Supports cleaning up orphaned contents
+- Provides a simple user manager
 
 ## Coloring support
 To use this, you must place the "color.json" at "sdmc:/config/MBI" dir. See [example](doc/color.json) for more details.  

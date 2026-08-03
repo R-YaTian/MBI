@@ -19,10 +19,7 @@
             "desc": "請檢查已關閉飛航模式，並確認目前連線的網路狀態是否正常。"
         },
         "usb": {
-            "warn": {
-                "title": "注意！",
-                "desc": "使用USB進行安裝時，在部分型號設備或少數軟體可能無法\"正確執行\"。\n如果使用USB安裝失敗時，可以改用NS-USBloader來進行USB安裝；\n如果有配置高速網卡建構的網路環境，也可以透過NAS區網/WiFi無線網路來進行遠端安裝。\n\n嘗試其他安裝方式，大部分的狀況都可以迎刃而解。"
-            }
+            "warn_desc": "使用USB進行安裝時，在部分型號設備或少數軟體可能無法\"正確執行\"。\n如果使用USB安裝失敗時，可以改用NS-USBloader來進行USB安裝；\n如果有配置高速網卡建構的網路環境，也可以透過NAS區網/WiFi無線網路來進行遠端安裝。\n\n嘗試其他安裝方式，大部分的狀況都可以迎刃而解。"
         },
         "applet": {
             "title": "不支援Applet模式",
@@ -32,12 +29,8 @@
     },   
     "inst": {
         "net": {
-            "help": {
-                "title": "說明",
-                "desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)\n並從電腦或手機上選定要傳輸的檔案，點擊上傳后等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試其他傳輸工具。\nMohsaua-Buoh-Installer需要透過副檔名來判斷檔案類型！"
-            },
+            "help_desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)\n並從電腦或手機上選定要傳輸的檔案，點擊上傳后等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試其他傳輸工具。\nMohsaua-Buoh-Installer需要透過副檔名來判斷檔案類型！",
             "url": {
-                "warn": "注意！",
                 "hint": "請輸入檔案的URL網路位址",
                 "invalid": "URL網路位址無效！",
                 "source_string": "透過連結 (URL) 安裝"
@@ -53,10 +46,7 @@
             "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
         },
         "sd": {
-            "help": {
-                "title": "說明",
-                "desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到SD記憶卡，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕"
-            },
+            "help_desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到SD記憶卡，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "top_info": "從記憶卡內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 SD 卡檔案安裝",
             "delete_info_multi": " 個所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
@@ -64,10 +54,7 @@
             "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
         },
         "usb": {
-            "help": {
-                "title": "說明",
-                "desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行USB安裝。\n要將檔案上傳到你的Switch，在電腦或手機上選定要傳輸的檔案，點擊上傳即可。\n\n然而透過USB安裝時，在某些平台上需要特定的設備，可能衍生更多的問題。\n如果不確定如何使用USB安裝，可以改為嘗試透過區網或網路遠端安裝，\n或者將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\""
-            },
+            "help_desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行USB安裝。\n要將檔案上傳到你的Switch，在電腦或手機上選定要傳輸的檔案，點擊上傳即可。\n\n然而透過USB安裝時，在某些平台上需要特定的設備，可能衍生更多的問題。\n如果不確定如何使用USB安裝，可以改為嘗試透過區網或網路遠端安裝，\n或者將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\"",
             "top_info": "選定要從USB安裝的檔案後，請按 \ue0ef 鈕",
             "error": "USB傳輸逾時或失敗",
             "source_string": "透過 USB 安裝",
@@ -75,14 +62,16 @@
             "buttons2": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
         },
         "hdd": {
-            "help": {
-                "title": "說明",
-                "desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到USB HDD行動硬碟，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕"
-            },
+            "help_desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到USB HDD行動硬碟，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "top_info": "從USB HDD行動硬碟內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 USB 儲存裝置安裝",
             "multi_device_desc": "請選擇一個 USB 裝置或分割區",
             "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
+        },
+        "mtp": {
+            "help_desc": "將NSP、XCI、NSZ、XCZ檔案拖放或複製到電腦/行動裝置上的MTP安裝資料夾即可進行安裝。\n長按 \ue0e3 可在主機內部儲存空間與SD記憶卡之間切換，所選的安裝位置會自動儲存。",
+            "buttons": "\ue0e2 (長按) 說明    \ue0e3 (長按) 切換安裝儲存位置    \ue0e1 (長按) 取消/離開",
+            "error": "讀取資料區塊失敗，或傳輸已取消。"
         },
         "target": {
             "desc00": "要將所選的 ",
@@ -171,7 +160,9 @@
         "success": "成功",
         "fail": "失敗",
         "confirm": "輸入 'OK' 以繼續。",
-        "donot_show_again": "不再顯示此訊息"
+        "donot_show_again": "不再顯示此訊息",
+        "help": "說明",
+        "warning": "注意！"
     },
     "misc": {
         "battery_charge": "電池",
