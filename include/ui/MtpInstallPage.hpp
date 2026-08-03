@@ -13,7 +13,7 @@ namespace app::ui
             ~MtpInstallPage();
             PU_SMART_CTOR(MtpInstallPage)
             void onCancel() override;
-            void onInitInstallMode();
+            void onInitInstallMode(int targetStorage);
         protected:
             bool onInstallStart(const char* path);
             bool onInstallWrite(const void* buf, size_t size);

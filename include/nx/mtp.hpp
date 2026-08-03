@@ -14,7 +14,7 @@ namespace nx::mtp
     using OnInstallWrite = std::function<bool(const void* buf, size_t size)>;
     using OnInstallClose = std::function<void()>;
 
-    void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close);
+    void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close, const InstallProxyTargetStorage target);
     void DisableInstallMode();
     void FinishInstallProgress();
     void SetInstallProxyTargetStorage(InstallProxyTargetStorage target);

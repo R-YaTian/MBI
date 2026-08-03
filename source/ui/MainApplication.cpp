@@ -459,7 +459,7 @@ namespace app::ui
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Hide);
             mainApp->SetPageInfoText("");
             mtpinstPage->Prepare();
-            mtpinstPage->onInitInstallMode();
+            mtpinstPage->onInitInstallMode(app::config::mtpInstallTargetStorage);
             mainApp->SetBottomText("inst.mtp.buttons"_lang);
             mainApp->LoadLayout(mtpinstPage);
             break;

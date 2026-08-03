@@ -33,7 +33,7 @@ namespace app::ui
     {
         std::unique_ptr<install::MtpWorker> m_source{};
         std::string m_currentFile{};
-        nx::mtp::InstallProxyTargetStorage m_targetStorage{nx::mtp::InstallProxyTargetStorage::SdCard};
+        nx::mtp::InstallProxyTargetStorage m_targetStorage{};
         Mutex m_mutex{};
         State m_state{State::None};
         std::stop_source m_stop_source{};
@@ -130,12 +130,14 @@ namespace app::ui
         }
     }
 
-    void MtpInstallPage::onInitInstallMode()
+    void MtpInstallPage::onInitInstallMode(int targetStorage)
     {
+        pageData->m_targetStorage = static_cast<nx::mtp::InstallProxyTargetStorage>(targetStorage);
         nx::mtp::InitInstallMode(
             [this](const char* path){ return onInstallStart(path); },
             [this](const void *buf, size_t size){ return onInstallWrite(buf, size); },
-            [this](){ return onInstallClose(); }
+            [this](){ return onInstallClose(); },
+            pageData->m_targetStorage
         );
         if (!this->infoImage->IsVisible())
         {
@@ -179,6 +181,8 @@ namespace app::ui
             pageData->m_anyButtonTriggered = true;
             pageData->m_targetStorage = static_cast<nx::mtp::InstallProxyTargetStorage>(!pageData->m_targetStorage);
             nx::mtp::SetInstallProxyTargetStorage(pageData->m_targetStorage);
+            app::config::mtpInstallTargetStorage = static_cast<u8>(pageData->m_targetStorage);
+            app::config::SaveSettings();
         }
     }
 

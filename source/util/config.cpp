@@ -12,6 +12,7 @@ namespace app::config
     std::string DirTextColor;
     std::string InstallerInfoTextColor;
     int languageSetting;
+    int mtpInstallTargetStorage;
     bool fixTicket;
     bool skipBase;
     bool deletePrompt;
@@ -31,6 +32,7 @@ namespace app::config
         j["enableSound"] = enableSound;
         j["ignoreReqVers"] = ignoreReqVers;
         j["languageSetting"] = languageSetting;
+        j["mtpInstallTargetStorage"] = mtpInstallTargetStorage;
         j["overClock"] = overClock;
         j["usbAck"] = usbAck;
         j["appletAck"] = appletAck;
@@ -62,6 +64,7 @@ namespace app::config
         enableSound = j.value("enableSound", true);
         ignoreReqVers = j.value("ignoreReqVers", false);
         languageSetting = j.value("languageSetting", -1);
+        mtpInstallTargetStorage = j.value("mtpInstallTargetStorage", 1);
         overClock = j.value("overClock", false);
         usbAck = j.value("usbAck", false);
         appletAck = j.value("appletAck", false);

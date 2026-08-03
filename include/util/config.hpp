@@ -19,6 +19,7 @@ namespace app::config
     extern std::string DirTextColor;
     extern std::string InstallerInfoTextColor;
     extern int languageSetting;
+    extern int mtpInstallTargetStorage;
     extern bool ignoreReqVers;
     extern bool overClock;
     extern bool deletePrompt;

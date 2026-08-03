@@ -30,6 +30,7 @@ namespace app::ui
                                                {"common.ok"_lang, "common.donot_show_again"_lang}, false, "warning") == 1)
                     {
                         app::config::appletAck = true;
+                        app::config::SaveSettings();
                     }
                 }
             }
@@ -135,6 +136,7 @@ namespace app::ui
                                         "warning") == 1)
             {
                 app::config::usbAck = true;
+                app::config::SaveSettings();
             }
         }
         nx::usb::usbDeviceInitialize();
@@ -156,8 +158,8 @@ namespace app::ui
         {
             return;
         }
-        nx::mtp::Setup(app::manager::getAppPath());
         SceneJump(Scene::MtpInstall);
+        nx::mtp::Setup(app::manager::getAppPath());
     }
 
     void MainPage::TicketManagerMenuItem_Click()

@@ -71,6 +71,7 @@ namespace app::ui
                     return startNetwork();
                 }
                 app::config::lastNetUrl = keyboardResult;
+                app::config::SaveSettings();
                 this->selectedUrls[0] = keyboardResult;
                 this->startInstall(true);
                 return false;

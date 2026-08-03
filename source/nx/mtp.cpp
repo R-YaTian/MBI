@@ -787,7 +787,7 @@ namespace nx::mtp
         }
     };
 
-    void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close)
+    void InitInstallMode(const OnInstallStart& on_start, const OnInstallWrite& on_write, const OnInstallClose& on_close, const InstallProxyTargetStorage target)
     {
         SCOPED_MUTEX(&g_shared_data.mutex);
         g_shared_data.on_start = on_start;
@@ -795,6 +795,7 @@ namespace nx::mtp
         g_shared_data.on_close = on_close;
         g_shared_data.enabled = true;
         g_shared_data.in_progress = false;
+        g_shared_data.target_storage = static_cast<FsContentStorageId>(target + 1);
     }
 
     void DisableInstallMode()
