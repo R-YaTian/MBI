@@ -8,6 +8,7 @@ And in Chinese, it is also known as `别多话, 就安装`
 
 ## Features
 - Installs NSP/NSZ/XCI/XCZ files from your SD card
+- Installs NSP/NSZ/XCI/XCZ files via USB MTP
 - Installs NSP/NSZ/XCI/XCZ files from your USB Disk (Support FAT32, exFAT, NTFS and EXT2/3/4)
 - Installs NSP/NSZ/XCI/XCZ files and split NSP/XCI files over LAN or USB from tools such as [NS-USBloader](https://github.com/developersu/ns-usbloader)
 - Installs NSP/NSZ/XCI/XCZ files over HTTP Directory Indexing like nginx or Apache
@@ -26,3 +27,4 @@ Use your wanted HEX RGBA colors -> https://rgbcolorpicker.com
 - XorTroll for [Plutonium](https://github.com/XorTroll/Plutonium) and [Goldleaf](https://github.com/XorTroll/Goldleaf) and [libnx-ext](https://github.com/XorTroll/libnx-ext)
 - nicoboss for [NSZ/XCZ](https://github.com/nicoboss/nsz) format
 - DarkMatterCore, XorTroll and Rhys Koedijk for [libusbhsfs](https://github.com/DarkMatterCore/libusbhsfs)
+- ITotalJustice for [Sphaira](https://github.com/ITotalJustice/sphaira) and [libhaze](https://github.com/ITotalJustice/libhaze)

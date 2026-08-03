@@ -118,7 +118,7 @@
         },
         "credits": {
             "title": "感谢以下人员!",
-            "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供原始 Tinfoil\n- XorTroll 提供 Plutonium 以及 Goldleaf\n- nicoboss 提供 NSZ 支持\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs"
+            "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供原始 Tinfoil\n- XorTroll 提供 Plutonium, Goldleaf 以及 libnx-ipcext\n- nicoboss 提供 NSZ/XCZ 格式\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs\n- ITotalJustice 提供 Sphaira 以及 libhaze"
         },
         "language": {
             "title": "选择 Mohsaua-Buoh-Installer 的显示语言",
