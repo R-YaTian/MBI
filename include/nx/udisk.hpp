@@ -71,9 +71,11 @@ do not use the software.
 	purpose and non-infringement.
 */
 
+#include <string>
+
 namespace nx::udisk
 {
-	const char* getMountPointName(u32 index = 0);
+	std::string getMountPointName(u32 index = 0);
 	u32 getDeviceCount();
 
 	bool init();

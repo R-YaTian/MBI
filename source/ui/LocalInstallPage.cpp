@@ -15,6 +15,8 @@ namespace app::ui
         size_t selectedSize = 0;
         bool isRootDirectory = true;
         installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
+        std::string driveMountPointName{};
+        int driveIndex = -1;
         nx::fs::Path currentDir;
         std::vector<nx::fs::Path> menuDirectories;
         std::vector<nx::fs::Path> menuFiles;
@@ -138,7 +140,7 @@ namespace app::ui
 
     void LocalInstallPage::selectFile(int selectedIndex)
     {
-        if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+        if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -168,7 +170,7 @@ namespace app::ui
 
     void LocalInstallPage::startInstall()
     {
-        if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+        if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -250,7 +252,7 @@ namespace app::ui
     {
         if (Down & HidNpadButton_B)
         {
-            if (pageData->storageSrc == installer::Local::StorageSource::UDISK && nx::udisk::getDeviceCount() == 0)
+            if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
             {
                 pageData->subPathCounter = 0;
             }
@@ -326,7 +328,9 @@ namespace app::ui
             return false;
         }
         pageData->storageSrc = installer::Local::StorageSource::UDISK;
-        this->drawMenuItems(nx::udisk::getMountPointName(ret));
+        pageData->driveMountPointName = nx::udisk::getMountPointName(ret);
+        pageData->driveIndex = ret;
+        this->drawMenuItems(pageData->driveMountPointName);
         return true;
     }
 
@@ -334,6 +338,8 @@ namespace app::ui
     {
         pageData->subPathCounter = 0;
         pageData->selectedSize = 0;
+        pageData->driveIndex = -1;
+        pageData->driveMountPointName.clear();
         pageData->currentDir.clear();
         pageData->menuDirectories.clear();
         pageData->menuFiles.clear();

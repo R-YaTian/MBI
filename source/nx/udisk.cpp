@@ -127,11 +127,11 @@ namespace nx::udisk
         return std::min(g_usbDeviceCount, MAX_DEVICES);
     }
 
-    const char* getMountPointName(u32 index)
+    std::string getMountPointName(u32 index)
     {
         if(index >= MAX_DEVICES)
         {
-            return nullptr;
+            return "";
         }
 
         std::scoped_lock lock(g_mutex);
@@ -141,7 +141,7 @@ namespace nx::udisk
             return g_usbDevices[index].name;
         }
 
-        return nullptr;
+        return "";
     }
 
     bool init()
