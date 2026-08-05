@@ -16,6 +16,8 @@ namespace app::ui
         this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetScrollbarColor(COLOR("#17090980"));
         this->menu->SetShadowBaseAlpha(0);
+        this->menu->SetIconMargin(20);
+        this->menu->SetTextMargin(20);
 
         ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
         ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));
