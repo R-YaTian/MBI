@@ -64,7 +64,7 @@ namespace app::ui
             try
             {
                 shortFileName = nx::misc::ShortenString(pageData->m_currentFile, 42, 4);
-                app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + shortFileName);
+                app::facade::SendInstallInfoText("inst.info_page.installing"_lang + shortFileName);
                 pageData->m_source->SetInstallState(install::MTPInstallState::Progress);
                 std::unique_ptr<InstallTask> installTask =
                     std::make_unique<InstallTask>(static_cast<NcmStorageId>(pageData->m_targetStorage + 4), app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, pageData->m_source.get());

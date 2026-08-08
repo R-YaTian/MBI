@@ -76,13 +76,13 @@ namespace app::installer
                 {
                     if (titleCount > 1)
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
                                                                "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
                                                                ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
                     }
 
                     std::string ext = ourTitleList[titleItr].extension().string();
@@ -239,13 +239,13 @@ namespace app::installer
                 {
                     if (titleCount > 1)
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
                                                                "(" + std::to_string(fileItr + 1) + "/"  + std::to_string(titleCount) +
                                                                ") " + fileNames[fileItr]);
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + fileNames[fileItr]);
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + fileNames[fileItr]);
                     }
 
                     std::string extPart = ourTitleList[fileItr].substr(ourTitleList[fileItr].size() - 3, 2);
@@ -479,13 +479,13 @@ back_to_loop:
                     LOG_DEBUG("%s %s\n", "Install request from", ourUrlList[urlItr].c_str());
                     if (urlCount > 1)
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang +
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
                                                                "(" + std::to_string(urlItr + 1) + "/"  + std::to_string(urlCount) +
                                                                ") " + urlNames[urlItr]);
                     }
                     else
                     {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.top_info0"_lang + urlNames[urlItr]);
+                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + urlNames[urlItr]);
                     }
 
                     std::unique_ptr<nx::Content> content;

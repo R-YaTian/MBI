@@ -81,14 +81,14 @@
             "info": "Installer sur :"
         },
         "info_page": {
-            "top_info0": "Installation ",
+            "installing": "Installation ",
             "preparing": "Préparation de l'installation...",
             "failed": "Installation échouée ",
             "failed_desc": "Le contenu partiellement installé peut être supprimé depuis les paramètres systèmes de l'applet.",
             "complete": "Installation complète",
             "desc0": " fichiers installés avec succès !",
             "desc1": " installé !",
-            "downloading": "Téléchargement ",
+            "finishing": "Finalisation de l'installation: ",
             "at": " à ",
             "removing": "Suppression du NCA déjà installé: ",
             "no_space": "Pas assez d'espace libre pour installer:"

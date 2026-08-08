@@ -81,14 +81,14 @@
             "info": "安裝到: "
         },
         "info_page": {
-            "top_info0": "正在安裝 ",
+            "installing": "正在安裝 ",
             "preparing": "正在初始化安裝程序...",
             "failed": "安裝失敗 ",
             "failed_desc": "請使用主機設定內的資料管理來移除未完整安裝的遊戲",
             "complete": "安裝完成",
             "desc0": " 個所選的檔案已全部安裝！",
             "desc1": " 已安裝！",
-            "downloading": "正在安裝 ",
+            "finishing": "正在完成安裝: ",
             "at": " 約 ",
             "removing": "正在移除已安裝的NCA: ",
             "no_space": "沒有足夠的空間進行安裝:"

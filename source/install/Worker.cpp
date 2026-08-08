@@ -147,6 +147,46 @@ namespace app::install
         }
     }
 
+    void Worker::ReadThread(void* in)
+    {
+        ThreadData* args = static_cast<ThreadData*>(in);
+        Worker* worker = static_cast<Worker*>(args->in);
+
+        std::vector<u8> buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
+
+        u64 sizeRemaining = args->dataSize;
+        size_t tmpSizeRead = 0;
+
+        try
+        {
+            while (sizeRemaining)
+            {
+                const size_t chunkSize = std::min<size_t>(sizeRemaining, nx::data::BUFFER_SEGMENT_DATA_SIZE);
+                worker->BufferData(buf.data(), args->dataOffset + tmpSizeRead, chunkSize);
+
+                while (true)
+                {
+                    if (args->bufferedPlaceholderWriter->CanAppendData(chunkSize))
+                    {
+                        break;
+                    }
+                }
+
+                args->bufferedPlaceholderWriter->AppendData(buf.data(), chunkSize);
+                sizeRemaining -= chunkSize;
+                tmpSizeRead += chunkSize;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            stopThreads = true;
+            if (args->errorMessage != nullptr)
+            {
+                *args->errorMessage = e.what();
+            }
+        }
+    }
+
     void Worker::WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
@@ -177,7 +217,7 @@ namespace app::install
         u64 startTime = armGetSystemTick();
         size_t startSizeBuffered = 0;
 
-        app::facade::SendInstallInfoText("inst.info_page.downloading"_lang + ncaFileName + "...");
+        app::facade::SendInstallInfoText("inst.info_page.installing"_lang + ncaFileName + "...");
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreads)
         {
@@ -189,7 +229,7 @@ namespace app::install
         u64 totalSizeMB = bufferedPlaceholderWriter.GetTotalDataSize() / 1000000;
 #endif
 
-        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::facade::SendInstallInfoText("inst.info_page.finishing"_lang + ncaFileName);
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreads)
         {
@@ -244,7 +284,7 @@ namespace app::install
         u64 startTime = armGetSystemTick();
         size_t startSizeBuffered = 0;
 
-        app::facade::SendInstallInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+        app::facade::SendInstallInfoText("inst.info_page.installing"_lang + ncaFileName + "...");
         app::facade::SendInstallProgress(0);
         while (fileOff < ncaSize)
         {

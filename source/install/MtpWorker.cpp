@@ -23,46 +23,6 @@ namespace app::install
 
     MtpWorker::~MtpWorker() = default;
 
-    void MtpWorker::ReadThread(void* in)
-    {
-        ThreadData* args = static_cast<ThreadData*>(in);
-        MtpWorker* worker = static_cast<MtpWorker*>(args->in);
-
-        std::vector<u8> buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
-
-        u64 sizeRemaining = args->dataSize;
-        size_t tmpSizeRead = 0;
-
-        try
-        {
-            while (sizeRemaining)
-            {
-                const size_t chunkSize = std::min<size_t>(sizeRemaining, nx::data::BUFFER_SEGMENT_DATA_SIZE);
-                worker->BufferData(buf.data(), args->dataOffset + tmpSizeRead, chunkSize);
-
-                while (true)
-                {
-                    if (args->bufferedPlaceholderWriter->CanAppendData(chunkSize))
-                    {
-                        break;
-                    }
-                }
-
-                args->bufferedPlaceholderWriter->AppendData(buf.data(), chunkSize);
-                sizeRemaining -= chunkSize;
-                tmpSizeRead += chunkSize;
-            }
-        }
-        catch (const std::exception& e)
-        {
-            stopThreads = true;
-            if (args->errorMessage != nullptr)
-            {
-                *args->errorMessage = e.what();
-            }
-        }
-    }
-
     void MtpWorker::ReadChunk(void* _buf, s64 size, u64* bytes_read)
     {
         auto buf = static_cast<u8*>(_buf);
@@ -124,12 +84,18 @@ namespace app::install
             // to handle this, simply read the data into a buffer and discard it.
             if (offset > m_offset)
             {
-                const auto skip_size = offset - m_offset;
-                std::vector<u8> temp_buf(skip_size);
-                u64 bytes_read;
-                ReadChunk(temp_buf.data(), temp_buf.size(), &bytes_read);
+                size_t skip_size = offset - m_offset;
+                std::vector<u8> temp_buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
 
-                m_offset += bytes_read;
+                while (skip_size)
+                {
+                    const auto chunk_size = std::min(skip_size, temp_buf.size());
+                    u64 bytes_read;
+                    ReadChunk(temp_buf.data(), chunk_size, &bytes_read);
+
+                    m_offset += bytes_read;
+                    skip_size -= bytes_read;
+                }
             } else {
                 u64 bytes_read;
                 ReadChunk(buf, size, &bytes_read);

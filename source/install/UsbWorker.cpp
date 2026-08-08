@@ -70,9 +70,9 @@ namespace app::install
         u8* tempBuffer = (u8*)memalign(0x1000, header.dataSize);
         if (nx::usb::USBReadData(tempBuffer, header.dataSize) == 0)
         {
-            THROW_FORMAT("inst.usb.error"_lang.c_str());
+            throw std::runtime_error("inst.usb.error"_lang.c_str());
         }
-        memcpy(buf, tempBuffer, header.dataSize);
+        std::memcpy(buf, tempBuffer, header.dataSize);
         free(tempBuffer);
     }
 }

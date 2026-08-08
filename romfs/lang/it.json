@@ -81,14 +81,14 @@
             "info": "Installa su: "
         },
         "info_page": {
-            "top_info0": "Sto installando ",
+            "installing": "Sto installando ",
             "preparing": "Preparando l'installazione...",
             "failed": "Installazione fallita ",
             "failed_desc": "I contenuti parzialmente installati possono essere rimossi dalle Impostazioni di sistema.",
             "complete": "Installazione completa",
             "desc0": " file installati correttamente!",
             "desc1": " installato!",
-            "downloading": "Sto scaricando ",
+            "finishing": "Finalizzazione dell'installazione: ",
             "at": " in ",
             "removing": "Rimozione NCA già installato: ",
             "no_space": "Spazio insufficiente per installare:"

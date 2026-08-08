@@ -81,14 +81,14 @@
             "info": "Install to: "
         },
         "info_page": {
-            "top_info0": "Installing ",
+            "installing": "Installing ",
             "preparing": "Preparing installation...",
             "failed": "Failed to install ",
             "failed_desc": "Partially installed contents can be removed from the System Settings applet.",
             "complete": "Install complete",
             "desc0": " files installed successfully!",
             "desc1": " installed!",
-            "downloading": "Downloading ",
+            "finishing": "Finalizing installation: ",
             "at": " at ",
             "removing": "Removing already installed NCA: ",
             "no_space": "Not enough free space to install:"

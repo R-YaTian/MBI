@@ -198,8 +198,8 @@ namespace app::ui
         this->pageInfoText->SetFont("DefaultFont@30");
         this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->titleImage = pu::ui::elm::Image::New(0, 0, this->logoImg);
-        this->appVersionText = pu::ui::elm::TextBlock::New(480, 26, APPVER);
-        this->appVersionText->SetFont("DefaultFont@42");
+        this->appVersionText = pu::ui::elm::TextBlock::New(476, 52, APPVER);
+        this->appVersionText->SetFont("DefaultFont@27");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = pu::ui::elm::TextBlock::New(1105, 9, "misc.battery_charge"_lang + ": ??%");
         this->batteryValueText->SetFont("DefaultFont@32");

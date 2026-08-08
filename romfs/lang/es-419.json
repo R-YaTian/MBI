@@ -81,14 +81,14 @@
             "info": "Instalar en: "
         },
         "info_page": {
-            "top_info0": "Instalando ",
+            "installing": "Instalando ",
             "preparing": "Preparando la instalación...",
             "failed": "Fallo al instalar ",
             "failed_desc": "Los contenidos parcialmente instalados pueden ser eliminados en el menú de Configuración de la consola.",
             "complete": "Instalación exitosa",
             "desc0": " archivos fueron instalados satisfactoriamente.",
             "desc1": " instalado.",
-            "downloading": "Descargando ",
+            "finishing": "Finalizando la instalación: ",
             "at": " en ",
             "removing": "Eliminando NCA ya instalada: ",
             "no_space": "Espacio insuficiente para instalar:"

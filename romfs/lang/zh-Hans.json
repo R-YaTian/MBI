@@ -81,14 +81,14 @@
             "info": "安装位置: "
         },
         "info_page": {
-            "top_info0": "正在安装 ",
+            "installing": "正在安装 ",
             "preparing": "正在准备安装...",
             "failed": "安装失败 ",
             "failed_desc": "未完整安装的部分可以从系统设置中删除。",
             "complete": "安装完成",
             "desc0": " 个文件安装完成！",
             "desc1": " 安装完成！",
-            "downloading": "传输中...",
+            "finishing": "正在完成安装: ",
             "at": " 以 ",
             "removing": "正在移除已安装的 NCA 文件: ",
             "no_space": "剩余空间不足以安装:"

@@ -81,14 +81,14 @@
             "info": "Installieren nach: "
         },
         "info_page": {
-            "top_info0": "Installiere ",
+            "installing": "Installiere ",
             "preparing": "Bereite Installation vor...",
             "failed": "Installation fehlgeschlagen ",
             "failed_desc": "Teilweise installierte Inhalte können in den Systemeinstellungen (Datenverwaltung) entfernt werden.",
             "complete": "Installation abgeschlossen",
             "desc0": " Dateien erfolgreich installiert!",
             "desc1": " installiert!",
-            "downloading": "Übertrage ",
+            "finishing": "Installation wird abgeschlossen: ",
             "at": " mit ",
             "removing": "Entferne bereits installierte NCA: ",
             "no_space": "Zu wenig Speicherplatz zum Installieren:"

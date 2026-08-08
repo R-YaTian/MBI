@@ -81,14 +81,14 @@
             "info": "Instalar em: "
         },
         "info_page": {
-            "top_info0": "A instalar ",
+            "installing": "A instalar ",
             "preparing": "A preparar a instalação...",
             "failed": "Instalação falhada ",
             "failed_desc": "Parcialmente instalado o conteúdo poderá ser removido através da applet Definições do Sistema.",
             "complete": "Instalação completa",
             "desc0": " ficheiros instalados com sucesso!",
             "desc1": " instalado!",
-            "downloading": "A transferir ",
+            "finishing": "Finalizando a instalação: ",
             "at": " às ",
             "removing": "Removendo NCA já instalado: ",
             "no_space": "Espaço insuficiente para instalar:"

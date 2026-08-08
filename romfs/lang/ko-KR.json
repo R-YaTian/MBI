@@ -81,14 +81,14 @@
             "info": "설치 위치: "
         },
         "info_page": {
-            "top_info0": "설치 중 ",
+            "installing": "설치 중 ",
             "preparing": "설치 프로그램 준비중...",
             "failed": "설치 실패 ",
             "failed_desc": "불완전하게 설치된 게임은 시스템 설정에서 제거할 수 있습니다.",
             "complete": "설치 완료",
             "desc0": " 선택한 모든 파일 설치됨!",
             "desc1": " 설치됨!",
-            "downloading": "다운로드중 ",
+            "finishing": "설치 최종 처리 중: ",
             "at": " 에서 ",
             "removing": "이미 설치된 NCA 제거 중: ",
             "no_space": "설치할 여유 공간이 부족합니다:"
