@@ -1,0 +1,201 @@
+{
+    "main":{
+        "menu": {
+            "sd": "安裝卡裏文件",
+            "net": "經過網絡安裝文件",
+            "usb": "經過 USB 安裝文件",
+            "hdd": "安裝 USB 移動硬盤文件",
+            "mtp": "經過 USB MTP 安裝",
+            "tickets": "檢查故未使手票",
+            "set": "設置",
+            "exit": "退出"
+        },
+        "hdd": {
+            "title": "USB 移動硬盤",
+            "notfound": "故未討着 USB 移動硬盤"
+        },
+        "net": {
+            "title": "無網絡",
+            "desc": "檢查飛行模式關故未，故有現時网络會儥正常。"
+        },
+        "usb": {
+            "warn_desc": "USB 安裝功能可能敆部分設備或者軟件環境𡅏會無辦法正常使。\n汝㑚敆使 USB 安裝時候碰着問題，莫急！\n汝可以使 NS-USBloader 來安裝，或者去使 USB MTP 來安裝。"
+        },
+        "applet": {
+            "title": "小程序模式儥中使",
+            "desc": "敆小程序模式使 莫価話·卜·安裝器 可能會碰着問題，\n汝㑚碰着問題，請換一種進行模式！\n(手擪 \ue0e5 並且開一件遊戲，裏 hbmenu 以後再開 莫価話·卜·安裝器 就會使啦)"
+        },
+        "buttons": "\ue0e0 選擇    \ue0ef 退出"
+    },
+    "inst": {
+        "net": {
+            "help_desc": "會使像 NS-USBloader 總款其工具從遠程安裝文件。\n需要傳文件時候，敆電腦或者手機𡅏開會使其軟件，\n輸屏幕显示其 Switch IP 地址，選擇文件以後傳遘汝其設備啦！\n汝㑚使其工具軟件儥使選擇指定其文件，請換一種工具再蜀試。\n莫価話·卜·安裝器 着經過文件名字來認文件是生乇類！",
+            "url": {
+                "hint": "輸文件其 URL",
+                "invalid": "URL 無乇使！",
+                "source_string": "經過 URL 安裝"
+            },
+            "top_info": "敆服務器𡅏選擇等囇着安裝其文件，擪 \ue0ef 去安裝！",
+            "top_info1": "着𡅏等網絡連通… Switch 其 IP 地址是：",
+            "failed": "網絡安裝失敗！",
+            "index_error": "檢查文件列表失敗",
+            "index_error_info": "確實 URL 是有乇使其網絡目錄或者 Tinfoil 樣式其 JSON",
+            "transfer_interput": "數據傳送發生錯誤，請檢查網絡其情況。",
+            "source_string": "經過網絡安裝",
+            "buttons": "\ue0e3 網絡安裝    \ue0e2 從 HTTP 目錄安裝    \ue0f0 說明書    \ue0e1 取消",
+            "buttons1": "\ue0e0 選擇    \ue0e3 全選    \ue0ef 安裝    \ue0e1 取消"
+        },
+        "sd": {
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
+            "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
+            "source_string": "通过 SD 卡文件安装",
+            "delete_info_multi": " 个文件批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
+            "delete_desc": "安装完成后不再需要使用安装文件",
+            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
+        },
+        "usb": {
+            "help_desc": "可以使用支持的工具通过 USB 安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或移动设备上任一工具软件，\n选择文件，然后上传到您的主机即可！\n\n不过 USB 安装在一些设备或者系统环境下无法正常工作。\n如果无法安装，试试使用网络远程安装，\n或者复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！",
+            "top_info": "选择想要通过 USB 安装的文件，然后按 \ue0ef 进行安装！",
+            "error": "USB 传输超时或失败",
+            "source_string": "通过 USB 安装",
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消",
+            "buttons2": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
+        },
+        "hdd": {
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。",
+            "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
+            "source_string": "通过 USB 存储设备安装",
+            "multi_device_desc": "请选择一个 USB 设备或分区",
+            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
+        },
+        "mtp": {
+            "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。\n按住 \ue0e3 可在SD卡和内部存储之间切换, 所选的安装位置将自动保存。",
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e3 (按住) 切换安装位置    \ue0e1 (按住) 取消/退出",
+            "error": "无法读取数据块或传输已取消。"
+        },
+        "target": {
+            "desc00": "请选择这 ",
+            "desc01": " 个文件的安装位置：",
+            "opt0": "SD 卡",
+            "opt1": "内部存储",
+            "info": "安装位置: "
+        },
+        "info_page": {
+            "installing": "正在安装 ",
+            "preparing": "正在准备安装...",
+            "failed": "安装失败 ",
+            "failed_desc": "未完整安装的部分可以从系统设置中删除。",
+            "complete": "安装完成",
+            "desc0": " 个文件安装完成！",
+            "desc1": " 安装完成！",
+            "finishing": "正在完成安装: ",
+            "at": " 以 ",
+            "removing": "正在移除已安装的 NCA 文件: ",
+            "no_space": "剩余空间不足以安装:"
+        },
+        "nca_verify": {
+            "missing_digital": "缺失数字哈希, 尝试重建元数据...",
+            "hash_failed": "NCA 哈希校验不通过：",
+            "error": "请求的 NCA 签名不正确："
+        },
+        "finished": [
+            "慢慢客佻汝“正當保存”其遊戲！",
+            "我肯信汝伓使錢客佻遊戲以後，汝才有興趣買這些遊戲！",
+            "汝會買遊戲是伓是？日本囝謝謝汝！",
+            "日本囝其狀師等囇遘汝厝𡅏啦。"
+        ]
+    },
+    "options": {
+        "menu_items": {
+            "ignore_firm": "忽略软件的最低固件版本要求",
+            "boost_mode": "安装时启用“增速模式”(解锁 CPU 频率)",
+            "ask_delete": "安装完成后询问是否删除原始文件(仅从 SD 卡安装时)",
+            "enableSound": "安装完成后播放提示音",
+            "fix_ticket": "尝试修复错误的票据转储",
+            "skip_base": "智能跳过已安装的本体NCA (MTP 安装除外)",
+            "use_12h_time": "使用12小时制时间",
+            "language": "显示语言：",
+            "credits": "致谢"
+        },
+        "credits": {
+            "title": "感谢以下人员!",
+            "desc": "- dezem 以及其他贡献者们提供原始 AtmoXL-Titel-Installer\n- Huntereb 提供 Awoo Installer\n- Adubbz 以及其他贡献者们提供原始 Tinfoil\n- XorTroll 提供 Plutonium, Goldleaf 以及 libnx-ipcext\n- nicoboss 提供 NSZ/XCZ 格式\n- DarkMatterCore, XorTroll 以及 Rhys Koedijk 提供 libusbhsfs\n- ITotalJustice 提供 Sphaira 以及 libhaze"
+        },
+        "language": {
+            "title": "选择 Mohsaua-Buoh-Installer 的显示语言",
+            "desc": "软件将在更改显示语言后关闭，按 \ue0e1 取消更改。",
+            "system_language": "跟随系统"
+        },
+        "title": "更改 Mohsaua-Buoh-Installer 的设置！",
+        "buttons": "\ue0e0 选择/更改    \ue0e1 取消"
+    },
+    "common": {
+        "ok": "确定",
+        "cancel": "取消",
+        "close": "关闭",
+        "yes": "是",
+        "no": "否",
+        "cancel_desc": "按 \ue0e1 取消",
+        "waiting": "请等待...",
+        "success": "成功",
+        "fail": "失败",
+        "confirm": "输入 'OK' 以继续。",
+        "donot_show_again": "不再提示",
+        "help": "帮助",
+        "warning": "警告！"
+    },
+    "ticket_manager": {
+        "scanning": "正在扫描未使用的票据...",
+        "top_info": "选择要删除的票据, 然后按 \ue0ef!",
+        "delete_title": "删除票据",
+        "delete_info_multi": " 个未使用的票据删除成功!",
+        "no_unused": "没有找到未使用的票据!",
+        "used_not_allowed": "为避免风险, 不允许删除正在使用的票据",
+        "buttons": "\ue0e0 选择票据    \ue0e3 选择全部    \ue0ef 删除    \ue0e1 取消"
+    },
+    "clean_orphaned": {
+        "title": "清理占位文件和孤立资源",
+        "desc": "这也将清理待处理的系统更新。\n此操作无法撤销！是否继续？",
+        "working": "正在清理占位文件和孤立资源...",
+        "placeholder": " : 清理所有占位文件 - ",
+        "orphaned_scanning": "正在扫描 %s 的孤立资源",
+        "found_registered": "找到 %d 个已注册的内容",
+        "orphaned_deleted": "已删除 %d 个孤立资源",
+        "pending_update": "清理待处理的系统更新 - ",
+        "buttons": "\ue0e1 返回"
+    },
+    "misc": {
+        "battery_charge": "电量",
+        "user": "用户:",
+        "unsel": "未选择",
+        "applet_mode": "小程序模式"
+    },
+    "user_actions": {
+        "title": "用戶操作",
+        "desc": "离线绑定或解绑用户账户。本操作无法撤销！\n注意: 绑定操作完成后，主机将自动重启。\n若用户已绑定或仅存在一个用户，则删除用户选项将被隐藏。",
+        "sel_user": "切换用户",
+        "del_user": "删除用户",
+        "link": "离线绑定",
+        "unlink": "离线解绑"
+    },
+    "usbds": {
+        "states": [
+            "已經斷開",
+            "已經連通",
+            "已經有電",
+            "預設",
+            "已經定址",
+            "已經配好",
+            "已經掛起"
+        ],
+        "speed": [
+            "無",
+            "USB 1.0 低速",
+            "USB 1.1 全速",
+            "USB 2.0 高速",
+            "USB 3.0 超高速",
+            "儥仈"
+        ],
+        "message": "USB 情況: %s | 速度: %s"
+    }
+}
