@@ -302,7 +302,7 @@ namespace app::installer
                 nx::network::InitializeServerSocket();
 
                 std::string ourIPAddress = nx::network::GetIPAddress();
-                app::facade::SendPageInfoText("inst.net.top_info1"_lang + ourIPAddress);
+                app::facade::SendPageInfoText("inst.net.top_info"_lang + ourIPAddress);
                 app::facade::SendRenderRequest();
                 LOG_DEBUG("%s %s\n", "Switch IP is ", ourIPAddress.c_str());
                 LOG_DEBUG("%s\n", "Waiting for network");

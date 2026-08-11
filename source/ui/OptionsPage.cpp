@@ -112,6 +112,8 @@ namespace app::ui
             case 11:
             case 16:
                 return languageStrings[10];
+            case 256:
+                return languageStrings[11];
             default:
                 return "options.language.system_language"_lang;
         }
@@ -239,6 +241,9 @@ namespace app::ui
                     break;
                 case 10:
                     app::config::languageSetting = 11;
+                    break;
+                case 11:
+                    app::config::languageSetting = 256;
                     break;
                 default:
                     app::config::languageSetting = -1;

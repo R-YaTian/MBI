@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
         defaultFont = PlSharedFontType_ChineseSimplified;
         std::erase(lang_fonts, PlSharedFontType_ChineseSimplified);
     }
-    else if (langCode == 11 || langCode == 16)
+    else if (langCode == 11 || langCode == 16 || langCode == 256)
     {
         defaultFont = PlSharedFontType_ChineseTraditional;
         std::erase(lang_fonts, PlSharedFontType_ChineseTraditional);

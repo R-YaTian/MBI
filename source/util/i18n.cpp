@@ -64,6 +64,9 @@ namespace app::i18n
             case 16:
                 languagePath = "romfs:/lang/zh-Hant.json";
                 break;
+            case 256:
+                languagePath = "romfs:/lang/cdo.json";
+                break;
             default:
                 languagePath = "romfs:/lang/en.json";
         }

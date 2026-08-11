@@ -28,6 +28,8 @@
         "buttons": "\ue0e0 選擇    \ue0ef 退出"
     },   
     "inst": {
+        "top_info": "。選定要進行安裝的檔案後，請按 \ue0ef 鈕",
+        "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消",
         "net": {
             "help_desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)\n並從電腦或手機上選定要傳輸的檔案，點擊上傳后等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試其他傳輸工具。\nMohsaua-Buoh-Installer需要透過副檔名來判斷檔案類型！",
             "url": {
@@ -35,19 +37,16 @@
                 "invalid": "URL網路位址無效！",
                 "source_string": "透過連結 (URL) 安裝"
             },
-            "top_info": "選定要從伺服器安裝的檔案後，請按 \ue0ef 鈕",
-            "top_info1": "正在等待連線中... 你的Switch主機IP是: ",
+            "top_info": "正在等待連線中... 你的Switch主機IP是: ",
             "failed": "遠端安裝失敗！",
             "index_error": "無法從伺服器擷取資料夾列表",
             "index_error_info": "請確認URL指向有效的伺服器資料夾索引或Tinfoil來源的JSON",
             "transfer_interput": "檔案傳輸時發生錯誤，請檢查網路連線狀態是否正常",
             "source_string": "透過網路安裝",
-            "buttons": "\ue0e3 透過網路安裝    \ue0e2 透過HTTP資料夾安裝    \ue0f0 說明    \ue0e1 取消",
-            "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
+            "buttons": "\ue0e3 透過網路安裝    \ue0e2 透過HTTP資料夾安裝    \ue0f0 說明    \ue0e1 取消"
         },
         "sd": {
-            "help_desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到SD記憶卡，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕",
-            "top_info": "從記憶卡內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
+            "help_desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到儲存裝置，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 SD 卡檔案安裝",
             "delete_info_multi": " 個所選的檔案均安裝完成！是否將所選的檔案從SD記憶卡刪除？",
             "delete_desc": "安裝完成後，不會再使用到原始檔案",
@@ -55,18 +54,13 @@
         },
         "usb": {
             "help_desc": "檔案可透過NS-USBloader這類工具的Awoo模式來進行USB安裝。\n要將檔案上傳到你的Switch，在電腦或手機上選定要傳輸的檔案，點擊上傳即可。\n\n然而透過USB安裝時，在某些平台上需要特定的設備，可能衍生更多的問題。\n如果不確定如何使用USB安裝，可以改為嘗試透過區網或網路遠端安裝，\n或者將檔案複製到記憶卡，從程式主畫面執行\"使用SD記憶卡進行安裝\"",
-            "top_info": "選定要從USB安裝的檔案後，請按 \ue0ef 鈕",
             "error": "USB傳輸逾時或失敗",
             "source_string": "透過 USB 安裝",
-            "buttons": "\ue0e2 (長按) 說明    \ue0e1 (長按) 取消",
-            "buttons2": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
+            "buttons": "\ue0e2 (長按) 說明    \ue0e1 (長按) 取消"
         },
         "hdd": {
-            "help_desc": "請先將NSP、NSZ、XCI或XCZ檔案複製到USB HDD行動硬碟，\n選定要進行安裝的檔案後，請按 \ue0ef 鈕",
-            "top_info": "從USB HDD行動硬碟內選定要進行安裝的檔案後，請按 \ue0ef 鈕",
             "source_string": "從 USB 儲存裝置安裝",
-            "multi_device_desc": "請選擇一個 USB 裝置或分割區",
-            "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0f0 說明    \ue0e1 取消"
+            "multi_device_desc": "請選擇一個 USB 裝置或分割區"
         },
         "mtp": {
             "help_desc": "將NSP、XCI、NSZ、XCZ檔案拖放或複製到電腦/行動裝置上的MTP安裝資料夾即可進行安裝。\n長按 \ue0e3 可在主機內部儲存空間與SD記憶卡之間切換，所選的安裝位置會自動儲存。",

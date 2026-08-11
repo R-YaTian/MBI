@@ -28,6 +28,8 @@
         "buttons": "\ue0e0 选择    \ue0ef 退出"
     },
     "inst": {
+        "top_info": "。先选择要安装的文件，然后按 \ue0ef 进行安装！",
+        "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消",
         "net": {
             "help_desc": "可以使用支持的工具远程安装文件，例如 NS-USBloader。\n需要传输文件时，在PC或移动设备中打开支持的软件，\n输入屏幕上显示的 Switch IP 地址，选择文件，然后上传到您的主机即可！\n如果您使用的工具软件不支持选择特定文件类型，请更换其他工具再试。\nMohsaua-Buoh-Installer 需要通过文件扩展名来判断文件类型！",
             "url": {
@@ -35,38 +37,30 @@
                 "invalid": "链接 (URL) 无效！",
                 "source_string": "通过链接 (URL) 安装"
             },
-            "top_info": "在服务器中选择将要安装的文件，然后按 \ue0ef 以安装！",
-            "top_info1": "正在等待连接… Switch 的 IP 地址是：",
+            "top_info": "正在等待连接… Switch 的 IP 地址是：",
             "failed": "远程安装失败！",
             "index_error": "检索文件列表失败",
             "index_error_info": "确保 URL 指向有效的网络目录索引或 Tinfoil 样式的 JSON",
             "transfer_interput": "数据传输发生错误，请检查网络连接状态。",
             "source_string": "通过网络安装",
-            "buttons": "\ue0e3 网络安装    \ue0e2 从 HTTP 目录安装    \ue0f0 帮助    \ue0e1 取消",
-            "buttons1": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
+            "buttons": "\ue0e3 网络安装    \ue0e2 从 HTTP 目录安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "sd": {
-            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
-            "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到存储设备，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
             "source_string": "通过 SD 卡文件安装",
-            "delete_info_multi": " 个文件批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
+            "delete_info_multi": " 个文件安装完成！是否要从 SD 卡中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "usb": {
             "help_desc": "可以使用支持的工具通过 USB 安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或移动设备上任一工具软件，\n选择文件，然后上传到您的主机即可！\n\n不过 USB 安装在一些设备或者系统环境下无法正常工作。\n如果无法安装，试试使用网络远程安装，\n或者复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！",
-            "top_info": "选择想要通过 USB 安装的文件，然后按 \ue0ef 进行安装！",
             "error": "USB 传输超时或失败",
             "source_string": "通过 USB 安装",
-            "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消",
-            "buttons2": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消"
         },
         "hdd": {
-            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。",
-            "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
             "source_string": "通过 USB 存储设备安装",
-            "multi_device_desc": "请选择一个 USB 设备或分区",
-            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
+            "multi_device_desc": "请选择一个 USB 设备或分区"
         },
         "mtp": {
             "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。\n按住 \ue0e3 可在SD卡和内部存储之间切换, 所选的安装位置将自动保存。",

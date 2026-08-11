@@ -6,7 +6,7 @@
             "usb": "經過 USB 安裝文件",
             "hdd": "安裝 USB 移動硬盤文件",
             "mtp": "經過 USB MTP 安裝",
-            "tickets": "檢查故未使手票",
+            "tickets": "檢查故未使其手票",
             "set": "設置",
             "exit": "退出"
         },
@@ -19,7 +19,7 @@
             "desc": "檢查飛行模式關故未，故有現時网络會儥正常。"
         },
         "usb": {
-            "warn_desc": "USB 安裝功能可能敆部分設備或者軟件環境𡅏會無辦法正常使。\n汝㑚敆使 USB 安裝時候碰着問題，莫急！\n汝可以使 NS-USBloader 來安裝，或者去使 USB MTP 來安裝。"
+            "warn_desc": "USB 安裝功能可能敆部分設備或者軟件環境禮會無辦法正常使。\n汝㑚敆使 USB 安裝時候碰着問題，莫急！\n汝可以使 NS-USBloader 來安裝，或者去使 USB MTP 來安裝。"
         },
         "applet": {
             "title": "小程序模式儥中使",
@@ -28,45 +28,39 @@
         "buttons": "\ue0e0 選擇    \ue0ef 退出"
     },
     "inst": {
+        "top_info": "。選擇等囇着安裝其文件，擪 \ue0ef 去安裝！",
+        "buttons": "\ue0e0 選擇    \ue0e3 全選    \ue0ef 安裝    \ue0e1 取消",
         "net": {
-            "help_desc": "會使像 NS-USBloader 總款其工具從遠程安裝文件。\n需要傳文件時候，敆電腦或者手機𡅏開會使其軟件，\n輸屏幕显示其 Switch IP 地址，選擇文件以後傳遘汝其設備啦！\n汝㑚使其工具軟件儥使選擇指定其文件，請換一種工具再蜀試。\n莫価話·卜·安裝器 着經過文件名字來認文件是生乇類！",
+            "help_desc": "會使像 NS-USBloader 總款其工具從遠程安裝文件。\n需要傳文件時候，敆電腦或者手機禮開會使其軟件，\n輸屏幕显示其 Switch IP 地址，選擇文件以後傳遘汝其設備啦！\n汝㑚使其工具軟件儥使選擇指定其文件，請換一種工具再蜀試。\n莫価話·卜·安裝器 着經過文件名字去認文件是生乇類！",
             "url": {
                 "hint": "輸文件其 URL",
                 "invalid": "URL 無乇使！",
                 "source_string": "經過 URL 安裝"
             },
-            "top_info": "敆服務器𡅏選擇等囇着安裝其文件，擪 \ue0ef 去安裝！",
-            "top_info1": "着𡅏等網絡連通… Switch 其 IP 地址是：",
+            "top_info": "着禮等網絡連通… Switch 其 IP 地址是：",
             "failed": "網絡安裝失敗！",
             "index_error": "檢查文件列表失敗",
             "index_error_info": "確實 URL 是有乇使其網絡目錄或者 Tinfoil 樣式其 JSON",
             "transfer_interput": "數據傳送發生錯誤，請檢查網絡其情況。",
             "source_string": "經過網絡安裝",
-            "buttons": "\ue0e3 網絡安裝    \ue0e2 從 HTTP 目錄安裝    \ue0f0 說明書    \ue0e1 取消",
-            "buttons1": "\ue0e0 選擇    \ue0e3 全選    \ue0ef 安裝    \ue0e1 取消"
+            "buttons": "\ue0e3 網絡安裝    \ue0e2 從 HTTP 目錄安裝    \ue0f0 說明書    \ue0e1 取消"
         },
         "sd": {
-            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 SD 卡，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
-            "top_info": "先选择要安装的文件，然后按 \ue0ef 进行安装！",
+            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到存储设备，\n浏览并选择将要安装的文件，然后按 \ue0ef 以安装。",
             "source_string": "通过 SD 卡文件安装",
-            "delete_info_multi": " 个文件批量安装完成！是否要从 SD 卡中删除本次所有安装文件？",
+            "delete_info_multi": " 个文件安装完成！是否要从 SD 卡中删除本次所有安装文件？",
             "delete_desc": "安装完成后不再需要使用安装文件",
             "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
         },
         "usb": {
             "help_desc": "可以使用支持的工具通过 USB 安装文件，例如 NS-USBloader。\n如想向 Switch 发送文件，打开电脑或移动设备上任一工具软件，\n选择文件，然后上传到您的主机即可！\n\n不过 USB 安装在一些设备或者系统环境下无法正常工作。\n如果无法安装，试试使用网络远程安装，\n或者复制文件到 SD 卡并在主菜单中选择“安装 SD 卡内的文件”！",
-            "top_info": "选择想要通过 USB 安装的文件，然后按 \ue0ef 进行安装！",
             "error": "USB 传输超时或失败",
             "source_string": "通过 USB 安装",
-            "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消",
-            "buttons2": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0e1 取消"
+            "buttons": "\ue0e2 (按住) 帮助    \ue0e1 (按住) 取消"
         },
         "hdd": {
-            "help_desc": "复制 NSP、NSZ、XCI 或 XCZ 文件到 USB 移动硬盘内，\n浏览并选择将要安装的文件，然后按 \ue0ef 进行安装。",
-            "top_info": "选择将要安装的文件，然后按 \ue0ef 以安装！",
             "source_string": "通过 USB 存储设备安装",
-            "multi_device_desc": "请选择一个 USB 设备或分区",
-            "buttons": "\ue0e0 选择    \ue0e3 全选    \ue0ef 安装    \ue0f0 帮助    \ue0e1 取消"
+            "multi_device_desc": "请选择一个 USB 设备或分区"
         },
         "mtp": {
             "help_desc": "拖放或复制文件(NSP, XCI, NSZ, XCZ)到PC或者移动设备上的MTP安装文件夹以进行安装。\n按住 \ue0e3 可在SD卡和内部存储之间切换, 所选的安装位置将自动保存。",
@@ -102,7 +96,7 @@
             "慢慢客佻汝“正當保存”其遊戲！",
             "我肯信汝伓使錢客佻遊戲以後，汝才有興趣買這些遊戲！",
             "汝會買遊戲是伓是？日本囝謝謝汝！",
-            "日本囝其狀師等囇遘汝厝𡅏啦。"
+            "日本囝其狀師等囇遘汝厝禮啦。"
         ]
     },
     "options": {
@@ -130,18 +124,18 @@
         "buttons": "\ue0e0 选择/更改    \ue0e1 取消"
     },
     "common": {
-        "ok": "确定",
+        "ok": "確定",
         "cancel": "取消",
-        "close": "关闭",
+        "close": "關閉",
         "yes": "是",
-        "no": "否",
-        "cancel_desc": "按 \ue0e1 取消",
-        "waiting": "请等待...",
-        "success": "成功",
-        "fail": "失败",
-        "confirm": "输入 'OK' 以继续。",
-        "donot_show_again": "不再提示",
-        "help": "帮助",
+        "no": "伓是",
+        "cancel_desc": "擪 \ue0e1 取消",
+        "waiting": "請等囇...",
+        "success": "成花",
+        "fail": "失敗",
+        "confirm": "輸 'OK' 去繼續。",
+        "donot_show_again": "以後伓使問我",
+        "help": "說明書",
         "warning": "警告！"
     },
     "ticket_manager": {

@@ -82,8 +82,8 @@ namespace app::ui
         }
         else
         {
-            app::facade::SendPageInfoText("inst.net.top_info"_lang);
-            app::facade::SendBottomText("inst.net.buttons1"_lang);
+            app::facade::SendPageInfoText("inst.net.source_string"_lang + "inst.top_info"_lang);
+            app::facade::SendBottomText("inst.buttons"_lang);
             this->drawMenuItems();
             this->infoImage->SetVisible(false);
             this->menu->SetVisible(true);

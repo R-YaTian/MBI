@@ -28,6 +28,8 @@
         "buttons": "\ue0e0 Select    \ue0ef Quitter"
     },
     "inst": {
+        "top_info": ". Sélectionnez les fichiers que vous voulez installer, puis appuyez sur le \ue0ef!",
+        "buttons": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0e1 Annuler",
         "net": {
             "help_desc": "Les fichiers peuvent être installés à distance depuis d'autres appareils avec des\noutils comme NS-USBloader en mode Awoo.\nOuvrez le logiciel sur votre PC ou appareil mobile, saisissez l'adresse IP de\nvotre Switch (affichée à l'écran), sélectionnez les fichiers et envoyez-les à la console.\nSi certains types de fichiers ne peuvent pas être sélectionnés, essayez un autre logiciel.\nMohsaua-Buoh-Installer doit déterminer le type de fichier via son extension.",
             "url": {
@@ -35,19 +37,16 @@
                 "invalid": "L'URL spécifiée n'est pas valide !",
                 "source_string": "Installer via un lien (URL)"
             },
-            "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton \ue0ef!",
-            "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",
+            "top_info": "En attente d'une connexion... L'adresse IP de votre switch est : ",
             "failed": "Echec de l'installation à distance !",
             "index_error": "Impossible de récupérer la liste des fichiers",
             "index_error_info": "Assurez-vous que l'URL pointe vers un index de répertoire Web valide ou un JSON de style Tinfoil.",
             "transfer_interput": "Une erreur s'est produite pendant le transfert des données. Vérifiez votre connexion réseau.",
             "source_string": "Installer via le réseau",
-            "buttons": "\ue0e3 Installer via Internet    \ue0e2 Installer à partir du répertoire HTTP    \ue0f0 Aide    \ue0e1 Annuler",
-            "buttons1": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0e1 Annuler"
+            "buttons": "\ue0e3 Installer via Internet    \ue0e2 Installer à partir du répertoire HTTP    \ue0f0 Aide    \ue0e1 Annuler"
         },
         "sd": {
-            "help_desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre carte SD, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton \ue0ef",
-            "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la carte SD, puis appuyez sur le bouton \ue0ef!",
+            "help_desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur périphérique de stockage, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton \ue0ef",
             "source_string": "Installer depuis un fichier sur carte SD",
             "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la carte SD ?",
             "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois qu'ils ont été installés.",
@@ -55,18 +54,13 @@
         },
         "usb": {
             "help_desc": "Les fichiers peuvent être installés à partir du port USB depuis vos autres périphériques à l'aide d'outils tels que\nNS-USBloader en mode Awoo. Pour envoyer des fichiers à votre Switch, ouvrez un\nde ces logiciels sur votre PC, sélectionnez vos fichiers, puis téléchargez-les\nsur votre console !\n\nMalheureusement, les installations USB nécessitent une configuration spécifique sur certaines\nplates-formes, et peuvent parfois être assez buggées. Si vous n'arrivez pas à comprendre,\nessayez les installations LAN/internet, ou copiez vos fichiers sur votre carte SD et\nessayezl'option \"Installer à partir de la carte SD\" depuis le menu principal!",
-            "top_info": "Sélectionnez les fichiers que vous voulez installer par USB, puis appuyez sur le bouton \ue0ef!",
             "error": "Le transfert USB a été interrompu ou a échoué",
             "source_string": "Installer via USB",
-            "buttons": "\ue0e2 (Maintenir) Aide    \ue0e1 (Maintenir) Annuler",
-            "buttons2": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0e1 Annuler"
+            "buttons": "\ue0e2 (Maintenir) Aide    \ue0e1 (Maintenir) Annuler"
         },
         "hdd": {
-            "help_desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre disque dur USB, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton \ue0ef",
-            "top_info": "Sélectionnez les fichiers que vous voulez installer à partir de la disque dur USB, puis appuyez sur le bouton \ue0ef!",
-            "source_string": "Installer depuis un périphérique de stockage USB",
-            "multi_device_desc": "Veuillez sélectionner un périphérique USB ou une partition",
-            "buttons": "\ue0e0 Sélectionnez un fichier   \ue0e3 Tout sélectionner   \ue0ef Installer   \ue0f0 Aide   \ue0e1 Annuler"
+            "source_string": "Installer depuis périphérique de stockage USB",
+            "multi_device_desc": "Veuillez sélectionner un périphérique USB ou une partition"
         },
         "mtp": {
             "help_desc": "Glissez-déposez ou copiez des fichiers (NSP, XCI, NSZ, XCZ) dans le dossier d'installation MTP sur\nvotre PC ou appareil mobile pour les installer.\nMaintenez \ue0e3 enfoncé pour basculer entre la carte SD et le stockage interne,\nl'emplacement d'installation sélectionné sera enregistré automatiquement.",

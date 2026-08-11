@@ -440,7 +440,7 @@ namespace app::ui
             break;
         case Scene::SdInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
-            mainApp->SetPageInfoText("inst.sd.top_info"_lang);
+            mainApp->SetPageInfoText("inst.sd.source_string"_lang + "inst.top_info"_lang);
             mainApp->SetBottomText("inst.sd.buttons"_lang);
             localinstPage->setStorageSourceToSdmc();
             mainApp->LoadLayout(localinstPage);
@@ -449,8 +449,8 @@ namespace app::ui
             if (localinstPage->setStorageSourceToUdisk())
             {
                 mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
-                mainApp->SetPageInfoText("inst.hdd.top_info"_lang);
-                mainApp->SetBottomText("inst.hdd.buttons"_lang);
+                mainApp->SetPageInfoText("inst.hdd.source_string"_lang + "inst.top_info"_lang);
+                mainApp->SetBottomText("inst.sd.buttons"_lang);
                 mainApp->LoadLayout(localinstPage);
             }
             break;

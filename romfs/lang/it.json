@@ -28,6 +28,8 @@
         "buttons": "\ue0e0 Seleziona    \ue0ef Esci"
     },
     "inst": {
+        "top_info": ". Seleziona quali file vuoi installare, poi premi il tasto \ue0ef!",
+        "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla",
         "net": {
             "help_desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modalità Awoo. Apri il software sul PC o dispositivo mobile,\ninserisci l'indirizzo IP della Switch (mostrato sullo schermo), seleziona i file e inviali\nalla console. Se non puoi selezionare tipi di file specifici, prova un altro software.\nMohsaua-Buoh-Installer deve determinare il tipo di file tramite l'estensione.",
             "url": {
@@ -35,19 +37,16 @@
                 "invalid": "L'URL specificato non è valido!",
                 "source_string": "Installa tramite link (URL)"
             },
-            "top_info": "Seleziona quali file vuoi installare dal server, poi premi il tasto \ue0ef!",
-            "top_info1": "Aspettando una connessione... L'indirizzo IP è: ",
+            "top_info": "Aspettando una connessione... L'indirizzo IP è: ",
             "failed": "Impossibile eseguire l'installazione remota!",
             "index_error": "Impossibile recuperare l'elenco dei file",
             "index_error_info": "Assicurati che l'URL punti a un indice di directory Web valido o a un JSON in stile Tinfoil.",
             "transfer_interput": "Si è verificato un errore durante il trasferimento dei dati. Controlla la tua connessione.",
             "source_string": "Installa tramite rete",
-            "buttons": "\ue0e3 Installa via internet    \ue0e2 Installa da directory HTTP    \ue0f0 Aiuto    \ue0e1 Annulla",
-            "buttons1": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla"
+            "buttons": "\ue0e3 Installa via internet    \ue0e2 Installa da directory HTTP    \ue0f0 Aiuto    \ue0e1 Annulla"
         },
         "sd": {
-            "help_desc": "Copia i tuoi file NSP, NSZ, XCI, o XCZ nella SD, cercali e\nseleziona quelli che vuoi installare, poi premi Il tasto \ue0ef.",
-            "top_info": "Seleziona quali file vuoi installare dalla SD, poi premi Il tasto \ue0ef!",
+            "help_desc": "Copia i tuoi file NSP, NSZ, XCI, o XCZ nella dispositivo di archiviazione, cercali e\nseleziona quelli che vuoi installare, poi premi Il tasto \ue0ef.",
             "source_string": "Installa da file su scheda SD",
             "delete_info_multi": " file installati correttamente! Cancellarli dalla SD?",
             "delete_desc": "I file originali non sono più necessari dopo averli installati",
@@ -55,18 +54,13 @@
         },
         "usb": {
             "help_desc": "I file possono essere installati via USB da altri dispositivi utilizzando programmi come\nNS-USBloader in modalità \"Awoo\". Per inviare i file, apri uno di\nquesti software sul tuo PC, seleziona i file, poi mandali\nalla console!\n\nSfortunatamente l'installazione via USB richiede configurazioni specifiche in certe\npiattaforme, che possono non funzionare correttamente alle volte. Se proprio non riesci,\ndai una possibilità all'installazione via LAN/internet, o copia i file nella SD e\nseleziona l'opzione \"Installa dalla SD\" nel menù principale!",
-            "top_info": "Seleziona quali file vuoi installare via USB, poi premi il tasto \ue0ef!",
             "error": "Trasferimento USB scaduto o fallito",
             "source_string": "Installa tramite USB",
-            "buttons": "\ue0e2 (Tieni premuto) Aiuto    \ue0e1 (Tieni premuto) Annulla",
-            "buttons2": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla"
+            "buttons": "\ue0e2 (Tieni premuto) Aiuto    \ue0e1 (Tieni premuto) Annulla"
         },
         "hdd": {
-            "help_desc": "Copia i tuoi file NSP, NSZ, XCI, o XCZ nella USB HDD, cercali e\nseleziona quelli che vuoi installare, poi premi Il tasto \ue0ef.",
-            "top_info": "Seleziona quali file vuoi installare dalla USB HDD, poi premi Il tasto \ue0ef!",
             "source_string": "Installa da dispositivo di archiviazione USB",
-            "multi_device_desc": "Seleziona un dispositivo USB o una partizione",
-            "buttons": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0f0 Aiuto    \ue0e1 Annulla"
+            "multi_device_desc": "Seleziona un dispositivo USB o una partizione"
         },
         "mtp": {
             "help_desc": "Trascina e rilascia o copia i file (NSP, XCI, NSZ, XCZ) nella cartella di installazione MTP\nsul tuo PC o dispositivo mobile per installarli.\nTieni premuto \ue0e3 per passare dalla scheda SD alla memoria interna e viceversa,\nla posizione di installazione selezionata verrà salvata automaticamente.",

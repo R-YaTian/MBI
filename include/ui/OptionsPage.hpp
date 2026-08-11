@@ -12,7 +12,7 @@ namespace app::ui
             void onCancel() override;
         private:
             bool inputGuard = false;
-            std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국어", "Português", "Русский", "简体中文", "正體中文"};
+            std::vector<std::string> languageStrings = {"English", "日本語", "Français", "Deutsch", "Italiano", "Español", "한국어", "Português", "Русский", "简体中文", "正體中文", "閩東語"};
             pu::ui::elm::Menu::Ref menu;
             pu::ui::elm::MenuItem::Ref ignoreFirmOption;
             pu::ui::elm::MenuItem::Ref overclockOption;

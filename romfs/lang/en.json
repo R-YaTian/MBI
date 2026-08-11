@@ -28,6 +28,8 @@
         "buttons": "\ue0e0 Select    \ue0ef Exit"
     },
     "inst": {
+        "top_info": ". Select what files you want to install, then press the \ue0ef button!",
+        "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel",
         "net": {
             "help_desc": "Files can be installed remotely from your other devices using tools such\nas NS-USBloader in Awoo mode. To send files to your Switch, open one\nof these pieces of software on your PC or mobile device, input your\nSwitch's IP address (listed on-screen), select your files, then upload\nto your console! If the software you're using won't let you select\nspecific file types, try another software.\nMohsaua-Buoh-Installer needs to determine file type based on file extension!",
             "url": {
@@ -35,38 +37,30 @@
                 "invalid": "The URL specified is invalid!",
                 "source_string": "Install via link (URL)"
             },
-            "top_info": "Select what files you want to install from the server, then press the \ue0ef button!",
-            "top_info1": "Waiting for a connection... Your Switch's IP Address is: ",
+            "top_info": "Waiting for a connection... Your Switch's IP Address is: ",
             "failed": "Failed to perform remote install!",
             "index_error": "Failed to retrieve file list",
             "index_error_info": "Ensure that the URL points to a valid web directory index or Tinfoil style JSON.",
             "transfer_interput": "An error occured during data transfer. Check your network connection.",
             "source_string": "Install via network",
-            "buttons": "\ue0e3 Install Over Internet    \ue0e2 Install From HTTP Directory    \ue0f0 Help    \ue0e1 Cancel",
-            "buttons1": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel"
+            "buttons": "\ue0e3 Install Over Internet    \ue0e2 Install From HTTP Directory    \ue0f0 Help    \ue0e1 Cancel"
         },
         "sd": {
-            "help_desc": "Copy your NSP, NSZ, XCI, or XCZ files to your SD card, browse to and\nselect the ones you want to install, then press the \ue0ef button.",
-            "top_info": "Select what files you want to install from SD card, then press the \ue0ef button!",
-            "source_string": "Install from SD card file",
+            "help_desc": "Copy your NSP, NSZ, XCI, or XCZ files to the storage device, browse to and\nselect the ones you want to install, then press the \ue0ef button.",
+            "source_string": "Install from SD card",
             "delete_info_multi": " files installed successfully! Delete them from the SD card?",
             "delete_desc": "The original files aren't needed anymore after they've been installed",
             "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
         },
         "usb": {
             "help_desc": "Files can be installed over USB from other devices using tools such as\nNS-USBloader in Awoo mode. To send files to your Switch, open one of\nthese pieces of software on your PC, select your files, then upload to\nyour console!\n\nUnfortunately USB installations require a specific setup on some\nplatforms, and can be rather buggy at times. If you can't figure it out,\ngive LAN/internet installs a try, or copy your files to your SD card and\ntry the \"Install from SD Card\" option on the main menu!",
-            "top_info": "Select what files you want to install over USB, then press the \ue0ef button!",
             "error": "USB transfer timed out or failed",
             "source_string": "Install via USB",
-            "buttons": "\ue0e2 (Hold) Help    \ue0e1 (Hold) Cancel",
-            "buttons2": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel"
+            "buttons": "\ue0e2 (Hold) Help    \ue0e1 (Hold) Cancel"
         },
         "hdd": {
-            "help_desc": "Copy your NSP, NSZ, XCI, or XCZ files to your USB HDD, browse to and\nselect the ones you want to install, then press the \ue0ef button.",
-            "top_info": "Select what files you want to install from USB HDD, then press the \ue0ef button!",
             "source_string": "Install from USB storage device",
-            "multi_device_desc": "Please select a USB device or partition",
-            "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0f0 Help    \ue0e1 Cancel"
+            "multi_device_desc": "Please select a USB device or partition"
         },
         "mtp": {
             "help_desc": "Drag and drop or copy files (NSP, XCI, NSZ, XCZ) to the MTP install folder on your PC or mobile device for installation.\nHold \ue0e3 to switch between SD card and internal storage, the selected install location will be saved automatically.",
@@ -101,7 +95,7 @@
         "finished": [
             "Enjoy your \"legal backups\"!",
             "I'm sure after you give the game a try you'll have tons of fun actually buying it!",
-            "You buy gamu right? Nintendo-san thanka-you for your purchase!",
+            "You buy games right? Nintendo-san thanka-you for your purchase!",
             "Nintendo ninjas have been dispatched to your current location."
         ]
     },
