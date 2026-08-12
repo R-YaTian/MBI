@@ -5,7 +5,7 @@
 
 namespace app::install
 {
-    constexpr u64 MAX_BUFFER_SIZE = 1024ULL*1024ULL*1ULL;
+    constexpr u64 MAX_BUFFER_SIZE_1MB = 1024ULL*1024ULL*1ULL;
 
     MtpWorker::MtpWorker(std::unique_ptr<nx::Content> content, std::stop_token token)
         : Worker(std::move(content))
@@ -13,7 +13,7 @@ namespace app::install
         m_token = token;
         m_active = true;
         m_offset = 0;
-        m_buffer.reserve(MAX_BUFFER_SIZE);
+        m_buffer.reserve(MAX_BUFFER_SIZE_1MB);
         INSTALL_STATE = MTPInstallState::None;
 
         mutexInit(&m_mutex);
@@ -64,7 +64,14 @@ namespace app::install
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header);
+        if (appletGetAppletType() == AppletType_LibraryApplet)
+        {
+            this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
+        }
+        else
+        {
+            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header);
+        }
     }
 
     void MtpWorker::BufferData(void* _buf, off_t offset, size_t size)
@@ -85,7 +92,7 @@ namespace app::install
             if (offset > m_offset)
             {
                 size_t skip_size = offset - m_offset;
-                std::vector<u8> temp_buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
+                std::vector<u8> temp_buf(DEFAULT_READ_BUFFER_SIZE);
 
                 while (skip_size)
                 {
@@ -119,7 +126,7 @@ namespace app::install
         while (!m_token.stop_requested())
         {
             SCOPED_MUTEX(&m_mutex);
-            if (m_active && m_buffer.size() >= MAX_BUFFER_SIZE)
+            if (m_active && m_buffer.size() >= MAX_BUFFER_SIZE_1MB)
             {
                 condvarWait(std::addressof(m_can_write), std::addressof(m_mutex));
             }
@@ -129,7 +136,7 @@ namespace app::install
                 break;
             }
 
-            const auto wsize = std::min<s64>(size, MAX_BUFFER_SIZE - m_buffer.size());
+            const auto wsize = std::min<s64>(size, MAX_BUFFER_SIZE_1MB - m_buffer.size());
             const auto offset = m_buffer.size();
             m_buffer.resize(offset + wsize);
 

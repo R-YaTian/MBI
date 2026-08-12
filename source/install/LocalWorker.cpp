@@ -24,7 +24,7 @@ namespace app::install
 
     void LocalWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderDirectly(contentStorage, ncaId, 0x400000, header); // 4MB buffer
+        this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
     }
 
     void LocalWorker::BufferData(void* buf, off_t offset, size_t size)

@@ -27,7 +27,7 @@ SOFTWARE.
 
 namespace nx::data
 {
-    int NUM_BUFFER_SEGMENTS;
+    constexpr auto NUM_BUFFER_SEGMENTS = 128;
 
     BufferedPlaceholderWriter::BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize) :
         m_totalDataSize(totalDataSize), m_contentStorage(contentStorage), m_ncaId(ncaId), m_writer(ncaId, contentStorage)

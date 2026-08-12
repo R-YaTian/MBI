@@ -19,7 +19,6 @@ namespace app::ui
         bool menuLoaded = IsShown();
         if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet)
         {
-            nx::data::NUM_BUFFER_SEGMENTS = 2;
             if (menuLoaded)
             {
                 appletFinished = true;
@@ -38,7 +37,6 @@ namespace app::ui
         else if (!appletFinished)
         {
             appletFinished = true;
-            nx::data::NUM_BUFFER_SEGMENTS = 128;
         }
     }
 
