@@ -20,6 +20,15 @@
 #include "ui/NetInstallPage.hpp"
 #endif
 
+#ifdef __DEBUG__
+#include <malloc.h>
+extern "C"
+{
+    extern char* fake_heap_start;
+    extern char* fake_heap_end;
+}
+#endif
+
 namespace app::ui
 {
     MainApplication *mainApp;
@@ -112,6 +121,15 @@ namespace app::ui
 
     void MainApplication::UpdateStats()
     {
+        static u64 lastStatsUpdateTick = 0;
+        const u64 currentTick = armGetSystemTick();
+        const u64 statsRefreshInterval = armGetSystemTickFreq();
+        if (lastStatsUpdateTick != 0 && currentTick - lastStatsUpdateTick < statsRefreshInterval)
+        {
+            return;
+        }
+        lastStatsUpdateTick = currentTick;
+
         const auto newfreeSpaceText = GetFreeSpaceInfoForDisplay();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {
@@ -169,6 +187,17 @@ namespace app::ui
             userImage->SetWidth(80);
             userImage->SetHeight(80);
         }
+#ifdef __DEBUG__
+        auto info = mallinfo();
+        size_t mem_used = info.arena, mem_total = static_cast<size_t>(fake_heap_end - fake_heap_start);
+        if (mem_used > 0)
+        {
+            const auto mem_used_str = nx::fs::FormatSizeString(mem_used);
+            const auto mem_total_str = nx::fs::FormatSizeString(mem_total);
+            this->appletText->SetText(mem_used_str + "/" + mem_total_str);
+            this->appletText->SetX(1335);
+        }
+#endif
     }
 
     void MainApplication::OnLoad()
@@ -202,21 +231,21 @@ namespace app::ui
         this->appVersionText->SetFont("DefaultFont@27");
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = pu::ui::elm::TextBlock::New(1105, 9, "misc.battery_charge"_lang + ": ??%");
-        this->batteryValueText->SetFont("DefaultFont@32");
+        this->batteryValueText->SetFont("DefaultFont@30");
         this->freeSpaceText = pu::ui::elm::TextBlock::New(1105, 49, freeSpaceCurrentText);
-        this->freeSpaceText->SetFont("DefaultFont@32");
+        this->freeSpaceText->SetFont("DefaultFont@30");
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->appletText = pu::ui::elm::TextBlock::New(1437, 9, appletGetAppletType() == AppletType_LibraryApplet ? "misc.applet_mode"_lang : "");
-        this->appletText->SetFont("DefaultFont@32");
+        this->appletText->SetFont("DefaultFont@30");
         this->appletText->SetColor(COLOR("#FF0000FF"));
         this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);
-        this->dateText->SetFont("DefaultFont@32");
+        this->dateText->SetFont("DefaultFont@30");
         this->dateText->SetColor(COLOR("#FFFFFFFF"));
         this->timeText = pu::ui::elm::TextBlock::New(1700, 49, timeCurrentText);
-        this->timeText->SetFont("DefaultFont@32");
+        this->timeText->SetFont("DefaultFont@30");
         this->timeText->SetColor(COLOR("#FFFFFFFF"));
         this->userNameText = pu::ui::elm::TextBlock::New(750, 10, "misc.user"_lang + "\n" + "misc.unsel"_lang);
-        this->userNameText->SetFont("DefaultFont@32");
+        this->userNameText->SetFont("DefaultFont@30");
         this->userNameText->SetColor(COLOR("#FFFFFFFF"));
 
         // Setup clickable buttons

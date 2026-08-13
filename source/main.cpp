@@ -44,8 +44,6 @@ int main(int argc, char* argv[])
         {
             renderer_opts.AddDefaultSharedFont(font);
         }
-        renderer_opts.AddExtraDefaultFontSize(32);
-        renderer_opts.AddExtraDefaultFontSize(42);
         renderer_opts.SetInputPlayerCount(1);
         renderer_opts.AddInputNpadStyleTag(HidNpadStyleSet_NpadStandard);
         renderer_opts.AddInputNpadIdType(HidNpadIdType_Handheld);
