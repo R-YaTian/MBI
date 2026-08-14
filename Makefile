@@ -44,7 +44,7 @@ DATA		:=	data
 INCLUDES	:=	include include/ui include/install include/nx include/util
 APP_TITLE	:=	MBI
 APP_AUTHOR	:=	R-YaTian
-APP_VERSION	:=	1.0.3
+APP_VERSION	:=	1.0.4
 ROMFS		:=	romfs
 
 ifneq ($(WITH_DEBUG),)

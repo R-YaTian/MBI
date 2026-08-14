@@ -20,7 +20,7 @@ namespace app::install
         std::string fileName = std::string(static_cast<char*>(args->in));
         nx::usb::USBCommandHeader header = nx::usb::USBCommandManager::SendFileRangeCommand(fileName, args->dataOffset, args->dataSize);
 
-        u8* buf = (u8*)memalign(0x1000, nx::data::BUFFER_SEGMENT_DATA_SIZE);
+        u8* buf = (u8*)memalign(0x1000, DEFAULT_READ_BUFFER_SIZE);
         u64 sizeRemaining = header.dataSize;
         size_t tmpSizeRead = 0;
 
@@ -28,7 +28,7 @@ namespace app::install
         {
             while (sizeRemaining)
             {
-                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, (u64)nx::data::BUFFER_SEGMENT_DATA_SIZE), 5000000000);
+                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, DEFAULT_READ_BUFFER_SIZE), 5000000000);
                 if (tmpSizeRead == 0)
                 {
                     throw std::runtime_error("inst.usb.error"_lang.c_str());
@@ -62,7 +62,7 @@ namespace app::install
     {
         if (appletGetAppletType() == AppletType_LibraryApplet)
         {
-            this->WriteToPlaceholderDirectly(contentStorage, ncaId, nx::data::BUFFER_SEGMENT_DATA_SIZE, header);
+            this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
         }
         else
         {

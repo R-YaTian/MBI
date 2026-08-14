@@ -28,7 +28,7 @@ SOFTWARE.
 #include <zstd.h>
 
 constexpr auto NCZ_HEADER_OFFSET = 0x4000;
-constexpr auto DEFLATE_BUFFER_MAX_SIZE = 0x800000;
+constexpr auto DEFLATE_BUFFER_MAX_SIZE = 0x400000;
 
 static void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {

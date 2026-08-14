@@ -152,7 +152,7 @@ namespace app::install
         ThreadData* args = static_cast<ThreadData*>(in);
         Worker* worker = static_cast<Worker*>(args->in);
 
-        std::vector<u8> buf(nx::data::BUFFER_SEGMENT_DATA_SIZE);
+        std::vector<u8> buf(DEFAULT_READ_BUFFER_SIZE);
 
         u64 sizeRemaining = args->dataSize;
         size_t tmpSizeRead = 0;
@@ -161,7 +161,7 @@ namespace app::install
         {
             while (sizeRemaining)
             {
-                const size_t chunkSize = std::min<size_t>(sizeRemaining, nx::data::BUFFER_SEGMENT_DATA_SIZE);
+                const size_t chunkSize = std::min<size_t>(sizeRemaining, DEFAULT_READ_BUFFER_SIZE);
                 worker->BufferData(buf.data(), args->dataOffset + tmpSizeRead, chunkSize);
 
                 while (true)

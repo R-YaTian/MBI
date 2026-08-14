@@ -32,7 +32,7 @@ SOFTWARE.
 
 namespace nx::data
 {
-    inline constexpr size_t BUFFER_SEGMENT_DATA_SIZE = 0x800000; // Approximately 8MB
+    inline constexpr size_t BUFFER_SEGMENT_DATA_SIZE = 0x400000; // Approximately 4MB
 
     struct BufferSegment
     {
@@ -41,7 +41,7 @@ namespace nx::data
         u8 data[BUFFER_SEGMENT_DATA_SIZE] = {0};
     };
 
-    // Receives data in a circular buffer split into 8MB segments
+    // Receives data in a circular buffer split into 4MB segments
     class BufferedPlaceholderWriter
     {
         private:

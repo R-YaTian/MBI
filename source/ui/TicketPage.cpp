@@ -20,8 +20,7 @@ namespace app::ui
     TicketPage::TicketPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&TicketPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#00000033"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
-        this->menu->SetScrollbarColor(COLOR("#17090980"));
+        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
         this->menu->SetShadowBaseAlpha(0);
         this->menu->SetIconMargin(20);
         this->menu->SetTextMargin(20);

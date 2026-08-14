@@ -10,7 +10,7 @@
 
 namespace app::install
 {
-    constexpr auto DEFAULT_READ_BUFFER_SIZE = 0x400000; // 4MB Buffer
+    constexpr u64 DEFAULT_READ_BUFFER_SIZE = 0x400000; // 4MB Buffer
 
     struct ThreadData
     {
