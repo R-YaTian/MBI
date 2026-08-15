@@ -195,7 +195,7 @@ public:
     NczBodyWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr)
         : NcaBodyWriter(ncaId, contentStorage, sha256ctx)
     {
-        buffOut = malloc(buffOutSize);
+        buffOut = std::malloc(buffOutSize);
         dctx = ZSTD_createDCtx();
     }
 

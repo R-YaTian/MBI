@@ -27,13 +27,11 @@ SOFTWARE.
 
 namespace nx::data
 {
-    constexpr u32 NUM_BUFFER_SEGMENTS = 128;
-
-    BufferedPlaceholderWriter::BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize) :
-        m_totalDataSize(totalDataSize), m_contentStorage(contentStorage), m_ncaId(ncaId), m_writer(ncaId, contentStorage)
+    BufferedPlaceholderWriter::BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize, u32 numBufferSegments) :
+        m_totalDataSize(totalDataSize), m_contentStorage(contentStorage), m_ncaId(ncaId), m_writer(ncaId, contentStorage), m_bufferedSegmentCount(numBufferSegments)
     {
         // Though currently the number of segments is fixed, we want them allocated on the heap, not the stack
-        m_bufferSegments = std::make_unique<BufferSegment[]>(NUM_BUFFER_SEGMENTS);
+        m_bufferSegments = std::make_unique<BufferSegment[]>(m_bufferedSegmentCount);
 
         if (m_bufferSegments == nullptr)
             THROW_FORMAT("Failed to allocated buffer segments!\n");
@@ -72,7 +70,7 @@ namespace nx::data
                 m_currentFreeSegmentPtr->writeOffset += bufferSegmentSizeRemaining;
                 m_currentFreeSegmentPtr->isFinalized.store(true, std::memory_order_release);
 
-                m_currentFreeSegment = (m_currentFreeSegment + 1) % NUM_BUFFER_SEGMENTS;
+                m_currentFreeSegment = (m_currentFreeSegment + 1) % m_bufferedSegmentCount;
                 m_currentFreeSegmentPtr = &m_bufferSegments[m_currentFreeSegment];
             }
         }
@@ -111,7 +109,7 @@ namespace nx::data
 
         m_currentSegmentToWritePtr->writeOffset = 0;
         m_currentSegmentToWritePtr->isFinalized.store(false, std::memory_order_release);
-        m_currentSegmentToWrite = (m_currentSegmentToWrite + 1) % NUM_BUFFER_SEGMENTS;
+        m_currentSegmentToWrite = (m_currentSegmentToWrite + 1) % m_bufferedSegmentCount;
         m_currentSegmentToWritePtr = &m_bufferSegments[m_currentSegmentToWrite];
         m_sizeWrittenToPlaceholder += sizeToWriteToPlaceholder;
     }
@@ -151,7 +149,7 @@ namespace nx::data
     {
         u32 numSegmentsRequired = this->CalcNumSegmentsRequired(size);
 
-        if (numSegmentsRequired > NUM_BUFFER_SEGMENTS)
+        if (numSegmentsRequired > m_bufferedSegmentCount)
         {
             return false;
         }
@@ -159,7 +157,7 @@ namespace nx::data
         for (u32 i = 0; i < numSegmentsRequired; i++)
         {
             u32 segmentIndex = m_currentFreeSegment + i;
-            BufferSegment* bufferSegment = &m_bufferSegments[segmentIndex % NUM_BUFFER_SEGMENTS];
+            BufferSegment* bufferSegment = &m_bufferSegments[segmentIndex % m_bufferedSegmentCount];
 
             if (bufferSegment->isFinalized.load(std::memory_order_acquire))
             {

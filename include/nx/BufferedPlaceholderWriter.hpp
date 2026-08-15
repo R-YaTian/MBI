@@ -52,6 +52,7 @@ namespace nx::data
             // The current segment to which further data will be appended
             u64 m_currentFreeSegment = 0;
             BufferSegment* m_currentFreeSegmentPtr = NULL;
+
             // The current segment that will be written to the placeholder
             u64 m_currentSegmentToWrite = 0;
             BufferSegment* m_currentSegmentToWritePtr = NULL;
@@ -62,8 +63,10 @@ namespace nx::data
             NcmContentId m_ncaId;
 			NcaWriter m_writer;
 
+            u32 m_bufferedSegmentCount = 128;
+
         public:
-            BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize);
+            BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize, u32 numBufferSegments);
 
             void AppendData(const void* source, size_t length);
             bool CanAppendData(size_t length);

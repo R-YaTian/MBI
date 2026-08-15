@@ -29,7 +29,7 @@ namespace app::install
             virtual void BufferData(void* buf, off_t offset, size_t size) = 0;
             virtual void ReadThread(void* in);
 
-            void WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header = nullptr);
+            void WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header = nullptr, u32 numBufferSegments = 128);
             void WriteToPlaceholderDirectly(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, const u64 maxBufferSize, nx::nca::NcaHeader* header = nullptr);
             void RetrieveHeader();
             nx::Content* GetContent() { return m_content.get(); }

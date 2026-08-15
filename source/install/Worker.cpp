@@ -187,13 +187,13 @@ namespace app::install
         }
     }
 
-    void Worker::WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header)
+    void Worker::WriteToPlaceholderBuffered(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, void* threadDataIn, nx::nca::NcaHeader* header, u32 numBufferSegments)
     {
         const void* fileEntry = m_content->GetFileEntryByNcaId(ncaId);
         std::string ncaFileName = m_content->GetFileEntryName(fileEntry);
         u64 ncaSize = m_content->GetFileEntrySize(fileEntry);
 
-        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize);
+        nx::data::BufferedPlaceholderWriter bufferedPlaceholderWriter(contentStorage, ncaId, ncaSize, numBufferSegments);
         u64 prependedSize = 0;
         if (header != nullptr)
         {
@@ -243,9 +243,6 @@ namespace app::install
             x << installProgress;
             app::facade::SendInstallBarText(x.str() + "%");
         }
-        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
-        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.Finalize();
-        app::facade::SendInstallProgress(100);
 
         if (readThread.joinable())
         {
@@ -259,6 +256,10 @@ namespace app::install
         {
             THROW_FORMAT("%s", errorMessage.c_str());
         }
+
+        std::string ncaIdStr = nx::ncm::GetContentIdString(ncaId);
+        m_hashMap[ncaIdStr] = bufferedPlaceholderWriter.Finalize();
+        app::facade::SendInstallProgress(100);
     }
 
     void Worker::WriteToPlaceholderDirectly(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, const u64 maxBufferSize, nx::nca::NcaHeader* header)

@@ -70,7 +70,7 @@ namespace app::install
         }
         else
         {
-            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header);
+            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header, 8);
         }
     }
 
