@@ -13,10 +13,10 @@ namespace app::ui
         this->SetOnInput(std::bind(&OptionsPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         languageStrings.push_back("options.language.system_language"_lang);
         languageStrings.push_back("common.cancel"_lang);
-        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
+        this->menu = pu::ui::elm::Menu::New(0, 154_dp, 1920_dp, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), config::GetSubMenuItemSize(), config::GetSubMenuHeight() / config::GetSubMenuItemSize());
         this->menu->SetShadowBaseAlpha(0);
-        this->menu->SetIconMargin(20);
-        this->menu->SetTextMargin(20);
+        this->menu->SetIconMargin(20_dp);
+        this->menu->SetTextMargin(20_dp);
 
         ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
         ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));

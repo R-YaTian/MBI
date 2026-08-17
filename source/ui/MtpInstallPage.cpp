@@ -45,7 +45,9 @@ namespace app::ui
     MtpInstallPage::MtpInstallPage() : InstallerPage()
     {
         this->SetOnInput(std::bind(&MtpInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->infoImage = pu::ui::elm::Image::New(780, 498, LoadTexture("romfs:/images/icons/usb-connection-waiting.webp"));
+        this->infoImage = pu::ui::elm::Image::New(780_dp, 498_dp, LoadTexture("romfs:/images/icons/usb-connection-waiting.webp"));
+        this->infoImage->SetWidth(this->infoImage->GetWidth() / config::GetScreenScaleFactor());
+        this->infoImage->SetHeight(this->infoImage->GetHeight() / config::GetScreenScaleFactor());
         this->Add(this->infoImage);
         this->AddRenderCallback(std::bind(&MtpInstallPage::updateState, this));
         this->AddRenderCallback(std::bind(&MtpInstallPage::onInstallTask, this));

@@ -184,8 +184,8 @@ namespace app::ui
                 userImage->SetImage(this->defaultUserImg);
                 userNameText->SetText("misc.user"_lang + "\n" + "misc.unsel"_lang);
             }
-            userImage->SetWidth(80);
-            userImage->SetHeight(80);
+            userImage->SetWidth(80_dp);
+            userImage->SetHeight(80_dp);
         }
 #ifdef __DEBUG__
         auto info = mallinfo();
@@ -195,7 +195,7 @@ namespace app::ui
             const auto mem_used_str = nx::fs::FormatSizeString(mem_used);
             const auto mem_total_str = nx::fs::FormatSizeString(mem_total);
             this->appletText->SetText(mem_used_str + "/" + mem_total_str);
-            this->appletText->SetX(1335);
+            this->appletText->SetX(1335_dp);
         }
 #endif
     }
@@ -217,47 +217,59 @@ namespace app::ui
         this->pageDownImg = LoadTexture("romfs:/images/icons/page-down.webp");
         this->defaultUserImg = LoadTexture("romfs:/images/icon.webp");
 
-        this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#000000c0"));
-        this->botRect = pu::ui::elm::Rectangle::New(0, 990, 1920, 90, COLOR("#000000c0"));
-        this->botText = pu::ui::elm::TextBlock::New(15, 1020, "");
-        this->botText->SetFont("DefaultFont@30");
+        this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920_dp, 94_dp, COLOR("#000000c0"));
+        this->botRect = pu::ui::elm::Rectangle::New(0, 990_dp, 1920_dp, 90_dp, COLOR("#000000c0"));
+        this->botText = pu::ui::elm::TextBlock::New(15_dp, 1020_dp, "");
+        this->botText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
-        this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#00000080"));
-        this->pageInfoText = pu::ui::elm::TextBlock::New(10, 108, "");
-        this->pageInfoText->SetFont("DefaultFont@30");
+        this->infoRect = pu::ui::elm::Rectangle::New(0, 94_dp, 1920_dp, 60_dp, COLOR("#00000080"));
+        this->pageInfoText = pu::ui::elm::TextBlock::New(10_dp, 108_dp, "");
+        this->pageInfoText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->pageInfoText->SetColor(COLOR(app::config::TopInfoTextColor));
         this->titleImage = pu::ui::elm::Image::New(0, 0, this->logoImg);
-        this->appVersionText = pu::ui::elm::TextBlock::New(476, 52, APPVER);
-        this->appVersionText->SetFont("DefaultFont@27");
+        this->titleImage->SetWidth(this->titleImage->GetWidth() / app::config::GetScreenScaleFactor());
+        this->titleImage->SetHeight(this->titleImage->GetHeight() / app::config::GetScreenScaleFactor());
+        this->appVersionText = pu::ui::elm::TextBlock::New(476_dp, 52_dp, APPVER);
+        this->appVersionText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Small));
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-        this->batteryValueText = pu::ui::elm::TextBlock::New(1105, 9, "misc.battery_charge"_lang + ": ??%");
-        this->batteryValueText->SetFont("DefaultFont@30");
-        this->freeSpaceText = pu::ui::elm::TextBlock::New(1105, 49, freeSpaceCurrentText);
-        this->freeSpaceText->SetFont("DefaultFont@30");
+        this->batteryValueText = pu::ui::elm::TextBlock::New(1105_dp, 9_dp, "misc.battery_charge"_lang + ": ??%");
+        this->batteryValueText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
+        this->freeSpaceText = pu::ui::elm::TextBlock::New(1105_dp, 49_dp, freeSpaceCurrentText);
+        this->freeSpaceText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
-        this->appletText = pu::ui::elm::TextBlock::New(1437, 9, appletGetAppletType() == AppletType_LibraryApplet ? "misc.applet_mode"_lang : "");
-        this->appletText->SetFont("DefaultFont@30");
+        this->appletText = pu::ui::elm::TextBlock::New(1437_dp, 9_dp, appletGetAppletType() == AppletType_LibraryApplet ? "misc.applet_mode"_lang : "");
+        this->appletText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->appletText->SetColor(COLOR("#FF0000FF"));
-        this->dateText = pu::ui::elm::TextBlock::New(1700, 9, dateCurrentText);
-        this->dateText->SetFont("DefaultFont@30");
+        this->dateText = pu::ui::elm::TextBlock::New(1700_dp, 9_dp, dateCurrentText);
+        this->dateText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->dateText->SetColor(COLOR("#FFFFFFFF"));
-        this->timeText = pu::ui::elm::TextBlock::New(1700, 49, timeCurrentText);
-        this->timeText->SetFont("DefaultFont@30");
+        this->timeText = pu::ui::elm::TextBlock::New(1700_dp, 49_dp, timeCurrentText);
+        this->timeText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->timeText->SetColor(COLOR("#FFFFFFFF"));
-        this->userNameText = pu::ui::elm::TextBlock::New(750, 10, "misc.user"_lang + "\n" + "misc.unsel"_lang);
-        this->userNameText->SetFont("DefaultFont@30");
+        this->userNameText = pu::ui::elm::TextBlock::New(750_dp, 10_dp, "misc.user"_lang + "\n" + "misc.unsel"_lang);
+        this->userNameText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->userNameText->SetColor(COLOR("#FFFFFFFF"));
 
         // Setup clickable buttons
-        userImage = ClickableImage::New(660, 7, this->defaultUserImg);
-        userImage->SetWidth(80);
-        userImage->SetHeight(80);
+        userImage = ClickableImage::New(660_dp, 7_dp, this->defaultUserImg);
+        userImage->SetWidth(80_dp);
+        userImage->SetHeight(80_dp);
         userImage->SetOnClick(std::bind(&MainApplication::UserActions, this));
-        backButton = ClickableImage::New(1820, 990, this->backImg);
-        confirmButton = ClickableImage::New(1710, 990, this->confirmImg);
-        selectAllButton = ClickableImage::New(1600, 990, this->selectAllImg);
-        pageDownButton = ClickableImage::New(1490, 990, this->pageDownImg);
-        pageUpButton = ClickableImage::New(1380, 990, this->pageUpImg);
+        backButton = ClickableImage::New(1820_dp, 990_dp, this->backImg);
+        backButton->SetWidth(backButton->GetWidth() / app::config::GetScreenScaleFactor());
+        backButton->SetHeight(backButton->GetHeight() / app::config::GetScreenScaleFactor());
+        confirmButton = ClickableImage::New(1710_dp, 990_dp, this->confirmImg);
+        confirmButton->SetWidth(confirmButton->GetWidth() / app::config::GetScreenScaleFactor());
+        confirmButton->SetHeight(confirmButton->GetHeight() / app::config::GetScreenScaleFactor());
+        selectAllButton = ClickableImage::New(1600_dp, 990_dp, this->selectAllImg);
+        selectAllButton->SetWidth(selectAllButton->GetWidth() / app::config::GetScreenScaleFactor());
+        selectAllButton->SetHeight(selectAllButton->GetHeight() / app::config::GetScreenScaleFactor());
+        pageDownButton = ClickableImage::New(1490_dp, 990_dp, this->pageDownImg);
+        pageDownButton->SetWidth(pageDownButton->GetWidth() / app::config::GetScreenScaleFactor());
+        pageDownButton->SetHeight(pageDownButton->GetHeight() / app::config::GetScreenScaleFactor());
+        pageUpButton = ClickableImage::New(1380_dp, 990_dp, this->pageUpImg);
+        pageUpButton->SetWidth(pageUpButton->GetWidth() / app::config::GetScreenScaleFactor());
+        pageUpButton->SetHeight(pageUpButton->GetHeight() / app::config::GetScreenScaleFactor());
         backButton->SetOnClick([this]() {
             auto lyt = this->GetLayout<BaseMenuPage>();
             lyt->onCancel();

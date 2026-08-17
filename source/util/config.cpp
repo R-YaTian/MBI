@@ -3,6 +3,12 @@
 
 namespace app::config
 {
+    double ScreenScaleFactor = 1.0f;
+    constexpr int mainMenuItemSize = 112;
+    constexpr int mainMenuHeight = 896;
+    constexpr int subMenuItemSize = 76;
+    constexpr int subMenuHeight = 836;
+
     std::string lastNetUrl;
     std::string httpIndexUrl;
     std::string TopInfoTextColor;
@@ -101,5 +107,35 @@ namespace app::config
         FileTextColor = j.value("FileTextColor", std::string("#FFFFFFFF"));
         DirTextColor = j.value("DirTextColor", std::string("#FFFFFFFF"));
         InstallerInfoTextColor = j.value("InstallerInfoTextColor", std::string("#FFFFFFFF"));
+    }
+
+    const double GetScreenScaleFactor()
+    {
+        return ScreenScaleFactor;
+    }
+
+    void SetScreenScaleFactor(const double& scaleFactor)
+    {
+        ScreenScaleFactor = scaleFactor;
+    }
+
+    const int GetMainMenuItemSize()
+    {
+        return static_cast<int>(mainMenuItemSize / GetScreenScaleFactor());
+    }
+
+    const int GetMainMenuHeight()
+    {
+        return static_cast<int>(mainMenuHeight / GetScreenScaleFactor());
+    }
+
+    const int GetSubMenuItemSize()
+    {
+        return static_cast<int>(subMenuItemSize / GetScreenScaleFactor());
+    }
+
+    const int GetSubMenuHeight()
+    {
+        return static_cast<int>(subMenuHeight / GetScreenScaleFactor());
     }
 }

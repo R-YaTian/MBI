@@ -1,4 +1,5 @@
 #include "facade.hpp"
+#include "util/config.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
 #include "ui/MtpInstallPage.hpp"
@@ -76,8 +77,25 @@ namespace app::facade
     s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name)
     {
         auto dialog = pu::ui::Dialog::New(title, content);
-        dialog->SetSpaceBetweenOptions(35);
-        dialog->SetOptionHorizontalMargin(40);
+        dialog->SetSpaceBetweenOptions(35_dp);
+        dialog->SetOptionHorizontalMargin(40_dp);
+
+        dialog->SetDialogBorderRadius(52_dp);
+        dialog->SetSpaceBetweenOptionRows(15_dp);
+        dialog->SetTitleExtraWidth(135_dp);
+        dialog->SetContentExtraWidth(135_dp);
+        dialog->SetSpaceBetweenContentAndOptions(210_dp);
+        dialog->SetTitleTopMargin(30_dp);
+        dialog->SetTitleX(67_dp);
+        dialog->SetTitleY(82_dp);
+        dialog->SetContentX(67_dp);
+        dialog->SetContentY(210_dp);
+        dialog->SetOptionsBaseHorizontalMargin(67_dp);
+        dialog->SetOptionHeight(90_dp);
+        dialog->SetOptionBorderRadius(30_dp);
+        dialog->SetOptionBottomMargin(37_dp);
+        dialog->SetIconMargin(45_dp);
+
         if (icon_name != "")
         {
             pu::sdl2::TextureHandle::Ref icon = ui::LoadTexture("romfs:/images/icons/" + icon_name + ".webp");

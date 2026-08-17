@@ -6,14 +6,14 @@ namespace app::ui
 {
     InstallerPage::InstallerPage() : BaseMenuPage()
     {
-        this->installInfoText = pu::ui::elm::TextBlock::New(15, 160, "");
-        this->installInfoText->SetFont("DefaultFont@30");
+        this->installInfoText = pu::ui::elm::TextBlock::New(15_dp, 160_dp, "");
+        this->installInfoText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->installInfoText->SetColor(COLOR(app::config::InstallerInfoTextColor));
-        this->installBarText = pu::ui::elm::TextBlock::New(1300, 926, "");
-        this->installBarText->SetFont("DefaultFont@30");
+        this->installBarText = pu::ui::elm::TextBlock::New(1300_dp, 926_dp, "");
+        this->installBarText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->installBarText->SetColor(COLOR(app::config::InstallerInfoTextColor));
-        this->installBar = pu::ui::elm::ProgressBar::New(10, 914, 1275, 60, 100.0f);
-        this->installBar->SetRadius(30);
+        this->installBar = pu::ui::elm::ProgressBar::New(10_dp, 914_dp, 1275_dp, 60_dp, 100.0f);
+        this->installBar->SetRadius(30_dp);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->installBarText);
         this->Add(this->installInfoText);
@@ -24,7 +24,7 @@ namespace app::ui
     void InstallerPage::AppendInstallInfoText(std::string newText)
     {
         std::string previousText = this->installInfoText->GetText();
-        if (this->installInfoText->GetHeight() >= 720 || newText == "")
+        if (this->installInfoText->GetHeight() >= 720_dp || newText == "")
         {
             previousText = "";
         }

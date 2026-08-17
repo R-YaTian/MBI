@@ -29,10 +29,10 @@ namespace app::ui
     LocalInstallPage::LocalInstallPage() : BaseMenuPage()
     {
         this->SetOnInput(std::bind(&LocalInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->menu = pu::ui::elm::Menu::New(0, 154, 1920, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), app::config::subMenuItemSize, (836 / app::config::subMenuItemSize));
+        this->menu = pu::ui::elm::Menu::New(0, 154_dp, 1920_dp, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), config::GetSubMenuItemSize(), config::GetSubMenuHeight() / config::GetSubMenuItemSize());
         this->menu->SetShadowBaseAlpha(0);
-        this->menu->SetIconMargin(20);
-        this->menu->SetTextMargin(20);
+        this->menu->SetIconMargin(20_dp);
+        this->menu->SetTextMargin(20_dp);
         this->Add(this->menu);
         pageData = std::make_unique<InternalData>();
     }
@@ -292,7 +292,7 @@ namespace app::ui
             onConfirm();
         }
 
-        UpdateTouchState(Pos, 0, 154, 1920, std::min(this->menu->GetItems().size() * app::config::subMenuItemSize, (size_t)836));
+        UpdateTouchState(Pos, 0, 154_dp, 1920_dp, std::min(this->menu->GetItems().size() * config::GetSubMenuItemSize(), (size_t)config::GetSubMenuHeight()));
     }
 
     void LocalInstallPage::setStorageSourceToSdmc()

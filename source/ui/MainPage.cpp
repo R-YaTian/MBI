@@ -44,7 +44,7 @@ namespace app::ui
     {
         appletFinished = false;
         this->SetOnInput(std::bind(&MainPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-        this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#67000000"), COLOR("#5F5F5FFF"), app::config::mainMenuItemSize, (896 / app::config::mainMenuItemSize));
+        this->optionMenu = pu::ui::elm::Menu::New(0, 95_dp, 1920_dp, COLOR("#67000000"), COLOR("#5F5F5FFF"), config::GetMainMenuItemSize(), config::GetMainMenuHeight() / config::GetMainMenuItemSize());
         this->optionMenu->SetShadowBaseAlpha(0);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));

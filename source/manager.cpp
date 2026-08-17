@@ -16,9 +16,17 @@ namespace app::manager
     void initApp(const char* argv0)
     {
         if (!nx::fs::Exists("sdmc:/config"))
+        {
             nx::fs::MakeDir("sdmc:/config");
+        }
         if (!nx::fs::Exists(app::config::storagePath))
+        {
             nx::fs::MakeDir(app::config::storagePath);
+        }
+        if (appletGetAppletType() == AppletType_LibraryApplet)
+        {
+            app::config::SetScreenScaleFactor(1.5f);
+        }
         app::config::ParseSettings();
         app::config::ParseThemeColor();
         nx::udisk::init();

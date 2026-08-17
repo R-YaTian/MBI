@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
     try
     {
-        auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
+        auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags, 1920 / app::config::GetScreenScaleFactor(), 1080 / app::config::GetScreenScaleFactor());
         renderer_opts.UseImage(pu::ui::render::ImgAllFlags);
         renderer_opts.SetPlServiceType();
         renderer_opts.AddDefaultSharedFont(defaultFont);
