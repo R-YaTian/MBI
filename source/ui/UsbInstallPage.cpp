@@ -15,7 +15,7 @@ namespace app::ui
         this->menu->SetShadowBaseAlpha(0);
         this->menu->SetIconMargin(20);
         this->menu->SetTextMargin(20);
-        this->infoImage = pu::ui::elm::Image::New(780, 332 * pu::ui::render::ScreenFactor, LoadTexture("romfs:/images/icons/usb-connection-waiting.webp"));
+        this->infoImage = pu::ui::elm::Image::New(780, 498, LoadTexture("romfs:/images/icons/usb-connection-waiting.webp"));
         this->Add(this->menu);
         this->Add(this->infoImage);
     }

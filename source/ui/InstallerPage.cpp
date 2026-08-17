@@ -12,7 +12,7 @@ namespace app::ui
         this->installBarText = pu::ui::elm::TextBlock::New(1300, 926, "");
         this->installBarText->SetFont("DefaultFont@30");
         this->installBarText->SetColor(COLOR(app::config::InstallerInfoTextColor));
-        this->installBar = pu::ui::elm::ProgressBar::New(10, 914, 850 * pu::ui::render::ScreenFactor, 40 * pu::ui::render::ScreenFactor, 100.0f);
+        this->installBar = pu::ui::elm::ProgressBar::New(10, 914, 1275, 60, 100.0f);
         this->installBar->SetRadius(30);
         this->installBar->SetBackgroundColor(COLOR("#222222FF"));
         this->Add(this->installBarText);

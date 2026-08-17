@@ -218,8 +218,8 @@ namespace app::ui
         this->defaultUserImg = LoadTexture("romfs:/images/icon.webp");
 
         this->topRect = pu::ui::elm::Rectangle::New(0, 0, 1920, 94, COLOR("#000000c0"));
-        this->botRect = pu::ui::elm::Rectangle::New(0, 660 * pu::ui::render::ScreenFactor, 1920, 60 * pu::ui::render::ScreenFactor, COLOR("#000000c0"));
-        this->botText = pu::ui::elm::TextBlock::New(10 * pu::ui::render::ScreenFactor, 1020, "");
+        this->botRect = pu::ui::elm::Rectangle::New(0, 990, 1920, 90, COLOR("#000000c0"));
+        this->botText = pu::ui::elm::TextBlock::New(15, 1020, "");
         this->botText->SetFont("DefaultFont@30");
         this->botText->SetColor(COLOR(app::config::BottomInfoTextColor));
         this->infoRect = pu::ui::elm::Rectangle::New(0, 94, 1920, 60, COLOR("#00000080"));
