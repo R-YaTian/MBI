@@ -14,7 +14,8 @@ namespace app::ui
         languageStrings.push_back("options.language.system_language"_lang);
         languageStrings.push_back("common.cancel"_lang);
         this->menu = pu::ui::elm::Menu::New(0, 154_dp, 1920_dp, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), config::GetSubMenuItemSize(), config::GetSubMenuHeight() / config::GetSubMenuItemSize());
-        this->menu->SetShadowBaseAlpha(0);
+        this->menu->SetScrollbarWidth(this->menu->GetScrollbarWidth() / config::GetScreenScaleFactor());
+        this->menu->SetScrollbarMargin(this->menu->GetScrollbarMargin() / config::GetScreenScaleFactor());
         this->menu->SetIconMargin(20_dp);
         this->menu->SetTextMargin(20_dp);
 

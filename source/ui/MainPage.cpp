@@ -45,7 +45,9 @@ namespace app::ui
         appletFinished = false;
         this->SetOnInput(std::bind(&MainPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->optionMenu = pu::ui::elm::Menu::New(0, 95_dp, 1920_dp, COLOR("#67000000"), COLOR("#5F5F5FFF"), config::GetMainMenuItemSize(), config::GetMainMenuHeight() / config::GetMainMenuItemSize());
-        this->optionMenu->SetShadowBaseAlpha(0);
+        this->optionMenu->SetItemsFocusBorderRadius(this->optionMenu->GetItemsFocusBorderRadius() / config::GetScreenScaleFactor());
+        this->optionMenu->SetIconMargin(37_dp);
+        this->optionMenu->SetTextMargin(37_dp);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.webp"));

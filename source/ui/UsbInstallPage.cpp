@@ -12,7 +12,8 @@ namespace app::ui
     {
         this->SetOnInput(std::bind(&UsbInstallPage::onInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
         this->menu = pu::ui::elm::Menu::New(0, 154_dp, 1920_dp, COLOR("#FFFFFF00"), COLOR("#5F5F5FFF"), config::GetSubMenuItemSize(), config::GetSubMenuHeight() / config::GetSubMenuItemSize());
-        this->menu->SetShadowBaseAlpha(0);
+        this->menu->SetScrollbarWidth(this->menu->GetScrollbarWidth() / config::GetScreenScaleFactor());
+        this->menu->SetScrollbarMargin(this->menu->GetScrollbarMargin() / config::GetScreenScaleFactor());
         this->menu->SetIconMargin(20_dp);
         this->menu->SetTextMargin(20_dp);
         this->infoImage = pu::ui::elm::Image::New(780_dp, 498_dp, LoadTexture("romfs:/images/icons/usb-connection-waiting.webp"));

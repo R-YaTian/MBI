@@ -60,14 +60,7 @@ namespace app::install
 
     void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        if (appletGetAppletType() == AppletType_LibraryApplet)
-        {
-            this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
-        }
-        else
-        {
-            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header);
-        }
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header, appletGetAppletType() == AppletType_LibraryApplet ? 4 : 128);
     }
 
     void UsbWorker::BufferData(void* buf, off_t offset, size_t size)

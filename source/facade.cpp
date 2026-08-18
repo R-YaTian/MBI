@@ -102,6 +102,8 @@ namespace app::facade
             if (icon->Get() != nullptr)
             {
                 dialog->SetIcon(icon);
+                dialog->SetIconWidth(dialog->GetIconWidth() / app::config::GetScreenScaleFactor());
+                dialog->SetIconHeight(dialog->GetIconHeight() / app::config::GetScreenScaleFactor());
             }
         }
 
