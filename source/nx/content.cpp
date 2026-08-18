@@ -71,9 +71,11 @@ namespace nx
             entry.offset = this->GetFileEntryOffset(fileEntry);
             entry.size = this->GetFileEntrySize(fileEntry);
             NcmContentId idFromName = nx::ncm::GetContentIdFromString(entry.name.substr(0, entry.name.find(".")));
-            if (entry.name.ends_with(".cnmt.nca") || entry.name.ends_with(".cnmt.ncz"))
+            if (entry.name.ends_with(".nca") || entry.name.ends_with(".ncz"))
             {
-                entry.type = ContentCollectionType::META;
+                entry.type = (entry.name.ends_with(".cnmt.nca") || entry.name.ends_with(".cnmt.ncz")) ?
+                             ContentCollectionType::META :
+                             ContentCollectionType::ARCHIVE;
             }
             else if (entry.name.ends_with(".tik"))
             {
@@ -82,6 +84,10 @@ namespace nx
             else if (entry.name.ends_with(".cert"))
             {
                 entry.type = ContentCollectionType::CERT;
+            }
+            else
+            {
+                continue;
             }
 
             if (entry.type == ContentCollectionType::ARCHIVE || entry.type == ContentCollectionType::META)
