@@ -1,5 +1,6 @@
 #include "nx/content.hpp"
 #include <algorithm>
+#include <unordered_set>
 
 namespace nx
 {
@@ -106,6 +107,12 @@ namespace nx
         };
 
         std::sort(m_collections.begin(), m_collections.end(), sorter);
+
+        std::unordered_set<std::string> names;
+        m_collections.erase(std::remove_if(m_collections.begin(), m_collections.end(), [&names](const ContentCollectionEntry& entry) {
+            return !names.emplace(entry.name).second;
+        }), m_collections.end());
+
         return m_collections;
     }
 }

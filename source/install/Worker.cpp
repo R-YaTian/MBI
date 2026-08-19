@@ -138,11 +138,22 @@ namespace app::install
     {
         ThreadData* args = static_cast<ThreadData*>(in);
 
-        while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
+        try
         {
-            if (args->bufferedPlaceholderWriter->CanWriteSegmentToPlaceholder())
+            while (!args->bufferedPlaceholderWriter->IsPlaceholderComplete() && !stopThreads)
             {
-                args->bufferedPlaceholderWriter->WriteSegmentToPlaceholder();
+                if (args->bufferedPlaceholderWriter->CanWriteSegmentToPlaceholder())
+                {
+                    args->bufferedPlaceholderWriter->WriteSegmentToPlaceholder();
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            stopThreads = true;
+            if (args->errorMessage != nullptr)
+            {
+                *args->errorMessage = e.what();
             }
         }
     }
@@ -164,12 +175,17 @@ namespace app::install
                 const size_t chunkSize = std::min<size_t>(sizeRemaining, DEFAULT_READ_BUFFER_SIZE);
                 worker->BufferData(buf.data(), args->dataOffset + tmpSizeRead, chunkSize);
 
-                while (true)
+                while (!stopThreads)
                 {
                     if (args->bufferedPlaceholderWriter->CanAppendData(chunkSize))
                     {
                         break;
                     }
+                }
+
+                if (stopThreads)
+                {
+                    break;
                 }
 
                 args->bufferedPlaceholderWriter->AppendData(buf.data(), chunkSize);

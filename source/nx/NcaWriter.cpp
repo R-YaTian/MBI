@@ -24,7 +24,6 @@ SOFTWARE.
 #include "nx/Crypto.hpp"
 #include "nx/error.hpp"
 
-#include <string.h>
 #include <zstd.h>
 
 constexpr auto NCZ_HEADER_OFFSET = 0x4000;
@@ -44,8 +43,7 @@ public:
         m_contentStorage(contentStorage),
         m_ncaId(ncaId),
         m_sha256ctx(sha256ctx)
-    {
-    }
+    {}
 
     virtual ~NcaBodyWriter() = default;
 
@@ -91,9 +89,7 @@ public:
     class SectionContext : public Section
     {
     public:
-        SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, nx::Crypto::AesCtr(nx::Crypto::swapEndian(((u64*)&s.cryptoCounter)[0])))
-        {
-        }
+        SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, nx::Crypto::AesCtr(nx::Crypto::swapEndian(((u64*)&s.cryptoCounter)[0]))) {}
 
         ~SectionContext() {}
 
@@ -167,10 +163,10 @@ struct BlockInfo {
                 THROW_FORMAT("ZSTD_getFrameContentSize error");
             }
             dest.resize(outSize);
-            auto ret = ZSTD_decompress(dest.data(), outSize, buffer.data(), curBlockSize);
+            const auto ret = ZSTD_decompress(dest.data(), outSize, buffer.data(), curBlockSize);
             if (ZSTD_isError(ret))
             {
-                THROW_FORMAT("ZSTD_decompress error");
+                throw std::runtime_error(std::string("ZSTD_decompress error: ") + ZSTD_getErrorName(ret));
             }
         }
         else
@@ -195,14 +191,12 @@ public:
     NczBodyWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, Sha256Context* sha256ctx = nullptr)
         : NcaBodyWriter(ncaId, contentStorage, sha256ctx)
     {
-        buffOut = std::malloc(buffOutSize);
+        buffOut.resize(buffOutSize);
         dctx = ZSTD_createDCtx();
     }
 
     ~NczBodyWriter() override
     {
-        close();
-        free(buffOut);
         ZSTD_freeDCtx(dctx);
     }
 
@@ -210,7 +204,7 @@ public:
     {
         if (!m_isBlockCompression)
         {
-            if (this->m_buffer.size())
+            if (m_buffer.size())
             {
                 processChunk(m_buffer.data(), m_buffer.size());
                 m_buffer.resize(0);
@@ -277,22 +271,22 @@ public:
 
             while(input.pos < input.size)
             {
-                ZSTD_outBuffer output = { buffOut, buffOutSize, 0 };
-                size_t const ret = ZSTD_decompressStream(dctx, &output, &input);
+                ZSTD_outBuffer output = { buffOut.data(), buffOutSize, 0 };
+                const auto ret = ZSTD_decompressStream(dctx, std::addressof(output), std::addressof(input));
 
                 if (ZSTD_isError(ret))
                 {
-                    THROW_FORMAT("ZSTD_decompressStream error: %s", ZSTD_getErrorName(ret));
+                    throw std::runtime_error(std::string("ZSTD_decompressStream error: ") + ZSTD_getErrorName(ret));
                 }
 
                 size_t len = output.pos;
-                u8* p = (u8*)buffOut;
+                size_t written = 0;
 
                 while(len)
                 {
                     const size_t writeChunkSz = std::min(DEFLATE_BUFFER_MAX_SIZE - m_deflateBuffer.size(), len);
 
-                    append(m_deflateBuffer, p, writeChunkSz);
+                    append(m_deflateBuffer, buffOut.data() + written, writeChunkSz);
 
                     if(m_deflateBuffer.size() >= DEFLATE_BUFFER_MAX_SIZE)
                     {
@@ -300,7 +294,7 @@ public:
                         flush();
                     }
 
-                    p += writeChunkSz;
+                    written += writeChunkSz;
                     len -= writeChunkSz;
                 }
             }
@@ -398,10 +392,11 @@ public:
         return sz;
     }
 
+private:
     size_t const buffInSize = ZSTD_DStreamInSize();
     size_t const buffOutSize = ZSTD_DStreamOutSize();
 
-    void* buffOut = nullptr;
+    std::vector<u8> buffOut{};
     ZSTD_DCtx* dctx = nullptr;
 
     std::vector<u8> m_buffer;
@@ -420,10 +415,7 @@ NcaWriter::NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::Content
     sha256ContextCreate(&m_sha256ctx);
 }
 
-NcaWriter::~NcaWriter()
-{
-    close();
-}
+NcaWriter::~NcaWriter() = default;
 
 void NcaWriter::close(void* hash_dest)
 {
@@ -479,7 +471,7 @@ u64 NcaWriter::write(const u8* ptr, u64 sz)
             }
             else
             {
-                THROW_FORMAT("not enough data to read ncz header");
+                THROW_FORMAT("Not enough data to determine the header type");
             }
         }
 

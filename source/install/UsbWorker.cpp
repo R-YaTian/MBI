@@ -35,12 +35,17 @@ namespace app::install
                 }
                 sizeRemaining -= tmpSizeRead;
 
-                while (true)
+                while (!stopThreads)
                 {
                     if (args->bufferedPlaceholderWriter->CanAppendData(tmpSizeRead))
                     {
                         break;
                     }
+                }
+
+                if (stopThreads)
+                {
+                    break;
                 }
 
                 args->bufferedPlaceholderWriter->AppendData(buf, tmpSizeRead);
@@ -60,7 +65,7 @@ namespace app::install
 
     void UsbWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header, appletGetAppletType() == AppletType_LibraryApplet ? 4 : 128);
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)m_fileName.c_str(), header, appletGetAppletType() == AppletType_LibraryApplet ? 8 : 128);
     }
 
     void UsbWorker::BufferData(void* buf, off_t offset, size_t size)

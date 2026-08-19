@@ -64,7 +64,7 @@ namespace app::install
 
     void MtpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header, appletGetAppletType() == AppletType_LibraryApplet ? 6 : 8);
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header, 8);
     }
 
     void MtpWorker::BufferData(void* _buf, off_t offset, size_t size)
