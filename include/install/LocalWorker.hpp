@@ -4,6 +4,12 @@
 
 namespace app::install
 {
+    enum class LocalStorageSource : u8
+    {
+        SDMC,
+        UDISK
+    };
+
     class LocalWorker : public Worker
     {
         public:

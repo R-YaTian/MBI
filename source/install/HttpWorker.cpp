@@ -42,14 +42,7 @@ namespace app::install
 
     void HttpWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        if (appletGetAppletType() == AppletType_LibraryApplet)
-        {
-            this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
-        }
-        else
-        {
-            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)&m_download, header);
-        }
+        this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)&m_download, header, appletGetAppletType() == AppletType_LibraryApplet ? 8 : 128);
     }
 
     void HttpWorker::BufferData(void* buf, off_t offset, size_t size)
