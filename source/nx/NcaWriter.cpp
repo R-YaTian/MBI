@@ -47,7 +47,7 @@ public:
 
     virtual ~NcaBodyWriter() = default;
 
-    virtual void close() {};
+    virtual void close() {}
 
     virtual u64 write(const u8* ptr, u64 sz)
     {
@@ -426,7 +426,6 @@ void NcaWriter::close(void* hash_dest)
     }
 
     m_buffer.resize(0);
-    m_contentStorage = nullptr;
 
     if (hash_dest)
     {

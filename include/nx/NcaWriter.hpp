@@ -45,7 +45,7 @@ private:
 protected:
     NcmContentId m_ncaId;
     std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+    Sha256Context m_sha256ctx;
     std::vector<u8> m_buffer;
     std::unique_ptr<NcaBodyWriter> m_writer;
-    Sha256Context m_sha256ctx;
 };

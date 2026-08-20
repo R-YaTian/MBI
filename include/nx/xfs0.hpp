@@ -43,7 +43,10 @@ namespace nx
     NX_INLINE const HFS0FileEntry *hfs0GetFileEntry(const XFS0BaseHeader *header, u32 i)
     {
         if (i >= header->numFiles)
-            return NULL;
+        {
+            return nullptr;
+        }
+
         return (const HFS0FileEntry*)(header + 0x1 + i * 0x4);
     }
 

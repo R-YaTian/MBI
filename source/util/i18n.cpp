@@ -109,7 +109,7 @@ namespace app::i18n
     std::string GetRandomMsg()
     {
         jt::Json j = app::i18n::GetRelativeJson(lang, "inst.finished");
-        srand(time(NULL));
+        srand(time(nullptr));
         return j[rand() % j.size()].get<std::string>();
     }
 

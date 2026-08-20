@@ -49,22 +49,20 @@ namespace nx::data
             size_t m_sizeBuffered = 0;
             size_t m_sizeWrittenToPlaceholder = 0;
 
+            u32 m_bufferedSegmentCount = 128;
+            std::unique_ptr<BufferSegment[]> m_bufferSegments;
+
             // The current segment to which further data will be appended
             u64 m_currentFreeSegment = 0;
-            BufferSegment* m_currentFreeSegmentPtr = NULL;
+            BufferSegment* m_currentFreeSegmentPtr = nullptr;
 
             // The current segment that will be written to the placeholder
             u64 m_currentSegmentToWrite = 0;
-            BufferSegment* m_currentSegmentToWritePtr = NULL;
-
-            std::unique_ptr<BufferSegment[]> m_bufferSegments;
+            BufferSegment* m_currentSegmentToWritePtr = nullptr;
 
             std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
             NcmContentId m_ncaId;
-			NcaWriter m_writer;
-
-            u32 m_bufferedSegmentCount = 128;
-
+            NcaWriter m_writer;
         public:
             BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize, u32 numBufferSegments);
 

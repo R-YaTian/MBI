@@ -28,13 +28,14 @@ SOFTWARE.
 namespace nx::data
 {
     BufferedPlaceholderWriter::BufferedPlaceholderWriter(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, size_t totalDataSize, u32 numBufferSegments) :
-        m_totalDataSize(totalDataSize), m_contentStorage(contentStorage), m_ncaId(ncaId), m_writer(ncaId, contentStorage), m_bufferedSegmentCount(numBufferSegments)
+        m_totalDataSize(totalDataSize),
+        m_bufferedSegmentCount(numBufferSegments),
+        m_contentStorage(contentStorage),
+        m_ncaId(ncaId),
+        m_writer(ncaId, contentStorage)
     {
-        // Though currently the number of segments is fixed, we want them allocated on the heap, not the stack
+        // We want them allocated on the heap, not the stack
         m_bufferSegments = std::make_unique<BufferSegment[]>(m_bufferedSegmentCount);
-
-        if (m_bufferSegments == nullptr)
-            THROW_FORMAT("Failed to allocated buffer segments!\n");
 
         m_currentFreeSegmentPtr = &m_bufferSegments[m_currentFreeSegment];
         m_currentSegmentToWritePtr = &m_bufferSegments[m_currentSegmentToWrite];
