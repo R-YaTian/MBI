@@ -104,7 +104,7 @@ namespace app::ui
             }
             catch (std::exception& e)
             {
-                app::installer::OnFailed(shortFileName, e);
+                facade::NotifyInstallFailed(e, shortFileName);
                 pageData->m_state = State::Failed;
                 pageData->m_source->Disable();
                 nx::mtp::FinishInstallProgress();
@@ -112,7 +112,7 @@ namespace app::ui
                 return;
             }
 
-            app::installer::OnSuccess(1, shortFileName);
+            facade::NotifyInstallSuccess(1, shortFileName);
             pageData->m_state = State::Done;
         }
     }

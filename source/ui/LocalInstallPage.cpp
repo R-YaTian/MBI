@@ -1,20 +1,96 @@
 #include "ui/MainApplication.hpp"
 #include "ui/LocalInstallPage.hpp"
-#include "installer.hpp"
-#include "facade.hpp"
-#include "util/util.hpp"
+#include "install/InstallTask.hpp"
+#include "install/LocalWorker.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
+#include "util/util.hpp"
 #include "nx/udisk.hpp"
+#include "nx/misc.hpp"
+#include "nx/nsp.hpp"
+#include "nx/xci.hpp"
+#include "facade.hpp"
 
-namespace app::ui
+namespace app
+{
+    void InstallFromLocalFile(std::vector<nx::fs::Path> ourTitleList, NcmStorageId destStorageId, install::LocalStorageSource storageSrc)
+    {
+        facade::ShowInstaller(storageSrc == install::LocalStorageSource::SDMC ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
+
+        bool fileInstalled = true;
+        unsigned int titleItr;
+        try
+        {
+            unsigned int titleCount = ourTitleList.size();
+            for (titleItr = 0; titleItr < titleCount; titleItr++)
+            {
+                if (titleCount > 1)
+                {
+                    facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
+                                                      "(" + std::to_string(titleItr + 1) + "/"  + std::to_string(titleCount) +
+                                                      ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
+                }
+                else
+                {
+                    facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
+                }
+
+                std::string ext = ourTitleList[titleItr].extension().string();
+                std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+                std::unique_ptr<nx::Content> content;
+                if (ext == ".xci" || ext == ".xcz")
+                {
+                    content = std::make_unique<nx::XCI>();
+                }
+                else
+                {
+                    content = std::make_unique<nx::NSP>();
+                }
+                std::unique_ptr<install::Worker> worker = std::make_unique<install::LocalWorker>(std::move(content), ourTitleList[titleItr], storageSrc);
+                std::unique_ptr<InstallTask> installTask = std::make_unique<InstallTask>(destStorageId, config::overClock, config::ignoreReqVers, config::fixTicket, config::skipBase, worker.get());
+
+                facade::SendInstallProgress(0);
+                installTask->Prepare();
+                installTask->InstallTicketCert();
+                installTask->Begin();
+            }
+        }
+        catch (std::exception& e)
+        {
+            facade::NotifyInstallFailed(e, nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
+            fileInstalled = false;
+        }
+
+        if (fileInstalled)
+        {
+            facade::NotifyInstallSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42, 4));
+            if (config::deletePrompt && storageSrc == install::LocalStorageSource::SDMC)
+            {
+                if(facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang,
+                                    "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, "delete") == 1)
+                {
+                    for (size_t i = 0; i < ourTitleList.size(); i++)
+                    {
+                        if (nx::fs::Exists(ourTitleList[i]))
+                        {
+                            try { nx::fs::Remove(ourTitleList[i]); } catch (...) {};
+                        }
+                    }
+                }
+            }
+        }
+
+        facade::SendInstallFinished();
+    }
+
+namespace ui
 {
     struct LocalInstallPage::InternalData
     {
         size_t subPathCounter = 0;
         size_t selectedSize = 0;
         bool isRootDirectory = true;
-        installer::Local::StorageSource storageSrc = installer::Local::StorageSource::SD;
+        install::LocalStorageSource storageSrc = install::LocalStorageSource::SDMC;
         std::string driveMountPointName{};
         int driveIndex = -1;
         nx::fs::Path currentDir;
@@ -196,7 +272,7 @@ namespace app::ui
             fileList.push_back(pair.second);
         }
         ClearPageData();
-        app::installer::Local::InstallFromFile(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
+        InstallFromLocalFile(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
     }
 
     void LocalInstallPage::onCancel()
@@ -298,7 +374,7 @@ namespace app::ui
 
     void LocalInstallPage::setStorageSourceToSdmc()
     {
-        pageData->storageSrc = installer::Local::StorageSource::SD;
+        pageData->storageSrc = install::LocalStorageSource::SDMC;
         this->drawMenuItems("sdmc:");
     }
 
@@ -329,7 +405,7 @@ namespace app::ui
             app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true, "information");
             return false;
         }
-        pageData->storageSrc = installer::Local::StorageSource::UDISK;
+        pageData->storageSrc = install::LocalStorageSource::UDISK;
         pageData->driveMountPointName = nx::udisk::getMountPointName(ret);
         pageData->driveIndex = ret;
         this->drawMenuItems(pageData->driveMountPointName);
@@ -349,4 +425,5 @@ namespace app::ui
         pageData->lastIndex.clear();
         this->menu->ClearItems();
     }
+}
 }

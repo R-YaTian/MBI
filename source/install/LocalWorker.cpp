@@ -3,9 +3,10 @@
 
 namespace app::install
 {
-    LocalWorker::LocalWorker(std::unique_ptr<nx::Content> content, const std::string &path)
+    LocalWorker::LocalWorker(std::unique_ptr<nx::Content> content, const std::string &path, const LocalStorageSource& storageSrc)
         : Worker(std::move(content))
     {
+        m_storageSrc = storageSrc;
         m_file = fopen(path.c_str(), "rb");
         if (!m_file)
         {

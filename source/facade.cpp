@@ -1,8 +1,8 @@
 #include "facade.hpp"
+#include "util/i18n.hpp"
 #include "util/config.hpp"
-#include "ui/MainApplication.hpp"
 #include "ui/InstallerPage.hpp"
-#include "ui/MtpInstallPage.hpp"
+#include "ui/MainApplication.hpp"
 
 namespace app::ui
 {
@@ -69,9 +69,10 @@ namespace app::facade
         app::ui::mainApp->SetTouchButtonAreaType(app::ui::TouchButtonAreaType::Base);
     }
 
-    void ShowInstaller()
+    void ShowInstaller(std::string sourceString)
     {
         app::ui::SceneJump(app::ui::Scene::Installer);
+        app::facade::SendBottomText(sourceString);
     }
 
     s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name)
@@ -152,5 +153,33 @@ namespace app::facade
             pu::audio::DestroyMusic(mus);
         }
         pu::audio::Finalize();
+    }
+
+    void NotifyInstallSuccess(const size_t count, const std::string& msg)
+    {
+        SendInstallBarText("inst.info_page.complete"_lang);
+        SendInstallInfoText(count > 1 ?
+                            std::to_string(count) + "inst.info_page.desc0"_lang :
+                            msg + "inst.info_page.desc1"_lang);
+        SendInstallProgress(100);
+        SendInstallInfoText(i18n::GetRandomMsg());
+        if (config::enableSound && appletGetAppletType() != AppletType_LibraryApplet)
+        {
+            std::thread audioThread(PlayAudio, "success.mp3");
+            audioThread.join();
+        }
+    }
+
+    void NotifyInstallFailed(const std::exception& e, const std::string& msg)
+    {
+        SendInstallBarText("inst.info_page.failed"_lang);
+        SendInstallInfoText("inst.info_page.failed"_lang + msg + "!\n" + "inst.info_page.failed_desc"_lang);
+        SendInstallProgress(0);
+        SendInstallInfoText((std::string)e.what());
+        if (config::enableSound && appletGetAppletType() != AppletType_LibraryApplet)
+        {
+            std::thread audioThread(PlayAudio, "fail.mp3");
+            audioThread.join();
+        }
     }
 }

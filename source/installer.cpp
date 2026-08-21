@@ -3,7 +3,6 @@
 #include <memory>
 #include <malloc.h>
 #include "install/InstallTask.hpp"
-#include "install/LocalWorker.hpp"
 #include "install/UsbWorker.hpp"
 #include "nx/nsp.hpp"
 #include "nx/xci.hpp"
@@ -24,116 +23,6 @@
 
 namespace app::installer
 {
-    NX_INLINE void OnStart(std::string sourceString)
-    {
-        app::facade::ShowInstaller();
-        app::facade::SendBottomText(sourceString);
-        app::facade::SendInstallInfoText("inst.info_page.preparing"_lang);
-    }
-
-    void OnFailed(const std::string& msg, const std::exception& e)
-    {
-        LOG_DEBUG("Failed to install");
-        LOG_DEBUG("%s", e.what());
-        app::facade::SendInstallBarText("inst.info_page.failed"_lang);
-        app::facade::SendInstallInfoText("inst.info_page.failed"_lang + msg + "!\n" + "inst.info_page.failed_desc"_lang);
-        app::facade::SendInstallProgress(0);
-        app::facade::SendInstallInfoText((std::string)e.what());
-        if (app::config::enableSound)
-        {
-            std::thread audioThread(app::facade::PlayAudio, "fail.mp3");
-            audioThread.join();
-        }
-    }
-
-    void OnSuccess(const size_t count, const std::string& msg)
-    {
-        app::facade::SendInstallBarText("inst.info_page.complete"_lang);
-        app::facade::SendInstallInfoText(count > 1 ?
-                                         std::to_string(count) + "inst.info_page.desc0"_lang :
-                                         msg + "inst.info_page.desc1"_lang);
-        app::facade::SendInstallProgress(100);
-        app::facade::SendInstallInfoText(app::i18n::GetRandomMsg());
-        if (app::config::enableSound)
-        {
-            std::thread audioThread(app::facade::PlayAudio, "success.mp3");
-            audioThread.join();
-        }
-    }
-
-    namespace Local
-    {
-        void InstallFromFile(std::vector<nx::fs::Path> ourTitleList, NcmStorageId destStorageId, StorageSource storageSrc)
-        {
-            OnStart(storageSrc == StorageSource::SD ? "inst.sd.source_string"_lang : "inst.hdd.source_string"_lang);
-
-            bool fileInstalled = true;
-            unsigned int titleItr;
-            try
-            {
-                unsigned int titleCount = ourTitleList.size();
-                for (titleItr = 0; titleItr < titleCount; titleItr++)
-                {
-                    if (titleCount > 1)
-                    {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
-                                                               "(" + std::to_string(titleItr+1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
-                    }
-                    else
-                    {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4));
-                    }
-
-                    std::string ext = ourTitleList[titleItr].extension().string();
-                    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-                    std::unique_ptr<nx::Content> content;
-                    if (ext == ".xci" || ext == ".xcz")
-                    {
-                        content = std::make_unique<nx::XCI>();
-                    }
-                    else
-                    {
-                        content = std::make_unique<nx::NSP>();
-                    }
-                    std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::LocalWorker>(std::move(content), ourTitleList[titleItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
-
-                    app::facade::SendInstallProgress(0);
-                    installTask->Prepare();
-                    installTask->InstallTicketCert();
-                    installTask->Begin();
-                }
-            }
-            catch (std::exception& e)
-            {
-                OnFailed(nx::misc::ShortenString(ourTitleList[titleItr].filename().string(), 42, 4), e);
-                fileInstalled = false;
-            }
-
-            if (fileInstalled)
-            {
-                OnSuccess(ourTitleList.size(), nx::misc::ShortenString(ourTitleList[0].filename().string(), 42, 4));
-                if (app::config::deletePrompt && storageSrc == StorageSource::SD)
-                {
-                    if(app::facade::ShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang,
-                                               "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false, "delete") == 1)
-                    {
-                        for (size_t i = 0; i < ourTitleList.size(); i++)
-                        {
-                            if (nx::fs::Exists(ourTitleList[i]))
-                            {
-                                try { nx::fs::Remove(ourTitleList[i]); } catch (...) {};
-                            }
-                        }
-                    }
-                }
-            }
-
-            app::facade::SendInstallFinished();
-        }
-    }
-
     namespace Usb
     {
         static int transferData(void* buf, size_t size, u64 timeout = 5000000000)
@@ -222,7 +111,7 @@ namespace app::installer
 
         void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
         {
-            OnStart("inst.usb.source_string"_lang);
+            facade::ShowInstaller("inst.usb.source_string"_lang);
 
             std::vector<std::string> fileNames;
             for (size_t i = 0; i < ourTitleList.size(); i++)
@@ -270,14 +159,14 @@ namespace app::installer
             }
             catch (std::exception& e)
             {
-                OnFailed(fileNames[fileItr], e);
+                facade::NotifyInstallFailed(e, fileNames[fileItr]);
                 fileInstalled = false;
             }
 
             if (fileInstalled)
             {
                 nx::usb::USBCommandManager::SendFinishedCommand();
-                OnSuccess(ourTitleList.size(), fileNames[0]);
+                facade::NotifyInstallSuccess(ourTitleList.size(), fileNames[0]);
             }
 
             nx::usb::usbDeviceExit();
@@ -461,7 +350,7 @@ back_to_loop:
 
         void InstallFromUrl(std::vector<std::string> ourUrlList, NcmStorageId destStorageId, std::string ourSource)
         {
-            OnStart(ourSource);
+            facade::ShowInstaller(ourSource);
 
             std::vector<std::string> urlNames;
             for (size_t i = 0; i < ourUrlList.size(); i++)
@@ -510,7 +399,7 @@ back_to_loop:
             }
             catch (std::exception& e)
             {
-                OnFailed(urlNames[urlItr], e);
+                facade::NotifyInstallFailed(e, urlNames[urlItr]);
                 fileInstalled = false;
             }
 
@@ -519,7 +408,7 @@ back_to_loop:
 
             if (fileInstalled)
             {
-                OnSuccess(ourUrlList.size(), urlNames[0]);
+                facade::NotifyInstallSuccess(ourUrlList.size(), urlNames[0]);
             }
 
             app::facade::SendInstallFinished();

@@ -269,8 +269,7 @@ namespace app::ui
         }
 
         app::config::SaveSettings();
-        app::facade::ShowInstaller();
-        app::facade::SendBottomText("common.waiting"_lang);
+        app::facade::ShowInstaller("common.waiting"_lang);
         app::facade::SendPageInfoTextAndRender("clean_orphaned.working"_lang);
 
         char msg[256] = {};

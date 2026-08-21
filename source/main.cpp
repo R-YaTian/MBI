@@ -2,9 +2,9 @@
 
 #include "manager.hpp"
 #include "nx/error.hpp"
-#include "ui/MainApplication.hpp"
-#include "util/config.hpp"
 #include "util/i18n.hpp"
+#include "util/config.hpp"
+#include "ui/MainApplication.hpp"
 
 int main(int argc, char* argv[])
 {

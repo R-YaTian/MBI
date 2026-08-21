@@ -13,8 +13,8 @@ namespace app::ui
             LocalInstallPage();
             ~LocalInstallPage();
             PU_SMART_CTOR(LocalInstallPage)
-            void setStorageSourceToSdmc();
             bool setStorageSourceToUdisk();
+            void setStorageSourceToSdmc();
             void onCancel() override;
             void onConfirm() override;
             void onSelectAll() override;

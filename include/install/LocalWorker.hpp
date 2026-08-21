@@ -13,7 +13,7 @@ namespace app::install
     class LocalWorker : public Worker
     {
         public:
-            LocalWorker(std::unique_ptr<nx::Content> content, const std::string& path);
+            LocalWorker(std::unique_ptr<nx::Content> content, const std::string& path, const LocalStorageSource& storageSrc);
             ~LocalWorker();
 
             void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header = nullptr) override;
@@ -21,5 +21,6 @@ namespace app::install
 
         private:
             FILE* m_file = nullptr;
+            LocalStorageSource m_storageSrc;
     };
 }
