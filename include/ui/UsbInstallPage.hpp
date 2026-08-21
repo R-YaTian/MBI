@@ -9,7 +9,6 @@ namespace app::ui
         public:
             UsbInstallPage();
             PU_SMART_CTOR(UsbInstallPage)
-            bool startUsb();
             void onCancel() override;
             void onConfirm() override;
             void onSelectAll() override;
@@ -23,5 +22,6 @@ namespace app::ui
             void selectTitle(int selectedIndex);
             void startInstall();
             void onInput(const u64 Down, const u64 Up, const u64 Held, const pu::ui::TouchPoint Pos);
+            void waitingForFileList();
     };
 }

@@ -75,6 +75,11 @@ namespace app::facade
         app::facade::SendBottomText(sourceString);
     }
 
+    void ShowFullTouchButtonArea()
+    {
+        app::ui::mainApp->SetTouchButtonAreaType(app::ui::TouchButtonAreaType::Full);
+    }
+
     s32 ShowDialog(const std::string &title, const std::string &content, const std::vector<std::string> &opts, const bool last_opt_is_cancel, std::string icon_name)
     {
         auto dialog = pu::ui::Dialog::New(title, content);

@@ -2,9 +2,11 @@
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
-#include "nx/usb.hpp"
+#include "util/util.hpp"
 #include "installer.hpp"
+#include "nx/usb.hpp"
 #include "facade.hpp"
+#include <malloc.h>
 
 namespace app::ui
 {
@@ -21,6 +23,79 @@ namespace app::ui
         this->infoImage->SetHeight(this->infoImage->GetHeight() / config::GetScreenScaleFactor());
         this->Add(this->menu);
         this->Add(this->infoImage);
+        this->AddRenderCallback(std::bind(&UsbInstallPage::waitingForFileList, this));
+    }
+
+    void UsbInstallPage::waitingForFileList()
+    {
+        if (!this->ourTitles.size())
+        {
+            char msg[256] = {};
+            UsbState usbState = nx::usb::usbDeviceGetState();
+            nx::usb::DeviceSpeed usbSpeed = nx::usb::usbDeviceGetSpeed();
+            std::snprintf(msg, sizeof(msg), "usbds.message"_lang.c_str(),
+                                            app::i18n::GetRelativeMsgAt("usbds.states", usbState).c_str(),
+                                            app::i18n::GetRelativeMsgAt("usbds.speed", usbSpeed).c_str());
+            app::facade::SendPageInfoText(msg);
+
+            if (usbState != UsbState_Configured)
+            {
+                return;
+            }
+
+            u8* tempBuffer = (u8*)memalign(0x1000, sizeof(nx::usb::FileListHeader));
+            if (!tempBuffer)
+            {
+                return;
+            }
+
+            nx::usb::FileListHeader header;
+            if (nx::usb::USBReadData(tempBuffer, sizeof(nx::usb::FileListHeader), 500000000) == 0)
+            {
+                free(tempBuffer);
+                return;
+            }
+            std::memcpy(&header, tempBuffer, sizeof(nx::usb::FileListHeader));
+            free(tempBuffer);
+
+            if (header.magic != 0x304C5554)
+            {
+                return;
+            }
+
+            char* titleNameBuffer = (char*)memalign(0x1000, header.titleListSize + 1);
+            if (titleNameBuffer != nullptr)
+            {
+                std::vector<std::string> titleNames;
+                memset(titleNameBuffer, 0, header.titleListSize + 1);
+                size_t ret = nx::usb::USBReadData(titleNameBuffer, header.titleListSize, 10000000000);
+                if (ret == 0)
+                {
+                    free(titleNameBuffer);
+                    return;
+                }
+
+                // Split the string up into individual title names
+                std::stringstream titleNameStream(titleNameBuffer);
+                std::string segment;
+                while (std::getline(titleNameStream, segment, '\n'))
+                {
+                    titleNames.push_back(segment);
+                }
+                free(titleNameBuffer);
+
+                std::sort(titleNames.begin(), titleNames.end(), app::util::IgnoreCaseCompare);
+
+                this->ourTitles = titleNames;
+
+                facade::SendPageInfoText("inst.usb.source_string"_lang + "inst.top_info"_lang);
+                facade::SendBottomText("inst.buttons"_lang);
+                this->drawMenuItems();
+                this->infoImage->SetVisible(false);
+                this->menu->SetVisible(true);
+                facade::ShowFullTouchButtonArea();
+            }
+        }
     }
 
     void UsbInstallPage::drawMenuItems()
@@ -49,27 +124,6 @@ namespace app::ui
             this->menu->GetItems()[selectedIndex]->SetIcon(GetResource(Resources::CheckedImage));
             this->selectedTitles[selectedIndex] = this->ourTitles[selectedIndex];
         }
-    }
-
-    bool UsbInstallPage::startUsb()
-    {
-        this->menu->SetVisible(false);
-        this->infoImage->SetVisible(true);
-        app::facade::SendRenderRequest();
-        this->ourTitles = app::installer::Usb::WaitingForFileList();
-        if (!this->ourTitles.size())
-        {
-            return false;
-        }
-        else
-        {
-            app::facade::SendPageInfoText("inst.usb.source_string"_lang + "inst.top_info"_lang);
-            app::facade::SendBottomText("inst.buttons"_lang);
-            this->drawMenuItems();
-            this->infoImage->SetVisible(false);
-            this->menu->SetVisible(true);
-        }
-        return true;
     }
 
     void UsbInstallPage::startInstall()
@@ -102,6 +156,8 @@ namespace app::ui
         this->ourTitles.clear();
         this->selectedTitles.clear();
         this->menu->ClearItems();
+        this->menu->SetVisible(false);
+        this->infoImage->SetVisible(true);
         nx::usb::usbDeviceExit();
         SceneJump(Scene::Main);
     }
@@ -148,6 +204,11 @@ namespace app::ui
         if (Down & HidNpadButton_B)
         {
             onCancel();
+        }
+
+        if ((Down & HidNpadButton_X) && !this->ourTitles.size())
+        {
+            facade::ShowDialog("common.help"_lang, "inst.usb.help_desc"_lang, {"common.ok"_lang}, true, "information");
         }
 
         if (this->menu->GetItems().size() == 0)

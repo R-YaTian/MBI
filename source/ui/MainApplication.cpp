@@ -474,10 +474,6 @@ namespace app::ui
             mainApp->SetPageInfoText("");
             mainApp->SetBottomText("inst.usb.buttons"_lang);
             mainApp->LoadLayout(usbinstPage);
-            if (usbinstPage->startUsb())
-            {
-                mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
-            }
             break;
         case Scene::SdInstall:
             mainApp->SetTouchButtonAreaType(TouchButtonAreaType::Full);
