@@ -80,7 +80,7 @@ namespace app::ui
                     catch (...) { retrieveError = std::current_exception(); }
                     retrieveCompleted.store(true);
                 });
-                const auto renderInterval = armGetSystemTickFreq() * 0.5;
+                const auto renderInterval = armGetSystemTickFreq() * 0.02;
                 auto lastRenderTick = armGetSystemTick();
                 while (!retrieveCompleted.load())
                 {

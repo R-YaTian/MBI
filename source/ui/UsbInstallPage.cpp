@@ -1,14 +1,84 @@
 #include "ui/UsbInstallPage.hpp"
 #include "ui/MainApplication.hpp"
+#include "install/InstallTask.hpp"
+#include "install/UsbWorker.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
 #include "util/util.hpp"
-#include "installer.hpp"
+#include "nx/misc.hpp"
 #include "nx/usb.hpp"
+#include "nx/nsp.hpp"
+#include "nx/xci.hpp"
 #include "facade.hpp"
 #include <malloc.h>
 
-namespace app::ui
+namespace app
+{
+    void InstallFromUsb(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
+    {
+        facade::ShowInstaller("inst.usb.source_string"_lang);
+
+        std::vector<std::string> fileNames;
+        for (size_t i = 0; i < ourTitleList.size(); i++)
+        {
+            fileNames.push_back(nx::misc::ShortenString(ourTitleList[i], 42, 4));
+        }
+
+        bool fileInstalled = true;
+        unsigned int fileItr;
+        try
+        {
+            unsigned int titleCount = ourTitleList.size();
+            for (fileItr = 0; fileItr < titleCount; fileItr++)
+            {
+                if (titleCount > 1)
+                {
+                    facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
+                                                      "(" + std::to_string(fileItr + 1) + "/"  + std::to_string(titleCount) +
+                                                      ") " + fileNames[fileItr]);
+                }
+                else
+                {
+                    facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + fileNames[fileItr]);
+                }
+
+                std::string extPart = ourTitleList[fileItr].substr(ourTitleList[fileItr].size() - 3, 2);
+                std::transform(extPart.begin(), extPart.end(), extPart.begin(), ::tolower);
+                std::unique_ptr<nx::Content> content;
+                if (extPart == "xc")
+                {
+                    content = std::make_unique<nx::XCI>();
+                }
+                else
+                {
+                    content = std::make_unique<nx::NSP>();
+                }
+                std::unique_ptr<install::Worker> worker = std::make_unique<install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
+                std::unique_ptr<InstallTask> installTask = std::make_unique<InstallTask>(destStorageId, config::overClock, config::ignoreReqVers, config::fixTicket, config::skipBase, worker.get());
+
+                facade::SendInstallProgress(0);
+                installTask->Prepare();
+                installTask->InstallTicketCert();
+                installTask->Begin();
+            }
+        }
+        catch (std::exception& e)
+        {
+            facade::NotifyInstallFailed(e, fileNames[fileItr]);
+            fileInstalled = false;
+        }
+
+        if (fileInstalled)
+        {
+            nx::usb::USBCommandManager::SendFinishedCommand();
+            facade::NotifyInstallSuccess(ourTitleList.size(), fileNames[0]);
+        }
+
+        nx::usb::usbDeviceExit();
+        facade::SendInstallFinished();
+    }
+
+namespace ui
 {
     UsbInstallPage::UsbInstallPage() : BaseMenuPage()
     {
@@ -23,10 +93,10 @@ namespace app::ui
         this->infoImage->SetHeight(this->infoImage->GetHeight() / config::GetScreenScaleFactor());
         this->Add(this->menu);
         this->Add(this->infoImage);
-        this->AddRenderCallback(std::bind(&UsbInstallPage::waitingForFileList, this));
+        this->AddRenderCallback(std::bind(&UsbInstallPage::requestFileList, this));
     }
 
-    void UsbInstallPage::waitingForFileList()
+    void UsbInstallPage::requestFileList()
     {
         if (!this->ourTitles.size())
         {
@@ -36,7 +106,7 @@ namespace app::ui
             std::snprintf(msg, sizeof(msg), "usbds.message"_lang.c_str(),
                                             app::i18n::GetRelativeMsgAt("usbds.states", usbState).c_str(),
                                             app::i18n::GetRelativeMsgAt("usbds.speed", usbSpeed).c_str());
-            app::facade::SendPageInfoText(msg);
+            facade::SendPageInfoText(msg);
 
             if (usbState != UsbState_Configured)
             {
@@ -50,7 +120,7 @@ namespace app::ui
             }
 
             nx::usb::FileListHeader header;
-            if (nx::usb::USBReadData(tempBuffer, sizeof(nx::usb::FileListHeader), 500000000) == 0)
+            if (nx::usb::USBReadData(tempBuffer, sizeof(nx::usb::FileListHeader), 20000000) == 0)
             {
                 free(tempBuffer);
                 return;
@@ -68,7 +138,7 @@ namespace app::ui
             {
                 std::vector<std::string> titleNames;
                 memset(titleNameBuffer, 0, header.titleListSize + 1);
-                size_t ret = nx::usb::USBReadData(titleNameBuffer, header.titleListSize, 10000000000);
+                size_t ret = nx::usb::USBReadData(titleNameBuffer, header.titleListSize);
                 if (ret == 0)
                 {
                     free(titleNameBuffer);
@@ -147,7 +217,7 @@ namespace app::ui
         this->ourTitles.clear();
         this->selectedTitles.clear();
         this->menu->ClearItems();
-        app::installer::Usb::InstallTitles(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
+        InstallFromUsb(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard);
     }
 
     void UsbInstallPage::onCancel()
@@ -247,4 +317,5 @@ namespace app::ui
 
         UpdateTouchState(Pos, 0, 154_dp, 1920_dp, std::min(this->menu->GetItems().size() * config::GetSubMenuItemSize(), (size_t)config::GetSubMenuHeight()));
     }
+}
 }

@@ -1,14 +1,10 @@
 #include <string>
-#include <thread>
 #include <memory>
-#include <malloc.h>
 #include "install/InstallTask.hpp"
-#include "install/UsbWorker.hpp"
 #include "nx/nsp.hpp"
 #include "nx/xci.hpp"
 #include "nx/error.hpp"
 #include "nx/misc.hpp"
-#include "nx/usb.hpp"
 #include "util/config.hpp"
 #include "util/util.hpp"
 #include "util/i18n.hpp"
@@ -23,157 +19,6 @@
 
 namespace app::installer
 {
-    namespace Usb
-    {
-        static int transferData(void* buf, size_t size, u64 timeout = 5000000000)
-        {
-            u8* tempBuffer = (u8*)memalign(0x1000, size);
-            if (nx::usb::USBReadData(tempBuffer, size, timeout) == 0)
-            {
-                return 0;
-            }
-            memcpy(buf, tempBuffer, size);
-            free(tempBuffer);
-            return size;
-        }
-
-        std::vector<std::string> WaitingForFileList()
-        {
-            u64 freq = armGetSystemTickFreq();
-            u64 startTime = armGetSystemTick();
-
-            nx::usb::FileListHeader header;
-
-            padConfigureInput(8, HidNpadStyleSet_NpadStandard);
-            PadState pad;
-            padInitializeAny(&pad);
-
-            while (true)
-            {
-                // If we don't update the UI occasionally the Switch basically crashes on this screen if you press the home button
-                u64 newTime = armGetSystemTick();
-                if (newTime - startTime >= freq * 0.01)
-                {
-                    startTime = newTime;
-                    app::facade::SendRenderRequest();
-                }
-
-                padUpdate(&pad);
-                u64 kDown = padGetButtonsDown(&pad);
-
-                if (kDown & HidNpadButton_B)
-                {
-                    return {};
-                }
-                if (kDown & HidNpadButton_X)
-                {
-                    app::facade::ShowDialog("common.help"_lang, "inst.usb.help_desc"_lang, {"common.ok"_lang}, true, "information");
-                }
-
-                char msg[256] = {};
-                UsbState usbState = nx::usb::usbDeviceGetState();
-                nx::usb::DeviceSpeed usbSpeed = nx::usb::usbDeviceGetSpeed();
-                std::snprintf(msg, sizeof(msg), "usbds.message"_lang.c_str(),
-                                                app::i18n::GetRelativeMsgAt("usbds.states", usbState).c_str(),
-                                                app::i18n::GetRelativeMsgAt("usbds.speed", usbSpeed).c_str());
-                app::facade::SendPageInfoText(msg);
-
-                if (nx::usb::usbDeviceIsConnected() && transferData(&header, sizeof(nx::usb::FileListHeader), 500000000) != 0)
-                {
-                    break;
-                }
-            }
-
-            if (header.magic != 0x304C5554)
-            {
-                return {};
-            }
-
-            std::vector<std::string> titleNames;
-            char* titleNameBuffer = (char*)memalign(0x1000, header.titleListSize + 1);
-            memset(titleNameBuffer, 0, header.titleListSize + 1);
-
-            nx::usb::USBReadData(titleNameBuffer, header.titleListSize, 10000000000);
-
-            // Split the string up into individual title names
-            std::stringstream titleNameStream(titleNameBuffer);
-            std::string segment;
-            while (std::getline(titleNameStream, segment, '\n'))
-            {
-                titleNames.push_back(segment);
-            }
-            free(titleNameBuffer);
-
-            std::sort(titleNames.begin(), titleNames.end(), app::util::IgnoreCaseCompare);
-
-            return titleNames;
-        }
-
-        void InstallTitles(std::vector<std::string> ourTitleList, NcmStorageId destStorageId)
-        {
-            facade::ShowInstaller("inst.usb.source_string"_lang);
-
-            std::vector<std::string> fileNames;
-            for (size_t i = 0; i < ourTitleList.size(); i++)
-            {
-                fileNames.push_back(nx::misc::ShortenString(ourTitleList[i], 42, 4));
-            }
-
-            bool fileInstalled = true;
-            unsigned int fileItr;
-            try
-            {
-                unsigned int titleCount = ourTitleList.size();
-                for (fileItr = 0; fileItr < titleCount; fileItr++)
-                {
-                    if (titleCount > 1)
-                    {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang +
-                                                               "(" + std::to_string(fileItr + 1) + "/"  + std::to_string(titleCount) +
-                                                               ") " + fileNames[fileItr]);
-                    }
-                    else
-                    {
-                        app::facade::SendPageInfoTextAndRender("inst.info_page.installing"_lang + fileNames[fileItr]);
-                    }
-
-                    std::string extPart = ourTitleList[fileItr].substr(ourTitleList[fileItr].size() - 3, 2);
-                    std::transform(extPart.begin(), extPart.end(), extPart.begin(), ::tolower);
-                    std::unique_ptr<nx::Content> content;
-                    if (extPart == "xc")
-                    {
-                        content = std::make_unique<nx::XCI>();
-                    }
-                    else
-                    {
-                        content = std::make_unique<nx::NSP>();
-                    }
-                    std::unique_ptr<app::install::Worker> worker = std::make_unique<app::install::UsbWorker>(std::move(content), ourTitleList[fileItr]);
-                    std::unique_ptr<app::InstallTask> installTask = std::make_unique<app::InstallTask>(destStorageId, app::config::overClock, app::config::ignoreReqVers, app::config::fixTicket, app::config::skipBase, worker.get());
-
-                    app::facade::SendInstallProgress(0);
-                    installTask->Prepare();
-                    installTask->InstallTicketCert();
-                    installTask->Begin();
-                }
-            }
-            catch (std::exception& e)
-            {
-                facade::NotifyInstallFailed(e, fileNames[fileItr]);
-                fileInstalled = false;
-            }
-
-            if (fileInstalled)
-            {
-                nx::usb::USBCommandManager::SendFinishedCommand();
-                facade::NotifyInstallSuccess(ourTitleList.size(), fileNames[0]);
-            }
-
-            nx::usb::usbDeviceExit();
-            app::facade::SendInstallFinished();
-        }
-    }
-
 #ifdef ENABLE_NET
     namespace Network
     {

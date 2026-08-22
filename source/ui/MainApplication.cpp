@@ -121,15 +121,6 @@ namespace app::ui
 
     void MainApplication::UpdateStats()
     {
-        static u64 lastStatsUpdateTick = 0;
-        const u64 currentTick = armGetSystemTick();
-        const u64 statsRefreshInterval = armGetSystemTickFreq();
-        if (lastStatsUpdateTick != 0 && currentTick - lastStatsUpdateTick < statsRefreshInterval)
-        {
-            return;
-        }
-        lastStatsUpdateTick = currentTick;
-
         const auto newfreeSpaceText = GetFreeSpaceInfoForDisplay();
         if (freeSpaceCurrentText != newfreeSpaceText)
         {

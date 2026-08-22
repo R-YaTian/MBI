@@ -112,7 +112,7 @@ namespace app::install
     void Worker::UpdateTransferProgress(size_t& startSize, size_t newSize, size_t totalSize, u64& startTime, u64 freq)
     {
         u64 newTime = armGetSystemTick();
-        if (newTime - startTime < freq * 0.5)
+        if (newTime - startTime < freq * 0.02)
         {
             return;
         }
