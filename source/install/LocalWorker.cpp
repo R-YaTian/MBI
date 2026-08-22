@@ -30,24 +30,7 @@ namespace app::install
 
     void LocalWorker::BufferData(void* buf, off_t offset, size_t size)
     {
-        if (!m_file)
-        {
-            THROW_FORMAT("File is not open\n");
-        }
-
-        if (fseeko(m_file, offset, SEEK_SET) != 0)
-        {
-            THROW_FORMAT("Failed to seek file: %s", strerror(errno));
-        }
-
-        const size_t bytesRead = fread(buf, 1, size, m_file);
-
-        if (bytesRead != size)
-        {
-            if (ferror(m_file))
-            {
-                THROW_FORMAT("Failed to read file: %s", strerror(errno));
-            }
-        }
+        fseeko(m_file, offset, SEEK_SET);
+        fread(buf, 1, size, m_file);
     }
 }

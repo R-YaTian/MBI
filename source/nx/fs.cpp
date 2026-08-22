@@ -108,6 +108,16 @@ namespace nx::fs
         return 0;
     }
 
+    void IFileSystem::OpenDeviceFileSystem(const char* name)
+    {
+        FsFileSystem* fs = fsdevGetDeviceFileSystem(name);
+        if (fs == NULL)
+        {
+            THROW_FORMAT("Failed to get device filesystem for %s", name);
+        }
+        m_fileSystem = *fs;
+    }
+
     void IFileSystem::OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId)
     {
         Result rc = 0;
@@ -130,13 +140,16 @@ namespace nx::fs
 
     void IFileSystem::CloseFileSystem()
     {
+        fsFsCommit(&m_fileSystem);
         fsFsClose(&m_fileSystem);
     }
 
     IFile IFileSystem::OpenFile(std::string path, u32 openMode)
     {
         if (path.length() >= FS_MAX_PATH)
+        {
             THROW_FORMAT("Directory path is too long!");
+        }
 
         // libnx expects a FS_MAX_PATH-sized buffer
         path.reserve(FS_MAX_PATH);
@@ -275,7 +288,7 @@ namespace nx::fs
         return files;
     }
 
-    SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath) :
+    SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath) :
         m_fileSystem(&fileSystem) , m_rootPath(rootPath) {}
 
     SimpleFileSystem::~SimpleFileSystem() {}

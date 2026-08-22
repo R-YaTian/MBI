@@ -108,6 +108,7 @@ namespace nx::fs
             ~IFileSystem();
 
             Result OpenSdFileSystem();
+            void OpenDeviceFileSystem(const char* name);
             void OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId);
             void CloseFileSystem();
 
@@ -129,7 +130,7 @@ namespace nx::fs
         public:
             const std::string m_rootPath;
 
-            SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath);
+            SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath);
             ~SimpleFileSystem();
 
             IFile OpenFile(std::string path, u32 openMode = FsOpenMode_Read);
