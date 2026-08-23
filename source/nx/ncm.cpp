@@ -331,11 +331,10 @@ namespace nx::ncm
         // Create the cnmt filesystem
         nx::fs::IFileSystem cnmtNCAFileSystem;
         cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
-        nx::fs::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/");
 
         // Find and read the cnmt file
-        auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
-        auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName);
+        auto cnmtName = cnmtNCAFileSystem.GetFileNameFromExtension("/", "cnmt");
+        auto cnmtFile = cnmtNCAFileSystem.OpenFile("/" + cnmtName);
         u64 cnmtSize = cnmtFile.GetSize();
 
         nx::data::ByteBuffer cnmtBuf;

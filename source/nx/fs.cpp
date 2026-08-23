@@ -159,7 +159,7 @@ namespace nx::fs
         return IFile(file);
     }
 
-    IDirectory IFileSystem::OpenDirectory(std::string path, int flags)
+    IDirectory IFileSystem::OpenDirectory(std::string path, u32 flags)
     {
         // Account for null at the end of c strings
         if (path.length() >= FS_MAX_PATH)
@@ -171,6 +171,45 @@ namespace nx::fs
         FsDir dir;
         ASSERT_OK(fsFsOpenDirectory(&m_fileSystem, path.c_str(), flags, &dir), ("Failed to open directory " + path).c_str());
         return IDirectory(dir);
+    }
+
+    std::string IFileSystem::GetFileNameFromExtension(std::string path, std::string extension)
+    {
+        IDirectory dir = this->OpenDirectory(path, FsDirOpenMode_ReadFiles | FsDirOpenMode_ReadDirs);
+
+        u64 entryCount = dir.GetEntryCount();
+        auto dirEntries = std::make_unique<FsDirectoryEntry[]>(entryCount);
+
+        dir.Read(0, dirEntries.get(), entryCount);
+
+        for (unsigned int i = 0; i < entryCount; i++)
+        {
+            FsDirectoryEntry dirEntry = dirEntries[i];
+            std::string dirEntryName = dirEntry.name;
+
+            if (dirEntry.type == FsDirEntryType_Dir)
+            {
+                auto subdirPath = path + dirEntryName + "/";
+                auto subdirFound = this->GetFileNameFromExtension(subdirPath, extension);
+
+                if (subdirFound != "")
+                {
+                    return subdirFound;
+                }
+                continue;
+            }
+            else if (dirEntry.type == FsDirEntryType_File)
+            {
+                auto foundExtension = dirEntryName.substr(dirEntryName.find(".") + 1);
+
+                if (foundExtension == extension)
+                {
+                    return dirEntryName;
+                }
+            }
+        }
+
+        return "";
     }
 
     s64 GetFreeSpaceSize(FsContentStorageId id)
@@ -286,50 +325,5 @@ namespace nx::fs
             }
         }
         return files;
-    }
-
-    SimpleFileSystem::SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath) :
-        m_fileSystem(&fileSystem) , m_rootPath(rootPath) {}
-
-    SimpleFileSystem::~SimpleFileSystem() {}
-
-    IFile SimpleFileSystem::OpenFile(std::string path, u32 openMode)
-    {
-        return m_fileSystem->OpenFile(m_rootPath + path, openMode);
-    }
-
-    std::string SimpleFileSystem::GetFileNameFromExtension(std::string path, std::string extension)
-    {
-        IDirectory dir = m_fileSystem->OpenDirectory(m_rootPath + path, FsDirOpenMode_ReadFiles | FsDirOpenMode_ReadDirs);
-
-        u64 entryCount = dir.GetEntryCount();
-        auto dirEntries = std::make_unique<FsDirectoryEntry[]>(entryCount);
-
-        dir.Read(0, dirEntries.get(), entryCount);
-
-        for (unsigned int i = 0; i < entryCount; i++)
-        {
-            FsDirectoryEntry dirEntry = dirEntries[i];
-            std::string dirEntryName = dirEntry.name;
-
-            if (dirEntry.type == FsDirEntryType_Dir)
-            {
-                auto subdirPath = path + dirEntryName + "/";
-                auto subdirFound = this->GetFileNameFromExtension(subdirPath, extension);
-
-                if (subdirFound != "")
-                    return subdirFound;
-                continue;
-            }
-            else if (dirEntry.type == FsDirEntryType_File)
-            {
-                auto foundExtension = dirEntryName.substr(dirEntryName.find(".") + 1);
-
-                if (foundExtension == extension)
-                    return dirEntryName;
-            }
-        }
-
-        return "";
     }
 }

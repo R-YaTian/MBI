@@ -113,7 +113,8 @@ namespace nx::fs
             void CloseFileSystem();
 
             IFile OpenFile(std::string path, u32 openMode = FsOpenMode_Read);
-            IDirectory OpenDirectory(std::string path, int flags);
+            IDirectory OpenDirectory(std::string path, u32 flags);
+            std::string GetFileNameFromExtension(std::string path, std::string extension);
     };
 
     s64 GetFreeSpaceSize(FsContentStorageId id);
@@ -121,19 +122,4 @@ namespace nx::fs
     std::string FormatSizeString(s64 size);
     std::vector<Path> GetDirectoryFiles(const std::string &dir, const std::vector<std::string> &extensions);
     std::vector<Path> GetDirsAtPath(const std::string &dir);
-
-    class SimpleFileSystem final
-    {
-        private:
-            IFileSystem* m_fileSystem;
-
-        public:
-            const std::string m_rootPath;
-
-            SimpleFileSystem(IFileSystem& fileSystem, std::string rootPath);
-            ~SimpleFileSystem();
-
-            IFile OpenFile(std::string path, u32 openMode = FsOpenMode_Read);
-            std::string GetFileNameFromExtension(std::string path, std::string extension);
-    };
 }
