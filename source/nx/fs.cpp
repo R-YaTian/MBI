@@ -21,7 +21,6 @@ SOFTWARE.
 */
 
 #include <cmath>
-#include <memory>
 
 #include "nx/fs.hpp"
 #include "nx/error.hpp"
@@ -102,45 +101,34 @@ namespace nx::fs
         this->CloseFileSystem();
     }
 
-    Result IFileSystem::OpenSdFileSystem()
-    {
-        ASSERT_OK(fsOpenSdCardFileSystem(&m_fileSystem), "Failed to mount sd card");
-        return 0;
-    }
-
-    void IFileSystem::OpenDeviceFileSystem(const char* name)
-    {
-        FsFileSystem* fs = fsdevGetDeviceFileSystem(name);
-        if (fs == NULL)
-        {
-            THROW_FORMAT("Failed to get device filesystem for %s", name);
-        }
-        m_fileSystem = *fs;
-    }
-
     void IFileSystem::OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId)
     {
         Result rc = 0;
         if (path.length() >= FS_MAX_PATH)
+        {
             THROW_FORMAT("Directory path is too long!");
+        }
 
         // libnx expects a FS_MAX_PATH-sized buffer
         path.reserve(FS_MAX_PATH);
 
-        std::string errorMsg = "Failed to open file system with id: " + path;
+        std::string errorMsg = "Failed to open file system with id: " + std::to_string(titleId);
         rc = fsOpenFileSystemWithId(&m_fileSystem, titleId, fileSystemType, path.c_str(), FsContentAttributes_All);
 
-        if (rc == 0x236e02)
+        if (rc == FsError::FsError_HierarchicalSha256HashVerificationFailed)
+        {
             errorMsg = "File " + path + " is unreadable! You may have a bad dump, fs_mitm may need to be removed, or your firmware version may be too low to decrypt it.";
-        else if (rc == 0x234c02)
-            errorMsg = "Failed to open filesystem!";
+        }
+        else if (rc == FsError::FsError_NcaHeaderSignature1VerificationFailed)
+        {
+            errorMsg = "FsError_NcaHeaderSignature1VerificationFailed";
+        }
 
         ASSERT_OK(rc, errorMsg.c_str());
     }
 
     void IFileSystem::CloseFileSystem()
     {
-        fsFsCommit(&m_fileSystem);
         fsFsClose(&m_fileSystem);
     }
 
@@ -163,7 +151,9 @@ namespace nx::fs
     {
         // Account for null at the end of c strings
         if (path.length() >= FS_MAX_PATH)
+        {
             THROW_FORMAT("Directory path is too long!");
+        }
 
         // libnx expects a FS_MAX_PATH-sized buffer
         path.reserve(FS_MAX_PATH);

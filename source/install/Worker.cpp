@@ -112,7 +112,7 @@ namespace app::install
     void Worker::UpdateTransferProgress(size_t& startSize, size_t newSize, size_t totalSize, u64& startTime, u64 freq)
     {
         u64 newTime = armGetSystemTick();
-        if (newTime - startTime < freq * 0.02)
+        if (newTime - startTime < freq * 0.5)
         {
             return;
         }
@@ -231,12 +231,19 @@ namespace app::install
 
         u64 freq = armGetSystemTickFreq();
         u64 startTime = armGetSystemTick();
+        u64 renderTime = startTime;
         size_t startSizeBuffered = 0;
 
         app::facade::SendInstallInfoText("inst.info_page.installing"_lang + ncaFileName + "...");
         app::facade::SendInstallProgress(0);
         while (!bufferedPlaceholderWriter.IsBufferDataComplete() && !stopThreads)
         {
+            u64 newTime = armGetSystemTick();
+            if (newTime - renderTime >= freq * 0.02)
+            {
+                app::facade::SendRenderRequest();
+                renderTime = newTime;
+            }
             this->UpdateTransferProgress(startSizeBuffered, bufferedPlaceholderWriter.GetSizeBuffered(), bufferedPlaceholderWriter.GetTotalDataSize(), startTime, freq);
         }
         app::facade::SendInstallProgress(100);

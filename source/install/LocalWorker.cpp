@@ -25,7 +25,14 @@ namespace app::install
 
     void LocalWorker::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId, nx::nca::NcaHeader* header)
     {
-        this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
+        if (m_storageSrc == LocalStorageSource::UDISK)
+        {
+            this->WriteToPlaceholderBuffered(contentStorage, ncaId, (void *)this, header, appletGetAppletType() == AppletType_LibraryApplet ? 8 : 128);
+        }
+        else
+        {
+            this->WriteToPlaceholderDirectly(contentStorage, ncaId, DEFAULT_READ_BUFFER_SIZE, header);
+        }
     }
 
     void LocalWorker::BufferData(void* buf, off_t offset, size_t size)
