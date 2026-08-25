@@ -218,7 +218,7 @@ namespace ui
 
     void LocalInstallPage::selectFile(int selectedIndex)
     {
-        if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+        if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -248,7 +248,7 @@ namespace ui
 
     void LocalInstallPage::startInstall()
     {
-        if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+        if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -330,7 +330,7 @@ namespace ui
     {
         if (Down & HidNpadButton_B)
         {
-            if (pageData->driveIndex != -1 && nx::udisk::getMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+            if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
             {
                 pageData->subPathCounter = 0;
             }
@@ -381,13 +381,13 @@ namespace ui
     bool LocalInstallPage::setStorageSourceToUdisk()
     {
         int ret = -1;
-        u32 deviceCount = nx::udisk::getDeviceCount();
+        u32 deviceCount = nx::udisk::GetDriveCount();
         if(deviceCount > 1)
         {
             std::vector<std::string> mountPointList;
             for (u32 i = 0; i < deviceCount; i++)
             {
-                mountPointList.push_back(nx::udisk::getMountPointName(i));
+                mountPointList.push_back(nx::udisk::GetMountPointName(i));
             }
             mountPointList.push_back("common.cancel"_lang);
             ret = app::facade::ShowDialog("main.hdd.title"_lang, "inst.hdd.multi_device_desc"_lang, mountPointList, true, "install-disk");
@@ -406,7 +406,7 @@ namespace ui
             return false;
         }
         pageData->storageSrc = install::LocalStorageSource::UDISK;
-        pageData->driveMountPointName = nx::udisk::getMountPointName(ret);
+        pageData->driveMountPointName = nx::udisk::GetMountPointName(ret);
         pageData->driveIndex = ret;
         this->drawMenuItems(pageData->driveMountPointName);
         return true;

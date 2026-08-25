@@ -2,16 +2,15 @@
 #include "ui/MtpInstallPage.hpp"
 #include "install/InstallTask.hpp"
 #include "install/MtpWorker.hpp"
-#include "util/ScopedMutex.hpp"
 #include "util/config.hpp"
 #include "util/i18n.hpp"
+#include "nx/Scoped.hpp"
 #include "nx/mtp.hpp"
 #include "nx/usb.hpp"
 #include "nx/nsp.hpp"
 #include "nx/xci.hpp"
 #include "nx/misc.hpp"
 #include "facade.hpp"
-#include "installer.hpp"
 #include <atomic>
 #include <thread>
 

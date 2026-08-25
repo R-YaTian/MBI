@@ -51,3 +51,16 @@ SOFTWARE.
 #else
 #define LOG_DEBUG(format, ...) ;
 #endif
+
+#define R_SUCCEED() return (Result)0
+#define R_THROW(_rc) return _rc
+#define R_UNLESS(expr, res) { \
+    if (!(expr)) { \
+        R_THROW(res); \
+    } \
+}
+#define R_TRY(r) { \
+    if (const auto _rc = (r); R_FAILED(_rc)) { \
+        R_THROW(_rc); \
+    } \
+}

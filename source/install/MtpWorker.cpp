@@ -1,6 +1,6 @@
 #include "install/MtpWorker.hpp"
-#include "util/ScopedMutex.hpp"
 #include "util/i18n.hpp"
+#include "nx/Scoped.hpp"
 #include "nx/error.hpp"
 
 namespace app::install

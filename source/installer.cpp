@@ -1,5 +1,6 @@
-#include <string>
 #include <memory>
+#include <string>
+#include <sstream>
 #include "install/InstallTask.hpp"
 #include "nx/nsp.hpp"
 #include "nx/xci.hpp"

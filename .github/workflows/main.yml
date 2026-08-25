@@ -32,7 +32,7 @@ jobs:
     - name: Checkout latest Plutonium commit
       run: |
         git clone https://github.com/R-YaTian/Plutonium.git -b catnip
-    
+
     - name: Checkout latest libnx-ipcext commit
       run: |
         git clone https://github.com/R-YaTian/libnx-ext.git -b catnip-ipcext
@@ -49,6 +49,10 @@ jobs:
       run: |
         git clone https://github.com/freetype/freetype.git -b VER-2-14-3
 
+    - name: Checkout custom catnip branch zstd commit
+      run: |
+        git clone https://github.com/R-YaTian/zstd.git -b catnip
+
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
 
@@ -56,7 +60,7 @@ jobs:
       run: |
         cd libnx
         make install -j$(nproc)
-    
+
     - name: Build and install freetype2
       run: |
         cd freetype
@@ -88,9 +92,14 @@ jobs:
         cd libhaze
         catnip -T switch -S . -B build install
 
+    - name: Build zstd dependencies
+      run: |
+        cd zstd/build/cmake
+        catnip -T switch -S . -B build install
+
     - name: Build MBI
       run: |
-        make -j$(nproc) WITH_NETWORK=1
+        make -j$(nproc) WITH_NETWORK=1 WITH_DEBUG=1
 
     - uses: actions/upload-artifact@master
       with:

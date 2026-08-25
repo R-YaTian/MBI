@@ -30,7 +30,7 @@ namespace app::manager
         }
         app::config::ParseSettings();
         app::config::ParseThemeColor();
-        nx::udisk::init();
+        nx::udisk::Init();
 
 #ifdef ENABLE_NET
         // https://github.com/mtheall/ftpd/blob/e27898f0c3101522311f330e82a324861e0e3f7e/source/switch/init.c#L31
@@ -89,7 +89,7 @@ namespace app::manager
         ncmExit();
         accountExit();
         romfsExit();
-        nx::udisk::exit();
+        nx::udisk::Exit();
 
 #ifdef ENABLE_NET
         // Clean up libcurl globally when exit
