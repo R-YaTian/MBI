@@ -45,13 +45,13 @@ jobs:
       run: |
         git clone https://github.com/R-YaTian/libhaze.git -b catnip
 
-    - name: Checkout latest freetype2 release
-      run: |
-        git clone https://github.com/freetype/freetype.git -b VER-2-14-3
+    # - name: Checkout latest freetype2 release
+    #   run: |
+    #     git clone https://github.com/freetype/freetype.git -b VER-2-14-3
 
-    - name: Checkout custom catnip branch zstd commit
-      run: |
-        git clone https://github.com/R-YaTian/zstd.git -b catnip
+    # - name: Checkout custom catnip branch zstd commit
+    #   run: |
+    #     git clone https://github.com/R-YaTian/zstd.git -b catnip
 
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
@@ -61,11 +61,11 @@ jobs:
         cd libnx
         make install -j$(nproc)
 
-    - name: Build and install freetype2
-      run: |
-        cd freetype
-        catnip -T switch config -DFT_DISABLE_HARFBUZZ=TRUE
-        catnip -T switch -S . -B build install
+    # - name: Build and install freetype2
+    #   run: |
+    #     cd freetype
+    #     catnip -T switch config -DFT_DISABLE_HARFBUZZ=TRUE
+    #     catnip -T switch -S . -B build install
 
     - name: Build libusbhsfs dependencies
       run: |
@@ -92,10 +92,10 @@ jobs:
         cd libhaze
         catnip -T switch -S . -B build install
 
-    - name: Build zstd dependencies
-      run: |
-        cd zstd/build/cmake
-        catnip -T switch -S . -B build install
+    # - name: Build zstd dependencies
+    #   run: |
+    #     cd zstd/build/cmake
+    #     catnip -T switch -S . -B build install
 
     - name: Build MBI
       run: |
