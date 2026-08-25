@@ -229,13 +229,4 @@ namespace nx::misc
         }
         return "US";
     }
-
-    const std::string GetSerialNumber()
-    {
-        SetSysSerialNumber serial_number{};
-        setsysInitialize();
-        setsysGetSerialNumber(&serial_number);
-        setsysExit();
-        return serial_number.number;
-    }
 }

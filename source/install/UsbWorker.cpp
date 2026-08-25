@@ -28,7 +28,7 @@ namespace app::install
         {
             while (sizeRemaining)
             {
-                tmpSizeRead = nx::usb::usbDeviceRead(buf, std::min(sizeRemaining, DEFAULT_READ_BUFFER_SIZE), 5000000000);
+                tmpSizeRead = nx::usb::USBReadData(buf, std::min(sizeRemaining, DEFAULT_READ_BUFFER_SIZE), 5000000000);
                 if (tmpSizeRead == 0)
                 {
                     throw std::runtime_error("inst.usb.error"_lang.c_str());

@@ -5,26 +5,6 @@
 
 namespace nx::usb
 {
-    inline constexpr auto TOTAL_INTERFACES = 4;
-
-    struct usbDeviceInterface
-    {
-        RwLock lock, lock_in, lock_out;
-        bool initialized;
-
-        UsbDsInterface *interface;
-        UsbDsEndpoint *endpoint_in, *endpoint_out;
-
-        u8 *endpoint_in_buffer, *endpoint_out_buffer;
-    };
-
-    struct usbDeviceInterfaceInfo
-    {
-        u8 bInterfaceClass;
-        u8 bInterfaceSubClass;
-        u8 bInterfaceProtocol;
-    } NX_PACKED;
-
     typedef enum
     {
         DeviceSpeed_None = 0x0,
@@ -38,23 +18,8 @@ namespace nx::usb
     /// Initializes USB device service with the default number of interfaces.
     Result usbDeviceInitialize();
 
-    /// Initializes USB device service with a specific number of interfaces.
-    Result usbDeviceInitializeEx(u32 num_interfaces, const usbDeviceInterfaceInfo* infos);
-
     /// Exits USB device service.
     void usbDeviceExit();
-
-    /// Read data with the default interface.
-    size_t usbDeviceRead(void* buffer, size_t size, u64 timeout);
-
-    /// Write data with the default interface.
-    size_t usbDeviceWrite(const void* buffer, size_t size, u64 timeout);
-
-    /// Read data with the specified interface.
-    size_t usbDeviceReadEx(void* buffer, size_t size, u32 interface, u64 timeout);
-
-    /// Write data with the specified interface.
-    size_t usbDeviceWriteEx(const void* buffer, size_t size, u32 interface, u64 timeout);
 
     /// Gets the current state of the USB device.
     UsbState usbDeviceGetState();
@@ -64,9 +29,6 @@ namespace nx::usb
 
     /// Checks whether the USB device is connected.
     bool usbDeviceIsConnected();
-
-    /// Checks whether the USB device service is initialized.
-    bool usbDeviceIsInitialized();
 
     enum class USBCommandId : u32
     {

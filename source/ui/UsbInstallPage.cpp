@@ -120,7 +120,7 @@ namespace ui
             }
 
             nx::usb::FileListHeader header;
-            if (nx::usb::USBReadData(tempBuffer, sizeof(nx::usb::FileListHeader), 20000000) == 0)
+            if (nx::usb::USBReadData(tempBuffer, sizeof(nx::usb::FileListHeader), 500000000) == 0)
             {
                 free(tempBuffer);
                 return;

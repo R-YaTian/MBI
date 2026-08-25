@@ -139,7 +139,11 @@ namespace app::ui
                 app::config::SaveSettings();
             }
         }
-        nx::usb::usbDeviceInitialize();
+        Result rc = nx::usb::usbDeviceInitialize();
+        if (R_FAILED(rc))
+        {
+            return;
+        }
         SceneJump(Scene::UsbInstall);
     }
 

@@ -33,7 +33,7 @@ static void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
     u64 offset = buffer.size();
     buffer.resize(offset + sz);
-    memcpy(buffer.data() + offset, ptr, sz);
+    std::memcpy(buffer.data() + offset, ptr, sz);
 }
 
 class NcaBodyWriter
