@@ -5,7 +5,6 @@
 #include "facade.hpp"
 #include "manager.hpp"
 #include "nx/BufferedPlaceholderWriter.hpp"
-#include "nx/udisk.hpp"
 #include "nx/usb.hpp"
 #include "nx/mtp.hpp"
 
@@ -149,7 +148,6 @@ namespace app::ui
         {
             return;
         }
-        nx::udisk::GetConsumeDrivesChanged();
         SceneJump(Scene::UdiskInstall);
     }
 

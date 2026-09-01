@@ -1,4 +1,6 @@
 #include <atomic>
+#include <vector>
+
 #include "nx/udisk.hpp"
 #include "nx/error.hpp"
 #include "nx/Scoped.hpp"
@@ -7,7 +9,6 @@ namespace nx::udisk
 {
     namespace
     {
-        std::atomic_bool g_DrivesChanged = false;
         Lock g_DrivesLock;
         std::vector<UsbHsFsDevice> g_Drives;
     }
@@ -23,7 +24,6 @@ namespace nx::udisk
             {
                 g_Drives.insert(g_Drives.end(), devices, devices + device_count);
             }
-            g_DrivesChanged = true;
         }, nullptr);
 
         R_SUCCEED();
@@ -34,26 +34,9 @@ namespace nx::udisk
         usbHsFsExit();
     }
 
-    bool GetConsumeDrivesChanged()
-    {
-        return g_DrivesChanged.exchange(false);
-    }
-
     bool UnmountDrive(const UsbHsFsDevice &drv)
     {
         return usbHsFsUnmountDevice(std::addressof(drv), true);
-    }
-
-    void DoWithDrives(const std::function<void(const std::vector<UsbHsFsDevice>&)> &cb)
-    {
-        ScopedLock lk(g_DrivesLock);
-        cb(g_Drives);
-    }
-
-    std::string GetMountPointName(const UsbHsFsDevice &drive)
-    {
-        const std::string drive_name = drive.name;
-        return drive_name;
     }
 
     std::string GetMountPointName(u32 driveIndex)

@@ -90,9 +90,8 @@ namespace ui
         size_t subPathCounter = 0;
         size_t selectedSize = 0;
         bool isRootDirectory = true;
-        install::LocalStorageSource storageSrc = install::LocalStorageSource::SDMC;
         std::string driveMountPointName{};
-        int driveIndex = -1;
+        int driveIndex = -1; // -1 means SDMC
         nx::fs::Path currentDir;
         std::vector<nx::fs::Path> menuDirectories;
         std::vector<nx::fs::Path> menuFiles;
@@ -218,7 +217,7 @@ namespace ui
 
     void LocalInstallPage::selectFile(int selectedIndex)
     {
-        if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+        if (pageData->driveIndex != -1 && !nx::udisk::DriveExists(pageData->driveIndex, pageData->driveMountPointName)) 
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -248,7 +247,7 @@ namespace ui
 
     void LocalInstallPage::startInstall()
     {
-        if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+        if (pageData->driveIndex != -1 && !nx::udisk::DriveExists(pageData->driveIndex, pageData->driveMountPointName))
         {
             pageData->subPathCounter = 0;
             onCancel();
@@ -271,8 +270,10 @@ namespace ui
         {
             fileList.push_back(pair.second);
         }
-        ClearPageData();
-        InstallFromLocalFile(fileList, dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard, pageData->storageSrc);
+        clearPageData();
+        InstallFromLocalFile(fileList,
+                             dialogResult ? NcmStorageId_BuiltInUser : NcmStorageId_SdCard,
+                             pageData->driveIndex == -1 ? install::LocalStorageSource::SDMC : install::LocalStorageSource::UDISK);
     }
 
     void LocalInstallPage::onCancel()
@@ -284,7 +285,7 @@ namespace ui
         }
         else
         {
-            ClearPageData();
+            clearPageData();
             SceneJump(Scene::Main);
         }
     }
@@ -330,7 +331,7 @@ namespace ui
     {
         if (Down & HidNpadButton_B)
         {
-            if (pageData->driveIndex != -1 && nx::udisk::GetMountPointName(pageData->driveIndex) != pageData->driveMountPointName)
+            if (pageData->driveIndex != -1 && !nx::udisk::DriveExists(pageData->driveIndex, pageData->driveMountPointName))
             {
                 pageData->subPathCounter = 0;
             }
@@ -372,13 +373,13 @@ namespace ui
         UpdateTouchState(Pos, 0, 154_dp, 1920_dp, std::min(this->menu->GetItems().size() * config::GetSubMenuItemSize(), (size_t)config::GetSubMenuHeight()));
     }
 
-    void LocalInstallPage::setStorageSourceToSdmc()
+    void LocalInstallPage::openSdmc()
     {
-        pageData->storageSrc = install::LocalStorageSource::SDMC;
-        this->drawMenuItems("sdmc:");
+        pageData->driveMountPointName = "sdmc:";
+        this->drawMenuItems(pageData->driveMountPointName);
     }
 
-    bool LocalInstallPage::setStorageSourceToUdisk()
+    bool LocalInstallPage::tryOpenUdisk()
     {
         int ret = -1;
         u32 deviceCount = nx::udisk::GetDriveCount();
@@ -405,14 +406,13 @@ namespace ui
             app::facade::ShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true, "information");
             return false;
         }
-        pageData->storageSrc = install::LocalStorageSource::UDISK;
         pageData->driveMountPointName = nx::udisk::GetMountPointName(ret);
         pageData->driveIndex = ret;
         this->drawMenuItems(pageData->driveMountPointName);
         return true;
     }
 
-    void LocalInstallPage::ClearPageData()
+    void LocalInstallPage::clearPageData()
     {
         pageData->subPathCounter = 0;
         pageData->selectedSize = 0;

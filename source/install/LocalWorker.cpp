@@ -37,7 +37,14 @@ namespace app::install
 
     void LocalWorker::BufferData(void* buf, off_t offset, size_t size)
     {
-        fseeko(m_file, offset, SEEK_SET);
-        fread(buf, 1, size, m_file);
+        if (fseeko(m_file, offset, SEEK_SET) != 0)
+        {
+            THROW_FORMAT("File seek failed: %s\n", strerror(errno));
+        }
+        size_t readSize = fread(buf, 1, size, m_file);
+        if (readSize != size)
+        {
+            THROW_FORMAT("File read failed at offset %ld\n", offset);
+        }
     }
 }
