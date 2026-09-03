@@ -16,7 +16,7 @@ jobs:
     - name: Update packages
       run: |
         sudo -n apt-get update
-        sudo -n apt-get upgrade -y patch autoconf automake diffutils pkgconf fakeroot git file tar bzip2 zstd
+        sudo -n apt-get upgrade -y patch autoconf automake diffutils pkgconf fakeroot git file tar bzip2 zstd texinfo
 
     - name: Silence all git safe directory warnings
       run: git config --system --add safe.directory '*'
@@ -60,6 +60,11 @@ jobs:
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
 
+    - name: Build libgloss
+      run: |
+        cd newlib
+        ./build-libgloss-local.sh
+
     - name: Build and install libnx
       run: |
         cd libnx
@@ -100,11 +105,6 @@ jobs:
       run: |
         cd zstd/build/cmake
         catnip -T switch -S . -B build install
-    
-    - name: Build libgloss
-      run: |
-        cd newlib
-        ./build-libgloss-local.sh
 
     - name: Build MBI
       run: |
