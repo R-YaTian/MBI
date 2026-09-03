@@ -52,6 +52,10 @@ jobs:
     - name: Checkout custom catnip branch zstd commit
       run: |
         git clone https://github.com/R-YaTian/zstd.git -b catnip
+    
+    - name: Checkout custom iosupport branch newlib commit
+      run: |
+        git clone https://github.com/R-YaTian/newlib.git -b iosupport
 
     - name: Set workspace permissions
       run: chmod 777 -R "$GITHUB_WORKSPACE"
@@ -96,6 +100,11 @@ jobs:
       run: |
         cd zstd/build/cmake
         catnip -T switch -S . -B build install
+    
+    - name: Build libgloss
+      run: |
+        cd newlib
+        ./build-libgloss-local.sh
 
     - name: Build MBI
       run: |
