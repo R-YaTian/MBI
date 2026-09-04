@@ -112,6 +112,7 @@ namespace app::ui
             }
 
             facade::NotifyInstallSuccess(1, shortFileName);
+            facade::NotifyFreeSpaceInfoChanged();
             pageData->m_state = State::Done;
         }
     }

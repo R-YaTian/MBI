@@ -119,15 +119,14 @@ namespace app::ui
         return sizeStr;
     }
 
-    void MainApplication::UpdateStats()
+    void MainApplication::UpdateFreeSpaceInfo()
     {
         const auto newfreeSpaceText = GetFreeSpaceInfoForDisplay();
-        if (freeSpaceCurrentText != newfreeSpaceText)
-        {
-            freeSpaceCurrentText = newfreeSpaceText;
-            this->freeSpaceText->SetText(freeSpaceCurrentText);
-        }
+        this->freeSpaceText->SetText(newfreeSpaceText);
+    }
 
+    void MainApplication::UpdateStats()
+    {
         const auto newBatteryValue = nx::misc::GetBatteryValue();
         if (batteryCurrentValue != newBatteryValue)
         {
@@ -225,7 +224,7 @@ namespace app::ui
         this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
         this->batteryValueText = pu::ui::elm::TextBlock::New(1105_dp, 9_dp, "misc.battery_charge"_lang + ": ??%");
         this->batteryValueText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
-        this->freeSpaceText = pu::ui::elm::TextBlock::New(1105_dp, 49_dp, freeSpaceCurrentText);
+        this->freeSpaceText = pu::ui::elm::TextBlock::New(1105_dp, 49_dp, GetFreeSpaceInfoForDisplay());
         this->freeSpaceText->SetFont(GetDefaultFont(pu::ui::DefaultFontSize::Medium));
         this->freeSpaceText->SetColor(COLOR("#FFFFFFFF"));
         this->appletText = pu::ui::elm::TextBlock::New(1437_dp, 9_dp, appletGetAppletType() == AppletType_LibraryApplet ? "misc.applet_mode"_lang : "");

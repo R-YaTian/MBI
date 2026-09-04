@@ -18,7 +18,7 @@ namespace app::ui
         this->menu->SetScrollbarMargin(this->menu->GetScrollbarMargin() / config::GetScreenScaleFactor());
         this->menu->SetIconMargin(20_dp);
         this->menu->SetTextMargin(20_dp);
-
+        this->menu->SetItemsFocusBorderMargin(10_dp);
         ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
         ignoreFirmOption->SetColor(COLOR(app::config::MenuTextColor));
         ignoreFirmOption->AddOnKey(std::bind(&OptionsPage::IgnoreFirmOption_Click, this), HidNpadButton_A | HidNpadButton_Verification);

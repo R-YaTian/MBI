@@ -109,6 +109,7 @@ namespace ui
         this->menu->SetScrollbarMargin(this->menu->GetScrollbarMargin() / config::GetScreenScaleFactor());
         this->menu->SetIconMargin(20_dp);
         this->menu->SetTextMargin(20_dp);
+        this->menu->SetItemsFocusBorderMargin(10_dp);
         this->Add(this->menu);
         pageData = std::make_unique<InternalData>();
     }

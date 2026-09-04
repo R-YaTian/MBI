@@ -48,6 +48,7 @@ namespace app::ui
         this->optionMenu->SetItemsFocusBorderRadius(this->optionMenu->GetItemsFocusBorderRadius() / config::GetScreenScaleFactor());
         this->optionMenu->SetIconMargin(37_dp);
         this->optionMenu->SetTextMargin(37_dp);
+        this->optionMenu->SetItemsFocusBorderMargin(27_dp);
         this->sdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
         this->sdInstallMenuItem->SetColor(COLOR(app::config::MenuTextColor));
         this->sdInstallMenuItem->SetIcon(LoadTexture("romfs:/images/icons/micro-sd.webp"));

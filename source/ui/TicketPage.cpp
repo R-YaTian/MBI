@@ -25,6 +25,7 @@ namespace app::ui
         this->menu->SetScrollbarMargin(this->menu->GetScrollbarMargin() / config::GetScreenScaleFactor());
         this->menu->SetIconMargin(20_dp);
         this->menu->SetTextMargin(20_dp);
+        this->menu->SetItemsFocusBorderMargin(10_dp);
         this->infoImage = pu::ui::elm::Image::New(780_dp, 498_dp, LoadTexture("romfs:/images/icons/ticket-waiting.webp"));
         this->infoImage->SetWidth(this->infoImage->GetWidth() / config::GetScreenScaleFactor());
         this->infoImage->SetHeight(this->infoImage->GetHeight() / config::GetScreenScaleFactor());

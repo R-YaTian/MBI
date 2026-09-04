@@ -20,4 +20,5 @@ namespace app::facade
     void PlayAudio(const std::string& filename);
     void NotifyInstallSuccess(const size_t count, const std::string& msg);
     void NotifyInstallFailed(const std::exception& e, const std::string& msg);
+    void NotifyFreeSpaceInfoChanged();
 }

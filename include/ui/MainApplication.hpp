@@ -58,8 +58,8 @@ namespace app::ui
 
             void SetTouchButtonAreaType(TouchButtonAreaType type);
             std::string GetFinalResourcePath(const std::string& type, const std::string& name);
+            void UpdateFreeSpaceInfo();
         private:
-            std::string freeSpaceCurrentText;
             std::string timeCurrentText;
             std::string dateCurrentText;
             u32 batteryCurrentValue = 255;

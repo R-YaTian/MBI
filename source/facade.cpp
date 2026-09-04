@@ -67,6 +67,7 @@ namespace app::facade
     {
         app::ui::installerPage->SetFinished();
         app::ui::mainApp->SetTouchButtonAreaType(app::ui::TouchButtonAreaType::Base);
+        NotifyFreeSpaceInfoChanged();
     }
 
     void ShowInstaller(std::string sourceString)
@@ -186,5 +187,10 @@ namespace app::facade
             std::thread audioThread(PlayAudio, "fail.mp3");
             audioThread.join();
         }
+    }
+
+    void NotifyFreeSpaceInfoChanged()
+    {
+        app::ui::mainApp->UpdateFreeSpaceInfo();
     }
 }
