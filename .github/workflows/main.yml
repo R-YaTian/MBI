@@ -9,14 +9,15 @@ jobs:
     container: devkitpro/devkita64:latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Update packages
       run: |
         sudo -n apt-get update
-        sudo -n apt-get upgrade -y patch autoconf automake diffutils pkgconf fakeroot git file tar bzip2 zstd texinfo
+        sudo -n apt-get upgrade -y texinfo
+        sudo -n dkp-pacman -Syu --noconfirm --needed || true
 
     - name: Silence all git safe directory warnings
       run: git config --system --add safe.directory '*'
@@ -49,10 +50,10 @@ jobs:
       run: |
         git clone https://github.com/freetype/freetype.git -b VER-2-14-3
 
-    - name: Checkout custom catnip branch zstd commit
+    - name: Checkout latest zstd release
       run: |
-        git clone https://github.com/R-YaTian/zstd.git -b catnip
-    
+        git clone https://github.com/facebook/zstd.git -b v1.5.7
+
     - name: Checkout custom iosupport branch newlib commit
       run: |
         git clone https://github.com/R-YaTian/newlib.git -b iosupport
@@ -104,13 +105,14 @@ jobs:
     - name: Build zstd dependencies
       run: |
         cd zstd/build/cmake
+        catnip -T switch config -DZSTD_BUILD_PROGRAMS:BOOL=OFF -DZSTD_LEGACY_SUPPORT:BOOL=OFF -DZSTD_BUILD_DICTBUILDER:BOOL=OFF -DZSTD_BUILD_SHARED:BOOL=OFF -DZSTD_BUILD_STATIC:BOOL=ON -DZSTD_BUILD_COMPRESSION:BOOL=ON -DZSTD_MULTITHREAD_SUPPORT:BOOL=ON -DZSTD_BUILD_DECOMPRESSION:BOOL=ON
         catnip -T switch -S . -B build install
 
     - name: Build MBI
       run: |
         make -j$(nproc) WITH_NETWORK=1 WITH_DEBUG=1
 
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@v6
       with:
         name: MBI
         path: MBI.nro
